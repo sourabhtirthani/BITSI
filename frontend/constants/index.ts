@@ -1,0 +1,357 @@
+export const ourServicesLinks = [
+    {
+        id : 1,
+        imgURL : '/icons/insurance.svg',
+        label : 'INSURANCE',
+        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.' 
+    },
+    {
+        id : 2,
+        imgURL : '/icons/bitsicoin.svg',
+        label : 'BITSI COIN',
+        info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.'
+    },
+    {
+        id : 3,
+        imgURL : '/icons/bitsinft.svg',
+        label : 'BITSI NFT',
+        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.'
+    }
+]
+
+
+export const testimonials = [
+    {
+        id : 1,
+        name : 'Floreen',
+        imgURL : '/icons/testimonial-pf-img.svg',
+        position : 'CTO',
+        stars : 4,
+        review : 'I have been using BITSI NFT for a few months now, and I am incredibly impressed with the platform. The process of minting and trading NFTs is seamless, and the security measures give me confidence in my investments.'
+    },
+    {
+        id : 2,
+        name : 'TEST Name',
+        imgURL : '/icons/testimonial-pf-img.svg',
+        position : 'Software Developer',
+        stars : 2,
+        review : 'I hacess of give me confidence in my investments.'
+    },
+    {
+        id : 3,
+        name : 'TEST NAME BUG NAME HERE',
+        imgURL : '/icons/testimonial-pf-img.svg',
+        position : 'Vice President',
+        stars : 1,
+        review : ' of minting and trading  '
+    }
+
+]
+
+
+export const createAndSellNFT = [
+    {
+        id: 1,
+        step : 'Step-1',
+        icon : '/icons/step-1.svg',
+        heading : 'Set up your wallet',
+        content : 'Set up your wallet with BITSI and unlock powerful, easily customizable, and scalable features that make it stand out from the rest.'
+    },
+    {
+        id: 2,
+        step : 'Step-2',
+        icon : '/icons/step-2.svg',
+        heading : 'Add your NFTs',
+        content : 'We have made the template fully responsive, so it looks great on all devices: desktop, tablets, and mobiles'
+    } ,
+    {
+        id : 3,
+        step : 'Step-3',
+        icon : '/icons/step-3.svg',
+        heading : 'Sell your NFTs',
+        content : 'Sell your NFTs with ease on our platform. Our user-friendly interface and robust marketplace make it simple to sell.'
+    }
+]
+
+
+export const priceDropDownItems = [
+    {
+        id : 1,
+        name : 'Good',
+        icon : '/icons/nft-good.svg'
+    },
+    {
+        id : 2,
+        name : 'Prestigious',
+        icon : '/icons/nft-prestigious.svg'
+    },
+    {
+        id : 3,
+        name : 'Luxury',
+        icon : '/icons/nft-luxury.svg'
+    },
+]
+
+export const orderDropDownItem = [
+    {
+        id : 1,
+        name : 'Desc Order',
+        icon : '/icons/descOrder.svg'
+    },
+    {
+        id : 2,
+        name : 'Aesc Order',
+        icon : '/icons/aescOrder.svg'
+    },
+]  
+
+
+export const collectionDropDownItems = [
+
+    {
+        id : 1,
+        name : 'Latest',
+        icon : '/icons/descOrder.svg'
+    },
+    {
+        id : 2,
+        name : 'Low to High',
+        icon : '/icons/low-high-logo.svg'
+    },
+    {
+        id : 3,
+        name : 'High to Low',
+        icon : '/icons/high-low-logo.svg'
+    },
+]
+
+export const listOfNFts = [
+    {
+        id: '1',
+        name : 'Girl looking',
+        price : 1,
+        checked : false,
+        nftImg : '/icons/nft-girl-looking.svg',
+        category : 'luxury'
+
+    },
+    {
+        id : '2',
+        name : 'Wide Eyes',
+        price : 10,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'good'
+    },
+    {
+        id : '3',
+        name : 'HandGradient',
+        price : 2,
+        checked : false,
+        nftImg : '/icons/nft-hand-gradient.svg',
+        category : 'prestigious'
+    },
+    {
+        id : '4',
+        name : 'Statue',
+        price : 22,
+        checked : true,
+        nftImg : '/icons/nft-statue.svg',
+        category : 'prestigious'
+    },{
+        id : '5',
+        name : 'Wide Eyes',
+        price : 10,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'good'
+    },
+    {
+        id: '6',
+        name : 'Girl looking',
+        price : 1,
+        checked : false,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'luxury'
+
+    },
+    
+    {
+        id : '7',
+        name : 'Sample Video',
+        price : 2,
+        checked : false,
+        nftImg : '/icons/nft-vid2.mp4',
+        category : 'prestigious'
+    },
+    
+    {
+        id: '8',
+        name : 'Girl looking',
+        price : 1,
+        checked : false,
+        nftImg : '/icons/nft-girl-looking.svg',
+        category : 'luxury'
+
+    },{
+        id : '9',
+        name : 'Statue',
+        price : 22,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'prestigious'
+    },
+    
+    {
+        id : '10',
+        name : 'HandGradient',
+        price : 2,
+        checked : false,
+        nftImg : '/icons/nft-hand-gradient.svg',
+        category : 'prestigious'
+    },
+    {
+        id : '11',
+        name : 'Statue',
+        price : 22,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'prestigious'
+    },
+    {
+        id : '12',
+        name : 'Wide Eyes',
+        price : 10,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'good'
+    },
+    {
+        id: '13',
+        name : 'Girl looking',
+        price : 1,
+        checked : false,
+        nftImg : '/icons/nft-vid.mp4',
+        category : 'luxury'
+
+    },
+    {
+        id : '14',
+        name : 'HandGradient',
+        price : 2,
+        checked : false,
+        nftImg : '/icons/nft-hand-gradient.svg',
+        category : 'prestigious'
+    },
+    {
+        id : '15',
+        name : 'Wide Eyes',
+        price : 10,
+        checked : true,
+        nftImg : '/icons/nft-wide-eyes.svg',
+        category : 'good'
+    },
+    
+    {
+        id : '16',
+        name : 'Statue',
+        price : 22,
+        checked : true,
+        nftImg : '/icons/nft-vid3.mp4',
+        category : 'prestigious'
+    }
+
+]
+// heading , value , net
+export const bitsiCoinCardData = [
+    {
+        id:1,
+        heading : 'Price',
+        value : '1 BTS = 14.65 ETH',
+        net : 'profit'
+    },
+    {
+        id:2,
+        heading : 'Policy Coverage',
+        value : '08.23 ETH',
+        net : 'profit'
+    },
+    {
+        id:3,
+        heading : 'Price',
+        value : '11.23 ETH',
+        net : 'loss'
+    }
+]
+
+
+export const filterOptions = ['Sales' , 'Transfers' , 'Random' , 'Test' , 'Sales' , 'Transfers' , 'Random' , 'Test' ,'Sales' , 'Transfers' , 'Random' , 'Test', 'Test1' , 'Transfers123' , 'Random12' , 'Test3'];
+
+export const events = [
+    { event: 'Transfer', price: '10 BITSI', from: 'crouton', to: 'ton', date: '1y ago' },
+    { event: 'Transfer', price: '10 BITSI', from: 'crouton', to: 'ton', date: '1y ago' },
+    { event: 'Mint', price: '10 BITSI', from: 'crouton', to: 'ton', date: '1y ago' },
+  ];
+
+
+  export const detailsTabData = {
+    'Token Standard' : 'ERC-721',
+    'Chain' : 'Base',
+    'Last Updated' : '2 Months Ago',
+    'Creator Earnings' : '8'
+  }
+
+
+  export const tableMyWallet = [
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+  ]
+
+  export const tableMyWalletCoin = [
+    {COIN : 'Afdsfdsd' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+  ]
+
+
+  export const topSellers = [
+    {id: 1, Name : "Sowmya", Metic : "3.3", icon : "profile-icon1"},
+    {id: 2, Name : "Nitish Ready", Metic : "3.3", icon : "profile-icon2"},
+    {id: 3, Name : "Alexander", Metic : "3.3", icon : "profile-icon3"},
+    {id: 4, Name : "Sowmya", Metic : "3.3", icon : "profile-icon4"},
+    {id: 5, Name : "Sowmya", Metic : "3.3", icon : "profile-icon5"},
+    {id: 6, Name : "Sowmya", Metic : "3.3", icon : "profile-icon2"},
+    {id: 7, Name : "Sowmya", Metic : "3.3", icon : "profile-icon3"},
+    {id: 8, Name : "Sowmya", Metic : "3.3", icon : "profile-icon1"},
+    {id: 9, Name : "Sowmya", Metic : "3.3", icon : "profile-icon5"},
+    {id: 10, Name : "Sowmya", Metic : "3.3", icon : "profile-icon2"},
+    {id: 11, Name : "Sowmya", Metic : "3.3", icon : "profile-icon3"},
+    {id: 12, Name : "Sowmya", Metic : "3.3", icon : "profile-icon4"},
+  ]
+
+  export const myProfileWalletDropDown = [
+    {
+        id: 1,
+        name : 'NFTs',
+        icon : '/icons/nft-wide-eyes.svg'
+    },
+    {
+        id: 2,
+        name : 'Coin',
+        icon : '/icons/bitsi.svg'
+    }
+  ]
+
+  export const buycollectionsTable = [
+    {Collections : 'Luxury' , NFT : '16' , price : '23'},
+    {Collections : 'Luxury' , NFT : '16' , price : '23'},
+    {Collections : 'Luxury' , NFT : '16' , price : '23'},
+    {Collections : 'Luxury' , NFT : '16' , price : '23'},
+  ]

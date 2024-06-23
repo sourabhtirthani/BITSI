@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+
+/* .square-div {
+  width: 100%;
+  padding-top: calc(364 / 382 * 100%);
+} */
+
+/* @media (min-width: 1024px) {
+  .square-div {
+    width: 382px;
+    height: 364px;
+    padding-top: 0;
+  }
+} */
+
+/* * {
+  background-color: #083538;
+} */
+ 
+
+/* .secondary-shadow{
+  box-shadow: 2px 2px 2px 0px #424545;
+}
+.secondary-shadow1{
+  box-shadow: 2px 0px 0px 0px #424545;
+} */
+
+.secondary-shadow11{  
+  box-shadow: 
+  0px 2px 0px 0px #000000, 
+  0.4px 0px 0px 0px #808080,
+  -0.4px 0px 0px 0px #808080, 
+  0px -0.4px 0px 0px #808080;
+  border: 0.1px solid rgba(108, 134, 136, 0.004);
+}
+
+.table-body::-webkit-scrollbar {
+  width: 10px; 
+
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px; 
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Optional: Rounded corners */
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb when hovered */
+}
+
+.add-hover-button-insurance:hover{
+  border: 1px solid #E8AC25;
+  background-color: #083538;
+  color: white;
+}
+
+@keyframes slide-left-to-right {
+  0% {
+    left: 0rem; 
+}
+25%{
+  left: 1.85rem;
+}
+50% {
+    left: 0rem; 
+}
+75% {
+    left: -1.85rem; 
+}
+100% {
+  left: 0rem; 
+}
+}
+
+.animate-slide { 
+ animation: slide-left-to-right 4s infinite;
+}
+
+
+@layer utilities {
+  .navbar {
+    @apply absolute  flex max-md:max-w-screen-md max-h-[100px] max-md:max-h-[50px] justify-between items-center p-6 max-md:p-5;
+  }
+
+  .logo {
+    @apply max-md:h-[50px] max-md:w-[50px] md:mr-16
+  }
+
+  .navbar-space{
+    @apply  bg-success-503 w-full h-[100px] max-md:max-h-[50px]
+  }
+
+  .footer{
+    /* Frame 1000004706 */
+    @apply bg-success-509 text-white md:h-[320px] md:max-h-[320px] px-4 py-8 flex flex-wrap  items-center justify-between ;
+  
+  }
+
+  .footer-img{
+    @apply   md:top-[39px] md:left-[109px]
+  }
+
+  .ourServices{
+    @apply flex flex-col items-center h-fit bg-success-503
+  }
+}
