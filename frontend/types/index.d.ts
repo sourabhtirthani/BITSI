@@ -3,7 +3,14 @@ import { FC, ReactNode } from "react";
 declare interface OurServicesProps {
 
 }
-
+declare type nftData ={
+    id: string,
+    name : string,
+    price : number,
+    checked : boolean,
+    nftImg : string,
+    category : string
+}
 
 declare interface DropdownProps {
     id: number;
@@ -21,6 +28,13 @@ declare interface NFTCardProps {
     setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
     checkedItems: string[];
 
+}
+
+declare interface CardNftMyProfileProps{
+    id: string;
+    name: string
+    price: number
+    nftImg: string;
 }
 
 declare interface FormLabelProps {

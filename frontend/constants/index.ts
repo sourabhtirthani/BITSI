@@ -74,7 +74,7 @@ export const createAndSellNFT = [
 ]
 
 
-export const priceDropDownItems = [
+export const collectionDropDownItems = [
     {
         id : 1,
         name : 'Good',
@@ -92,35 +92,35 @@ export const priceDropDownItems = [
     },
 ]
 
-export const orderDropDownItem = [
+export const priceDropDownItems = [
     {
         id : 1,
-        name : 'Desc Order',
+        name : 'Low to High',
         icon : '/icons/descOrder.svg'
     },
     {
         id : 2,
-        name : 'Aesc Order',
+        name : 'High to Low',
         icon : '/icons/aescOrder.svg'
     },
 ]  
 
 
-export const collectionDropDownItems = [
+export const orderDropDownItem = [
 
-    {
-        id : 1,
-        name : 'Latest',
-        icon : '/icons/descOrder.svg'
-    },
+    // {
+    //     id : 1,
+    //     name : 'Latest',
+    //     icon : '/icons/descOrder.svg'
+    // },
     {
         id : 2,
-        name : 'Low to High',
+        name : 'Asc Order',
         icon : '/icons/low-high-logo.svg'
     },
     {
         id : 3,
-        name : 'High to Low',
+        name : 'Desc Order',
         icon : '/icons/high-low-logo.svg'
     },
 ]
@@ -262,6 +262,23 @@ export const listOfNFts = [
     }
 
 ]
+
+export const listOfNFtsMyProfile = [
+    {
+        id: '1',
+        name : 'NFT',
+        price : 1,
+        nftImg : '/icons/nft-my-profile.png',
+
+    },
+    {
+        id : '2',
+        name : 'NFT',
+        price : 10,
+        nftImg : '/icons/nft-vid.mp4',
+    },
+]
+
 // heading , value , net
 export const bitsiCoinCardData = [
     {

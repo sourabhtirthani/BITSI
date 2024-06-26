@@ -43,6 +43,7 @@ const CardNft = ({ id, name, price, checked, nftImg, category , setCheckedItems 
                 <Link href={`${currPath}/${id}`} className='h-full'>
             {((extension != 'mp4' && isClient )&&<Image src={nftImg} height={254} width={299} alt='NFT IMAGE' className='rounded-xl h-full' />)}
             {((extension == 'mp4' && isClient ) && <video height={254}  width={299} className='rounded-xl overflow-hidden h-full'  autoPlay loop muted><source src={nftImg} type="video/mp4" /> Your browser does not support the video tag.</video> )}
+            {/* {extension == 'mp4' && VideoPlayer/>} */}
             </Link>
             <Image src={imgCategory} height={24} width={24} alt='NFT IMAGE' className='absolute mt-2 ml-4 ' />
             <div className='  bg-success-509 bg-opacity-30  items-center   flex justify-between rounded-xl p-2'>
