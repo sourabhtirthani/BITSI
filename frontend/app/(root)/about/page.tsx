@@ -26,7 +26,7 @@ const About = () => {
 
             <section className='bg-success-503 overflow-hidden '>
                 <div className='flex max-md:flex-col max-lg:items-center '>
-                    <div className='xl:w-3/4 max:lg:w-1/2 mt-20 p-10 flex flex-col mb-5 md:mb-3 lg:mb-8 max-md:p-5'>
+                    <div className='xl:w-3/4 max:lg:w-1/2 mt-20 p-8 flex flex-col mb-5 md:mb-3 lg:mb-8 max-md:p-4'>
                         <h1 className='text-success-511 lg:text-[30px] md:text-[24px] sm:text-[14px] '>Founder & CEO -Alexander</h1>
                         <div className='flex gap-2 mt-3 items-center'>
                             <Image src='icons/bitsi.svg' height={28} width={28} alt='BITSI LOGO' />
@@ -56,10 +56,10 @@ const About = () => {
                 <h1 className='text-white lg:text-[47px] max-lg:text-[35px] max-sm:text-[25px] font-montserrat font-semibold mb-14 lg:mb-24'>Create and sell your NFTs</h1>
                 </div>
 
-                <div className='grid grid-cols-3 max-md:grid-cols-1 '>
+                <div className='grid grid-cols-3 max-md:grid-cols-1 p-8 max-md:p-4 '>
                 {createAndSellNFT.map((item)=>{
                     return (
-                        <div key={item.id} className='p-4 '>
+                        <div key={item.id} className='p-2 '>
                         <div  className='hover:bg-success-509 hover:animate-in  bg-success-512 add-border rounded-2xl  h-full secondary-shadow11'>
                             <Image src={item.icon} height={64.48} width={62} alt = "icon" className='relative left-[80%] bottom-[8%]' />
                             <p className='  text-success-511 text-[22px] max-md:text-[18px] px-2 font-manrope'>{item.step}</p>
@@ -73,16 +73,16 @@ const About = () => {
                 })}
                 </div>
 
-                <div className='lg:mt-16 mt-8 flex justify-between p-4 items-start'>
+                <div className='lg:mt-16 mt-8 flex justify-between p-4 md:px-8 items-start'>
                 <h1 className='text-success-511 lg:text-[47px] max-lg:text-[35px] max-sm:text-[25px] font-montserrat font-semibold mb-14 lg:mb-24'>Our Top Sellers</h1>
                 <div className='h-fit'>
                 <Dropdown buttonName='Today' items={daysFilter} setValue={setFilterValue} /></div>
                 </div>
 
-                <div className='grid grid-cols-4 max-sm:grid-cols-1 mb-20 max-md:mb-10 p-2 max-md:grid-cols-2 -mt-10 max-xl:grid-cols-3'>
+                <div className='grid grid-cols-4 max-sm:grid-cols-1 mb-20 max-md:mb-10 p-7 max-md:grid-cols-2 -mt-10 max-xl:grid-cols-3'>
                     {topSellers.map((item , index)=>{
                         return (
-                            <div key={index} className='p-2 '>
+                            <div key={index} className='p-1 '>
                                 <div className='bg-success-512 gap-2  flex items-center h-full hover:bg-success-509'>
                                     <p className='text-white  text-[28px] font-manrope font-bold'>{index +1}.</p>
                                     <div className='flex items-center gap-2 '>

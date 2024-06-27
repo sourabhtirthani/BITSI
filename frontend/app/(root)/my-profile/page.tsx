@@ -49,7 +49,7 @@ const MyProfile = () => {
     <>
       <div className='navbar-space'></div>
       <section className='bg-success-503 '>
-        <div className='mt-8 flex justify-between max-sm:flex-col mb-10 sm:items-center'>
+        <div className='mt-8 px-5 max-md:px-2.5 flex justify-between max-sm:flex-col mb-10 sm:items-center'>
           <div className='flex items-center gap-2'>
             <Image src='/icons/profile-logo.png' height={200} width={200} alt='Profile Image' className='p-2' />
             <div className='flex flex-col gap-2 '>
@@ -65,7 +65,7 @@ const MyProfile = () => {
           </div>
         </div>
 
-        <div className='flex p-2 gap-4 max-sm:flex-col w-full'>
+        <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full'>
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
           <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>Collections</button>
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl h-fit w-fit px-3 py-2'>
@@ -102,7 +102,7 @@ const MyProfile = () => {
                 {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
               </FormRow>
             </div>
-            <FormRow className='p-4'>
+            <FormRow className='py-4 px-7'>
               <FormLabel htmlFor='bio' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Bio&nbsp;(Optional)</FormLabel>
               <input disabled = {enableEdit} id='bio' name='bio' type='text' placeholder='Bio' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' />
               {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}

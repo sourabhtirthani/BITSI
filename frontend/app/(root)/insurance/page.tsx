@@ -2,6 +2,7 @@ import React from 'react'
 import Image from "next/image";
 import InsuraceContactUsBtn from '@/components/InsuraceContactUsBtn';
 import InsuranceTermsButtonsAll from '@/components/InsuranceTermsButtonsAll';
+import LineChartComp from '@/components/LineChartComp';
 
 const Insurance = () => {
     
@@ -22,7 +23,7 @@ const Insurance = () => {
     
 
     <section className='bg-success-503'>
-        <div className='flex flex-col mt-10 max-sm:mt-6 p-3 overflow-hidden'>
+        <div className='flex flex-col mt-10 max-sm:mt-6 p-8 overflow-hidden'>
             <div className='flex max-md:flex-col'>
                 <div className='md:w-2/3'>
                 <h1 className='font-poller-one text-[98px] max-md:text-[78px] max-sm:text-[44px] text-white'>BITSI INSURANCE</h1>
@@ -80,6 +81,9 @@ const Insurance = () => {
             </div>
         </div>
 
+    </div>
+    <div className='p-8'>
+        <LineChartComp />
     </div>
 
     </section>

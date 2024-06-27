@@ -8,7 +8,7 @@ const Footerr = () => {
   return (
     <section className='bg-success-509'>
 
-        <div className='flex max-md:flex-col justify-between sm:p-10  sm:ml-4 max-md:p-4 gap-2'>
+        <div className='flex max-md:flex-col justify-between sm:p-8  max-md:p-4 gap-2'>
             {/* <div className=' flex flex-col items-center'> */}
             {/* sm:ml-20 sm:mt-10 sm:mb-20 */}
             <div className='flex flex-col'>

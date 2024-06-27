@@ -30,7 +30,7 @@ const Navbar = () => {
           <Link onClick={()=>{setSelectedComp('About')}} href="/about" className={`${selectedComp == 'About' ? 'text-white' : 'text-yellow-300'} font-bold`}>About</Link>
         </div>
     </div>
-    <div className="flex flex-end ml-auto gap-1">
+    <div className="flex flex-end ml-auto gap-1 md:px-4 max-md:p-2">
         <button className="bg-white text-black px-4 py-2 rounded-full flex items-center max-md:mr-1">
           {/* <img src="/images/wallet-icon.png" alt="Wallet" className="h-6 w-6 mr-2" /> */}
           <span className='text-yellow-500 bg-white flex items-center gap-1'>

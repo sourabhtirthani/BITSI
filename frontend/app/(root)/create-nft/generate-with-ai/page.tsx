@@ -1,5 +1,6 @@
 'use client'
 import Button from '@/components/Button'
+import { CollectionCombobox } from '@/components/CollectionCombobox'
 import FormLabel from '@/components/FormLabel'
 import FormRow from '@/components/FormRow'
 import HeroNft from '@/components/HeroNft'
@@ -9,6 +10,7 @@ import React, { useState } from 'react'
 
 const GenrateWithAi = () => {
   const [preview, setPreview] = useState<string>('/icons/default-nft-preview.png');
+  const [collection , setColleciton] = useState('');
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
@@ -42,7 +44,9 @@ const GenrateWithAi = () => {
                   </FormRow>
                   <FormRow className=' p-4'>
                     <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection*</FormLabel>
-                    <InputText id='collection' name='collection' type='text' placeHolder='Please enter your collection name' className='p-3' />
+                    {/* <InputText id='collection' name='collection' type='text' placeHolder='Please enter your collection name' className='p-3' /> */}
+                    <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collection}  />
+                    <CollectionCombobox setCollectionValue={setColleciton} />
                     {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
                   </FormRow>
                 

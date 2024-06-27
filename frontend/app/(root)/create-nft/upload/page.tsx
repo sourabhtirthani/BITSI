@@ -1,5 +1,6 @@
 'use client'
 import Button from '@/components/Button'
+import { CollectionCombobox } from '@/components/CollectionCombobox'
 import { DialogBuy } from '@/components/DialogBuy'
 import FormLabel from '@/components/FormLabel'
 import FormRow from '@/components/FormRow'
@@ -18,6 +19,7 @@ const UploadNFt = () => {
   const [royaltiesErrorMessage , setRoyaltiesnErrorMessage] = useState('');
   const [priceErrorMessage , setPriceErrorMessage] = useState('');
   const [showAlertDialog , setShowAlertDialog] = useState('');
+  const [collection , setColleciton] = useState('');
   
 
   const handleOnChange =  (event: React.ChangeEvent<HTMLInputElement>)=>{
@@ -62,6 +64,9 @@ const UploadNFt = () => {
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
     console.log(form)
+    console.log('in here ');
+    console.log(formData.get('collection'))
+    console.log(formData.get('royalties'))
     if(!file){
       setErrorMessageNftFile('Please Upload A file to Proceed');
     
@@ -93,6 +98,7 @@ const UploadNFt = () => {
     }
 
     console.log(file);
+    
 
 
     
@@ -110,7 +116,7 @@ const UploadNFt = () => {
       <div className='flex flex-col'>
       <div className='flex justify-between  max-sm:flex-col'>
         <div className='sm:w-1/2'>
-      <FormRow className='p-4 w-fit h-fit'>
+      <FormRow className='p-4 md:px-8 w-fit h-fit'>
         <p className='text-white font-montserrat font-semibold text-[22px] mb-2'>Upload Here*</p>
       <input type='file' name='nftFile' className='hidden' id = 'nftFile' accept=".jpg,.png,.svg,.mp4,.gif" onChange={handleOnChange}/>
    
@@ -140,7 +146,7 @@ const UploadNFt = () => {
       <p className='text-[12px] text-white text-opacity-65 mt-4 font-thin'>Note: Once your NTF is Minted You can&apos;t be changed any details </p>
       </FormRow>
       </div>
-      <div className='sm:w-1/2   flex flex-col p-2'>
+      <div className='sm:w-1/2   flex flex-col p-2 px-8'>
       <p className='text-white font-montserrat text-[22px] font-semibold'>Preview here</p>
       <p className='text-white font-montserrat text-[22px] font-thin text-opacity-66'>Uploaded pic will be shown here</p>
       <div className=' p-2 max-w-[570px] max-h-[262px] bg-success-503 secondary-shadow11 rounded-xl flex items-center justify-center'>
@@ -150,31 +156,33 @@ const UploadNFt = () => {
       </div>
 
       <div className='flex justify-between  max-sm:flex-col sm:mb-0 gap-2  '>
-      <FormRow className='sm:w-1/2 p-4'>
+      <FormRow className='sm:w-1/2 p-4 md:px-8'>
         <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Name Of Your NFT*</FormLabel>
         <InputText id = 'name' name = 'name' type='text' placeHolder='eg-cratoNFT' className='p-3' />
         {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>}
       </FormRow>
-      <FormRow className='sm:w-1/2 p-4'>
+      <FormRow className='sm:w-1/2 p-4 md:px-8'>
         <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
         <InputText id = 'price' name = 'price' type='text' placeHolder='1-BITSI' className='p-3' />
         {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}
       </FormRow>
       </div>
       <div className='flex justify-between max-sm:flex-col sm:mb-10 gap-2 '>
-      <FormRow className='sm:w-1/2 p-4'>
+      <FormRow className='sm:w-1/2 p-4 md:px-8'>
         <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection*</FormLabel>
-        <InputText id = 'collection' name = 'collection' type='text' placeHolder='Please enter the name of your collection' className='p-3' />
+        {/* <InputText id = 'collection' name = 'collection' type='text' placeHolder='Please enter the name of your collection' className='p-3' /> */}
+        <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collection}  />
+        <CollectionCombobox setCollectionValue={setColleciton} />
         {collectionErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{collectionErrorMessage}*</p>}
       </FormRow>
-      <FormRow className='sm:w-1/2 p-4'>
+      <FormRow className='sm:w-1/2 p-4 md:px-8'>
         <FormLabel htmlFor='royalties' className='font-montserrat text-white text-[22px] font-semibold'>Royalties*</FormLabel>
         <InputText id = 'royalties' name = 'royalties' type='text' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3' />
         {royaltiesErrorMessage && <p className='text-success-517 text-[11px] font-normal '>{royaltiesErrorMessage}*</p>}
       </FormRow>
       </div>
       <div className='flex max-sm:flex-col sm:items-center sm:mb-10 gap-2  '>
-      <FormRow className='sm:w-1/2 p-4'>
+      <FormRow className='sm:w-1/2 p-4 md:px-8'>
         <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Description</FormLabel>
         <InputText id = 'description' name = 'description' type='text' placeHolder='Describe about your NFT' className='p-6' />
       </FormRow>

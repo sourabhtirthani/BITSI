@@ -12,12 +12,12 @@ const CreateNFT = () => {
     <div className='bg-gen-nft bg-cover bg-current opacity-90 '>
         <div className='flex'>
             <div className='custom-lg:w-1/2 max-md:w-full'>
-                <div className='flex flex-col py-12 max-md:py-6 px-16'>
+                <div className='flex flex-col py-12 max-md:py-6 px-8'>
                     <h1 className='text-success-511 text-[38px] font-bold font-montserrat max-md:text-[24px]'>Generate NFT</h1>
                     <p className='text-white opacity-40 text-[22px] max-md:text-[14px] mt-2'>Please Choose any one from below to proceed</p>
                 </div>
 
-                <div className='grid grid-rows-2 px-16 max-md:px-3'>
+                <div className='grid grid-rows-2 px-8 max-md:px-3'>
                 <div className='flex flex-col '>
                     <Link href={`/create-nft/upload`}><div className='flex gap-3 '>
                 <Image src = '/icons/upload-icon.svg' height={48} width={48} alt='upload icon' />
@@ -44,7 +44,7 @@ const CreateNFT = () => {
                 </div>
             </div>
             <div className='custom-lg:w-1/2 flex justify-end lg:p-8'>
-            <div className='p-8 mb-7 max-custom-lg:hidden max-lg:mt-28'>
+            <div className='p-8 mb-8 max-custom-lg:hidden max-lg:mt-28'>
             <Image src = '/icons/nft-img-bits-nft.png' width={516} height={502} alt = 'nft logo' />
             </div>
             </div>

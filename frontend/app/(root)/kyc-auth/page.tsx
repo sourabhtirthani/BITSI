@@ -48,12 +48,12 @@ const KycAuth = () => {
       <div className='navbar-space'> </div>
       <section className='bg-success-503'>
         <div className='bg-kyc-auth flex md:py-4'>
-          <div className='md:w-3/4 p-16 max-md:p-8'>
+          <div className='md:w-3/4 px-8 py-16 max-md:py-8 max-md:px-4'>
             <h1 className='text-[64px] max-sm:text-[44px] text-success-513 '>Authentication</h1>
             <p className='text-[22px] text-success-513'>Help your Account with criminal activities with the help of KYC authentication</p>
           </div>
 
-          <div className='md:w-1/4 max-md:hidden'>
+          <div className='md:w-1/4 max-md:hidden p-1'>
             <Image src='/icons/kyc-auth3.png' height={456} width={483} alt='kyc auth' />
           </div>
         </div>

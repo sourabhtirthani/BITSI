@@ -11,10 +11,10 @@ const Home = () => {
       <div className='flex justify-center'>
       <h1 className='font-montserrat text-white lg:text-[47px] font-semibold text-[34px] max-sm:text-[22px] mb-8 lg:mb-20 mt-14 max-md:mt-4'>Our Services</h1>
       </div>
-    <div className='grid grid-cols-3 max-md:grid-cols-1 w-full '>
+    <div className='grid p-8 grid-cols-3 max-md:grid-cols-1 w-full '>
     {ourServicesLinks.map((item)=>{
           return(
-            <div className='p-4 mb-4  ' key = {item.id}>
+            <div className='p-1 mb-4  ' key = {item.id}>
         <div className='hover:bg-success-509  bg-success-507 secondary-shadow11 rounded-xl flex flex-col items-center max-md:p-2 md:p-4 max-h-[500px] h-full' >
           <Image src = {item.imgURL} alt = 'logo' width = {70} height = {70} />
           <p className='text-success-505 font-manrope-400'>{item.label}</p>
@@ -31,13 +31,13 @@ const Home = () => {
       <div className="flex-grow flex items-center justify-center mt-3 mb-2">
         <p className='lg:text-[47px] text-white max-sm:text-[22px] font-montserrat text-[34px] mt-3'>Testimonials</p>
       </div>
-      <div className="self-start p-2 lg:ml-10">
-        <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-3  text-white'>What our Customer </p>
-        <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-3 text-success-508'>say about us</p>
-        <div className='grid grid-cols-3 max-md:grid-cols-1 w-full '>
+      <div className="self-start p-2 ">
+        <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-8 max-md:px-4  text-white'>What our Customer </p>
+        <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-8 max-md:px-4 text-success-508'>say about us</p>
+        <div className='grid grid-cols-3 max-md:grid-cols-1 w-full p-5 max-md:p-2  '>
         {testimonials.map((item) => {
             return (
-              <div key={item.id} className='p-3'>
+              <div key={item.id} className='p-2'>
               <div className='bg-success-509 hover:bg-success-503  flex flex-col lg:p-3 max-md:p-2 rounded-2xl h-full' >
                 <div className='flex justify-between'>
                   <div className='flex gap-2 mb-2'>

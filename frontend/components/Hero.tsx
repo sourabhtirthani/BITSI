@@ -10,7 +10,7 @@ const Hero = () => {
     </div>
 
     <div className='grid grid-cols-2 max-md:grid-cols-1'>
-      <div className='p-8 h-full w-full lg:mb-14'>
+      <div className='p-8 max-md:p-4 h-full w-full lg:mb-14'>
     <div className=' flex flex-col gap-2'>
         <p className='lg:text-[64px] custom-xxl:text-[94px] lg:max-w-none md:max-text-[44px] md:text-[28px] max-sm:text-[26px] sm:text-[25px]  font-montserrat font-semibold text-white mb-2'>Buy And Sell Digital Art, NFT Collection & Coin </p>
         <div className='flex gap-4'>

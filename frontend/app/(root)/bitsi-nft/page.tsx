@@ -176,7 +176,7 @@ const BitsiNft = () => {
       <div className='navbar-space'>
       </div>
       <section className='bg-bitsi-nft flex bg-current max-md:bg-contain '>
-        <div className='xl:w-full flex flex-col lg:p-14 md:p-10 max-md:p-4'>
+        <div className='xl:w-full flex flex-col lg:px-8 lg:py-14 md:p-10 max-md:p-4'>
           <h1 className='font-manrope text-white font-bold lg:text-[52px] md:text-[44px] max-md:text-[26px] max-md:mb-4 custom-xxl:text-[83px]'>
             Discover, Create, Trade and Buy Exclusive Digital Art: Welcome to BITSI NFT!
           </h1>
@@ -204,24 +204,24 @@ const BitsiNft = () => {
           <div className='flex flex-col'>
 
             <div className='flex '>
-              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none px-1 text-[20px] rounded-xl rounded-r-none w-[353px] font-montserrat h-[68px]`} value={searchValue} onChange={(e) => handleInputChange(e)} />
-              <Image src='/icons/search-bg-yellow.svg' height={68} width={83} alt='search icon' className='relative cursor-pointer' onClick={handleSearchingOfNft} />
+              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none px-1 text-[20px] rounded-xl rounded-r-none w-[353px] font-montserrat h-[60px]`} value={searchValue} onChange={(e) => handleInputChange(e)} />
+              <Image src='/icons/search-bg-yellow.svg' height={60} width={73} alt='search icon' className='relative cursor-pointer' onClick={handleSearchingOfNft} />
             </div>
             {/* <PopOver filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
             {opennAutoCompleteDialog && <div ref={menuRef}>
-              <div className=' p-3 flex flex-col bg-black rounded-xl rounded-tl-none absolute   z-50 w-[353px] max-h-[200px] overflow-y-auto table-body max-sm:w-[200px]  '>
+              <div className=' p-3 flex flex-col bg-white rounded-xl rounded-tl-none absolute   z-50 w-[353px] max-h-[200px] overflow-y-auto table-body max-sm:w-[200px]  '>
                 {filteredLstOfNftsDialog.length > 0 && filteredLstOfNftsDialog.map((item, index) => {
                   return (
                     <div className='cursor-pointer flex hover:bg-success-509 gap-4' key={index} onClick={() => { handleAutoCompleteClick(item.name) }}>
                       {/* <Image src={item.nftImg} height={15} width={15} alt='image' /> */}
-                      <p className='text-success-506 font-poller-one'>{item.name}</p>
+                      <p className='font-bold font-manrope text-black'>{item.name}</p>
                     </div>
                   )
                 })}
                 {filteredLstOfNftsDialog.length == 0 && (
                   <div className='cursor-pointer flex  gap-4'>
                     {/* <Image src={item.nftImg} height={15} width={15} alt='image' /> */}
-                    <p className='text-success-506 font-poller-one'>No results found...</p>
+                    <p className='font-bold font-manrope text-black'>No results found...</p>
                   </div>
                 )}
               </div>
@@ -243,7 +243,7 @@ const BitsiNft = () => {
       </section>
 
       <section className='bg-success-503 '>
-        <div className=' max-h-full grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
+        <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
           {filteredLstOfNfts.map((item) => {
             return (
               <div key={item.id} className='p-1 w-fit mt-1 '>
