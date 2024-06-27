@@ -12,7 +12,7 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
   return (
-    <nav className='navbar w-full '>
+    <nav className='navbar w-full max-w-[3000px]'>
         <div className='flex items-center '>
     <Image className='logo ' src='/icons/bitsi.svg' alt='logo' width={100} height={100}  />
     <Image src = '/icons/animate-star.gif' height={50} width={50} alt ='sd' className='absolute top-0' />

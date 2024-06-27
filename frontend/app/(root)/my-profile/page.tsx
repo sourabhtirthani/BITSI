@@ -1,10 +1,11 @@
 'use client'
 import Button from '@/components/Button';
+import CardNftMyProfile from '@/components/CardNftMyProfile';
 import Dropdown from '@/components/Dropdown';
 import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
-import { myProfileWalletDropDown, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { listOfNFtsMyProfile, myProfileWalletDropDown, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
 import React, { useState } from 'react';
 //515/511
@@ -25,6 +26,10 @@ const MyProfile = () => {
   const handleMyProfileClick = () => {
     // setMyProfile(true);
     setFilterValue('MyProfile');
+  }
+
+  const handleCollectionsClick =  ()=>{
+    setFilterValue('Collections');
   }
 
   // const handleMyWalletClick = () => {
@@ -60,8 +65,9 @@ const MyProfile = () => {
           </div>
         </div>
 
-        <div className='flex p-2 gap-4'>
+        <div className='flex p-2 gap-4 max-sm:flex-col w-full'>
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
+          <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>Collections</button>
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl h-fit w-fit px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
@@ -179,6 +185,19 @@ const MyProfile = () => {
 
             </table>
           </div>
+        )}
+
+        {filterValue == 'Collections' && (
+          <div className=' max-h-full grid mb-4 lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
+          {listOfNFtsMyProfile.map((item) => {
+            return (
+              <div key={item.id} className='p-1 w-fit mt-1 '>
+                <CardNftMyProfile {...item}  />
+                {/*  name={item.name} id={item.id} price={item.price} category={item.category} checked = {item.checked} nftImg={item.nftImg} */}
+              </div>
+            )
+          })}
+        </div>
         )}
 
       </section>

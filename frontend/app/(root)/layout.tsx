@@ -14,7 +14,8 @@ export default function RootLayout({
     // const loggedIn = {firstName  : 'Shivam' , lastName : 'Kalani'};
     // making hereader relative now should change later if code breaks
   return (
-    <div className="flex flex-col min-h-screen font-inter">
+    <div className="flex flex-col font-inter container-whole ">
+      {/* min-h-screen...might include later in the div */}
       <header className="">
         <Navbar />
       </header>
