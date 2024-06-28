@@ -1,4 +1,5 @@
 import BitsiCoinCard from '@/components/BitsiCoinCard'
+import LineChartComp from '@/components/LineChartComp'
 import { bitsiCoinCardData } from '@/constants'
 import React from 'react'
 
@@ -40,6 +41,16 @@ const BitsiCoin = () => {
             </div>
         )
     })}
+    </div>
+
+    <div className='p-8 flex flex-col'>
+        <LineChartComp titleofChart='Sale Volume' />
+
+        <div className='grid grid-cols-3 max-md:grid-cols-1 mt-20'>
+            <div className='max-md:py-1'><LineChartComp titleofChart='Price' /></div>
+            <div className='md:px-3 max-md:py-1'><LineChartComp titleofChart='Policy Coverage' /></div>
+            <div className='max-md:py-1'><LineChartComp titleofChart='Volume of BITSI COIN'/></div>
+        </div>
     </div>
 
     </section>

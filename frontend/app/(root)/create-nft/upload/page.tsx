@@ -9,32 +9,18 @@ import InputText from '@/components/InputText'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone';
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod'
+// import * as z from "zod";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from '@hookform/resolvers/zod'
+// import { uploadNftformSchema } from '@/lib/utils'
+// import CreateNftForm from '@/components/CreateNftForm'
 
-const formSchema = z.object({
-  email: z.string().email(),
-  nftFile: z
-    .instanceof(File)
-    .refine((file) => {
-      const allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'mp4', 'gif'];
-      const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      return fileExtension && allowedExtensions.includes(fileExtension);
-    }, {
-      message: 'Invalid file type. Allowed types: .jpg, .jpeg, .png, .svg, .mp4, .gif'
-    }),
-  name: z.string().min(1, { message: 'Name Of Your NFT is required' }),
-  price: z.string().min(1, { message: 'Price is required' }),
-  collection: z.string().min(1, { message: 'Collection is required' }),
-  royalties: z.string().min(1, { message: 'Royalties are required' }),
-  description: z.string().optional()
-});
+
 
 const UploadNFt = () => {
-  const formOfUpload = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  });
+  // const formOfUpload = useForm<z.infer<typeof uploadNftformSchema>>({
+  //   resolver: zodResolver(uploadNftformSchema)
+  // });
   const [errorMessageName, setErrorMessageName] = useState('');
   const [errorMessageCollection, setErrorMessageCollection] = useState('');
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
@@ -219,6 +205,8 @@ const UploadNFt = () => {
           </form>
         </div>
       </section>
+
+     
     </>
   )
 }

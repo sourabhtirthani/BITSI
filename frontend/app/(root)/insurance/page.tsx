@@ -2,7 +2,7 @@ import React from 'react'
 import Image from "next/image";
 import InsuraceContactUsBtn from '@/components/InsuraceContactUsBtn';
 import InsuranceTermsButtonsAll from '@/components/InsuranceTermsButtonsAll';
-import LineChartComp from '@/components/LineChartComp';
+
 
 const Insurance = () => {
     
@@ -82,15 +82,7 @@ const Insurance = () => {
         </div>
 
     </div>
-    <div className='p-8 flex flex-col'>
-        <LineChartComp titleofChart='Sale Volume' />
-
-        <div className='grid grid-cols-3 max-md:grid-cols-1 mt-20'>
-            <div className='max-md:py-1'><LineChartComp titleofChart='Price' /></div>
-            <div className='md:px-3 max-md:py-1'><LineChartComp titleofChart='Policy Coverage' /></div>
-            <div className='max-md:py-1'><LineChartComp titleofChart='Volume of BITSI COIN'/></div>
-        </div>
-    </div>
+   
 
     </section>
 
