@@ -3,19 +3,22 @@ export const ourServicesLinks = [
         id : 1,
         imgURL : '/icons/insurance.svg',
         label : 'INSURANCE',
-        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.' 
+        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.' ,
+        url : '/insurance'
     },
     {
         id : 2,
         imgURL : '/icons/bitsicoin.svg',
         label : 'BITSI COIN',
-        info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.'
+        info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.',
+        url : '/bitsi-coin'
     },
     {
         id : 3,
         imgURL : '/icons/bitsinft.svg',
         label : 'BITSI NFT',
-        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.'
+        info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.',
+        url : '/bitsi-nft'
     }
 ]
 
@@ -120,6 +123,44 @@ export const orderDropDownItem = [
     },
     {
         id : 3,
+        name : 'Desc Order',
+        icon : '/icons/high-low-logo.svg'
+    },
+]
+
+export const newBitsiNftDropDownItems = [
+    {
+        id : 1,
+        name : 'Good',
+        icon : '/icons/nft-good.svg'
+    },
+    {
+        id : 2,
+        name : 'Prestigious',
+        icon : '/icons/nft-prestigious.svg'
+    },
+    {
+        id : 3,
+        name : 'Luxury',
+        icon : '/icons/nft-luxury.svg'
+    },
+    {
+        id : 4,
+        name : 'Low to High',
+        icon : '/icons/descOrder.svg'
+    },
+    {
+        id : 5,
+        name : 'High to Low',
+        icon : '/icons/aescOrder.svg'
+    },
+    {
+        id : 6,
+        name : 'Asc Order',
+        icon : '/icons/low-high-logo.svg'
+    },
+    {
+        id : 7,
         name : 'Desc Order',
         icon : '/icons/high-low-logo.svg'
     },

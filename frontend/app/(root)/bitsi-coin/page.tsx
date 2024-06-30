@@ -8,8 +8,8 @@ const BitsiCoin = () => {
     <>
     <div className='navbar-space'></div>
     
-    <section className='bg-hero-bitsi-coin bg-cover opacity-80 '>
-        <div className='flex flex-col px-8 py-8 max-md:px-4 max-md:py-4 '>
+    <section className='bg-hero-bitsi-coin bg-cover bg-current  '>
+        <div className='flex flex-col px-8 py-8 max-md:px-4 max-md:py-4 bg-opacity-45'>
             <h1 className='text-success-513 lg:text-[52px] text-[28px] font-semibold '>Introducing BITSI Coin: Your Gateway to the Future of Digital Finance!</h1>
             <p className='text-white font-manrope text-[22px] max-md:text-[16px] lg:w-4/6 font-semibold '>We are thrilled to announce that Bitsi Coin, the innovative cryptocurrency designed to revolutionize the digital finance landscape, is now available for purchase exclusively on our website!</p>
             <div className='grid grid-cols-2 max-md:grid-cols-1 max-w-fit max-md:gap-2'>

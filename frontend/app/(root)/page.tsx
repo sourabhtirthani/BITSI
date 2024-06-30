@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { ourServicesLinks, testimonials } from "@/constants";
 import Hero from "@/components/Hero";
+import Link from "next/link";
 const Home = () => {
   return (
     <section>
@@ -14,13 +15,15 @@ const Home = () => {
     <div className='grid p-8 grid-cols-3 max-md:grid-cols-1 w-full '>
     {ourServicesLinks.map((item)=>{
           return(
-            <div className='p-1 mb-4  ' key = {item.id}>
+            <Link href = {item.url} key = {item.id} className="p-1 mb-4">
+            {/* <div className='  ' > */}
         <div className='hover:bg-success-509  bg-success-507 secondary-shadow11 rounded-xl flex flex-col items-center max-md:p-2 md:p-4 max-h-[500px] h-full' >
           <Image src = {item.imgURL} alt = 'logo' width = {70} height = {70} />
-          <p className='text-success-505 font-manrope-400'>{item.label}</p>
-          <p className='text-white font-manrope font-normal items-center md:p-8 max-md:p-2 lg:max-text-[18px]'>{item.info}</p>
+          <p className='text-success-505 mt-2 font-manrope-400'>{item.label}</p>
+          <p className='text-white font-manrope font-normal items-center md:p-8 max-md:p-2 lg:text-[18px]'>{item.info}</p>
         </div>
-        </div>
+        {/* </div> */}
+        </Link>
 
           )
         })}
@@ -34,10 +37,10 @@ const Home = () => {
       <div className="self-start p-2 ">
         <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-8 max-md:px-4  text-white'>What our Customer </p>
         <p className='font-moon-dance lg:text-[55px] text-[44px] max-sm:text-[28px] px-8 max-md:px-4 text-success-508'>say about us</p>
-        <div className='grid grid-cols-3 max-md:grid-cols-1 w-full p-5 max-md:p-2  '>
+        <div className='grid grid-cols-3 max-md:grid-cols-1 w-full p-5 max-md:p-2 md:mb-40 max-md:mb-20'>
         {testimonials.map((item) => {
             return (
-              <div key={item.id} className='p-2'>
+              <div key={item.id} className='p-2.5'>
               <div className='bg-success-509 hover:bg-success-503  flex flex-col lg:p-3 max-md:p-2 rounded-2xl h-full' >
                 <div className='flex justify-between'>
                   <div className='flex gap-2 mb-2'>
@@ -68,6 +71,7 @@ const Home = () => {
         </div>
       </div>
     </section>
+      <div className="h-[70px]"></div>
     </section>
   )
 }

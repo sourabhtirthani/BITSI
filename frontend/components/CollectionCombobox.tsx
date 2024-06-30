@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import Image from "next/image"
 
 const collectionValues = [
   {
@@ -48,13 +49,15 @@ export function CollectionCombobox({setCollectionValue} : { setCollectionValue: 
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        {/* button to run the combox here  */}<button id="collection" name="collection" className="w-full font-manrope font-bold text-[17px] bg-white  py-3">{value == "" ? 'Select From Collection' : value}</button>
+      <PopoverTrigger asChild className="w-full">
+        <div className="w-full flex justify-between px-3 bg-white">
+        {/* button to run the combox here  */}<button id="collection" name="collection" className="font-manrope font-bold text-[17px] bg-white  py-3">{value == "" ? 'Select From Collection' : value}</button>
+        <Image src = "/icons/CollectionDropDownIcon.svg"  height={9.21} width={16} alt="dropdown button"/></div>
       </PopoverTrigger>
       <PopoverContent className="w-full  bg-white p-0">
-        <Command>
+        <Command >
           <CommandInput placeholder="Search Or Create a new Collection" />
-          <CommandList>
+          <CommandList className="max-h-[150px]  overflow-y-auto table-body">
             <CommandEmpty  onClick={()=>{console.log('create a new Collection clicked')}}>+ Create a new Collection</CommandEmpty>
             <CommandGroup>
                 <CommandItem>+ Create a new Collection</CommandItem>

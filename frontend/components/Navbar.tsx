@@ -31,9 +31,9 @@ const Navbar = () => {
         </div>
     </div>
     <div className="flex flex-end ml-auto gap-1 md:px-4 max-md:p-2">
-        <button className="bg-white text-black px-4 py-2 rounded-full flex items-center max-md:mr-1">
+        <button className="bg-white text-black px-4 py-2 xl:mr-6 rounded-full flex items-center max-md:mr-2 hover:bg-black duration-300">
           {/* <img src="/images/wallet-icon.png" alt="Wallet" className="h-6 w-6 mr-2" /> */}
-          <span className='text-yellow-500 bg-white flex items-center gap-1'>
+          <span className='text-yellow-500 bg-curent flex items-center gap-1 '>
             <Image src = '/icons/wallet.svg' alt = 'wallet' height={34} width={34} className='max-md:h-[20px] max-md:w-[20px]' />
             Wallet</span>
         </button>

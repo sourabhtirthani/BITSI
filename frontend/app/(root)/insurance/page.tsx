@@ -1,7 +1,8 @@
 import React from 'react'
 import Image from "next/image";
 import InsuraceContactUsBtn from '@/components/InsuraceContactUsBtn';
-import InsuranceTermsButtonsAll from '@/components/InsuranceTermsButtonsAll';
+import Link from 'next/link';
+import { ToolTipHoverEffect } from '@/components/TooltipHoverEffect';
 
 
 const Insurance = () => {
@@ -32,7 +33,22 @@ const Insurance = () => {
                <InsuraceContactUsBtn />
             </div>
 
-            <InsuranceTermsButtonsAll />
+            <div className='md:self-center mt-20 max-md:mt-10 gap-10 flex max-lg:flex-col'>
+                <div className='max-sm:gap-3 gap-10 flex'>
+                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Purchase' hoverInfo='purchase an nft' /></Link>
+                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Extend' hoverInfo='extend infortmation' /></Link>
+                <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Policy' hoverInfo='Policy info' /></Link>
+                </div>
+                <div className='max-sm:gap-3 gap-10 flex'>
+                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Claim' hoverInfo='Claim infortmation' /></Link>
+                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Upgrade' hoverInfo='upgrade infortmation' /></Link>
+                <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Unlock' hoverInfo='unlock infortmation' /></Link>
+                </div>
+            </div>
+            <div className='md:self-center mt-14 max-md:mt-10 gap-10 flex max-lg:flex-col'>
+            <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Trade Insurance ' hoverInfo='trade insurance info here' /></Link>
+            <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Insurance for Stock ' hoverInfo='Insurance for Stock  info here' /></Link>
+            </div>
 
            
         </div>

@@ -14,6 +14,7 @@ import { ToastAction } from "@/components/ui/toast"
 import { AutoComplete } from '@/components/AutoCompletebar';
 import { nftData } from '@/types';
 import FilterButtonUI from '@/components/FilterButtonUI';
+import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 // import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
 // import PopOver from '@/components/PopOver';
 
@@ -228,10 +229,11 @@ const BitsiNft = () => {
             </div>}
           </div>
 
-          <div className='flex flex-row items-center gap-3 '>
-            <Dropdown items={priceDropDownItems} buttonName='Price' setValue={setPriceFilter} />
-            <Dropdown items={orderDropDownItem} buttonName='Order' setValue={setOrderFilter} />
-            <Dropdown items={collectionDropDownItems} buttonName='Collections' setValue={setCollectionFilter} />
+          <div className='flex flex-row items-center gap-3 mr-4'>
+            {/* <Dropdown items={priceDropDownItems} buttonName='Price' setValue={setPriceFilter} /> */}
+            {/* <Dropdown items={orderDropDownItem} buttonName='Order' setValue={setOrderFilter} /> */}
+            {/* <Dropdown items={collectionDropDownItems} buttonName='Collections' setValue={setCollectionFilter} /> */}
+            <DropdownBitsiNFt itemsCol={collectionDropDownItems} itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems}   setCol={setCollectionFilter} setOrd={setOrderFilter} setPrice={setPriceFilter}  />
           </div>
         </div>
           {/* {priceFilter && FilterButtonUI  />} */}
