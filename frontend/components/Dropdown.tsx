@@ -18,7 +18,7 @@ const Dropdown = ({ items , buttonName , setValue  }: { items: DropdownProps[]  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="selection:border-none">
-      <p className='bg-success-512 text-[22px] max-md:text-[16px] w-full font-montserrat font-semibold p-4 max-md:p-2 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden selection:border-none'>{buttonName}
+      <p className='bg-success-512 text-[22px] max-md:text-[20px] w-full font-montserrat font-bold px-4 max-md:p-1 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden selection:border-none'>{buttonName}
             <Image src = '/icons/arrow-down.svg' height={9.21} width={16} alt = 'drowpdown' className='mt-1' />
             </p>
       </DropdownMenuTrigger>

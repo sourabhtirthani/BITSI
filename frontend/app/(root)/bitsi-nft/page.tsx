@@ -237,7 +237,7 @@ const BitsiNft = () => {
           </div>
         </div>
           {/* {priceFilter && FilterButtonUI  />} */}
-          <div className='flex mt-4 gap-3'>
+          <div className='flex mt-4 gap-3 px-6 max-sm:px-4'>
          {priceFilter &&  <FilterButtonUI stateVar={priceFilter} setStateVar={setPriceFilter} />}
          {collectionFilter &&  <FilterButtonUI stateVar={collectionFilter} setStateVar={setCollectionFilter} />}
          {orderFilter &&  <FilterButtonUI stateVar={orderFilter} setStateVar={setOrderFilter} />}

@@ -68,7 +68,7 @@ const MyProfile = () => {
 
         <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full'>
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
-          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl h-fit w-fit px-3 py-2'>
+          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
           <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>Collections</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
@@ -161,7 +161,7 @@ const MyProfile = () => {
         )}
 
 {filterValue == 'Coin' && (
-          <div className='max-h-[300px] overflow-y-auto mb-20 table-body'>
+          <div className='max-h-[300px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>

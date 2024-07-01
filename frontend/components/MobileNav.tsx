@@ -35,6 +35,10 @@ const MobileNav = () => {
           <Link href="/insurance">Insurance</Link></SheetClose>
           <SheetClose asChild>
           <Link href="/about">About</Link></SheetClose>
+          <SheetClose asChild>
+          <Link href="/my-profile">User Zone</Link></SheetClose>
+          <SheetClose asChild>
+          <Link href="/kyc-auth">Kyc</Link></SheetClose>
         </div>
       </SheetContent>
     </Sheet>
