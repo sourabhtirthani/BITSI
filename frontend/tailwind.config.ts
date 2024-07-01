@@ -92,6 +92,7 @@ const config = {
           522 : "#894DC5",
           523 : "#121921", //admin panel sidebar
           524 : "#262d34",
+          525 : "#FE5C01",
           
         },
         secondary: {

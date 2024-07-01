@@ -27,18 +27,20 @@ const MobileNav = () => {
           <h1 className='font-manrope text-black font-bold text-[34px]'>BITSI</h1>
           </div>
           <SheetClose asChild>
-            <Link href="/">Home</Link></SheetClose>
-          <SheetClose asChild><Link href="/bitsi-nft">BITSI NFT</Link></SheetClose>
+            <Link href="/" className='flex gap-3 border-r-4 border-success-525'><Image src = 'icons/side-bar-home-icon.svg' height={24} width={24} alt='icon' />Home</Link></SheetClose>
+          <SheetClose asChild><Link href="/bitsi-nft" className='flex gap-3'><Image src = 'icons/side-bar-nft-icon.svg' height={24} width={24} alt='icon' />BITSI NFT</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/bitsi-coin">BITSI COIN</Link></SheetClose>
+          <Link href="/bitsi-coin" className='flex gap-3'><Image src = 'icons/side-bar-coin-icon.svg' height={24} width={24} alt='icon' />BITSI COIN</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/insurance">Insurance</Link></SheetClose>
+          <Link href="/insurance" className='flex gap-3'><Image src = 'icons/side-bar-insurance-icon.svg' height={24} width={24} alt='icon' />Insurance</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/about">About</Link></SheetClose>
+           
+           
+          <Link href="/about" className='flex gap-3'> <Image src = 'icons/side-bar-about-icon.svg' height={24} width={24} alt='icon' />About</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/my-profile">User Zone</Link></SheetClose>
+          <Link href="/my-profile" className='flex gap-3'><Image src = 'icons/side-bar-profile-icon.svg' height={24} width={24} alt='icon' />User Zone</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/kyc-auth">Kyc</Link></SheetClose>
+          <Link href="/kyc-auth" className='flex gap-3'><Image src = 'icons/side-bar-home-icon.svg' height={24} width={24} alt='icon' />Kyc</Link></SheetClose>
         </div>
       </SheetContent>
     </Sheet>
