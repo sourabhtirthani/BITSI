@@ -11,14 +11,15 @@ import {
 } from "@/components/ui/carousel"
 import CoinPriceHeroLandingPage from "./CoinPriceHeroLandingPage"
 
+
 export function CarouselNft({selectedItems} : {selectedItems : number}) {
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction : false  })
-  )
+  // const plugin = React.useRef(
+  //   Autoplay({  delay: 8000, stopOnInteraction: true    })
+  // )
 
   return (
     <Carousel
-      plugins={[plugin.current]}
+      // plugins={[plugin.current]}
       className=""
     >
       <CarouselContent>
@@ -27,6 +28,7 @@ export function CarouselNft({selectedItems} : {selectedItems : number}) {
 
           <div className='lg:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
             <p className='bg-success-513 rounded-3xl font-bold font-manrope w-fit px-4 py-2 mb-3 text-[22px] text-white '>{selectedItems} Selected</p>
+            
             <Image src='/icons/nft-desc.png' height={546} width={604} alt='NFT IMAGE' />
           </div>
           <div className='lg:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>

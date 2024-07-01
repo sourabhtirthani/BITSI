@@ -37,8 +37,8 @@ export function CollapsibleBitsiNft({items , btnName , setValue } : { items: Dro
       
       <CollapsibleContent className="space-y-2">
       {items.map((item) => (
-          <div key={item.id} className="flex gap-2 ">
-            <div className="hover:bg-gray-500 flex gap-2">
+          <div key={item.id} className="flex gap-2">
+            <div className="hover:bg-gray-500 flex gap-2 px-2">
             <Image src={item.icon} height={20} width={20} alt='logo' />
             <span onClick = {()=>{handleClick(item.name)}}>{item.name}</span></div>
           </div>

@@ -199,13 +199,13 @@ const BitsiNft = () => {
       {/* /////////////////////// */}
       {/* */}
       <section className='bg-success-503'>
-        <div className='flex mt-4 p-6 max-md:flex-col justify-between max-md:gap-2 max-md:items-center overflow-hidden'>
+        <div className='flex mt-4 p-6 justify-between  max-md:gap-2 max-md:items-center overflow-hidden'>
           {/* <AutoComplete filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
           {/* <AutoCOmpletePopover filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
           <div className='flex flex-col'>
 
             <div className='flex '>
-              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none px-1 text-[20px] rounded-xl rounded-r-none w-[353px] font-montserrat h-[60px]`} value={searchValue} onChange={(e) => handleInputChange(e)} />
+              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none sm:px-1 text-[20px] max-sm:text-[14px] rounded-xl rounded-r-none w-[353px] max-sm:w-[250px] font-montserrat h-[60px]`} value={searchValue} onChange={(e) => handleInputChange(e)} />
               <Image src='/icons/search-bg-yellow.svg' height={60} width={73} alt='search icon' className='relative cursor-pointer' onClick={handleSearchingOfNft} />
             </div>
             {/* <PopOver filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}

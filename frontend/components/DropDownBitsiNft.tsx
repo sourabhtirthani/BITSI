@@ -22,7 +22,7 @@ const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , 
       {/* <p className='bg-success-512 text-[22px] max-md:text-[16px] w-full font-montserrat font-semibold p-4 max-md:p-2 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden selection:border-none'>{buttonName}
             <Image src = '/icons/arrow-down.svg' height={9.21} width={16} alt = 'drowpdown' className='mt-1' />
             </p> */}
-            <Image src = '/icons/sort-icon-filter.svg' height={48} width={48} alt="icon " />
+            <Image src = '/icons/sort-icon-filter.svg' height={48} width={48} alt="icon " className="max-sm:h-[37px] max-sm:w-[37px]" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-white text-black border-0 font-manrope rounded-xl  ">
         <DropdownMenuSeparator className="hover:bg-success-509"/>

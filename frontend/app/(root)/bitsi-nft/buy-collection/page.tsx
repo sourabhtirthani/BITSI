@@ -4,23 +4,25 @@ import React, { useState, useEffect } from 'react'
 import { buycollectionsTable } from '@/constants';
 import { DialogBuy } from '@/components/DialogBuy';
 import { CarouselNft } from '@/components/CarouselNft';
+import { AlertBoxBuyNfy } from '@/components/AlertBoxBuyNft';
 // import { useSearchParams } from 'next/navigation';
 
-const BuyCollection = () => {
-//   const searchParams = useSearchParams();
-//   const [ids, setIds] = useState([]);
-//   const selectedItems : string[] = [];
-//   searchParams.forEach((item) => {
-//     selectedItems.push(item);
-//   })
-const [ids, setIds] = useState<string[]>([]);
 
-useEffect(() => {
-      const selectedItems: string[] = [];
+const BuyCollection = () => {
+  //   const searchParams = useSearchParams();
+  //   const [ids, setIds] = useState([]);
+  //   const selectedItems : string[] = [];
+  //   searchParams.forEach((item) => {
+  //     selectedItems.push(item);
+  //   })
+  const [ids, setIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    const selectedItems: string[] = [];
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.forEach((value) => {
-        selectedItems.push(value);
-      });
+      selectedItems.push(value);
+    });
 
     setIds(selectedItems);
   }, []);
@@ -28,7 +30,12 @@ useEffect(() => {
     <>
       <div className='navbar-space'></div>
       <section className='bg-success-503'>
-        <CarouselNft selectedItems={ids.length}/>
+        <div className="w-full flex justify-center">
+          <div className="w-fit fixed z-30 flex">
+            <AlertBoxBuyNfy />
+          </div>
+        </div>
+        <CarouselNft selectedItems={ids.length} />
 
         <div className='p-8'>
           <div className='flex   w-fit items-center sm:gap-32 max-sm:gap-20'>
