@@ -76,6 +76,13 @@ export const createAndSellNFT = [
     }
 ]
 
+export const myProfileNftOrderDropDownItems =  [
+    {
+        id : 1,
+        name : 'Order By Loss',
+        icon : '/icons/order-by-loss-my-profile-nft-table.svg'
+    }
+]
 
 export const collectionDropDownItems = [
     {

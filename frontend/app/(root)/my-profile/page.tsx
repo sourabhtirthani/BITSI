@@ -2,10 +2,11 @@
 import Button from '@/components/Button';
 import CardNftMyProfile from '@/components/CardNftMyProfile';
 import Dropdown from '@/components/Dropdown';
+import DropdownMyProfile from '@/components/DropdownMyProfile';
 import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
-import { listOfNFtsMyProfile, myProfileWalletDropDown, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { listOfNFtsMyProfile, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
 import React, { useState } from 'react';
 //515/511
@@ -14,7 +15,7 @@ const MyProfile = () => {
   // const [myProfile, setMyProfile] = useState(true);
   const [enableEdit , SetEnableEdit] = useState(true);
   const [filterValue , setFilterValue] = useState('MyProfile');
-
+  const [nftDetailsFilterValue, setNftDetailsFilterValue] = useState('')
 
   const handleEditClick = ()=>{
   if(enableEdit == true){
@@ -116,7 +117,12 @@ const MyProfile = () => {
 
 
         { filterValue == 'NFTs' && (
-          <div className='max-h-[300px] overflow-y-auto mb-20 table-body'>
+          <>
+          <div className='flex justify-between p-4 md:p-8'>
+            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>NFT Details</p>
+            <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+          </div>
+          <div className='max-h-[300px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
@@ -139,6 +145,7 @@ const MyProfile = () => {
                         <td className='p-2 max-sm:p-1'>{item.currentPrice}</td>
                         <td className='p-2 max-sm:p-1'>{item.nftMintedTime}</td>
                         <td className='p-2 max-sm:p-1'>Active&nbsp;  <input type='checkbox' checked={item.active} className='bg-transparent' /></td>
+                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/>
                       </tr>
                       <tr>
                         <td  className='h-4'></td>
@@ -150,6 +157,7 @@ const MyProfile = () => {
 
             </table>
           </div>
+          </>
         )}
 
 {filterValue == 'Coin' && (
