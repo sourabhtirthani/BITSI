@@ -8,7 +8,7 @@ export const ourServicesLinks = [
     },
     {
         id : 2,
-        imgURL : '/icons/bitsicoin.svg',
+        imgURL : '/icons/home-nft-icon-bitsi.png',
         label : 'BITSI COIN',
         info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.',
         url : '/bitsi-coin'

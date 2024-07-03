@@ -17,9 +17,12 @@ const DropdownNav = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
+        <div className="flex items-center">
         <Image src='/icons/hamburger-icon.svg' height={28} width={28} alt='hamburger' className='max-md:hidden focus:outline-none selection:outline-none' />
+        <Image src='/icons/dot-notification.svg' height={44} width={44} alt='hamburger' className={`absolute mb-7 ml-2 max-md:hidden`} />
+        </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-black text-white border-0 font-manrope rounded-xl " >
+      <DropdownMenuContent className="bg-black  text-white border-0 font-manrope rounded-xl " >
         <DropdownMenuSeparator className="hover:bg-success-509" />
         {/* {items.map((item) => (
           <DropdownMenuItem key={item.id} className="flex gap-2 bg-black hover:bg-red-500">
