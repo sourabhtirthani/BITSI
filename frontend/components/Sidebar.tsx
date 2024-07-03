@@ -13,9 +13,9 @@ const Sidebar = () => {
     <Link href= ''><p className='text-[18px] font-manrope self-start text-white font-bold '>NFT Parameters</p></Link>
    <div className='self-start flex flex-col justify-center items-center w-full gap-3'>
     <Link href='/admin/minting' className='self-start'><p className='text-[18px] font-manrope  text-white font-bold'>Minting</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>Admin Wallet</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>NFT Mint</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>Coin Mint</p></Link>
+    {/* <Link href= ''><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>Admin Wallet</p></Link> */}
+    <Link href= '/admin/nft-minting'><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>NFT Minting</p></Link>
+    <Link href= '/admin/coin-minting'><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>Coin Minting</p></Link>
     </div>
 
     <div className='self-start flex flex-col justify-center items-center w-full gap-3'>

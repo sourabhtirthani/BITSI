@@ -420,3 +420,28 @@ export const events = [
     {Collections : 'Luxury' , NFT : '16' , price : '23'},
     {Collections : 'Luxury' , NFT : '16' , price : '23'},
   ]
+
+
+
+export const nftMintingDropDown = [
+    {
+        id : 1, 
+        name : 'Compensation Wallet',
+        icon : ''
+    },
+    {
+        id : 2, 
+        name : 'Marketplace Wallet',
+        icon : ''
+    },
+    {
+        id : 3, 
+        name : 'Broker Wallet',
+        icon : ''
+    },
+    {
+        id : 4, 
+        name : 'Main Wallet',
+        icon : ''
+    }
+]
