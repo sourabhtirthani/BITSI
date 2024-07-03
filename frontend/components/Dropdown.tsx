@@ -12,7 +12,7 @@ import { DropdownProps } from "@/types";
 import Image from 'next/image'
 
 
-const Dropdown = ({ items , buttonName , setValue , showIcon = true }: { items: DropdownProps[]  , buttonName : string , setValue : Dispatch<SetStateAction<string>> , showIcon?: boolean}) => {
+const Dropdown = ({ items , buttonName , setValue , showIcon = true , arrowImage = '/icons/arrow-down.svg' }: { items: DropdownProps[]  , buttonName : string , setValue : Dispatch<SetStateAction<string>> , showIcon?: boolean , arrowImage? :string}) => {
   const [newName , setNewName] = useState('');
   const [selected , setSelected] = useState(false);
   const handleClick = (nameToSet : string)=>{
@@ -22,10 +22,10 @@ const Dropdown = ({ items , buttonName , setValue , showIcon = true }: { items: 
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className=" border-2 border-white w-full flex justify-between items-center bg-success-512 hover:bg-success-509  rounded-xl px-4 py-2">
-      <p className=' text-[22px]  text-opacity-35 max-md:text-[20px] w-full font-montserrat font-bold max-md:p-1 flex items-center gap-2 text-white  overflow-hidden selection:border-none'>{selected == true ? newName : buttonName}
+      <DropdownMenuTrigger className={`${showIcon == false ? 'border-2 border-white bg-success-512' : ''} w-full flex gap-2 justify-between items-center  hover:bg-success-509  rounded-xl px-4 py-2`}>
+      <p className={`${showIcon == false ? 'text-opacity-35' : ''} text-[22px]   max-md:text-[20px] w-full font-montserrat font-bold max-md:p-1 flex items-center gap-2 text-white  overflow-hidden selection:border-none focus:border-none`}>{(selected == true && showIcon == false) ? newName : buttonName}
             </p>
-            <Image src = '/icons/arrow-dropdown.svg' height={9.21} width={16} alt = 'drowpdown' className='' />
+            <Image src = {arrowImage} height={9.21} width={16} alt = 'drowpdown' className='' />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-black w-full text-white border-0 font-manrope rounded-xl ">
         <DropdownMenuSeparator className="hover:bg-success-509"/>

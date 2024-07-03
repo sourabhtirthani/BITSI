@@ -13,7 +13,7 @@ const NftMinting = () => {
         </div>
         <div className='flex flex-col gap-3'>
             <p className='text-[18px] text-white font-montserrat font-bold '>Select Wallet*</p>
-            <Dropdown items={nftMintingDropDown} showIcon = {false} buttonName='Select Your Wallet' setValue={setWallet} />
+            <Dropdown items={nftMintingDropDown} showIcon = {false} buttonName='Select Your Wallet' arrowImage='/icons/arrow-dropdown.svg' setValue={setWallet} />
             <button className='bg-success-511 px-28 mt-8 self-end py-2 text-white font-bold text-[20px] w-fit rounded-3xl'>Mint</button>
         </div>
     </div>
