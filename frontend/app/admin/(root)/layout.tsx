@@ -1,4 +1,5 @@
 
+import FooterAdmin from "@/components/FooterAdmin";
 import Footerr from "@/components/Footerr";
 import Sidebar from "@/components/Sidebar";
 
@@ -13,7 +14,7 @@ export default function RootLayout({
         <Sidebar />
           {children}
       </div>
-      <Footerr />
+      <FooterAdmin />
       </div>
       
     //   <div className="flex flex-col min-h-screen">
