@@ -13,7 +13,7 @@ import { CollapsibleBitsiNft } from "./CollapsiableBitsiNft";
 import { myProfileNftOrderDropDownItems } from "@/constants";
 
 
-const DropdownMyProfile = ({ setValue , iconName, insideTable , items = []}: { setValue :  Dispatch<SetStateAction<string>> , iconName : string , insideTable : boolean , items : DropdownProps[] }) => {
+const DropdownMyProfile = ({ setValue , iconName, insideTable , items = [] , itemsInsideTable = []}: { setValue :  Dispatch<SetStateAction<string>> , iconName : string , insideTable : boolean , items : DropdownProps[] , itemsInsideTable? : string[] }) => {
 //   const handleClick = (nameToSet : string)=>{
 //     setValue(nameToSet);
 //   }
@@ -25,10 +25,17 @@ const DropdownMyProfile = ({ setValue , iconName, insideTable , items = []}: { s
       <DropdownMenuContent className={`${insideTable == true ? 'bg-black text-white' : 'bg-white text-black' } self-start  border-0 font-manrope`}>
         <DropdownMenuSeparator className=""/>
         {insideTable && (
-        <div className="max-h-[240px] overflow-y-auto table-body">
-            <p  className="font-manrope text-[18px] text-white">Convert to BITSI Coin</p>
-            <p className="font-manrope text-[18px] text-white">Claim Compensation</p>
-         </div>)}
+          <>
+          {itemsInsideTable.map((item , index)=>{
+            return(
+              <div className="max-h-[240px] overflow-y-auto table-body hover:bg-success-509" key={index}>
+              <p  className="font-manrope text-[18px] cursor-pointer text-white">{item}</p>
+              {/* <p className="font-manrope text-[18px] text-white">Claim Compensation</p> */}
+           </div>
+            )
+            })}
+            </>
+       )}
          {!insideTable && (
             <>
               <CollapsibleBitsiNft btnName="Sort-By" items={myProfileNftOrderDropDownItems} setValue={setValue}  />

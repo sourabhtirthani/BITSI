@@ -6,7 +6,7 @@ import DropdownMyProfile from '@/components/DropdownMyProfile';
 import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
-import { listOfNFtsMyProfile, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { listOfNFtsMyProfile, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
 import React, { useState } from 'react';
 //515/511
@@ -15,7 +15,11 @@ const MyProfile = () => {
   // const [myProfile, setMyProfile] = useState(true);
   const [enableEdit , SetEnableEdit] = useState(true);
   const [filterValue , setFilterValue] = useState('MyProfile');
-  const [nftDetailsFilterValue, setNftDetailsFilterValue] = useState('')
+  const [nftDetailsFilterValue, setNftDetailsFilterValue] = useState('') // for inside table
+  const [nftDetailsFilterValueOutside , setNftDetailsFilterValueOutside] = useState('')
+  const [coinsDetailsFilterValue , setCoinDetailsFilterValue] = useState(''); // for inside
+  const [coinsDetailsFilterValueOutside , setCoinsDetailsFilterValueOutside] = useState('');
+  const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
 
   const handleEditClick = ()=>{
   if(enableEdit == true){
@@ -46,6 +50,9 @@ const MyProfile = () => {
   const handleCancelFormSave = ()=>{
     SetEnableEdit(true);
   }
+  const handleHistoryClick = ()=>{
+    setFilterValue('My History')
+  }
   return (
     <>
       <div className='navbar-space'></div>
@@ -66,11 +73,12 @@ const MyProfile = () => {
           </div>
         </div>
 
-        <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full'>
+        <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full flex-wrap'>
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
-          <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>Collections</button>
+          <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collections</button>
+          <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 
@@ -120,9 +128,9 @@ const MyProfile = () => {
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>NFT Details</p>
-            <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
-          <div className='max-h-[300px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
+          <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
@@ -145,10 +153,10 @@ const MyProfile = () => {
                         <td className='p-2 max-sm:p-1'>{item.currentPrice}</td>
                         <td className='p-2 max-sm:p-1'>{item.nftMintedTime}</td>
                         <td className='p-2 max-sm:p-1'>Active&nbsp;  <input type='checkbox' checked={item.active} className='bg-transparent' /></td>
-                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/>
+                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/>
                       </tr>
                       <tr>
-                        <td  className='h-4'></td>
+                        <td  className='h-5'></td>
                       </tr>
                     </React.Fragment>
                   )
@@ -161,7 +169,12 @@ const MyProfile = () => {
         )}
 
 {filterValue == 'Coin' && (
-          <div className='max-h-[300px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
+  <>
+  <div className='flex justify-between p-4 md:p-8'>
+            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>Coin</p>
+            <DropdownMyProfile insideTable={false} setValue={setCoinsDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+          </div>
+          <div className='max-h-[500px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
@@ -182,6 +195,7 @@ const MyProfile = () => {
                         <td className='p-2 max-sm:p-1'>{item.TransactionId}</td>
                         <td className='p-2 max-sm:p-1'>{item.Price}</td>
                         <td className='p-2 max-sm:p-1'>{item.PurchasedDate}</td>
+                        <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/>
                       </tr>
                       <tr>
                         <td  className='h-4'></td>
@@ -193,6 +207,7 @@ const MyProfile = () => {
 
             </table>
           </div>
+          </>
         )}
 
         {filterValue == 'Collections' && (
@@ -206,6 +221,95 @@ const MyProfile = () => {
             )
           })}
         </div>
+        )}
+
+        {filterValue == 'My History' && (
+          <>
+          <div className='flex justify-between p-4 md:p-8'>
+            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>My History</p>
+            <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+          </div>
+          <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
+            <table className='w-full text-left mt-4 border-spacing-20'>
+              <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
+                <tr>
+                  <th className='p-2 max-sm:p-1'>Date</th>
+                  <th className='p-2 max-sm:p-1' >ID</th>
+                  <th className='p-2 max-sm:p-1'>Name</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Collection</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Action</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>MarketPlace</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price Difference</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th>
+                </tr>
+              </thead>
+              <tbody className='overflow-y-auto '>
+                {tableMyHistory.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <tr className='bg-success-512  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                        <td className='p-2 max-sm:p-1'>{item.ID}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Name}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Collection}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Price}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Acions}</td>
+                        <td className='p-2 max-sm:p-1'>{item.MarketPlace}</td>
+                        <td className='p-2 max-sm:p-1'>{item.PriceDifference}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Compensation}</td>
+                       
+                        <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/>
+                      </tr>
+                      <tr>
+                        <td  className='h-4'></td>
+                      </tr>
+                    </React.Fragment>
+                  )
+                })}
+              </tbody>
+
+            </table>
+          </div>
+          </>
+        )}
+
+
+        {filterValue == 'Compensation' && (
+          <>
+           <div className='flex justify-between p-4 md:p-8'>
+            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>My Compensation</p>
+            <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+          </div>
+          <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
+            <table className='w-full text-center mt-4 border-spacing-20'>
+              <thead className='text-success-502 font-semibold font-montserrat text-[22px] max-sm:text-[10px]   '>
+                <tr>
+                  <th className='p-2 max-sm:p-1'>Date of Compensation Claimed</th>
+                  <th className='p-2 max-sm:p-1' >Total Loss</th>
+                  <th className='p-2 max-sm:p-1'>Loss Above 50% (Y/N)</th>
+                </tr>
+              </thead>
+              <tbody className='overflow-y-auto '>
+                {tableMyCompensation.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <tr className='bg-success-512 h-12 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        <td className='p-2 max-sm:p-1'>{item.dateOfCompensationClaimed}</td>
+                        <td className='p-2 max-sm:p-1'>{item.totalLoss}</td>
+                        <td className='p-2 max-sm:p-1'>{item.lossabove50}</td>
+                      </tr>
+                      <tr>
+                        <td  className='h-6'></td>
+                      </tr>
+                    </React.Fragment>
+                  )
+                })}
+              </tbody>
+
+            </table>
+          </div>
+          </>
         )}
 
       </section>

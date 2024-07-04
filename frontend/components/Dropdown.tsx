@@ -22,15 +22,15 @@ const Dropdown = ({ items , buttonName , setValue , showIcon = true , arrowImage
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={`${showIcon == false ? 'border-2 border-white bg-success-512' : ''} w-full flex gap-2 justify-between items-center  hover:bg-success-509  rounded-xl px-4 py-2`}>
-      <p className={`${showIcon == false ? 'text-opacity-35' : ''} text-[22px]   max-md:text-[20px] w-full font-montserrat font-bold max-md:p-1 flex items-center gap-2 text-white  overflow-hidden selection:border-none focus:border-none`}>{(selected == true && showIcon == false) ? newName : buttonName}
+      <DropdownMenuTrigger className={`${showIcon == false ? 'border-2 border-white bg-success-512 justify-between' : 'justify-center'} w-full flex gap-2  items-center  hover:bg-success-509  rounded-xl px-4 py-2`}>
+      <p className={`${showIcon == false ? 'text-opacity-35' : 'justify-center'} text-[22px]   max-md:text-[20px] w-full font-montserrat font-bold max-md:p-1 flex items-center gap-2 text-white  overflow-hidden selection:border-none focus:border-none`}>{(selected == true && showIcon == false) ? newName : buttonName}
             </p>
-            <Image src = {arrowImage} height={9.21} width={16} alt = 'drowpdown' className='' />
+            <Image src = {arrowImage} height={9.21} width={16} alt = 'drowpdown'  />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="bg-black w-full text-white border-0 font-manrope rounded-xl ">
         <DropdownMenuSeparator className="hover:bg-success-509"/>
         {items.map((item) => (
-          <DropdownMenuItem key={item.id} className="flex gap-2  " asChild>
+          <DropdownMenuItem key={item.id} className="flex gap-2 w-full " asChild>
             <div>
             {showIcon && (<Image src={item.icon} height={20} width={20} alt='logo' />)}
             <span onClick = {()=>{handleClick(item.name)}}>{item.name}</span></div>
