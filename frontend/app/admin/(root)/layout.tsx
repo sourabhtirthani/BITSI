@@ -13,7 +13,7 @@ export default function RootLayout({
         <div className="flex flex-col overflow-hidden ">
       <div className="flex bg-success-503 ">
         <Sidebar />
-        <div className="md:hidden absolute">
+        <div className="sm:hidden absolute">
           <SidebarAdminMob />
         </div>
           {children}
