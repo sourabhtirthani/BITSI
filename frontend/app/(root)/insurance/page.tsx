@@ -3,6 +3,7 @@ import Image from "next/image";
 import InsuraceContactUsBtn from '@/components/InsuraceContactUsBtn';
 import Link from 'next/link';
 import { ToolTipHoverEffect } from '@/components/TooltipHoverEffect';
+import { DialogInsuranceOptions } from '@/components/DialogInsuranceOptions';
 
 
 const Insurance = () => {
@@ -35,20 +36,26 @@ const Insurance = () => {
 
             <div className='md:self-center mt-20 max-md:mt-10 gap-10 flex max-lg:flex-col'>
                 <div className='max-sm:gap-3 gap-10 flex'>
-                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Purchase' hoverInfo='purchase an nft' /></Link>
-                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Extend' hoverInfo='extend infortmation' /></Link>
-                <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Policy' hoverInfo='Policy info' /></Link>
+                {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Purchase' hoverInfo='purchase an nft' /></Link> */}
+                {/* <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Policy' hoverInfo='Policy info' /></Link> */}
+                {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Extend' hoverInfo='extend infortmation' /></Link> */}
+                <DialogInsuranceOptions buttonName='Purchase' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                <DialogInsuranceOptions buttonName='Policy' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                <DialogInsuranceOptions buttonName='Extend' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
                 </div>
                 <div className='max-sm:gap-3 gap-10 flex'>
-                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Claim' hoverInfo='Claim infortmation' /></Link>
-                <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Upgrade' hoverInfo='upgrade infortmation' /></Link>
-                <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Unlock' hoverInfo='unlock infortmation' /></Link>
+                {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Claim' hoverInfo='Claim infortmation' /></Link> */}
+                {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Upgrade' hoverInfo='upgrade infortmation' /></Link> */}
+                {/* <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Unlock' hoverInfo='unlock infortmation' /></Link> */}
+                <DialogInsuranceOptions buttonName='Claim' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                <DialogInsuranceOptions buttonName='Upgrade' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                <DialogInsuranceOptions buttonName='Unlock' nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
                 </div>
             </div>
-            <div className='md:self-center mt-14 max-md:mt-10 gap-10 flex max-lg:flex-col'>
+            {/* <div className='md:self-center mt-14 max-md:mt-10 gap-10 flex max-lg:flex-col'>
             <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Trade Insurance ' hoverInfo='trade insurance info here' /></Link>
             <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Insurance for Stock ' hoverInfo='Insurance for Stock  info here' /></Link>
-            </div>
+            </div> */}
 
            
         </div>
