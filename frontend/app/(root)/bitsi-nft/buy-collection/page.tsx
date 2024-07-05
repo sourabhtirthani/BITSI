@@ -26,7 +26,7 @@ const BuyCollection = () => {
 
     setIds(selectedItems);
   }, []);
-  return (
+  return (    
     <>
       <div className='navbar-space'></div>
       <section className='bg-success-503'>
@@ -35,9 +35,12 @@ const BuyCollection = () => {
             <AlertBoxBuyNfy />
           </div>
         </div>
+        <div className='p-8 max-md:p-4'>
+          <div className=' bg-success-512 secondary-shadow11'>
         <CarouselNft selectedItems={ids.length} />
-
-        <div className='p-8'>
+        </div>
+        </div>
+        <div className='p-8 mb-40 max-md:mb-20'>
           <div className='flex   w-fit items-center sm:gap-32 max-sm:gap-20'>
             <div className='flex flex-col justify-between'>
               <p className='text-success-516 text-opacity-50  font-manrope text-[22px] max-md:text-[14px] font-semibold'>Total Price</p>
@@ -48,7 +51,7 @@ const BuyCollection = () => {
           </div>
         </div>
 
-        <div className='max-h-[300px] mb-20 p-8  overflow-y-auto table-body '>
+        {/* <div className='max-h-[300px] mb-20 p-8  overflow-y-auto table-body '>
           <table className='w-full text-left mt-4 border-spacing-20  overflow-y-auto'>
             <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] '>
               <tr className='sticky'>
@@ -75,7 +78,7 @@ const BuyCollection = () => {
             </tbody>
 
           </table>
-        </div>
+        </div> */}
       </section>
 
 

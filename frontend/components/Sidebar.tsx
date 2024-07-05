@@ -10,8 +10,8 @@ const Sidebar = () => {
     <h1 className='text-[20px] font-manrope font-bold text-white'>BITSI</h1>
     </div>
     <Link href= '/admin/analytic-dashboard'> <p className='text-[18px] font-manrope self-start text-white font-bold'>Analytic&nbsp;Dashboard</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope self-start text-white font-bold '>Wallets</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope self-start text-white font-bold '>Prices</p></Link>
+    <Link href= '/admin/wallet-management'><p className='text-[18px] font-manrope self-start text-white font-bold '>Wallets</p></Link>
+    <Link href= '/admin/prices'><p className='text-[18px] font-manrope self-start text-white font-bold '>Prices</p></Link>
    <div className='self-start flex flex-col justify-center items-center w-full gap-3'>
     <Link href='/admin/minting' className='self-start'><p className='text-[18px] font-manrope  text-white font-bold'>Minting</p></Link>
     {/* <Link href= ''><p className='text-[18px] font-manrope  text-white font-bold text-opacity-50'>Admin Wallet</p></Link> */}
@@ -22,7 +22,7 @@ const Sidebar = () => {
     <Link href= '/admin/coin-insurance'><p className='text-[18px] font-manrope self-start text-white font-bold '>Coin Insurance</p></Link>
     <Link href= '/admin/nft-insurance'><p className='text-[18px] font-manrope self-start text-white font-bold '>NFT Insurance</p></Link>
     <Link href= '/admin/views-and-analysis'><p className='text-[18px] font-manrope self-start text-white font-bold '>View & Analyse</p></Link>
-    <Link href= ''><p className='text-[18px] font-manrope self-start text-white font-bold '>Compensation</p></Link>
+    <Link href= '/admin/compensation'><p className='text-[18px] font-manrope self-start text-white font-bold '>Compensation</p></Link>
 
     {/* <div className='self-start flex flex-col justify-center items-center w-full gap-3'>
     <p className='text-[18px] font-manrope self-start text-white font-bold'>View&nbsp;&&nbsp;Analysis</p>

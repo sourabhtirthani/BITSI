@@ -384,6 +384,14 @@ export const events = [
     {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
     {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
   ]
+  export const tableAdminViewAndAnalysis = [
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
+    {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace:'N/A'},
+  ]
 
   export const tableMyCompensation = [
     {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
@@ -392,6 +400,20 @@ export const events = [
     {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
     {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
     {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
+  ]
+  export const tableAdminWallets = [
+    {walletId : '12345' , walletType : 'Main Wallet'},
+    {walletId : '12345' , walletType : 'Main Wallet'},
+    {walletId : '12345' , walletType : 'Broker Wallet'},
+  ]
+
+  export const tableAdminCompensation = [
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
+    {date : '11/01/24' ,username : 'user123' , loss : '1 BITSI' , compensationAmount : '7 BITSI'},
   ]
 
   export const tableMyWalletCoin = [
@@ -433,6 +455,23 @@ export const events = [
     {
         id: 3,
         name : 'Compensation',
+        icon : '/icons/streamline_insurance-hand-solid.svg'
+    }
+  ]
+  export const myHistoryWalletDropDown = [
+    {
+        id: 1,
+        name : 'My History',
+        icon : '/icons/nft-wide-eyes.svg'
+    },
+    {
+        id: 2,
+        name : 'My History',
+        icon : '/icons/bitsi.svg'
+    },
+    {
+        id: 3,
+        name : 'My History',
         icon : '/icons/streamline_insurance-hand-solid.svg'
     }
   ]

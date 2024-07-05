@@ -5,9 +5,11 @@ import FormRow from '@/components/FormRow'
 import FormLabel from '@/components/FormLabel'
 import InputText from '@/components/InputText'
 import Button from '@/components/Button'
+import { AdminOtpBox } from '@/components/AdminOtpBox'
 const KycAuth = () => {
   const [showOtp, setShowOtp] = useState(false);
   const [verifyText ,setVerifyText] = useState('Verify');
+  const [optVal , setOtpVal] = useState('')
 
   const handleVerifyClick = ()=>{
     if(verifyText == 'Verify'){
@@ -27,7 +29,8 @@ const KycAuth = () => {
     console.log('submitted form');
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
-    console.log(formData.get('otp1'));
+    formData.append('otp' , optVal);
+    console.log(formData.get('otp'));
     const jsonObject: { [key: string]: any } = {};
     formData.forEach((value, key) => {
       // Check if key already exists
@@ -83,11 +86,7 @@ const KycAuth = () => {
               {showOtp && (
               <FormRow className=' p-4'>
                 <FormLabel htmlFor='otp' className='font-montserrat text-white text-[22px] w-fit font-semibold'>OTP*</FormLabel>
-                <input id='otp1' name='otp1' type='digit' maxLength={1} className='w-[45px] p-3 bg-success-512  secondary-shadow11' />
-                <input id='otp2' name='otp2' type='digit' maxLength={1} className='w-[45px] p-3 bg-success-512 ml-3 secondary-shadow11' />
-                <input id='otp3' name='otp3' type='digit' maxLength={1} className='w-[45px] p-3 bg-success-512  ml-3 secondary-shadow11' />
-                <input id='otp4' name='otp4' type='digit' maxLength={1} className='w-[45px] p-3 bg-success-512 ml-3 secondary-shadow11' />
-
+                <AdminOtpBox value={optVal} setValue={setOtpVal} />
               </FormRow>)}
             </div>
             {showOtp && (

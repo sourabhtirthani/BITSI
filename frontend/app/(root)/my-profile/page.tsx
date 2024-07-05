@@ -6,7 +6,7 @@ import DropdownMyProfile from '@/components/DropdownMyProfile';
 import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
-import { listOfNFtsMyProfile, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { listOfNFtsMyProfile, myHistoryWalletDropDown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
 import React, { useState } from 'react';
 //515/511
@@ -77,8 +77,10 @@ const MyProfile = () => {
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
+          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
+          {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
           <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collections</button>
-          <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 

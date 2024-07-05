@@ -33,14 +33,14 @@ export function AlertBoxBuyNfy() {
         return null;
       }
   return (
-    <Alert className="bg-red-500 font-mulish text-white p-4 rounded-xl shadow-md flex items-center">
+    <Alert className="bg-red-700 font-mulish text-white p-4 rounded-xl shadow-md flex items-center" >
       <div className="flex-shrink-0">
         <Terminal className="h-6 w-6 text-white mr-3" />
       </div>
       <div>
-        <AlertTitle className="font-bold text-lg">Please Note</AlertTitle>
+        <AlertTitle className="font-bold text-lg">Navigation Instructions</AlertTitle>
         <AlertDescription>
-          <p className="text-base">Hold and swipe left or right to see all items</p>
+          <p className="text-base">Please hold and swipe left or right to view all items, or click on the arrows to navigate.</p>
         </AlertDescription>
       </div>
     </Alert>

@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import Image from 'next/image'
+import { tableAdminViewAndAnalysis } from '@/constants';
 
 const ViewsAndAnalysis = () => {
     const [searchValue , setSearchValue] = useState('');
@@ -22,8 +23,13 @@ const ViewsAndAnalysis = () => {
 
 
   return (
-    <div className='bg-success-503 p-10 flex flex-col gap-12'>
-        <h1 className='text-success-511 text-[18px] '>Views And Analysis</h1>
+    <div className='bg-success-503 w-full   flex flex-col gap-12 p-8 max-md:p-4'>
+      
+        <div className='flex justify-between max-xl:justify-start max-xl:gap-4 items-center'>
+            <p className='font-manrope font-bold text-[18px] text-success-511'>Views & Analysis </p>
+            <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button>
+        </div>
+       
         <div className='flex gap-10'>
             <p onClick={handleNftRelatedClick}  className={`font-manrope cursor-pointer text-white text-[18px] max-sm:text-[12px] font-bold ${selectedTab === 'NFT Related' ? 'border-b-2 border-orange-500 ' : ''} `}>NFT Related</p>
             <p onClick={handleCoinRelatedClick} className={`font-manrope cursor-pointer text-white text-[18px] max-sm:text-[12px] font-bold ${selectedTab === 'Coin Related' ? 'border-b-2 border-orange-500 ' : ''} `}>COIN Related</p>
@@ -39,20 +45,50 @@ const ViewsAndAnalysis = () => {
           {/* drop down here */}
           </div>
           </div>
-          
-
-          {/* <div className='flex gap-5'>
-          <button className='bg-success-512 secondary-shadow11 text-[22px] max-md:text-[16px]  font-montserrat font-semibold p-4 max-md:p-2 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden'>
-          Event<Image src = '/icons/arrow-down.svg' height={9.21} width={16} alt = 'drowpdown' className='mt-1' />
-            </button>
-            <button className='bg-success-512 secondary-shadow11 text-[22px] max-md:text-[16px]  font-montserrat font-semibold p-4 max-md:p-2 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden'>
-          Price<Image src = '/icons/arrow-down.svg' height={9.21} width={16} alt = 'drowpdown' className='mt-1' />
-            </button>
-            <button className='bg-success-512 secondary-shadow11 text-[22px] max-md:text-[16px]  font-montserrat font-semibold p-4 max-md:p-2 flex items-center gap-2 text-white rounded-xl hover:bg-success-509  overflow-hidden'>
-          Date<Image src = '/icons/arrow-down.svg' height={9.21} width={16} alt = 'drowpdown' className='mt-1' />
-            </button>
-          </div> */}
           </div>
+           <div className='max-h-[500px]  px-8 max-md:px-4 overflow-x-scroll max-xl:table-body xl:scrollbar-none overflow-y-auto mb-20 table-body'>
+            <table className='w-full text-left mt-4 border-spacing-20'>
+              <thead className='text-success-502 bg-success-511 font-semibold font-manrope text-[22px] max-sm:text-[10px]   '>
+                <tr>
+                  <th className='p-2 max-sm:p-1'>Date</th>
+                  <th className='p-2 max-sm:p-1' >NFTID</th>
+                  <th className='p-2 max-sm:p-1'>Name</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Collection</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Action</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>MarketPlace</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price Difference</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>marketplace</th>
+                </tr>
+              </thead>
+              <tbody className='overflow-y-auto '>
+                {tableAdminViewAndAnalysis.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <tr className=' w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                        <td className='p-2 max-sm:p-1'>{item.NFTID}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Name}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Collection}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Price}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Acions}</td>
+                        <td className='p-2 max-sm:p-1'>{item.MarketPlace}</td>
+                        <td className='p-2 max-sm:p-1'>{item.PriceDifference}</td>
+                        <td className='p-2 max-sm:p-1'>{item.marketplace}</td>
+                       
+                       
+                      </tr>
+                      <tr>
+                        <td  className='h-4'></td>
+                      </tr>
+                    </React.Fragment>
+                  )
+                })}
+              </tbody>
+
+            </table>
+          </div>
+          
     </div>
   )
 }
