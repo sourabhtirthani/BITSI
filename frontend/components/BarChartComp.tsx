@@ -11,10 +11,10 @@ ChartJs.register(
 
 const BarChartComp = ({ titleofChart }: { titleofChart: string }) => {
     const [filterValue, setFilterValue] = useState('');
-    const ctx = document.createElement('canvas').getContext('2d');
-    const gradient = ctx?.createLinearGradient(0, 0, 0, 400);
-    gradient?.addColorStop(0, '#FF8008'); // Start color
-    gradient?.addColorStop(1, '#FFC837'); // End color
+    // const ctx = document.createElement('canvas').getContext('2d');
+    // const gradient = ctx?.createLinearGradient(0, 0, 0, 400);
+    // gradient?.addColorStop(0, '#FF8008'); 
+    // gradient?.addColorStop(1, '#FFC837'); 
     const items = [
         {
             id: 1,
@@ -29,8 +29,8 @@ const BarChartComp = ({ titleofChart }: { titleofChart: string }) => {
             {
                 data: [440, 32, 432, 22, 222, 213, 43, 54, 543, 654, 43, 434],
                 label: "Sample Data set",
-                backgroundColor: gradient, 
-                borderColor: gradient, 
+                backgroundColor:'#daa520', 
+                borderColor: '#daa520', 
                 tension: 0.3,
                 pointBackgroundColor: '#F38216'
             },
