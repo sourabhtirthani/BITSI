@@ -2,6 +2,7 @@
 import FooterAdmin from "@/components/FooterAdmin";
 import Footerr from "@/components/Footerr";
 import Sidebar from "@/components/Sidebar";
+import SidebarAdminMob from "@/components/SidebarAdminMob";
 
 export default function RootLayout({
     children,
@@ -12,6 +13,9 @@ export default function RootLayout({
         <div className="flex flex-col overflow-hidden ">
       <div className="flex bg-success-503 ">
         <Sidebar />
+        <div className="md:hidden absolute">
+          <SidebarAdminMob />
+        </div>
           {children}
       </div>
       <FooterAdmin />
