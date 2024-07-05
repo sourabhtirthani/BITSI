@@ -10,7 +10,7 @@ import {
 
 export function AdminOtpBox({value , setValue} : {value : string , setValue : React.Dispatch<React.SetStateAction<string>>}) {
   return (
-    <InputOTP maxLength={4} value={value} onChange={(val) => setValue(val)}>
+    <InputOTP maxLength={4} value={value} onChange={(val) => setValue(val)} >
       <InputOTPGroup>
         <InputOTPSlot index={0} className="bg-success-512 secondary-shadow11 text-white" />
       </InputOTPGroup>

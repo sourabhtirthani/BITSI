@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 const AuthHOME = () => {  
   return ( 
-    <div className='bg-white  w-3/4 h-fit p-8 max-md:p-4 flex  justify-center'>
+    <div className='bg-white  w-3/4 h-fit p-8 max-md:p-4 flex  justify-center max-sm:w-full'>
         <div className='flex flex-col items-center gap-3'>
             <h1 className='font-manrope  text-[38px] font-bold text-black'>Welcome To BITSI Admin Panl</h1>
             <p className='font-manrope text-black font-semibold text-[18px] '>Please enter the code that you received via mail</p>
