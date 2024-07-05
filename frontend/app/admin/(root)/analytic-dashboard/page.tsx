@@ -12,24 +12,24 @@ const AnalyticDashboard = () => {
         </div>
         <div className='flex flex-col mb-10 max-md:mb-5'>
           <p className='text-white font-normal text-[18px]'>Numerical Representation</p>
-          <div className='grid grid-cols-3 gap-3 mt-4 max-xl:grid-cols-2 max-md:grid-cols-1'>
-            <div><DashboardCardAdmin heading='BITSI COIN' subHeading='Second Hand Price' thirdLine='Current Price' fourthLine='1BTS = 14.65' iconName='/icons/ethereum.svg' /></div>
-            <div><DashboardCardAdmin heading='Active Insurances' subHeading='Total Volume' thirdLine='Active' fourthLine='229' iconName='/icons/solar_arrow-up-broken.svg' /></div>
-            <div><DashboardCardAdmin heading='BITSI COIN' subHeading='Second Hand Price' thirdLine='Current Price' fourthLine='1BTS = 14.65' iconName='/icons/solar_arrow-down-broken.svg' /></div>
+          <div className='grid grid-cols-3 gap-3 mt-4 max-xl:grid-cols-2 h-full max-md:grid-cols-1'>
+            <div className=''><DashboardCardAdmin heading='BITSI COIN' subHeading='Second Hand Price' thirdLine='Current Price' fourthLine='1BTS = 14.65' iconName='/icons/ethereum.svg' /></div>
+            <div className=''><DashboardCardAdmin heading='Active&nbsp;Insurances' subHeading='Total Volume' thirdLine='Active' fourthLine='229' iconName='/icons/solar_arrow-up-broken.svg' /></div>
+            <div className=''><DashboardCardAdmin heading='BITSI COIN' subHeading='Second Hand Price' thirdLine='Current Price' fourthLine='1BTS = 14.65' iconName='/icons/solar_arrow-down-broken.svg' /></div>
           </div>
            </div>
            <hr className='border-dotted' />
            <div className='flex flex-col mt-10 max-md:mt-5'>
            <p className='text-white font-normal text-[18px]'>Numerical Representation</p>
-            <div className='grid grid-cols-2 gap-2 w-full mt-4 max-md:grid-cols-1'>
-              <LineChartComp titleofChart='Total Prices' />
+            <div className='grid grid-cols-2 gap-2 w-full mt-4 max-lg:grid-cols-1'>
+              <LineChartComp titleofChart='Total Prices'  />
               <LineChartComp titleofChart='Policy Coverage' />
             </div>
-            <div className='grid grid-cols-2 gap-2 w-full mt-10 max-md:grid-cols-1'>
+            <div className='grid grid-cols-2 gap-2 w-full mt-10 max-lg:grid-cols-1'>
               <LineChartComp titleofChart='Voluem of BITSI COIN' />
               <BarChartComp titleofChart='Future Compensation Claim' />
             </div>
-            <div className='grid grid-cols-2 gap-2 w-full mt-10 max-md:grid-cols-1'>
+            <div className='grid grid-cols-2 gap-2 w-full mt-10 max-lg:grid-cols-1'>
               <LineChartComp titleofChart='Paid Compensation Claim' />
               <BarChartComp titleofChart='Future Compensation Claim' />
             </div>
