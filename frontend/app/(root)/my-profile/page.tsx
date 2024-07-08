@@ -8,6 +8,7 @@ import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
 import { listOfNFtsMyProfile, myHistoryWalletDropDown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 //515/511
 const MyProfile = () => {
@@ -82,7 +83,7 @@ const MyProfile = () => {
             </div>
           </div>
           <div className={`p-5 ${(enableEdit && filterValue == 'MyProfile') ? '' : 'hidden'}`} onClick={handleEditClick}>
-            <button className='bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white'><Image src='/icons/edit-icon.png' height={18} width={18} alt='edit' />EDIT</button>
+          <Link href={'/my-profile/edit-profile'}> <button className='bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white'><Image src='/icons/edit-icon.png' height={18} width={18} alt='edit' />EDIT</button></Link> 
           </div>
         </div>
 
