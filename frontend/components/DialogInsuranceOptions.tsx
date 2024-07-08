@@ -14,7 +14,7 @@ import Link from "next/link"
 import Image from 'next/image'
 import { DialogInsuranceRadioGroup } from "./DialogInsuranceRadioGroup"
 
-export function DialogInsuranceOptions({ buttonName, nameOfClass  } : {buttonName : string , nameOfClass : string} ) {
+export function DialogInsuranceOptions({ buttonName, nameOfClass , redirectTo} : {buttonName : string , nameOfClass : string , redirectTo : string[]} ) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -24,7 +24,7 @@ export function DialogInsuranceOptions({ buttonName, nameOfClass  } : {buttonNam
         <DialogHeader>
           <DialogTitle className="text-black font-montserrat  font-bold mb-4">Choose anyone To proceed</DialogTitle>
           <DialogDescription >
-          <DialogInsuranceRadioGroup />
+          <DialogInsuranceRadioGroup redirectTo={redirectTo} />
           </DialogDescription>
         </DialogHeader>
         

@@ -454,25 +454,25 @@ export const events = [
     },
     {
         id: 3,
-        name : 'Compensation',
+        name : 'Collections',
         icon : '/icons/streamline_insurance-hand-solid.svg'
     }
   ]
   export const myHistoryWalletDropDown = [
     {
         id: 1,
-        name : 'My History',
-        icon : '/icons/nft-wide-eyes.svg'
+        name : 'Coins',
+        icon : '/icons/bitsi.svg'
     },
     {
         id: 2,
-        name : 'My History',
+        name : 'NFT',
         icon : '/icons/bitsi.svg'
     },
     {
         id: 3,
-        name : 'My History',
-        icon : '/icons/streamline_insurance-hand-solid.svg'
+        name : 'Insurance',
+        icon : '/icons/bitsi.svg'
     }
   ]
 

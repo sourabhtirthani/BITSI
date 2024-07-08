@@ -8,7 +8,7 @@ import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
 import { listOfNFtsMyProfile, myHistoryWalletDropDown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import Image from 'next/image'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 //515/511
 const MyProfile = () => {
   
@@ -20,6 +20,19 @@ const MyProfile = () => {
   const [coinsDetailsFilterValue , setCoinDetailsFilterValue] = useState(''); // for inside
   const [coinsDetailsFilterValueOutside , setCoinsDetailsFilterValueOutside] = useState('');
   const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
+
+  useEffect(()=>{
+    const selectedItems: string[] = [];
+    const searchParams = new URLSearchParams(window.location.search);
+    // searchParams.forEach((value) => {
+    //   selectedItems.push(value);
+    // });
+    const filterVal = searchParams.get('ysldef')
+
+    if(filterVal){
+      setFilterValue(filterVal)
+    }
+  } , [])
 
   const handleEditClick = ()=>{
   if(enableEdit == true){
@@ -33,8 +46,8 @@ const MyProfile = () => {
     setFilterValue('MyProfile');
   }
 
-  const handleCollectionsClick =  ()=>{
-    setFilterValue('Collections');
+  const handleCompensationClick =  ()=>{
+    setFilterValue('Compensation');
   }
 
   // const handleMyWalletClick = () => {
@@ -80,7 +93,7 @@ const MyProfile = () => {
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
-          <button onClick={handleCollectionsClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collections</button>
+          <button onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 
@@ -225,7 +238,7 @@ const MyProfile = () => {
         </div>
         )}
 
-        {filterValue == 'My History' && (
+        {(filterValue == 'Coins' || filterValue == 'NFT' || filterValue == 'Insurance' ) && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>My History</p>
