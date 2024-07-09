@@ -50,9 +50,9 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]' >Royalities</p>
             <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent font-montserrat text-[22px] max-md:text-[14px]'>35%</p>
           </div> */}
-          <div className='md:w-full bg-success-512  rounded-xl secondary-shadow11 p-2 hover:bg-success-509'>
+          <div className='md:w-[264px] bg-success-512  rounded-xl secondary-shadow11 p-3 hover:bg-success-509'>
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]'>Collection Name</p>
-            <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent font-montserrat text-[22px] max-md:text-[14px]'>Galaxy</p>
+            <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent  font-montserrat text-[22px] max-md:text-[14px]'>Galaxy</p>
           </div>
           {/* <div className="flex z-50 gap-4 items-center relative">
          

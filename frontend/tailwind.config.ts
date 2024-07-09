@@ -25,6 +25,7 @@ const config = {
          'custom-radial': 'linear-gradient(to right, #FDFBFB 32.5%, #EBEDEE 52%);',
          'hero-image': "url('/icons/landingImage.png')",
          'about-us' : "url('/icons/development-opportunity-strategy-improvement-word.png')",
+         'hero-image-bitsi-coin' :  "url('/icons/image_hero_coin.png')",
          'custom-radial-gradient': 'radial-gradient(#D7C7A4 100%, #FFE340 100%)',     // for the about us photo and insurance text
          'bitsi-nft' : "url('/icons/nft-bg.png')",
          "temp-img" : "url('/icons/nft-img-3.png')",
@@ -93,6 +94,7 @@ const config = {
           523 : "#121921", //admin panel sidebar
           524 : "#262d34",
           525 : "#FE5C01",
+          526 : '#7C7C7C',
           
         },
         secondary: {
