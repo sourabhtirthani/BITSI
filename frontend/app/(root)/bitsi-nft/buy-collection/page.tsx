@@ -9,6 +9,7 @@ import { AlertBoxBuyNfy } from '@/components/AlertBoxBuyNft';
 
 
 const BuyCollection = () => {
+  
   //   const searchParams = useSearchParams();
   //   const [ids, setIds] = useState([]);
   //   const selectedItems : string[] = [];
@@ -47,7 +48,7 @@ const BuyCollection = () => {
               <p className='text-white font-montserrat text-[22px] max-md:text-[14px] font-bold'>10 BITSI</p>
             </div>
             {/* <button className='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl'>Buy</button> */}
-            <DialogBuy totalItems={ids?.length} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl' />
+            <DialogBuy totalItems={ids?.length} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
           </div>
         </div>
 
@@ -79,6 +80,9 @@ const BuyCollection = () => {
 
           </table>
         </div> */}
+        <div>
+
+        </div>
       </section>
 
 

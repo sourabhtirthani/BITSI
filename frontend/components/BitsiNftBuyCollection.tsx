@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CarouselNext, CarouselPrevious } from './ui/carousel'
 import Image from 'next/image'
 
-const BitsiNftBuyCollection = ({selectedItems , imgSource} : {selectedItems : number , imgSource : string}) => {
+const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {selectedItems : number , imgSource : string , current : number , count : number}) => {
+  // const [elements , setElements] = useState<string[]>([])
+  let elements : string[]= [];
+  for(let i =1 ; i<= count ; i++){
+    if(i==current){
+      elements[i] = '/icons/Ellipse_2163.svg'
+    }else{
+      elements[i] = '/icons/Ellipse_2164.svg'
+    }
+  }
   return (
+    <>
     <div className='flex max-lg:flex-col '>
 
     <div className='lg:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
@@ -17,7 +27,7 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource} : {selectedItems : nu
           <Image src='/icons/mdi_delete.svg' height={32} width={31.72} alt='Share' />
       </div>
       <p className='text-success-516 text-[22px] text-opacity-40 max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>Own a unique digital minion NFT! Each minion comes with distinct traits and exclusive artwork, making it a one-of-a-kind collectible on the blockchain.</p>
-      <div className='flex justify-between lg:mt-8 max-lg:mt-4'>
+      {/* <div className='flex justify-between lg:mt-8 max-lg:mt-4'>
         <div className='flex flex-col gap-4 max-lg:gap-2'>
           <p className='text-white font-montserrat font-semibold text-[22px] max-md:text-[14px]'>Owned By</p>
           <div className='flex gap-2'>
@@ -32,7 +42,7 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource} : {selectedItems : nu
             <p className='text-success-516 text-opacity-40  font-manrope text-[22px] max-md:text-[14px]'>User Name</p>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className='mt-8 max-md:mt-3'>
         <p className='text-success-513 font-semibold font-manrope text-[28px] max-md:text-[20px] mb-8 max-md:mb-4'>Properties</p>
         <div className='flex gap-4 max-md:grid max-md:grid-cols-2 md:mb-6 max-md:mb-3 items-center '>
@@ -40,21 +50,29 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource} : {selectedItems : nu
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]' >Royalities</p>
             <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent font-montserrat text-[22px] max-md:text-[14px]'>35%</p>
           </div> */}
-          <div className='md:w-[264px] bg-success-512  rounded-xl secondary-shadow11 p-2 hover:bg-success-509'>
+          <div className='md:w-full bg-success-512  rounded-xl secondary-shadow11 p-2 hover:bg-success-509'>
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]'>Collection Name</p>
             <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent font-montserrat text-[22px] max-md:text-[14px]'>Galaxy</p>
           </div>
-          <div className="flex z-50 gap-4 items-center relative">
+          {/* <div className="flex z-50 gap-4 items-center relative">
          
           <CarouselPrevious className="bg-success-512 secondary-shadow11 border-none w-[48px] h-[48px] relative" />
           <CarouselNext className="bg-success-512 secondary-shadow11 border-none w-[48px] h-[48px] relative" />
           
-          </div>
+          </div> */}
         </div>
 
       </div>
     </div>
   </div>
+      <div className='flex items-center py-2 mb-4 justify-center gap-2'>
+      {elements.map((item , index)=>{
+        return (
+            <Image src={item} height={15} width={15} alt = 'image tag' key={index} />
+        )
+      })}
+      </div>
+  </>
   )
 }
 
