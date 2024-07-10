@@ -13,6 +13,9 @@ import InputText from '@/components/InputText'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone';
+import Checkbox from "@/components/Checkbox1"
+import Link from "next/link"
+import { useRouter } from 'next/navigation';
 // import * as z from "zod";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,6 +28,7 @@ const UploadNFt = () => {
   // const formOfUpload = useForm<z.infer<typeof uploadNftformSchema>>({
   //   resolver: zodResolver(uploadNftformSchema)
   // });
+  const { push } = useRouter();
   const [errorMessageName, setErrorMessageName] = useState('');
   const [errorMessageCollection, setErrorMessageCollection] = useState('');
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
@@ -34,6 +38,8 @@ const UploadNFt = () => {
   const [priceErrorMessage, setPriceErrorMessage] = useState('');
   const [showAlertDialog, setShowAlertDialog] = useState('');
   const [collection, setColleciton] = useState('');
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [formData1, setFormData1] = useState<FormData | null>(null);
 
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,7 +85,7 @@ const UploadNFt = () => {
     const file = fileInput.files && fileInput.files[0];
     console.log(form)
     console.log('in here ');
-   
+
     console.log(formData.get('collection'))
     console.log(formData.get('royalties'))
     if (!file) {
@@ -124,15 +130,25 @@ const UploadNFt = () => {
     // }
 
     console.log(file);
-    await  serAct(formData);
+    setFormData1(formData);
+    setShowCheckout(true);
+    // await  serAct(formData);
     // revalidatePath('/create-nft/upload')
     console.log('in here in the handle submit after file console log');
 
-   
-    
 
 
 
+
+
+  }
+
+  const handleMintNft = async () => {
+    const response = await serAct(formData1);
+    console.log('in here')
+    if ('success' in response && response.success) {
+      push('/bitsi-nft');
+    }
   }
   return (
     <>
@@ -194,7 +210,7 @@ const UploadNFt = () => {
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
-                  <InputText id='price' name='price' type='text' placeHolder='1-BITSI' className='p-3' />
+                  <InputText id='price' name='price' type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
                   {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}
                 </FormRow>
               </div>
@@ -208,7 +224,7 @@ const UploadNFt = () => {
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='royalties' className='font-montserrat text-white text-[22px] font-semibold'>Royalties*</FormLabel>
-                  <InputText id='royalties' name='royalties' type='text' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3' />
+                  <InputText id='royalties' name='royalties' step="0.01"  type='number' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3 no-spinners' />
                   {royaltiesErrorMessage && <p className='text-success-517 text-[11px] font-normal '>{royaltiesErrorMessage}*</p>}
                 </FormRow>
               </div>
@@ -228,7 +244,57 @@ const UploadNFt = () => {
         {/* <CreateNftForm /> */}
       </section>
 
-     
+      {showCheckout && (
+        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
+          <div className=' z-50 flex justify-center items-center sm:max-w-[425px] bg-white p-5 max-sm:p-3'>
+            <div className='flex flex-col gap-3'>
+              <div className='flex justify-between'>
+                <p className="text-black font-montserrat  font-bold">Checkout</p>
+                <Image src='/icons/cross-icons.svg' height={25} width={25} alt='remove' onClick={()=>{setShowCheckout(false)}} />
+              </div>
+              <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
+              <div className="flex items-center p-3 border-2 border-success-511 gap-3">
+                <Image src='/icons/nft-desc.png' height={63.48} width={70} alt="nft image" />
+                <div className="flex flex-col gap-2">
+                  <p className="text-black font-manrope font-bold text-[22px]">Minions Serious Eye</p>
+                  <div className="flex">
+                    <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
+                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">35%&nbsp;</p>
+                    <p className="text-black text-[12px] font-montserrat font-semibold">Collection&nbsp;</p>
+                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">Luxury</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 ">
+                <Checkbox className=" bg-success-521 checked:bg-success-521 " />
+                <p className="font-mulish text-[10px]">I agree to the <Link href='/abcdr'><span className="underline text-success-522 font-bold">INSURANCE</span></Link></p>
+
+              </div>
+
+              <div className="flex flex-col border-2 border-success-511 p-4 gap-5">
+                <div className="flex justify-between">
+                  <p className="text-black font-montserrat font-semibold">Your Balance</p>
+                  <p className="text-black font-montserrat font-semibold">0.55 Matic</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-black font-montserrat font-semibold">NFT Price</p>
+                  <p className="text-black font-montserrat font-semibold">0.9 Matic</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-black font-montserrat font-semibold">Insurance Price</p>
+                  <p className="text-black font-montserrat font-semibold">1.02 Matic</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-black font-montserrat font-semibold">Total Price</p>
+                  <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
+                </div>
+                <div className="self-center">
+                  <button onClick={handleMintNft} className="font-montserrat text-white font bold bg-nft-text-gradient py-4 px-28 text-[22px] font-bold rounded-xl ">Buy</button>
+                </div>
+              </div>
+            </div>
+          </div></div>
+      )}
     </>
   )
 }

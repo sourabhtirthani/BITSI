@@ -58,8 +58,9 @@ declare interface InputTextProps {
     className?: string;
     id?: string;
     name: string;
-    type?: 'text' | 'email';
+    type?: 'text' | 'email' | 'number';
     placeHolder: string;
+    step?: string;
 }
 
 declare interface CoinPriceHeroLandingPageProps{
