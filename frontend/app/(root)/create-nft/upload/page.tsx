@@ -1,4 +1,5 @@
 'use client'
+import { serAct } from '@/actions/uploadNft'
 import Button from '@/components/Button'
 import { CollectionCombobox } from '@/components/CollectionCombobox'
 // import CreateNftForm from '@/components/CreateNftForm'
@@ -8,6 +9,7 @@ import FormLabel from '@/components/FormLabel'
 import FormRow from '@/components/FormRow'
 import HeroNft from '@/components/HeroNft'
 import InputText from '@/components/InputText'
+// import { revalidatePath } from 'next/cache'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone';
@@ -68,7 +70,7 @@ const UploadNFt = () => {
 
 
 
-  const handleOnSubmit = (e: React.SyntheticEvent) => {
+  const handleOnSubmit = async (e: React.SyntheticEvent) => {
     // console.log(e?.target?.name?.value);
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
@@ -77,40 +79,56 @@ const UploadNFt = () => {
     const file = fileInput.files && fileInput.files[0];
     console.log(form)
     console.log('in here ');
+   
     console.log(formData.get('collection'))
     console.log(formData.get('royalties'))
     if (!file) {
+      console.log('in here first')
       setErrorMessageNftFile('Please Upload A file to Proceed');
+      return;
 
     } else {
       setErrorMessageNftFile('');
     }
     if (!formData.get('name')) {
+      console.log('in here second')
       setErrorMessageName('Name must be filed');
+      return
 
     } else {
       setErrorMessageName('')
     }
     if (!formData.get('collection')) {
+      console.log('in here third')
       setCollectionErrorMessage('Please fill in the collection name');
+      return;
     } else {
       setCollectionErrorMessage('');
     } if (!formData.get('price')) {
+      console.log('in here fourth')
       setPriceErrorMessage('Please Enter Price');
+      return;
     } else {
       setPriceErrorMessage('');
     } if (!formData.get('royalties')) {
+      console.log('in here royal')
       setRoyaltiesnErrorMessage('Please Enter Royality');
+      return;
     } else {
       setRoyaltiesnErrorMessage('');
     }
 
-    if (!errorMessageName || !errorMessageCollection || !errorMessageNftFile || !collectionErrorMessage || !priceErrorMessage) {
-      return;
-    }
+    // if (!errorMessageName || !errorMessageCollection || !errorMessageNftFile ||  !priceErrorMessage) {
+    //   console.log('in here returning withut any code executin')
+    //   return;
+    // }
 
     console.log(file);
+    await  serAct(formData);
+    // revalidatePath('/create-nft/upload')
     console.log('in here in the handle submit after file console log');
+
+   
     
 
 
