@@ -1,6 +1,8 @@
 'use client'
 import Button from '@/components/Button'
 import { CollectionCombobox } from '@/components/CollectionCombobox'
+// import CreateNftForm from '@/components/CreateNftForm'
+// import CreateNftForm from '@/components/CreateNftForm'
 import { DialogBuy } from '@/components/DialogBuy'
 import FormLabel from '@/components/FormLabel'
 import FormRow from '@/components/FormRow'
@@ -108,7 +110,8 @@ const UploadNFt = () => {
     }
 
     console.log(file);
-
+    console.log('in here in the handle submit after file console log');
+    
 
 
 
@@ -204,6 +207,7 @@ const UploadNFt = () => {
             </div>
           </form>
         </div>
+        {/* <CreateNftForm /> */}
       </section>
 
      

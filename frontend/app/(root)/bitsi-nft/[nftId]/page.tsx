@@ -26,7 +26,7 @@ const NFTId = ({ params , searchParams }: { params: { nftId: string} , searchPar
           <div className='md:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>
             <div className='flex justify-between items-center'>
               <h4 className='font-manrope font-semibold lg:text-[32px] max-md:text-[14px] md:text-[22px] text-success-513 '>Minions Serious EYE</h4>
-              <Image src='/icons/shrae-icon.svg' height={32} width={31.72} alt='Share' />
+              {/* <Image src='/icons/shrae-icon.svg' height={32} width={31.72} alt='Share' /> */}
             </div>
             <p className='text-success-516 text-[22px] text-opacity-40 max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>Own a unique digital minion NFT! Each minion comes with distinct traits and exclusive artwork, making it a one-of-a-kind collectible on the blockchain.</p>
             <div className='flex justify-between md:mt-8 max-md:mt-4'>
