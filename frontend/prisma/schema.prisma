@@ -1,0 +1,42 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Nft{
+  id                   Int      @id @default(autoincrement())
+  nft_name             String       
+  nft_price            Float
+  nft_image            String
+  nft_collection_name  String
+  nft_collection_id    Int
+  nft_royalties        Float
+  nft_description      Bytes
+  nft_owner_address    String
+  nft_creator_address  String
+  nft_mint_time        DateTime
+  is_admin_minted      Boolean
+  nft_liked            Int?
+  is_insured           Boolean
+  events               Nft_events[]
+}
+
+model Nft_events {
+  id        Int      @id @default(autoincrement())
+  s_no      Int
+  nft_event String
+  nft_price Float
+  from      String
+  to        String
+  time      DateTime
+  nftId     Int
+  nft       Nft      @relation(fields: [nftId], references: [id])
+
+  @@index([nftId])
+  
+}
