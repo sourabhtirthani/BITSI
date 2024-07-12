@@ -16,10 +16,10 @@ model Nft{
   nft_collection_name  String
   nft_collection_id    Int
   nft_royalties        Float
-  nft_description      String?
+  nft_description      String  @default("no description provided")
   nft_owner_address    String
   nft_creator_address  String
-  nft_mint_time        DateTime
+  nft_mint_time        DateTime @default(now())
   is_admin_minted      Boolean
   nft_liked            Int?
   is_insured           Boolean
