@@ -176,137 +176,121 @@ export const newBitsiNftDropDownItems = [
 export const listOfNFts = [
     {
         id: '1',
-        name : 'Girl looking',
-        price : 1,
-        checked : false,
-        nftImg : '/icons/nft-girl-looking.svg',
-        category : 'luxury'
+        nft_name : 'Girl looking',
+        nft_price : 1,
+        nft_image : '/icons/nft-girl-looking.svg',
+        nft_collection_name : 'luxury'
 
     },
     {
         id : '2',
-        name : 'Wide Eyes',
-        price : 10,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'good'
+        nft_name : 'Wide Eyes',
+        nft_price : 10,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'good'
     },
     {
         id : '3',
-        name : 'HandGradient',
-        price : 2,
-        checked : false,
-        nftImg : '/icons/nft-hand-gradient.svg',
-        category : 'prestigious'
+        nft_name : 'HandGradient',
+        nft_price : 2,
+        nft_image : '/icons/nft-hand-gradient.svg',
+        nft_collection_name : 'prestigious'
     },
     {
         id : '4',
-        name : 'Statue',
-        price : 22,
-        checked : true,
-        nftImg : '/icons/nft-statue.svg',
-        category : 'prestigious'
+        nft_name : 'Statue',
+        nft_price : 22,
+        nft_image : '/icons/nft-statue.svg',
+        nft_collection_name : 'prestigious'
     },{
         id : '5',
-        name : 'Wide Eyes',
-        price : 10,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'good'
+        nft_name : 'Wide Eyes',
+        nft_price : 10,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'good'
     },
     {
         id: '6',
-        name : 'Girl looking',
-        price : 1,
-        checked : false,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'luxury'
+        nft_name : 'Girl looking',
+        nft_price : 1,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'luxury'
 
     },
     
     {
         id : '7',
-        name : 'Sample Video',
-        price : 2,
-        checked : false,
-        nftImg : '/icons/nft-vid2.mp4',
-        category : 'prestigious'
+        nft_name : 'Sample Video',
+        nft_price : 2,
+        nft_image : '/icons/nft-vid2.mp4',
+        nft_collection_name : 'prestigious'
     },
     
     {
         id: '8',
-        name : 'Girl looking',
-        price : 1,
-        checked : false,
-        nftImg : '/icons/nft-girl-looking.svg',
-        category : 'luxury'
+        nft_name : 'Girl looking',
+        nft_price : 1,
+        nft_image : '/icons/nft-girl-looking.svg',
+        nft_collection_name : 'luxury'
 
     },{
         id : '9',
-        name : 'Statue',
-        price : 22,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'prestigious'
+        nft_name : 'Statue',
+        nft_price : 22,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'prestigious'
     },
     
     {
         id : '10',
-        name : 'HandGradient',
-        price : 2,
-        checked : false,
-        nftImg : '/icons/nft-hand-gradient.svg',
-        category : 'prestigious'
+        nft_name : 'HandGradient',
+        nft_price : 2,
+        nft_image : '/icons/nft-hand-gradient.svg',
+        nft_collection_name : 'prestigious'
     },
     {
         id : '11',
-        name : 'Statue',
-        price : 22,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'prestigious'
+        nft_name : 'Statue',
+        nft_price : 22,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'prestigious'
     },
     {
         id : '12',
-        name : 'Wide Eyes',
-        price : 10,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'good'
+        nft_name : 'Wide Eyes',
+        nft_price : 10,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'good'
     },
     {
         id: '13',
-        name : 'Girl looking',
-        price : 1,
-        checked : false,
-        nftImg : '/icons/nft-vid.mp4',
-        category : 'luxury'
+        nft_name : 'Girl looking',
+        nft_price : 1,
+        nft_image : '/icons/nft-vid.mp4',
+        nft_collection_name : 'luxury'
 
     },
     {
         id : '14',
-        name : 'HandGradient',
-        price : 2,
-        checked : false,
-        nftImg : '/icons/nft-hand-gradient.svg',
-        category : 'prestigious'
+        nft_name : 'HandGradient',
+        nft_price : 2,
+        nft_image : '/icons/nft-hand-gradient.svg',
+        nft_collection_name : 'prestigious'
     },
     {
         id : '15',
-        name : 'Wide Eyes',
-        price : 10,
-        checked : true,
-        nftImg : '/icons/nft-wide-eyes.svg',
-        category : 'good'
+        nft_name : 'Wide Eyes',
+        nft_price : 10,
+        nft_image : '/icons/nft-wide-eyes.svg',
+        nft_collection_name : 'good'
     },
     
     {
         id : '16',
-        name : 'Statue',
-        price : 22,
-        checked : true,
-        nftImg : '/icons/nft-vid3.mp4',
-        category : 'prestigious'
+        nft_name : 'Statue',
+        nft_price : 22,
+        nft_image : '/icons/nft-vid3.mp4',
+        nft_collection_name : 'prestigious'
     }
 
 ]

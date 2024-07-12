@@ -330,7 +330,7 @@ const UploadNFt = () => {
                   <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
                 </div>
                 <div className="self-center">
-                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold  py-4 px-28 text-[22px] font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
+                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold min-w-[350px] py-4 px-28 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
                 </div>
               </div>
             </div>

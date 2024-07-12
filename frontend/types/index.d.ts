@@ -5,11 +5,10 @@ declare interface OurServicesProps {
 }
 declare type nftData ={
     id: string,
-    name : string,
-    price : number,
-    checked : boolean,
-    nftImg : string,
-    category : string
+    nft_name : string,
+    nft_price : number,
+    nft_image : string,
+    nft_collection_name : string
 }
 
 declare interface DropdownProps {
@@ -20,11 +19,10 @@ declare interface DropdownProps {
 
 declare interface NFTCardProps {
     id: string;
-    name: string
-    price: number
-    checked: boolean;
-    nftImg: string;
-    category: string;
+    nft_name: string
+    nft_price: number
+    nft_image: string;
+    nft_collection_name: string;
     setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
     checkedItems: string[];
 

@@ -19,8 +19,8 @@ import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 // import PopOver from '@/components/PopOver';
 
 const BitsiNft = () => {
-  const [filteredLstOfNftsDialog, setFilteredListOfnftsDialog] = useState(listOfNFts);
-  const [filteredLstOfNfts, setFilteredListOfnfts] = useState(listOfNFts);
+  const [filteredLstOfNftsDialog, setFilteredListOfnftsDialog] = useState<nftData[]>([]);
+  const [filteredLstOfNfts, setFilteredListOfnfts] = useState<nftData[]>([]);
   const [searchValueComplete , setSearchValueComplete] = useState('')
   // const [inputSearchValue , setInputSearchValue] = useState('');
   const { toast } = useToast()
@@ -39,6 +39,17 @@ const BitsiNft = () => {
   // const { query } = router;
   const initialCheckedItems: { [key: string]: boolean } = {};
 
+  const getData = async()=>{
+    const res= await fetch("http://localhost:3000/api/nfts");
+    const data: { nfts: nftData[] } = await res.json();
+    setNftList(data.nfts);
+  setFilteredListOfnfts(data.nfts);
+  setFilteredListOfnftsDialog(data.nfts)
+  }
+  useEffect(()=>{
+    getData();
+
+  }, [])
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -86,32 +97,32 @@ const BitsiNft = () => {
   // }
 
   useEffect(() => {
-    let updatedFilteredList = listOfNFts;
+    let updatedFilteredList = [...nftList];
   
     if (collectionFilter !== '') {
       updatedFilteredList = updatedFilteredList.filter(nft =>
-        nft.category.toLowerCase() === collectionFilter.toLowerCase()
+        nft.nft_collection_name.toLowerCase() === collectionFilter.toLowerCase()
       );
     }
   
     if (priceFilter !== '') {
       if (priceFilter === 'Low to High') {
-        updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.price - b.price);
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_price - b.nft_price);
       } else if (priceFilter === 'High to Low') {
-        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.price - a.price);
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_price - a.nft_price);
       }
     }
   
     if (searchValueComplete !== '') {
       updatedFilteredList = updatedFilteredList.filter(nft =>
-        nft.name.toLowerCase().includes(searchValueComplete.toLowerCase())
+        nft.nft_name.toLowerCase().includes(searchValueComplete.toLowerCase())
       );
     }
     if(orderFilter !== ''){
       if(orderFilter == 'Asc Order'){
-      updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.name.localeCompare(b.name));
+      updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_name.localeCompare(b.nft_name));
       }else if(orderFilter == 'Desc Order'){
-        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.name.localeCompare(a.name));
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_name.localeCompare(a.nft_name));
         }
     }
   
@@ -145,8 +156,8 @@ const BitsiNft = () => {
     setOpenAutoCompleteDialog(true);
     // console.log(searchValue)
     if (searchValue !== '') {
-      setFilteredListOfnftsDialog(listOfNFts.filter(nftData =>
-        nftData.name.toLowerCase().includes(searchValue.toLowerCase())
+      setFilteredListOfnftsDialog(nftList.filter(nftData =>
+        nftData.nft_name.toLowerCase().includes(searchValue.toLowerCase())
       ));
     }
     // else if (searchValue == '') {
@@ -213,9 +224,9 @@ const BitsiNft = () => {
               <div className=' p-3 flex flex-col bg-white rounded-xl rounded-tl-none absolute   z-50 w-[353px] max-h-[200px] overflow-y-auto table-body max-sm:w-[200px]  '>
                 {filteredLstOfNftsDialog.length > 0 && filteredLstOfNftsDialog.map((item, index) => {
                   return (
-                    <div className='cursor-pointer flex hover:bg-success-509 gap-4' key={index} onClick={() => { handleAutoCompleteClick(item.name) }}>
+                    <div className='cursor-pointer flex hover:bg-success-509 gap-4' key={index} onClick={() => { handleAutoCompleteClick(item.nft_name) }}>
                       {/* <Image src={item.nftImg} height={15} width={15} alt='image' /> */}
-                      <p className='font-bold font-manrope text-black'>{item.name}</p>
+                      <p className='font-bold font-manrope text-black'>{item.nft_name}</p>
                     </div>
                   )
                 })}
