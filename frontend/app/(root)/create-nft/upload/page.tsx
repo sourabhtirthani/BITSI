@@ -178,6 +178,7 @@ const UploadNFt = () => {
     }
   }catch(error){
     console.log('in here in the error clasue')
+    console.log(error)
     toast({
       title: "Operation Failed",
       description: "Failed to upload NFT. Please try again later.",
