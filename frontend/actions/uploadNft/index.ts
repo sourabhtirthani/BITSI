@@ -73,6 +73,7 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
           return { success: true, id: nft.id };
     } catch (error) {
         console.log('in here in the error clause at line 68');
+        console.log(error);
         return { error: 'Error occured' }
     }
 }
