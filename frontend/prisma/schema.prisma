@@ -16,7 +16,7 @@ model Nft{
   nft_collection_name  String
   nft_collection_id    Int
   nft_royalties        Float
-  nft_description      Bytes
+  nft_description      String?
   nft_owner_address    String
   nft_creator_address  String
   nft_mint_time        DateTime

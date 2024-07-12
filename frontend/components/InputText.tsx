@@ -9,7 +9,7 @@ import { InputTextProps } from "@/types";
         type={type}
         name={name}
         placeholder={placeHolder}
-        {...(id === 'royalties' ? { step: step } : {})}
+        {...((id === 'royalties' || id === 'price') ? { step: step } : {})}
       />
     );
   }

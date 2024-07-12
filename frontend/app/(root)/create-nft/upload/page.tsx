@@ -1,5 +1,5 @@
 'use client'
-import { serAct } from '@/actions/uploadNft'
+import { uploadNftAction } from '@/actions/uploadNft'
 import Button from '@/components/Button'
 import { CollectionCombobox } from '@/components/CollectionCombobox'
 // import CreateNftForm from '@/components/CreateNftForm'
@@ -16,6 +16,7 @@ import { useDropzone } from 'react-dropzone';
 import Checkbox from "@/components/Checkbox1"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
+import { useToast } from "@/components/ui/use-toast"
 // import * as z from "zod";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from '@hookform/resolvers/zod'
@@ -29,6 +30,7 @@ const UploadNFt = () => {
   //   resolver: zodResolver(uploadNftformSchema)
   // });
   const { push } = useRouter();
+  const { toast } = useToast()
   const [errorMessageName, setErrorMessageName] = useState('');
   const [errorMessageCollection, setErrorMessageCollection] = useState('');
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
@@ -40,6 +42,8 @@ const UploadNFt = () => {
   const [collection, setColleciton] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData1, setFormData1] = useState<FormData | null>(null);
+  const [previewTemp , SetPrivewTemp] = useState('/icons/default-nft-preview.png')
+  const [isLoading , setIsLoading] = useState(false);
 
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,9 +52,10 @@ const UploadNFt = () => {
 
     if (file) {
       const fileReader = new FileReader();
-
+      const imgURL = URL.createObjectURL(file);  // one way to preview image
+      SetPrivewTemp(imgURL)
       fileReader.onload = () => {
-        if (typeof fileReader.result === 'string') {  //conditional for string
+        if (typeof fileReader.result === 'string') {  // second way to preview image..both preview and previewTemp holds the preview of the image
           setPreview(fileReader.result);
         }
       };
@@ -83,15 +88,12 @@ const UploadNFt = () => {
     const formData = new FormData(form);
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
-    console.log(form)
-    console.log('in here ');
-
     console.log(formData.get('collection'))
     console.log(formData.get('royalties'))
     if (!file) {
       console.log('in here first')
       setErrorMessageNftFile('Please Upload A file to Proceed');
-      return;
+      // return;
 
     } else {
       setErrorMessageNftFile('');
@@ -99,7 +101,7 @@ const UploadNFt = () => {
     if (!formData.get('name')) {
       console.log('in here second')
       setErrorMessageName('Name must be filed');
-      return
+      // return
 
     } else {
       setErrorMessageName('')
@@ -107,27 +109,26 @@ const UploadNFt = () => {
     if (!formData.get('collection')) {
       console.log('in here third')
       setCollectionErrorMessage('Please fill in the collection name');
-      return;
+      // return;
     } else {
       setCollectionErrorMessage('');
     } if (!formData.get('price')) {
       console.log('in here fourth')
       setPriceErrorMessage('Please Enter Price');
-      return;
+      // return;
     } else {
       setPriceErrorMessage('');
     } if (!formData.get('royalties')) {
       console.log('in here royal')
       setRoyaltiesnErrorMessage('Please Enter Royality');
-      return;
+      // return;
     } else {
       setRoyaltiesnErrorMessage('');
     }
 
-    // if (!errorMessageName || !errorMessageCollection || !errorMessageNftFile ||  !priceErrorMessage) {
-    //   console.log('in here returning withut any code executin')
-    //   return;
-    // }
+    if (!formData.get('royalties') || !file || !formData.get('name') ||  !formData.get('collection') || !formData.get('price')) {
+      return;
+    }
 
     console.log(file);
     setFormData1(formData);
@@ -144,11 +145,51 @@ const UploadNFt = () => {
   }
 
   const handleMintNft = async () => {
-    const response = await serAct(formData1);
+    try{
+      setIsLoading(true);
+      console.log('in here in the handlemintnft funcitno')
+    const response = await uploadNftAction(formData1);
+    setIsLoading(false);
     console.log('in here')
     if ('success' in response && response.success) {
+      toast({
+        title: "Operation Success",
+        description: "Your NFT has been successfully minted.",
+        duration: 2000,
+        style: {
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          fontFamily: 'Manrope',
+        },
+      })
       push('/bitsi-nft');
     }
+    else if('error' in response && response.error) {
+      toast({
+        title: "Operation Failed",
+        description: response.error,
+        duration: 2000,
+        style: {
+          backgroundColor: '#900808',
+          color: 'white',
+          fontFamily: 'Manrope',
+        },
+      })
+    }
+  }catch(error){
+    console.log('in here in the error clasue')
+    toast({
+      title: "Operation Failed",
+      description: "Failed to upload NFT. Please try again later.",
+      duration: 2000,
+      style: {
+        backgroundColor: '#900808',
+        color: 'white',
+        fontFamily: 'Manrope',
+      },
+    })
+    console.log('error')
+  }
   }
   return (
     <>
@@ -197,7 +238,7 @@ const UploadNFt = () => {
                   <p className='text-white font-montserrat text-[22px] font-semibold'>Preview here</p>
                   <p className='text-white font-montserrat text-[22px] font-thin text-opacity-66'>Uploaded pic will be shown here</p>
                   <div className=' p-2 max-w-[570px] max-h-[262px] bg-success-503 secondary-shadow11 rounded-xl flex items-center justify-center'>
-                    <Image src={preview} height={229} width={521} alt='image' className='max-w-full max-h-full overflow-hidden' />
+                    <Image src={previewTemp} height={229} width={521} alt='image' className='max-w-full max-h-full overflow-hidden' />
                   </div>
                 </div>
               </div>
@@ -210,7 +251,7 @@ const UploadNFt = () => {
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
-                  <InputText id='price' name='price' type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
+                  <InputText id='price' name='price' step="0.01" type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
                   {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}
                 </FormRow>
               </div>
@@ -289,7 +330,7 @@ const UploadNFt = () => {
                   <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
                 </div>
                 <div className="self-center">
-                  <button onClick={handleMintNft} className="font-montserrat text-white font bold bg-nft-text-gradient py-4 px-28 text-[22px] font-bold rounded-xl ">Buy</button>
+                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold  py-4 px-28 text-[22px] font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
                 </div>
               </div>
             </div>
