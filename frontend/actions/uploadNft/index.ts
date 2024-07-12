@@ -7,6 +7,7 @@ import db from "@/db";
 // import { randomBytes } from 'crypto';
 import cloudinary from "@/lib/cloudinary";
 import { uploadImage } from "@/lib/uploadToCloud";
+import { revalidatePath } from 'next/cache'
 // import formidable from 'formidable';
 
 
@@ -106,6 +107,7 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
               id: true,
             },
           });
+          revalidatePath('/api/nfts');
           return { success: true, id: nft.id };
     } catch (error) {
         console.log('in here in the error clause at line 68');
