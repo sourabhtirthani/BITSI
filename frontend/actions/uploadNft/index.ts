@@ -48,9 +48,9 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
         // const currentDirectory = process.cwd();
         //     console.log(currentDirectory);
         // await fs.writeFileSync(`${process.cwd()}/public/uploads/${fileName}` , Buffer.from(data1));
-        const filePath = path.resolve('public/uploads', fileName);
+        const filePath = path.resolve('./public/tmp', fileName);
         fs.writeFileSync(filePath, Buffer.from(data1));
-        const nftImageUrl = `/uploads/${fileName}`;
+        const nftImageUrl = `/tmp/${fileName}`;
         const nft = await db.nft.create({
             data: {
               nft_name: name,
