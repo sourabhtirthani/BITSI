@@ -150,6 +150,9 @@ const UploadNFt = () => {
       console.log('in here in the handlemintnft funcitno')
     const response = await uploadNftAction(formData1);
     setIsLoading(false);
+    if (!response) {
+      throw new Error('No response from uploadNftAction');
+    }
     console.log('in here')
     if ('success' in response && response.success) {
       toast({
@@ -331,7 +334,7 @@ const UploadNFt = () => {
                   <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
                 </div>
                 <div className="self-center">
-                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold min-w-[350px] py-4 px-28 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
+                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold sm:min-w-[350px] py-4 sm:px-28 max-sm:px-14 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
                 </div>
               </div>
             </div>
