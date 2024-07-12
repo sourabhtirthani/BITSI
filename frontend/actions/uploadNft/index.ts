@@ -1,10 +1,15 @@
 'use server'
 import db from "@/db";
-import fs from 'fs/promises';
-import path from 'path';
-import { Readable } from 'stream';
-import { pipeline } from 'stream/promises'; 
-import { randomBytes } from 'crypto';
+// import fs from 'fs/promises';
+// import path from 'path';
+// import { Readable } from 'stream';
+// import { pipeline } from 'stream/promises'; 
+// import { randomBytes } from 'crypto';
+import cloudinary from "@/lib/cloudinary";
+import { uploadImage } from "@/lib/uploadToCloud";
+// import formidable from 'formidable';
+
+
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
 export const uploadNftAction = async (formdata: FormData | null): Promise<uploadNFtTyp> => {
@@ -32,8 +37,8 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
             return {error : "Please fill in all the details"}
         }
         // const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-        const randomString = randomBytes(8).toString('hex');
-        const fileName = `${Date.now()}_${randomString}_${nftFile.name}`;
+        // const randomString = randomBytes(8).toString('hex');
+        // const fileName = `${Date.now()}_${randomString}_${nftFile.name}`;
         // const filePath = path.join(uploadsDir, fileName);
 
         // if (!fs.existsSync(uploadsDir)) {
@@ -44,7 +49,7 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
 
         // const fileStream = fs.createWriteStream(filePath);
         //  pipeline(readableStream, fileStream);
-        const data1 = await nftFile.arrayBuffer();
+        // const data1 = await nftFile.arrayBuffer();
         // const currentDirectory = process.cwd();
         //     console.log(currentDirectory);
         // await fs.writeFileSync(`${process.cwd()}/public/uploads/${fileName}` , Buffer.from(data1));
@@ -53,10 +58,34 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
         // fs.writeFileSync(filePath, Buffer.from(data1));
         // const nftImageUrl = `/uploads/${fileName}`;
 
-        const filePath = path.join('/' , 'tmp' , fileName);
-        await fs.writeFile(filePath ,Buffer.from(data1));
-        const nftImageUrl = filePath;
-        console.log(nftImageUrl)
+        // const filePath = path.join('/' , 'tmp' , fileName);
+        // await fs.writeFile(filePath ,Buffer.from(data1));
+        // const nftImageUrl = filePath;
+        // const fileReader = new FileReader();
+        
+        // const filePromise = new Promise<string>((resolve, reject) => {
+        //     fileReader.onloadend = () => resolve(fileReader.result as string);
+        //     fileReader.onerror = () => reject(fileReader.error);
+        //     fileReader.readAsDataURL(nftFile);
+        // });
+        // const fileBase64 = await filePromise;
+
+        // const form = new formidable.IncomingForm();
+
+      //   const uploadResponse = await cloudinary.uploader.upload(fileBase64, {
+      //     folder: 'uploads',
+      // });
+      // const buffer = await nftFile.arrayBuffer();
+      // const bytes  = Buffer.from(buffer);
+      // const res = await cloudinary.uploader.upload_stream({
+      //   resource_type : 'auto',
+      //   folder : 'uploads',
+
+      // }).end(bytes);
+      const res : any = await uploadImage(nftFile , 'uploads');
+      console.log(res)
+      const nftImageUrl = res?.secure_url;
+      // const nftImageUrl = 'bacd'
         const nft = await db.nft.create({
             data: {
               nft_name: name,

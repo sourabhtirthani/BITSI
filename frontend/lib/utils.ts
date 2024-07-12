@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 
 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -36,3 +37,5 @@ export const uploadNftformSchema  = z.object({
   royalties: z.string().min(1, { message: 'Royalties are required' }),
   description: z.string().optional()
 });
+
+
