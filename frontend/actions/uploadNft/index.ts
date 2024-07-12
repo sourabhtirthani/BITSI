@@ -1,6 +1,6 @@
 'use server'
 import db from "@/db";
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises'; 
@@ -48,9 +48,15 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
         // const currentDirectory = process.cwd();
         //     console.log(currentDirectory);
         // await fs.writeFileSync(`${process.cwd()}/public/uploads/${fileName}` , Buffer.from(data1));
-        const filePath = path.resolve('./public/tmp', fileName);
-        fs.writeFileSync(filePath, Buffer.from(data1));
-        const nftImageUrl = `/tmp/${fileName}`;
+        
+        // const filePath = path.resolve('public/uploads', fileName);
+        // fs.writeFileSync(filePath, Buffer.from(data1));
+        // const nftImageUrl = `/uploads/${fileName}`;
+
+        const filePath = path.join('/' , 'tmp' , fileName);
+        await fs.writeFile(filePath ,Buffer.from(data1));
+        const nftImageUrl = filePath;
+        console.log(nftImageUrl)
         const nft = await db.nft.create({
             data: {
               nft_name: name,
