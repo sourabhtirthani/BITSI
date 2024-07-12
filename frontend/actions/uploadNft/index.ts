@@ -31,24 +31,21 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
             console.log('in here in the insufficent data proveded clause')
             return {error : "Please fill in all the details"}
         }
-        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+        // const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
         const randomString = randomBytes(8).toString('hex');
         const fileName = `${Date.now()}_${randomString}_${nftFile.name}`;
-        const filePath = path.join(uploadsDir, fileName);
+        // const filePath = path.join(uploadsDir, fileName);
 
-        if (!fs.existsSync(uploadsDir)) {
-            fs.mkdirSync(uploadsDir, { recursive: true });
-        }
+        // if (!fs.existsSync(uploadsDir)) {
+        //     fs.mkdirSync(uploadsDir, { recursive: true });
+        // }
 
-        const readableStream = Readable.fromWeb(nftFile.stream() as any);
+        // const readableStream = Readable.fromWeb(nftFile.stream() as any);
 
-        const fileStream = fs.createWriteStream(filePath);
-        // readableStream.pipe(fileStream);
-        // await new Promise((resolve, reject) => {
-        //     fileStream.on('finish', resolve);
-        //     fileStream.on('error', reject);
-        // });
-         pipeline(readableStream, fileStream);
+        // const fileStream = fs.createWriteStream(filePath);
+        //  pipeline(readableStream, fileStream);
+        const data1 = await nftFile.arrayBuffer();
+         await fs.writeFileSync(`${process.cwd()}/public/uploads/${fileName}` , Buffer.from(data1));
         const nftImageUrl = `/uploads/${fileName}`;
         const nft = await db.nft.create({
             data: {
