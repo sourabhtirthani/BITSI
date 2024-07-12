@@ -26,7 +26,7 @@ const BitsiNft = () => {
   const { toast } = useToast()
   const menuRef = useRef<HTMLDivElement>(null)
   const [opennAutoCompleteDialog, setOpenAutoCompleteDialog] = useState(false)
-  const [nftList, setNftList] = useState<nftData[]>(listOfNFts);
+  const [nftList, setNftList] = useState<nftData[]>([]);
   const [searchValue, setSearchValue] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [priceFilter, setPriceFilter] = useState('');
@@ -40,7 +40,7 @@ const BitsiNft = () => {
   const initialCheckedItems: { [key: string]: boolean } = {};
 
   const getData = async()=>{
-    const res= await fetch("http://localhost:3000/api/nfts");
+    const res= await fetch("/api/nfts");
     const data: { nfts: nftData[] } = await res.json();
     setNftList(data.nfts);
   setFilteredListOfnfts(data.nfts);
