@@ -48,7 +48,7 @@ import { nftData } from "@/types";
         if (searchValue !== '') {
             
           filteredLstOfNfts = listOfNFts.filter(nfts => 
-              nfts.name.toLowerCase().includes(searchValue.toLowerCase())
+              nfts.nft_name.toLowerCase().includes(searchValue.toLowerCase())
           );
         }
         else if(searchValue == ''){
@@ -81,7 +81,7 @@ import { nftData } from "@/types";
             {listOfNFts.map((item , index)=>{
                 return (
                     <CommandItem  key={index} className=" hover:bg-red-500">
-                        <span  onClick={handleItemClick}>{item.name}</span>
+                        <span  onClick={handleItemClick}>{item.nft_name}</span>
                     </CommandItem>
                 )
             })}

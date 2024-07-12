@@ -18,7 +18,7 @@ const PopOver = ({ filteredLstOfNfts, listOfNFts }  : {filteredLstOfNfts : nftDa
         <div className='absolute bg-white rounded-xl shadow-lg z-50 mt-2 h-[200px] w-[353px] overflow-y-auto max-sm:w-[200px]'>
           {listOfNFts.map((item, index) => (
             <div className='cursor-pointer hover:bg-red-300' key={index}>
-              <p className='text-black'>{item.name}</p>
+              <p className='text-black'>{item.nft_name}</p>
             </div>
           ))}
         </div>

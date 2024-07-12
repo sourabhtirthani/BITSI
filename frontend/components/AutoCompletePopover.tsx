@@ -60,7 +60,7 @@ export function AutoCOmpletePopover({filteredLstOfNfts , listOfNFts} : {filtered
             {listOfNFts.map((item , index)=>{
                 return (
                     <CommandItem  key={index} className=" hover:bg-red-500">
-                        <span  >{item.name}</span>
+                        <span  >{item.nft_name}</span>
                     </CommandItem>
                 )
             })}
