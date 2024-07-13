@@ -115,3 +115,15 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
         return { error: 'Error occured' }
     }
 }
+
+
+export const getNftWithIdAction = async(nftId : string)=>{
+  try{
+    const record = await db.nft.findUnique({
+      where : {id : parseInt(nftId)}
+    })
+    return {record}
+  }catch(error){
+    return {error : 'error occured while fetching data'}
+  }
+}
