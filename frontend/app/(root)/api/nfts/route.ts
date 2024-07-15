@@ -11,7 +11,7 @@ export async function GET(){
             nft_price : true,
             nft_image : true,
             nft_collection_name : true,
-            
+            nft_mint_time : true
         },
     });
     return NextResponse.json({

@@ -35,7 +35,9 @@ const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , 
         ))} */}
         <div className="max-h-[240px] overflow-y-auto table-body">
         <CollapsibleBitsiNft btnName="Colleciton" items={itemsCol} setValue={setCol}  />
+        <hr className="mt-1 border-success-527 ml-2 mr-2"/>
         <CollapsibleBitsiNft btnName="Order" items={itemsOrder} setValue={setOrd}  />
+        <hr className="mt-1 border-success-527 ml-2 mr-2"/>
         <CollapsibleBitsiNft btnName="Price" items={itemsPrice} setValue={setPrice}  /></div>
       </DropdownMenuContent>
     </DropdownMenu>

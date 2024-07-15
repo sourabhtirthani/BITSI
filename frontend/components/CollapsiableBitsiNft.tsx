@@ -23,8 +23,8 @@ export function CollapsibleBitsiNft({items , btnName , setValue } : { items: Dro
       onOpenChange={setIsOpen}
       className=" space-y-2"
     >
-        <div className="flex items-center justify-between space-x-4 px-4">
-        <h4 className="text-sm font-semibold">
+        <div className="flex items-center justify-between space-x-4 px-4 ">
+        <h4 className="text-[20px] font-semibold ">
          {btnName}
         </h4>
         <CollapsibleTrigger asChild>
@@ -35,12 +35,12 @@ export function CollapsibleBitsiNft({items , btnName , setValue } : { items: Dro
         </CollapsibleTrigger>
       </div>
       
-      <CollapsibleContent className="space-y-2">
+      <CollapsibleContent className="space-y-2 ">
       {items.map((item) => (
-          <div key={item.id} className="flex gap-2">
-            <div className="hover:bg-gray-500 flex gap-2 px-2">
+          <div key={item.id} className="flex gap-2 hover:bg-gray-800 hover:rounded-2xl hover:text-white">
+            <div className=" flex gap-2 px-2">
             <Image src={item.icon} height={20} width={20} alt='logo' />
-            <span onClick = {()=>{handleClick(item.name)}}>{item.name}</span></div>
+            <span className="text-[13px] cursor-pointer" onClick = {()=>{handleClick(item.name)}}>{item.name}</span></div>
           </div>
         ))}
       </CollapsibleContent>

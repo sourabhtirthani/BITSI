@@ -9,6 +9,7 @@ declare type nftData ={
     nft_price : number,
     nft_image : string,
     nft_collection_name : string
+    nft_mint_time : Date
 }
 
 declare interface DropdownProps {
