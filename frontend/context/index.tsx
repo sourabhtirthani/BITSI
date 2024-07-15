@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { State, WagmiProvider } from 'wagmi'
 
-// Setup queryClient
+
 const queryClient = new QueryClient()
 
 if (!projectId) throw new Error('Project ID is not defined')
@@ -18,8 +18,8 @@ if (!projectId) throw new Error('Project ID is not defined')
 createWeb3Modal({
   wagmiConfig: config,
   projectId,
-  enableAnalytics: true, // Optional - defaults to your Cloud configuration
-  enableOnramp: true // Optional - false as default
+  enableAnalytics: true, 
+  enableOnramp: true 
 })
 
 export default function Web3ModalProvider({
