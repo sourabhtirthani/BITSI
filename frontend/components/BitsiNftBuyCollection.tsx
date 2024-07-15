@@ -21,10 +21,10 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
       
       <div className='relative'>
       <Image src= {imgSource} height={546} width={604} alt='NFT IMAGE' />
-      <div className='absolute rounded-full ml-4 w-full max-w-[300px] secondary-shadow11 items-center px-4 bg-gray-500 bg-opacity-45 flex bottom-3 py-2 justify-between'>
+      <div className='absolute rounded-full ml-4 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex bottom-3 py-2 justify-between'>
         <div className='flex flex-col items-center'>
-          <p className='font-manrope text-white text-[20px] '>4.25 ETH</p>
-          <p className='text-white text-opacity-50 text-[14px] font-manrope'>Floor Price</p>
+          <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>4.25 ETH</p>
+          <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Floor Price</p>
         </div>
         <div className='bg-success-511 rounded-full p-2'>
         <Image src = '/icons/price-buy-col.svg' height={50} width={50} alt='icon'  /></div>
@@ -33,7 +33,10 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
     </div>
     <div className='lg:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>
       <div className='flex justify-between items-center'>
+        <div className='flex flex-col gap-0'>
         <h4 className='font-manrope font-semibold lg:text-[32px] max-md:text-[14px] md:text-[22px] text-success-513 '>Minions Serious EYE</h4>
+        <p className='text-white text-opacity-70 text-[22px] font-manrope font-semibold'>Collection - Luxury</p>
+        </div>
           <Image src='/icons/mdi_delete.svg' height={32} width={31.72} alt='Share' />
       </div>
       <p className='text-success-516 text-[22px] text-opacity-40 max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>Own a unique digital minion NFT! Each minion comes with distinct traits and exclusive artwork, making it a one-of-a-kind collectible on the blockchain.</p>
@@ -53,26 +56,25 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
           </div>
         </div>
       </div> */}
-      <div className='mt-8 max-md:mt-3'>
+      {/* <div className='mt-8 max-md:mt-3'>
         <p className='text-success-513 font-semibold font-manrope text-[28px] max-md:text-[20px] mb-8 max-md:mb-4'>Properties</p>
         <div className='flex gap-4 max-md:grid max-md:grid-cols-2 md:mb-6 max-md:mb-3 items-center '>
-          {/* <div className='md:w-[264px] bg-success-512  rounded-xl secondary-shadow11 p-2 hover:bg-success-509'>
+          <div className='md:w-[264px] bg-success-512  rounded-xl secondary-shadow11 p-2 hover:bg-success-509'>
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]' >Royalities</p>
             <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent font-montserrat text-[22px] max-md:text-[14px]'>35%</p>
-          </div> */}
+          </div>
           <div className='md:w-[264px] bg-success-512  rounded-xl secondary-shadow11 p-3 hover:bg-success-509'>
             <p className='font-montserrat text-white font-semibold text-[22px] max-md:text-[14px]'>Collection Name</p>
             <p className='bg-nft-text-gradient font-bold bg-clip-text text-transparent  font-montserrat text-[22px] max-md:text-[14px]'>Galaxy</p>
           </div>
-          {/* <div className="flex z-50 gap-4 items-center relative">
+          <div className="flex z-50 gap-4 items-center relative">
          
-          <CarouselPrevious className="bg-success-512 secondary-shadow11 border-none w-[48px] h-[48px] relative" />
-          <CarouselNext className="bg-success-512 secondary-shadow11 border-none w-[48px] h-[48px] relative" />
           
-          </div> */}
+          
+          </div>
         </div>
 
-      </div>
+      </div> */}
     </div>
   </div>
       <div className='flex items-center py-2 mb-4 justify-center gap-2'>

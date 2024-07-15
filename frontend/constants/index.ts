@@ -446,17 +446,17 @@ export const events = [
     {
         id: 1,
         name : 'Coins',
-        icon : '/icons/bitsi.svg'
+        icon : '/icons/home-nft-icon-bitsi.png'
     },
     {
         id: 2,
         name : 'NFT',
-        icon : '/icons/bitsi.svg'
+        icon : '/icons/bitsinft.svg'
     },
     {
         id: 3,
         name : 'Insurance',
-        icon : '/icons/bitsi.svg'
+        icon : '/icons/insurance.svg'
     }
   ]
 

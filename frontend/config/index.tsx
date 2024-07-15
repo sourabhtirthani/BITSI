@@ -9,14 +9,14 @@ export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 if (!projectId) throw new Error('Project ID is not defined')
 
 const metadata = {
-  name: 'Web3Modal',
-  description: 'Web3Modal Example',
+  name: 'BITSI',
+  description: 'Bitsi DAPP',
   url: 'https://web3modal.com', 
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
 
-const chains = [mainnet, sepolia] as const
+const chains = [mainnet, sepolia] as const   // test net 
 export const config = defaultWagmiConfig({
   chains,
   projectId,

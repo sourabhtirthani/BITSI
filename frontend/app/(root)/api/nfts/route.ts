@@ -14,7 +14,6 @@ export async function GET(){
             
         },
     });
-    console.log('Fetched NFTs:', nfts);
     return NextResponse.json({
         nfts 
     })

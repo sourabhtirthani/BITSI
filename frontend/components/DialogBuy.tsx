@@ -68,7 +68,7 @@ export function DialogBuy({totalItems , buttonName, showSelectedItem , nameOfCla
            </div>
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className=" py-0.5">
         </div>
       </DialogContent>
     </Dialog>

@@ -42,13 +42,13 @@ const BuyCollection = () => {
         </div>
         </div>
         <div className='p-8 mb-40 max-md:mb-20'>
-          <div className='flex   w-fit items-center sm:gap-32 max-sm:gap-20'>
+          <div className='flex   w-full items-center sm:gap-32 max-sm:gap-20'>
             <div className='flex flex-col justify-between'>
-              <p className='text-success-516 text-opacity-50  font-manrope text-[22px] max-md:text-[14px] font-semibold'>Total Price</p>
-              <p className='text-white font-montserrat text-[22px] max-md:text-[14px] font-bold'>10 BITSI</p>
+              <p className='text-success-516 text-opacity-50  font-manrope text-[22px] max-md:text-[18px] font-semibold'>Total&nbsp;Price</p>
+              <p className='text-white font-montserrat text-[22px] max-md:text-[18px] font-bold'>10&nbsp;BITSI</p>
             </div>
             {/* <button className='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl'>Buy</button> */}
-            <DialogBuy totalItems={ids?.length} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
+            <DialogBuy totalItems={ids?.length} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
           </div>
         </div>
 
