@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 
 export async function GET(){
-
+    try{
     const nfts = await prisma.nft.findMany({
         select: {
             id: true,
@@ -14,7 +14,14 @@ export async function GET(){
             
         },
     });
+    console.log('Fetched NFTs:', nfts);
     return NextResponse.json({
         nfts 
     })
+}catch(error){
+    console.log('error clause');
+    return NextResponse.json({
+        error : 'Inernal server error' 
+    })
+}
 }

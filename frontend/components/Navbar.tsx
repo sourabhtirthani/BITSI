@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import Link from 'next/link';
 import MobileNav from './MobileNav';
 import DropdownNav from './DropdownNav';
+import { useSDK, MetaMaskProvider } from "@metamask/sdk-react";
+import { ConnectWalletButton } from './ConnectWalletbutton';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +13,19 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const host =
+    typeof window !== "undefined" ? window.location.host : "defaultHost";
+
+  const sdkOptions = {
+    logging: { developerMode: false },
+    checkInstallationImmediately: false,
+    dappMetadata: {
+      name: "Next-Metamask-Boilerplate",
+      url: host, // using the host constant defined above
+    },
+  };
+
   return (
     <nav className='navbar w-full max-w-[3000px]'>
         <div className='flex items-center '>
@@ -22,7 +37,7 @@ const Navbar = () => {
     <Image src = '/icons/animate-star.gif' height={30} width={30} alt ='sd' className='absolute mt-10 ml-16 max-md:mt-8 max-md:ml-1' />
     <Image src = '/icons/animate-star.gif' height={30} width={30} alt ='sd' className='absolute mt-7 mr-10 max-md:hidden' />
     <Image src = '/icons/animate-star.gif' height={40} width={40} alt ='sd' className='absolute ml-[25px] mb-[30px] max-md:ml-[-10px] max-md:mb-[2px]' />
-    <div className="hidden md:flex space-x-8 ml-6 text-yellow-300 font-manrope gap-20 xl:text-lg lg:text-[15px] md:text-[12px] max-xl:gap-10 max-lg:gap-0">
+    <div className="hidden md:flex space-x-8  ml-3 text-yellow-300 font-manrope gap-20 xl:text-lg lg:text-[15px] md:text-[12px] max-xl:gap-7 max-lg:gap-0">
           <Link onClick={()=>{setSelectedComp('Home')}} href="/" className={`${selectedComp == 'Home' ? 'text-white' : 'text-yellow-300'} font-bold`}>Home</Link>
           <Link onClick={()=>{setSelectedComp('BitsiNft')}} href="/bitsi-nft" className={`${selectedComp == 'BitsiNft' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI NFT</Link>
           <Link onClick={()=>{setSelectedComp('BitsiCoin')}} href="/bitsi-coin" className={`${selectedComp == 'BitsiCoin' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI COIN</Link>
@@ -31,12 +46,15 @@ const Navbar = () => {
         </div>
     </div>
     <div className="flex flex-end ml-auto gap-1 md:px-4 max-md:p-2">
-        <button className="bg-white text-black px-4 py-2 xl:mr-6 rounded-full flex items-center max-md:mr-2 hover:bg-black duration-300">
-          {/* <img src="/images/wallet-icon.png" alt="Wallet" className="h-6 w-6 mr-2" /> */}
+        {/* <button className="bg-white text-black px-4 py-2 xl:mr-6 rounded-full flex items-center max-md:mr-2 hover:bg-black duration-300">
+         
           <span className='text-yellow-500 bg-curent flex items-center gap-1 '>
             <Image src = '/icons/wallet.svg' alt = 'wallet' height={34} width={34} className='max-md:h-[20px] max-md:w-[20px]' />
             Wallet</span>
-        </button>
+        </button> */}
+         <MetaMaskProvider debug={false} sdkOptions={sdkOptions}>
+          <ConnectWalletButton />
+        </MetaMaskProvider>
         {/* <Image src= '/icons/hamburger-icon.svg' height={28} width={28} alt='hamburger' className='max-md:hidden' /> */}
         <DropdownNav />
         <div className="md:hidden  h-8 w-8 p-1 text-white ">

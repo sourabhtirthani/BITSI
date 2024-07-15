@@ -10,10 +10,14 @@ import {
 import { DropdownProps } from "@/types";
 import Image from 'next/image'
 import Link from "next/link";
+// import { useSDK } from "@metamask/sdk-react";
+import { formatAddress } from "@/lib/utils";
 
 
 const DropdownNav = () => {
   const [kycValue ,setKycValue] = useState('pending');
+  // const {account , connected} = useSDK();
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,7 +38,7 @@ const DropdownNav = () => {
         <DropdownMenuItem className="flex  gap-2 bg-black " asChild>
 
           <Link href='/abcd' className="flex self-start gap-3 "><Image src='/icons/user-icon.svg' height={18} width={18} alt='user-icon' />
-            <p className="text-success-506 text-[14px] font-normal">0xb1..00eF</p></Link>
+            <p className="text-success-506 text-[14px] font-normal">connected</p></Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex  gap-2 bg-black" asChild>
 

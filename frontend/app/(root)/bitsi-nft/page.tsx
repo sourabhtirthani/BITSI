@@ -21,7 +21,7 @@ import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 const BitsiNft = () => {
   const [filteredLstOfNftsDialog, setFilteredListOfnftsDialog] = useState<nftData[]>([]);
   const [filteredLstOfNfts, setFilteredListOfnfts] = useState<nftData[]>([]);
-  const [searchValueComplete , setSearchValueComplete] = useState('')
+  const [searchValueComplete, setSearchValueComplete] = useState('')
   // const [inputSearchValue , setInputSearchValue] = useState('');
   const { toast } = useToast()
   const menuRef = useRef<HTMLDivElement>(null)
@@ -33,20 +33,24 @@ const BitsiNft = () => {
   const [collectionFilter, setCollectionFilter] = useState('');
   const [orderFilter, setOrderFilter] = useState('');
   const [checkedItems, setCheckeditems] = useState<string[]>([]);
-  
+
 
   const router = useRouter();
   // const { query } = router;
   const initialCheckedItems: { [key: string]: boolean } = {};
 
-  const getData = async()=>{
-    const res= await fetch("/api/nfts");
-    const data: { nfts: nftData[] } = await res.json();
-    setNftList(data.nfts);
-  setFilteredListOfnfts(data.nfts);
-  setFilteredListOfnftsDialog(data.nfts)
+  const getData = async () => {
+    try {
+      const res = await fetch("/api/nfts");
+      const data: { nfts: nftData[] } = await res.json();
+      setNftList(data.nfts);
+      setFilteredListOfnfts(data.nfts);
+      setFilteredListOfnftsDialog(data.nfts)
+    } catch (error) {
+      alert('error getting nfts from the db')
+    }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getData();
 
   }, [])
@@ -62,9 +66,9 @@ const BitsiNft = () => {
     };
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(priceFilter)
-  } , [priceFilter])
+  }, [priceFilter])
 
   // useEffect(()=>{
   //   // let updatedFilteredList = filteredLstOfNfts;
@@ -98,13 +102,13 @@ const BitsiNft = () => {
 
   useEffect(() => {
     let updatedFilteredList = [...nftList];
-  
+
     if (collectionFilter !== '') {
       updatedFilteredList = updatedFilteredList.filter(nft =>
         nft.nft_collection_name.toLowerCase() === collectionFilter.toLowerCase()
       );
     }
-  
+
     if (priceFilter !== '') {
       if (priceFilter === 'Low to High') {
         updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_price - b.nft_price);
@@ -112,20 +116,20 @@ const BitsiNft = () => {
         updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_price - a.nft_price);
       }
     }
-  
+
     if (searchValueComplete !== '') {
       updatedFilteredList = updatedFilteredList.filter(nft =>
         nft.nft_name.toLowerCase().includes(searchValueComplete.toLowerCase())
       );
     }
-    if(orderFilter !== ''){
-      if(orderFilter == 'Asc Order'){
-      updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_name.localeCompare(b.nft_name));
-      }else if(orderFilter == 'Desc Order'){
+    if (orderFilter !== '') {
+      if (orderFilter == 'Asc Order') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_name.localeCompare(b.nft_name));
+      } else if (orderFilter == 'Desc Order') {
         updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_name.localeCompare(a.nft_name));
-        }
+      }
     }
-  
+
     setFilteredListOfnfts(updatedFilteredList);
   }, [collectionFilter, priceFilter, searchValueComplete, orderFilter]);
 
@@ -152,7 +156,7 @@ const BitsiNft = () => {
   };
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-   await setSearchValue(e.target.value);
+    await setSearchValue(e.target.value);
     setOpenAutoCompleteDialog(true);
     // console.log(searchValue)
     if (searchValue !== '') {
@@ -161,7 +165,7 @@ const BitsiNft = () => {
       ));
     }
     // else if (searchValue == '') {
-      
+
     //   // setFilteredListOfnftsDialog(listOfNFts);
     //   // setPriceFilter(priceFilter);
     //   // setCollectionFilter(collectionFilter.toUpperCase());
@@ -170,7 +174,7 @@ const BitsiNft = () => {
   const handleAutoCompleteClick = (nameOfNft: string) => {
     setOpenAutoCompleteDialog(false)
     setSearchValue(nameOfNft);
-   
+
     //   setFilteredListOfnfts(listOfNFts.filter(nftData => 
     //     nftData.name.toLowerCase().includes(searchValue.toLowerCase())
     // ));
@@ -181,7 +185,7 @@ const BitsiNft = () => {
     //   nftData.name.toLowerCase().includes(searchValue.toLowerCase())
     // ));
     setSearchValueComplete(searchValue);
-   
+
   }
   return (
     <>
@@ -244,15 +248,15 @@ const BitsiNft = () => {
             {/* <Dropdown items={priceDropDownItems} buttonName='Price' setValue={setPriceFilter} /> */}
             {/* <Dropdown items={orderDropDownItem} buttonName='Order' setValue={setOrderFilter} /> */}
             {/* <Dropdown items={collectionDropDownItems} buttonName='Collections' setValue={setCollectionFilter} /> */}
-            <DropdownBitsiNFt itemsCol={collectionDropDownItems} itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems}   setCol={setCollectionFilter} setOrd={setOrderFilter} setPrice={setPriceFilter}  />
+            <DropdownBitsiNFt itemsCol={collectionDropDownItems} itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setCol={setCollectionFilter} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
         </div>
-          {/* {priceFilter && FilterButtonUI  />} */}
-          <div className='flex mt-4 gap-3 px-6 max-sm:px-4'>
-         {priceFilter &&  <FilterButtonUI stateVar={priceFilter} setStateVar={setPriceFilter} />}
-         {collectionFilter &&  <FilterButtonUI stateVar={collectionFilter} setStateVar={setCollectionFilter} />}
-         {orderFilter &&  <FilterButtonUI stateVar={orderFilter} setStateVar={setOrderFilter} />}
-         </div>
+        {/* {priceFilter && FilterButtonUI  />} */}
+        <div className='flex mt-4 gap-3 px-6 max-sm:px-4'>
+          {priceFilter && <FilterButtonUI stateVar={priceFilter} setStateVar={setPriceFilter} />}
+          {collectionFilter && <FilterButtonUI stateVar={collectionFilter} setStateVar={setCollectionFilter} />}
+          {orderFilter && <FilterButtonUI stateVar={orderFilter} setStateVar={setOrderFilter} />}
+        </div>
       </section>
 
       <section className='bg-success-503 '>
