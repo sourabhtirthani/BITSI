@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Manrope, Montserrat, Moon_Dance , Mulish , Poller_One } from "next/font/google";
 import "./globals.css";
+import { config } from '@/config'
+import Web3ModalProvider from '@/context'
+import { cookieToInitialState } from 'wagmi'
+import { headers } from 'next/headers'
 
 
 const inter = Inter({ subsets: ["latin"], variable : '--font-inter' });
@@ -52,11 +56,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable}`}>
         
-        {children}
+      <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         
         </body>
     </html>

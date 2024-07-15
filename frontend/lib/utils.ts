@@ -52,3 +52,4 @@ export const formatChainAsNum = (chainIdHex: string) => {
 export const formatAddress = (addr: string | undefined) => {
   return `${addr?.substring(0, 8)}...`;
 };
+// return `${addr?.substring(0, 6)}...${addr?.substring(addr.length - 4)}`; this is another way to format address

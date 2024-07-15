@@ -10,13 +10,23 @@ import {
 import { DropdownProps } from "@/types";
 import Image from 'next/image'
 import Link from "next/link";
-// import { useSDK } from "@metamask/sdk-react";
 import { formatAddress } from "@/lib/utils";
+import { useAccount } from "wagmi";
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 
 const DropdownNav = () => {
+  const {isConnected , address} = useAccount();
   const [kycValue ,setKycValue] = useState('pending');
-  // const {account , connected} = useSDK();
+
+  const { open } = useWeb3Modal();
+  const handleConnect = async () => {
+    try {
+      await open();
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+    }
+  };
   
   return (
     <DropdownMenu>
@@ -38,7 +48,7 @@ const DropdownNav = () => {
         <DropdownMenuItem className="flex  gap-2 bg-black " asChild>
 
           <Link href='/abcd' className="flex self-start gap-3 "><Image src='/icons/user-icon.svg' height={18} width={18} alt='user-icon' />
-            <p className="text-success-506 text-[14px] font-normal">connected</p></Link>
+            <p className="text-success-506 text-[14px] font-normal">{isConnected ? formatAddress(address) : 'Not connected'}</p></Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex  gap-2 bg-black" asChild>
 
@@ -57,8 +67,8 @@ const DropdownNav = () => {
         </DropdownMenuItem>
         <DropdownMenuItem className="flex  gap-2 bg-black" asChild>
 
-          <Link href='/abcd' className="flex self-start gap-3"><Image src='/icons/connect-icon.svg' height={18} width={18} alt='user-icon' />
-            <p className="text-success-506 text-[14px] font-normal">Connect</p></Link>
+          <div onClick={handleConnect}  className="flex self-start gap-3"><Image src={`${isConnected ? '/icons/disconnect-ison.svg' : '/icons/connect-icon.svg'}`} height={18} width={18} alt='user-icon' />
+            <p className="text-success-506 text-[14px] font-normal">{isConnected ? 'Disconnect' : 'Connect'}</p></div>
         </DropdownMenuItem>
 
       </DropdownMenuContent>
