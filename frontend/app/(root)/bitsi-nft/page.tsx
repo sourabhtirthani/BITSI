@@ -15,6 +15,7 @@ import { AutoComplete } from '@/components/AutoCompletebar';
 import { nftData } from '@/types';
 import FilterButtonUI from '@/components/FilterButtonUI';
 import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
+import { Checkbox } from '@/components/ui/checkbox';
 // import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
 // import PopOver from '@/components/PopOver';
 
@@ -47,7 +48,7 @@ const BitsiNft = () => {
       setFilteredListOfnfts(data.nfts);
       setFilteredListOfnftsDialog(data.nfts)
     } catch (error) {
-      alert('error getting nfts from the db')
+      alert('error getting nfts ')
     }
   }
   useEffect(() => {
@@ -131,7 +132,7 @@ const BitsiNft = () => {
     }
 
     setFilteredListOfnfts(updatedFilteredList);
-  }, [collectionFilter, priceFilter, searchValueComplete, orderFilter]);
+  }, [collectionFilter, priceFilter, searchValueComplete, orderFilter , nftList]);
 
   const handleButtonClick = () => {
     // console.log(checkedItems)
@@ -187,6 +188,11 @@ const BitsiNft = () => {
     setSearchValueComplete(searchValue);
 
   }
+
+  // const handleSelectAllNfts = () => {
+  //   const allIds = filteredLstOfNfts.map(nft => nft.id);
+  //   setCheckeditems(allIds);
+  // };
   return (
     <>
       <div className='navbar-space'>
@@ -253,6 +259,13 @@ const BitsiNft = () => {
         </div>
         {/* {priceFilter && FilterButtonUI  />} */}
         <div className='flex mt-4 gap-3 px-6 max-sm:px-4'>
+          {/* <div className='flex w-fit items-center bg-success-512 px-2 gap-1 secondary-shadow11 '>
+            <p className='font-montserrat font-semibold text-white text-[22px] max-md:text-[14px]'>Select All</p>
+            <div className='text-white '>
+              <Checkbox onCheckedChange={handleSelectAllNfts} />
+            </div>
+
+          </div> */}
           {priceFilter && <FilterButtonUI stateVar={priceFilter} setStateVar={setPriceFilter} />}
           {collectionFilter && <FilterButtonUI stateVar={collectionFilter} setStateVar={setCollectionFilter} />}
           {orderFilter && <FilterButtonUI stateVar={orderFilter} setStateVar={setOrderFilter} />}

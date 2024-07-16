@@ -24,28 +24,28 @@ const Footerr = () => {
 
             <div className='flex flex-col gap-2 mt-8 max-lg:hidden max-md:flex md:mr-8'>
             <p className='text-yellow-300 md:mb-5 font-bold  font-manrope text-[20px]'>Services</p>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>BITSI NFT</Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>BITSI COIN</Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>INSURANCE</Link>
+          <Link href='/bitsi-nft' className='font-poppins text-white text-[16px]'>BITSI NFT</Link>
+          <Link href='/bitsi-coin' className='font-poppins text-white text-[16px]'>BITSI COIN</Link>
+          <Link href='/insurance' className='font-poppins text-white text-[16px]'>INSURANCE</Link>
             </div>
 
             <div className='flex flex-col gap-2 mt-8 ' >
           <p className='text-yellow-300 md:mb-5 font-bold font-manrope text-[20px]'>Quick Links</p>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>About us</Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>Contact Us</Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>Privacy Policy</Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'>Terms and Conditions</Link>
+          <Link href='/about' className='font-poppins text-white text-[16px]'>About us</Link>
+          <Link href='/' className='font-poppins text-white text-[16px]'>Contact Us</Link>
+          <Link href='/' className='font-poppins text-white text-[16px]'>Privacy Policy</Link>
+          <Link href='/' className='font-poppins text-white text-[16px]'>Terms and Conditions</Link>
         </div>
 
 
         <div className='flex flex-col md:gap-1  max-sm:flex-col max-sm:mb-1 mt-8' >
           <p className='text-yellow-300 md:mb-5 font-bold font-manrope text-[20px]'>Contact us</p>
           
-          <Link href='/services' className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/mail.svg' alt ='need help' width={17} height={17}/>info@gmail.com</div></Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/contactus.svg' alt ='need help' width={15} height={15}/>Contact us</div></Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/address.svg' alt ='need help' width={15} height={15}/>Laawa Street, Austin texas</div></Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/webAddress.svg' alt ='need help' width={15} height={15}/>www.bitsi.com</div></Link>
-          <Link href='/services' className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/needHelp.svg' alt ='need help' width={15} height={15}/>Need help</div></Link>
+          <div  className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/mail.svg' alt ='need help' width={17} height={17}/>info@gmail.com</div></div>
+          <div  className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/contactus.svg' alt ='need help' width={15} height={15}/>Contact us</div></div>
+          <div  className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/address.svg' alt ='need help' width={15} height={15}/>Laawa Street, Austin texas</div></div>
+          <div  className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/webAddress.svg' alt ='need help' width={15} height={15}/>www.bitsi.com</div></div>
+          <div  className='font-poppins text-white text-[16px]'><div className='flex gap-1'><Image src = '/icons/needHelp.svg' alt ='need help' width={15} height={15}/>Need help</div></div>
         </div>
 
         </div>

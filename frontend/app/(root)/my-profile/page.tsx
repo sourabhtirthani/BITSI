@@ -50,6 +50,9 @@ const MyProfile = () => {
   const handleCompensationClick =  ()=>{
     setFilterValue('Compensation');
   }
+  const handleCollectionClick =  ()=>{
+    setFilterValue('Collections');
+  }
 
   // const handleMyWalletClick = () => {
   //   setMyProfile(false);
@@ -95,6 +98,7 @@ const MyProfile = () => {
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
           <button onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
+          <button onClick={handleCollectionClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 

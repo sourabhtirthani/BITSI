@@ -429,18 +429,18 @@ export const events = [
     {
         id: 1,
         name : 'NFTs',
-        icon : '/icons/nft-wide-eyes.svg'
+        icon : '/icons/nft-icon-userzone.svg'
     },
     {
         id: 2,
         name : 'Coin',
-        icon : '/icons/bitsi.svg'
+        icon : '/icons/coin-icon-userzone.svg'
     },
-    {
-        id: 3,
-        name : 'Collections',
-        icon : '/icons/streamline_insurance-hand-solid.svg'
-    }
+    // {
+    //     id: 3,
+    //     name : 'Collections',
+    //     icon : '/icons/streamline_insurance-hand-solid.svg'
+    // }
   ]
   export const myHistoryWalletDropDown = [
     {

@@ -12,12 +12,16 @@ const BitsiCoin = () => {
     <section className='bg-hero-image-bitsi-coin bg-cover'>
         <div className='flex flex-col px-8 py-8 max-md:px-4 max-md:py-4 bg-black bg-opacity-40'>
             <h1 className='text-white lg:text-[52px] text-[28px] font-semibold '>Introducing BITSI Coin: Your Gateway to the Future of Digital Finance!</h1>
-            <p className='text-white font-manrope text-[22px] max-md:text-[16px] lg:w-4/6 font-semibold '>We are thrilled to announce that Bitsi Coin, the innovative cryptocurrency designed to revolutionize the digital finance landscape, is now available for purchase exclusively on our website!</p>
+            {/* <p className='text-white font-manrope text-[22px] max-md:text-[16px] lg:w-4/6 font-semibold '>We are thrilled to announce that Bitsi Coin, the innovative cryptocurrency designed to revolutionize the digital finance landscape, is now available for purchase exclusively on our website!</p> */}
+            <div className='w-5/6 mt-2'>
+            <p className='text-white text-opacity-80 font-manrope font-extrabold text-[22px]'>We are incredibly excited to share that Bitsi Coin, the groundbreaking cryptocurrency set to transform the digital finance world, is now officially available for purchase exclusively on our website! This revolutionary digital currency is designed to redefine the way we think about finance, offering unparalleled security, speed, and efficiency. By purchasing Bitsi Coin, you are joining a cutting-edge financial movement that is poised to make significant impacts across the globe. Don’t miss your chance to be part of this financial revolution – visit our website today and secure your Bitsi Coins!</p>
+            </div>
             <div className='grid grid-cols-2 max-md:grid-cols-1 max-w-fit max-md:gap-2'>
             <button className=' hover:bg-success-509 bg-white px-4 py-4 w-fit mt-6 max-md:mt-3 rounded-3xl font-bold text-black font-inter text-[16px] max-md:text-[12px]'>Buy Coin With Insurance</button>
             <button className='hover:bg-success-509 bg-black px-4 py-4 w-fit mt-6 max-md:mt-3 rounded-3xl font-semibold text-white font-inter text-[16px] max-md:text-[12px]'>Buy Coin Without Insurance</button>
             </div>
-            <p className='text-white flex text-md mb-8 mt-8 max-sm:text-sm'>Copyright © {currentYear} &nbsp;<span className='font-bold'> BITSI Crypto Insurance Mechanism.</span> All Right reserved</p>
+            
+            {/* <p className='text-white flex text-md mb-8 mt-8 max-sm:text-sm'>Copyright © {currentYear} &nbsp;<span className='font-bold'> BITSI Crypto Insurance Mechanism.</span> All Right reserved</p> */}
         </div>
     </section>
 
