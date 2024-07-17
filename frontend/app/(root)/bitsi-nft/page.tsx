@@ -36,8 +36,8 @@ const BitsiNft = () => {
   const [orderFilter, setOrderFilter] = useState('');
   const [checkedItems, setCheckeditems] = useState<string[]>([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(10);  // make it 15 later
-  const itemsPerPage = 10; // make it 15 later
+  const [endIndex, setEndIndex] = useState(20);  // make it 15 later
+  const itemsPerPage = 20; // make it 15 later
 
 
   const router = useRouter();
@@ -280,7 +280,7 @@ const BitsiNft = () => {
         <div className='flex mt-12  justify-start px-6'>
           {/* <Link href='/bitsi-nft/buy-collection'>   */}
           {/* disabled = {checkedItems.length == 0} */}
-          <button onClick={handleButtonClick} className={`${checkedItems.length == 0 ? 'bg-gray-400' : 'bg-success-513'} font-bold rounded-3xl py-2.5 text-white font-manrope px-10 text-[22px] text-lg  `}> Buy Selected Items</button>
+          <button onClick={handleButtonClick} className={`${checkedItems.length == 0 ? 'hidden' : ''} bg-success-513 font-bold rounded-3xl py-2.5 text-white font-manrope px-10 text-[22px] text-lg  `}> Buy Selected Items</button>
           {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
           {/* </Link> */}
         </div>
@@ -294,16 +294,17 @@ const BitsiNft = () => {
             )
           })}
         </div>
-        <Pagination className='mb-14 mt-5 '>
+        <Pagination className='mb-14 mt-5 justify-between px-4'>
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious className={`${startIndex == 0 ? 'pointer-events-none opacity-50 ' : ''} text-white cursor-pointer`}  
               onClick={()=>{setStartIndex(startIndex-itemsPerPage) 
               setEndIndex(endIndex -itemsPerPage)}} />
             </PaginationItem>
-
-
-            <PaginationItem>
+           
+          </PaginationContent>
+          <PaginationContent>
+          <PaginationItem>
               <PaginationNext className={`${endIndex >= filteredLstOfNfts.length ? 'pointer-events-none opacity-50' : ''} text-white cursor-pointer`} 
               onClick={()=>{setStartIndex(startIndex + itemsPerPage)
                 setEndIndex(endIndex + itemsPerPage)
