@@ -128,10 +128,22 @@ const BitsiNft = () => {
       );
     }
     if (orderFilter !== '') {
-      if (orderFilter == 'Asc Order') {
-        updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_name.localeCompare(b.nft_name));
-      } else if (orderFilter == 'Desc Order') {
-        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_name.localeCompare(a.nft_name));
+      if (orderFilter === 'Asc Order') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => {
+          // First sort by nft_min_time ascending
+          if (a.nft_mint_time < b.nft_mint_time) return -1;
+          if (a.nft_mint_time > b.nft_mint_time) return 1;
+          // If dates are the same, then sort by nft_name ascending
+          return a.nft_name.localeCompare(b.nft_name);
+        });
+      } else if (orderFilter === 'Desc Order') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => {
+          // First sort by nft_min_time descending
+          if (a.nft_mint_time > b.nft_mint_time) return -1;
+          if (a.nft_mint_time < b.nft_mint_time) return 1;
+          // If dates are the same, then sort by nft_name descending
+          return b.nft_name.localeCompare(a.nft_name);
+        });
       }
     }
 

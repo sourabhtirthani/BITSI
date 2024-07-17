@@ -365,6 +365,15 @@ export const events = [
     // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
     // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
   ]
+  export const tableInsurance = [
+    {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Published' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
+    {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Extend' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
+    {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Upgrade' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
+    {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Claim' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
+    {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Published' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
+   
+    
+  ]
 
   export const tableMyHistory = [
     {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
