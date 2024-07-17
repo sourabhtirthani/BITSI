@@ -1,7 +1,7 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 import { cookieStorage, createStorage } from 'wagmi'
-import { mainnet, sepolia } from 'wagmi/chains'
+import { mainnet, sepolia, polygon, polygonAmoy } from 'wagmi/chains'
 
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
@@ -16,7 +16,7 @@ const metadata = {
 }
 
 
-const chains = [mainnet, sepolia] as const   // test net 
+const chains = [  polygonAmoy] as const   // test net 
 export const config = defaultWagmiConfig({
   chains,
   projectId,
