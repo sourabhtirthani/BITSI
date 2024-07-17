@@ -96,6 +96,7 @@ const config = {
           525 : "#FE5C01",
           526 : '#7C7C7C',
           527 : '#B1B1B1',
+          528 : '#355D96'
           
         },
         secondary: {

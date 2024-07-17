@@ -294,7 +294,7 @@ const BitsiNft = () => {
             )
           })}
         </div>
-        <Pagination className='mb-14 mt-5'>
+        <Pagination className='mb-14 mt-5 '>
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious className={`${startIndex == 0 ? 'pointer-events-none opacity-50 ' : ''} text-white cursor-pointer`}  
