@@ -36,8 +36,8 @@ const BitsiNft = () => {
   const [orderFilter, setOrderFilter] = useState('');
   const [checkedItems, setCheckeditems] = useState<string[]>([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(20);  // make it 15 later
-  const itemsPerPage = 20; // make it 15 later
+  const [endIndex, setEndIndex] = useState(20);  
+  const itemsPerPage = 20; 
 
 
   const router = useRouter();

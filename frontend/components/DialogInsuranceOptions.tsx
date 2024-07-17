@@ -23,7 +23,7 @@ export function DialogInsuranceOptions({ buttonName, nameOfClass , redirectTo , 
       <DialogTrigger asChild>
         <div className="relative" onMouseEnter={() => setHoverOn(true)} 
           onMouseLeave={() => setHoverOn(false)}>
-          {hoverOn && <div className="absolute secondary-shadow11 w-[250px] max-md:w-[0px] max-md:h-[0px] bottom-14 text-center shadow-md font-mono font-bold rounded-3xl py-2 px-4 w bg-white cursor-ponter"><p className="inline-block">{helpText}</p></div>}
+          {hoverOn && <div className="absolute secondary-shadow11 -left-14 w-[250px] max-md:w-[0px] max-md:h-[0px] bottom-14 text-center shadow-md font-mono font-bold rounded-3xl py-2 px-4 w bg-white cursor-ponter"><p className="inline-block">{helpText}</p></div>}
         <button className= {nameOfClass}>{buttonName}</button>
         </div>
       </DialogTrigger>
