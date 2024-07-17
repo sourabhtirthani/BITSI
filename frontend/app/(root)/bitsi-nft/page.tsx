@@ -16,6 +16,7 @@ import { nftData } from '@/types';
 import FilterButtonUI from '@/components/FilterButtonUI';
 import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
 // import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
 // import PopOver from '@/components/PopOver';
 
@@ -34,6 +35,9 @@ const BitsiNft = () => {
   const [collectionFilter, setCollectionFilter] = useState('');
   const [orderFilter, setOrderFilter] = useState('');
   const [checkedItems, setCheckeditems] = useState<string[]>([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(10);  // make it 15 later
+  const itemsPerPage = 10; // make it 15 later
 
 
   const router = useRouter();
@@ -132,7 +136,7 @@ const BitsiNft = () => {
     }
 
     setFilteredListOfnfts(updatedFilteredList);
-  }, [collectionFilter, priceFilter, searchValueComplete, orderFilter , nftList]);
+  }, [collectionFilter, priceFilter, searchValueComplete, orderFilter, nftList]);
 
   const handleButtonClick = () => {
     // console.log(checkedItems)
@@ -273,8 +277,15 @@ const BitsiNft = () => {
       </section>
 
       <section className='bg-success-503 '>
+        <div className='flex mt-12  justify-start px-6'>
+          {/* <Link href='/bitsi-nft/buy-collection'>   */}
+          {/* disabled = {checkedItems.length == 0} */}
+          <button onClick={handleButtonClick} className={`${checkedItems.length == 0 ? 'bg-gray-400' : 'bg-success-513'} font-bold rounded-3xl py-2.5 text-white font-manrope px-10 text-[22px] text-lg  `}> Buy Selected Items</button>
+          {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
+          {/* </Link> */}
+        </div>
         <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
-          {filteredLstOfNfts.map((item) => {
+          {filteredLstOfNfts.slice(startIndex, endIndex).map((item) => {
             return (
               <div key={item.id} className='p-1 w-fit mt-1 '>
                 <CardNft {...item} setCheckedItems={setCheckeditems} checkedItems={checkedItems} />
@@ -283,12 +294,23 @@ const BitsiNft = () => {
             )
           })}
         </div>
-        <div className='flex mt-14 mb-[100px] max-md:mb-[50px] justify-center'>
-          {/* <Link href='/bitsi-nft/buy-collection'>   */}
-          <button onClick={handleButtonClick} className='bg-success-513 font-bold rounded-3xl py-2.5 text-white font-manrope px-10 text-[22px] text-lg disabled:bg-slate-600 hover:bg-success-511'> Buy Selected Items</button>
-          {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
-          {/* </Link> */}
-        </div>
+        <Pagination className='mb-14 mt-5'>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious className={`${startIndex == 0 ? 'pointer-events-none opacity-50 ' : ''} text-white cursor-pointer`}  
+              onClick={()=>{setStartIndex(startIndex-itemsPerPage) 
+              setEndIndex(endIndex -itemsPerPage)}} />
+            </PaginationItem>
+
+
+            <PaginationItem>
+              <PaginationNext className={`${endIndex >= filteredLstOfNfts.length ? 'pointer-events-none opacity-50' : ''} text-white cursor-pointer`} 
+              onClick={()=>{setStartIndex(startIndex + itemsPerPage)
+                setEndIndex(endIndex + itemsPerPage)
+              }}/>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </section>
     </>
   )

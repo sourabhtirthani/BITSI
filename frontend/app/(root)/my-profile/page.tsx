@@ -152,28 +152,32 @@ const MyProfile = () => {
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
-              <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
+              <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[16px] underline  '>
                 <tr>
-                  <th className='p-2 max-sm:p-1'>NFT</th>
-                  <th className='p-2 max-sm:p-1' >Name</th>
-                  <th className='p-2 max-sm:p-1'>Insurance Expiry</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Current Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>NFT Minted Time</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance Coverage</th>
+                  <th className='p-2 max-sm:p-1'>Date</th>
+                  <th className='p-2 max-sm:p-1' >Marketplace</th>
+                  <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>NFT&nbsp;Price</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
                 {tableMyWallet.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
-                      <tr className='bg-success-512  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td>
-                        <td className='p-2 max-sm:p-1'>{item.name}</td>
+                      <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        {/* <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td> */}
+                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                        <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
+                        <td className='p-2 max-sm:p-1'>{item.nftId}</td>
+                        <td className='p-2 max-sm:p-1'>{item.nftPrice}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insurance}</td>
+                        <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                        <td className='p-2 max-sm:p-1'>{item.currentPrice}</td>
-                        <td className='p-2 max-sm:p-1'>{item.nftMintedTime}</td>
-                        <td className='p-2 max-sm:p-1'>Active&nbsp;  <input type='checkbox' checked={item.active} className='bg-transparent' /></td>
-                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/>
+                        <td>
+                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td>
                       </tr>
                       <tr>
                         <td  className='h-5'></td>
@@ -198,11 +202,13 @@ const MyProfile = () => {
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
-                  <th className='p-2 max-sm:p-1'>COIN</th>
-                  <th className='p-2 max-sm:p-1' >Name</th>
-                  <th className='p-2 max-sm:p-1'>Transaction Id</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Purchased Date</th>
+                  <th className='p-2 max-sm:p-1'>Date</th>
+                  <th className='p-2 max-sm:p-1' >Marketplace</th>
+                  <th className='p-2 max-sm:p-1'>Coin&nbsp;Id</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coin&nbsp;Price</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
@@ -210,11 +216,13 @@ const MyProfile = () => {
                   return (
                     <React.Fragment key={index}>
                       <tr className='bg-success-512  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'>{item.COIN}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Name}</td>
-                        <td className='p-2 max-sm:p-1'>{item.TransactionId}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Price}</td>
-                        <td className='p-2 max-sm:p-1'>{item.PurchasedDate}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                        <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
+                        <td className='p-2 max-sm:p-1'>{item.CoinId}</td>
+                        <td className='p-2 max-sm:p-1'>{item.coinPrice}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insurance}</td>
+                        <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
                         <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/>
                       </tr>
                       <tr>
@@ -251,38 +259,38 @@ const MyProfile = () => {
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
-              <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
+              <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
                   <th className='p-2 max-sm:p-1'>Date</th>
-                  <th className='p-2 max-sm:p-1' >ID</th>
-                  <th className='p-2 max-sm:p-1'>Name</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Collection</th>
+                  <th className='p-2 max-sm:p-1' >MarketPlace</th>
+                  <th className='p-2 max-sm:p-1'>ID</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Event&nbsp;Name</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Action</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>MarketPlace</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Price Difference</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insured</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
+                  {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th> */}
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
                 {tableMyHistory.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
-                      <tr className='bg-success-512  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                      <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        <td className='p-6 max-sm:p-3'>{item.Date}</td>
+                        <td className='p-2 max-sm:p-1'>{item.marketplace}</td>
                         <td className='p-2 max-sm:p-1'>{item.ID}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Name}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Collection}</td>
+                        <td className='p-2 max-sm:p-1'>{item.eventName}</td>
                         <td className='p-2 max-sm:p-1'>{item.Price}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Acions}</td>
-                        <td className='p-2 max-sm:p-1'>{item.MarketPlace}</td>
-                        <td className='p-2 max-sm:p-1'>{item.PriceDifference}</td>
-                        <td className='p-2 max-sm:p-1'>{item.Compensation}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insured}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insuranceCoverage}</td>
+                        <td className='p-2 max-sm:p-1'>{item.insuraceExp}</td>
+                        {/* <td className='p-2 max-sm:p-1'>{item.Compensation}</td> */}
                        
-                        <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/>
+                        {/* <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/> */}
                       </tr>
                       <tr>
-                        <td  className='h-4'></td>
+                        <td  className='h-5'></td>
                       </tr>
                     </React.Fragment>
                   )
@@ -305,9 +313,11 @@ const MyProfile = () => {
             <table className='w-full text-center mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-montserrat text-[22px] max-sm:text-[10px]   '>
                 <tr>
-                  <th className='p-2 max-sm:p-1'>Date of Compensation Claimed</th>
-                  <th className='p-2 max-sm:p-1' >Total Loss</th>
-                  <th className='p-2 max-sm:p-1'>Loss Above 50% (Y/N)</th>
+                  <th className='p-2 max-sm:p-1'>Request&nbsp;Date</th>
+                  <th className='p-2 max-sm:p-1' >Asset</th>
+                  <th className='p-2 max-sm:p-1'>Confirm/Rejection date</th>
+                  <th className='p-2 max-sm:p-1'>Loss to Compensate</th>
+                  <th className='p-2 max-sm:p-1'>Actual Compensation Amount </th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
@@ -315,9 +325,12 @@ const MyProfile = () => {
                   return (
                     <React.Fragment key={index}>
                       <tr className='bg-success-512 h-12 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'>{item.dateOfCompensationClaimed}</td>
-                        <td className='p-2 max-sm:p-1'>{item.totalLoss}</td>
-                        <td className='p-2 max-sm:p-1'>{item.lossabove50}</td>
+                        <td className='p-2 max-sm:p-1'>{item.requestDate}</td>
+                        <td className='p-2 max-sm:p-1'>{item.Asset}</td>
+                        <td className='p-2 max-sm:p-1'>{item.confirmDate}</td>
+                        <td className='p-2 max-sm:p-1'>{item.lossToCompensate}</td>
+                        <td className='p-2 max-sm:p-1'>{item.actAmtCom}</td>
+                      
                       </tr>
                       <tr>
                         <td  className='h-6'></td>

@@ -1,21 +1,21 @@
 export const ourServicesLinks = [
     {
         id : 1,
-        imgURL : '/icons/insurance.svg',
+        imgURL : '/icons/incusrance-icon-userzone.svg',
         label : 'INSURANCE',
         info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.' ,
         url : '/insurance'
     },
     {
         id : 2,
-        imgURL : '/icons/home-nft-icon-bitsi.png',
+        imgURL : '/icons/nft-icon-userzone.svg', 
         label : 'BITSI COIN',
         info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.',
         url : '/bitsi-coin'
     },
     {
         id : 3,
-        imgURL : '/icons/bitsinft.svg',
+        imgURL : '/icons/coin-icon-userzone.svg',
         label : 'BITSI NFT',
         info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.',
         url : '/bitsi-nft'
@@ -352,21 +352,32 @@ export const events = [
 
 
   export const tableMyWallet = [
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
-    {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , nftId : '1234' , nftPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
+    // {NFT : '/icons/table-nft-icon.png' , name : 'Minion Serious Eye' , insuranceExpiry : '11/01/2024 - 10:00 AM' , currentPrice : '1 BITSI' , nftMintedTime : '29/05/2024 - 14:22 PM' , active : true},
   ]
 
   export const tableMyHistory = [
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
-    {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    {Date : '11/01/24' ,marketplace : 'opensea', ID : '102344' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'yes' , insuranceCoverage : 'yes' , insuraceExp : '11/02/2024'},
+    // {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
+    // {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
+    // {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
+    // {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
+    // {Date : '11/01/24' , ID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , Compensation :'N/A'},
   ]
   export const tableAdminViewAndAnalysis = [
     {Date : '11/01/24' , NFTID : '102344' , Name : 'Mininon Serious Eye' , Collection : 'Luxury' , Price : '1 BITSI' , Acions : 'Purchased' , MarketPlace : 'Opensea' , PriceDifference : '3 BITSI' , marketplace :'N/A'},
@@ -378,12 +389,13 @@ export const events = [
   ]
 
   export const tableMyCompensation = [
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
-    {dateOfCompensationClaimed : '11/01/24' , totalLoss : '1 BITSI' , lossabove50 : 'No'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    {requestDate : '11/01/24' , Asset : 'Coin' , confirmDate : '12/01/2024 - Declined' , lossToCompensate : '44%' , actAmtCom : '-'},
+    
   ]
   export const tableAdminWallets = [
     {walletId : '12345' , walletType : 'Main Wallet'},
@@ -401,12 +413,17 @@ export const events = [
   ]
 
   export const tableMyWalletCoin = [
-    {COIN : 'Afdsfdsd' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
-    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
-    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
-    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
-    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
-    {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    // {COIN : 'Afdsfdsd' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , CoinId : '1234' , coinPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/12/24' , marketPlace : 'OpenSea' , CoinId : '2234' , coinPrice : '2 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '04/01/24' , marketPlace : 'OpenSea' , CoinId : '4434' , coinPrice : '3 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '12/01/24' , marketPlace : 'OpenSea' , CoinId : '1233' , coinPrice : '3 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , CoinId : '1234' , coinPrice : '5 ETH' , insurance : 'yes'  , incusranceCoverage : 'yes' , insuranceExpiry : '29/05/2024'}
+    // {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    // {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    // {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    // {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
+    // {COIN : 'A' , Name : 'Coin' , TransactionId : '1234' , Price : 'sd' , PurchasedDate : '29/05/2024 - 14:22 PM'},
   ]
 
 
@@ -446,17 +463,17 @@ export const events = [
     {
         id: 1,
         name : 'Coins',
-        icon : '/icons/home-nft-icon-bitsi.png'
+        icon : '/icons/coin-icon-userzone.svg'
     },
     {
         id: 2,
         name : 'NFT',
-        icon : '/icons/bitsinft.svg'
+        icon : '/icons/nft-icon-userzone.svg'
     },
     {
         id: 3,
         name : 'Insurance',
-        icon : '/icons/insurance.svg'
+        icon : '/icons/incusrance-icon-userzone.svg'
     }
   ]
 
