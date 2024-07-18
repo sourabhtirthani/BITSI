@@ -17,6 +17,12 @@ import Checkbox from "@/components/Checkbox1"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
+import { generateMetadata } from '@/lib/generateMetadata'
+import { useAccount, useWriteContract, useWaitForTransactionReceipt, type BaseError } from 'wagmi'
+import { type UseWriteContractParameters } from 'wagmi'
+
+
+import { contractABI, contractAddress } from '@/lib/contract'
 // import * as z from "zod";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from '@hookform/resolvers/zod'
@@ -29,8 +35,10 @@ const UploadNFt = () => {
   // const formOfUpload = useForm<z.infer<typeof uploadNftformSchema>>({
   //   resolver: zodResolver(uploadNftformSchema)
   // });
+  const { address } = useAccount();
   const { push } = useRouter();
   const { toast } = useToast()
+  const { data: hash, writeContract, isPending, error } = useWriteContract()
   const [errorMessageName, setErrorMessageName] = useState('');
   const [errorMessageCollection, setErrorMessageCollection] = useState('');
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
@@ -42,8 +50,9 @@ const UploadNFt = () => {
   const [collection, setColleciton] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData1, setFormData1] = useState<FormData | null>(null);
-  const [previewTemp , SetPrivewTemp] = useState('/icons/default-nft-preview.png')
-  const [isLoading , setIsLoading] = useState(false);
+  const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
+  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash, })
 
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +99,18 @@ const UploadNFt = () => {
     const file = fileInput.files && fileInput.files[0];
     console.log(formData.get('collection'))
     console.log(formData.get('royalties'))
+    if (!address) {
+      toast({
+        title: "No Wallet Connected",
+        description: 'Please Connect Wallet To Proceed',
+        duration: 2000,
+        style: {
+          backgroundColor: '#900808',
+          color: 'white',
+          fontFamily: 'Manrope',
+        },
+      })
+    }
     if (!file) {
       console.log('in here first')
       setErrorMessageNftFile('Please Upload A file to Proceed');
@@ -126,7 +147,7 @@ const UploadNFt = () => {
       setRoyaltiesnErrorMessage('');
     }
 
-    if (!formData.get('royalties') || !file || !formData.get('name') ||  !formData.get('collection') || !formData.get('price')) {
+    if (!formData.get('royalties') || !file || !formData.get('name') || !formData.get('collection') || !formData.get('price')) {
       return;
     }
 
@@ -145,32 +166,95 @@ const UploadNFt = () => {
   }
 
   const handleMintNft = async () => {
-    try{
+    try {
       setIsLoading(true);
       console.log('in here in the handlemintnft funcitno')
-    const response = await uploadNftAction(formData1);
-    setIsLoading(false);
-    if (!response) {
-      throw new Error('No response from uploadNftAction');
-    }
-    console.log('in here')
-    if ('success' in response && response.success) {
-      toast({
-        title: "Operation Success",
-        description: "Your NFT has been successfully minted.",
-        duration: 2000,
-        style: {
-          backgroundColor: '#4CAF50',
-          color: 'white',
-          fontFamily: 'Manrope',
-        },
-      })
-      push('/bitsi-nft');
-    }
-    else if('error' in response && response.error) {
+      if (!address) {
+        return;
+      }
+      // address ,  nftName, description, imageUrl
+      if (address) {
+        const stringAddress: string = address;
+        if (formData1 && formData1.get('name') != null && formData1.get('description') != null) {
+          const tempName: string = formData1?.get('name')?.toString() ?? '';
+          const tempDescription: string = formData1?.get('description')?.toString() ?? '';
+          const { tokenId, tokenURI } = await generateMetadata(stringAddress, tempName, tempDescription, "https://res.cloudinary.com/djdrlor2w/image/upload/v1721212344/uploads/hn03inxyyklf3tq3svmn.jpg")
+          if (!tokenId || !tokenURI) {
+            toast({
+              title: "token uri and token id error",
+              description: 'token uri and token id error',
+              duration: 2000,
+              style: {
+                backgroundColor: '#900808',
+                color: 'white',
+                fontFamily: 'Manrope',
+              },
+            })
+            return;
+          }
+          console.log('gotten here so far')
+          const transaction = await writeContract({
+            address: contractAddress,
+            abi: contractABI,
+            functionName: 'mint',
+            args: [address, 1, tokenURI, tokenId],
+          });
+
+          console.log('in here too after await wrtei contract')
+
+          while (!isConfirmed) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log("the has hi s" + hash)
+            console.log(hash)
+          }
+          console.log(hash)
+          while(!hash){
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log("the has but this time in hash" + hash)
+          }
+          if (hash && isConfirmed) {
+            console.log('here createion')
+            console.log(hash)
+            const response = await uploadNftAction(formData1);
+            setIsLoading(false);
+            if (!response) {
+              throw new Error('No response from uploadNftAction');
+            }
+            console.log('in here')
+            if ('success' in response && response.success) {
+              toast({
+                title: "Operation Success",
+                description: "Your NFT has been successfully minted.",
+                duration: 2000,
+                style: {
+                  backgroundColor: '#4CAF50',
+                  color: 'white',
+                  fontFamily: 'Manrope',
+                },
+              })
+              push('/bitsi-nft');
+            }
+            else if ('error' in response && response.error) {
+              toast({
+                title: "Operation Failed",
+                description: response.error,
+                duration: 2000,
+                style: {
+                  backgroundColor: '#900808',
+                  color: 'white',
+                  fontFamily: 'Manrope',
+                },
+              })
+            } 
+          } 
+        }
+      }
+    } catch (error) {
+      console.log('in here in the error clasue')
+      console.log(error)
       toast({
         title: "Operation Failed",
-        description: response.error,
+        description: "Failed to upload NFT. Please try again later.",
         duration: 2000,
         style: {
           backgroundColor: '#900808',
@@ -178,22 +262,8 @@ const UploadNFt = () => {
           fontFamily: 'Manrope',
         },
       })
+      console.log('error')
     }
-  }catch(error){
-    console.log('in here in the error clasue')
-    console.log(error)
-    toast({
-      title: "Operation Failed",
-      description: "Failed to upload NFT. Please try again later.",
-      duration: 2000,
-      style: {
-        backgroundColor: '#900808',
-        color: 'white',
-        fontFamily: 'Manrope',
-      },
-    })
-    console.log('error')
-  }
   }
   return (
     <>
@@ -269,7 +339,7 @@ const UploadNFt = () => {
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='royalties' className='font-montserrat text-white text-[22px] font-semibold'>Royalties*</FormLabel>
-                  <InputText id='royalties' name='royalties' step="0.01"  type='number' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3 no-spinners' />
+                  <InputText id='royalties' name='royalties' step="0.01" type='number' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3 no-spinners' />
                   {royaltiesErrorMessage && <p className='text-success-517 text-[11px] font-normal '>{royaltiesErrorMessage}*</p>}
                 </FormRow>
               </div>
@@ -295,7 +365,7 @@ const UploadNFt = () => {
             <div className='flex flex-col gap-3'>
               <div className='flex justify-between'>
                 <p className="text-black font-montserrat  font-bold">Checkout</p>
-                <Image src='/icons/cross-icons.svg' height={25} width={25} alt='remove' onClick={()=>{setShowCheckout(false)}} />
+                <Image src='/icons/cross-icons.svg' height={25} width={25} alt='remove' onClick={() => { setShowCheckout(false) }} />
               </div>
               <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
               <div className="flex items-center p-3 border-2 border-success-511 gap-3">
@@ -334,7 +404,7 @@ const UploadNFt = () => {
                   <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
                 </div>
                 <div className="self-center">
-                  <button onClick={handleMintNft} disabled = {isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold sm:min-w-[350px] py-4 sm:px-28 max-sm:px-14 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
+                  <button onClick={handleMintNft} disabled={isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold sm:min-w-[350px] py-4 sm:px-28 max-sm:px-14 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
                 </div>
               </div>
             </div>
