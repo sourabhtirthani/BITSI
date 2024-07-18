@@ -49,14 +49,14 @@ const UploadNFt = () => {
   const [royaltiesErrorMessage, setRoyaltiesnErrorMessage] = useState('');
   const [priceErrorMessage, setPriceErrorMessage] = useState('');
   const [showAlertDialog, setShowAlertDialog] = useState('');
-  const [hashOfContract, setHashOfContract] = useState<`0x${string}` | undefined>(undefined);
+  // const [hashOfContract, setHashOfContract] = useState<`0x${string}` | undefined>(undefined);
   const [collection, setColleciton] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData1, setFormData1] = useState<FormData | null>(null);
-  const [confirmTrans , setConfirmTrans] = useState(false);
+  // const [confirmTrans , setConfirmTrans] = useState(false);
   const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
   const [isLoading, setIsLoading] = useState(false);
-  const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
+  // const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
 
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -204,11 +204,10 @@ const UploadNFt = () => {
             args: [address, 1, tokenURI, tokenId],
           });
 
-          console.log('in here too after await wrtei contract')
-          console.log('transactino hash acbdin line 205');
+          // console.log('in here too after await wrtei contract')
+          // console.log('transactino hash acbdin line 205');
           console.log(transaction)
           console.log(`trasnsaion ${transaction}`)
-          Web3
           // while (!isConfirmed) {
           //   await new Promise(resolve => setTimeout(resolve, 1000));
           //   console.log("the has hi s" + hash)
@@ -216,19 +215,19 @@ const UploadNFt = () => {
           // }
           // console.log('hash is ' , hash);
           // console.log(hash)
-          console.log("crossed that path")
+          // console.log("crossed that path")
           // while(!hash){
           //   await new Promise(resolve => setTimeout(resolve, 1000));
           //   console.log("the has but this time in hash" + hash)
           // }
           if (transaction) {
-            setHashOfContract(transaction);
-            if(isConfirming){
-              console.log('it is loading')
-            }
-            console.log(isPending);
-            console.log(isConfirmed)
-            console.log(isError)
+            // setHashOfContract(transaction);
+            // if(isConfirming){
+              // console.log('it is loading')
+            // }
+            // console.log(isPending);
+            // console.log(isConfirmed)
+            // console.log(isError)
             await new Promise(resolve => setTimeout(resolve, 7000));
             // while(isPending){
             //   await new Promise(resolve => setTimeout(resolve, 1000));
