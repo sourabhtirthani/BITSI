@@ -110,6 +110,7 @@ const UploadNFt = () => {
           fontFamily: 'Manrope',
         },
       })
+      return;
     }
     if (!file) {
       console.log('in here first')
