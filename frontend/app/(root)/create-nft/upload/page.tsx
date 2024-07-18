@@ -11,15 +11,16 @@ import HeroNft from '@/components/HeroNft'
 import InputText from '@/components/InputText'
 // import { revalidatePath } from 'next/cache'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone';
 import Checkbox from "@/components/Checkbox1"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { generateMetadata } from '@/lib/generateMetadata'
-import { useAccount, useWriteContract, useWaitForTransactionReceipt, type BaseError } from 'wagmi'
+import { useAccount, useWriteContract,  useWaitForTransactionReceipt, type BaseError, UseWaitForTransactionReceiptReturnType } from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
+import Web3 from 'web3';
 
 
 import { contractABI, contractAddress } from '@/lib/contract'
@@ -36,9 +37,10 @@ const UploadNFt = () => {
   //   resolver: zodResolver(uploadNftformSchema)
   // });
   const { address } = useAccount();
+  // const web3 = new Web3(window?.ethereum);
   const { push } = useRouter();
   const { toast } = useToast()
-  const { data: hash, writeContract, isPending, error } = useWriteContract()
+  const { data, writeContract, writeContractAsync, error } = useWriteContract()
   const [errorMessageName, setErrorMessageName] = useState('');
   const [errorMessageCollection, setErrorMessageCollection] = useState('');
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
@@ -47,12 +49,14 @@ const UploadNFt = () => {
   const [royaltiesErrorMessage, setRoyaltiesnErrorMessage] = useState('');
   const [priceErrorMessage, setPriceErrorMessage] = useState('');
   const [showAlertDialog, setShowAlertDialog] = useState('');
+  const [hashOfContract, setHashOfContract] = useState<`0x${string}` | undefined>(undefined);
   const [collection, setColleciton] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [formData1, setFormData1] = useState<FormData | null>(null);
+  const [confirmTrans , setConfirmTrans] = useState(false);
   const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
   const [isLoading, setIsLoading] = useState(false);
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash, })
+  const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
 
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,8 +197,7 @@ const UploadNFt = () => {
             })
             return;
           }
-          console.log('gotten here so far')
-          const transaction = await writeContract({
+          const transaction = await writeContractAsync({
             address: contractAddress,
             abi: contractABI,
             functionName: 'mint',
@@ -202,27 +205,56 @@ const UploadNFt = () => {
           });
 
           console.log('in here too after await wrtei contract')
-
-          while (!isConfirmed) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log("the has hi s" + hash)
-            console.log(hash)
-          }
-          console.log(hash)
-          while(!hash){
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            console.log("the has but this time in hash" + hash)
-          }
-          if (hash && isConfirmed) {
+          console.log('transactino hash acbdin line 205');
+          console.log(transaction)
+          console.log(`trasnsaion ${transaction}`)
+          Web3
+          // while (!isConfirmed) {
+          //   await new Promise(resolve => setTimeout(resolve, 1000));
+          //   console.log("the has hi s" + hash)
+          //   console.log(hash)
+          // }
+          // console.log('hash is ' , hash);
+          // console.log(hash)
+          console.log("crossed that path")
+          // while(!hash){
+          //   await new Promise(resolve => setTimeout(resolve, 1000));
+          //   console.log("the has but this time in hash" + hash)
+          // }
+          if (transaction) {
+            setHashOfContract(transaction);
+            if(isConfirming){
+              console.log('it is loading')
+            }
+            console.log(isPending);
+            console.log(isConfirmed)
+            console.log(isError)
+            await new Promise(resolve => setTimeout(resolve, 7000));
+            // while(isPending){
+            //   await new Promise(resolve => setTimeout(resolve, 1000));
+            //   console.log('value of confirm trans' , confirmTrans)
+            //    console.log('in here in the while lolp first one')
+            //    console.log(receipt)
+            //    console.log('fetching ingo ' , isFetching)
+            //    console.log('fetched info ' , isFetched)
+            //    console.log('error info' , isError)
+            //    console.log(isPending);
+            // console.log(isConfirmed)
+            // }
+            
+            //  while (!isConfirmed) {
+            //     await new Promise(resolve => setTimeout(resolve, 1000));
+            //    console.log('in here in the while lolp')
+            //   }
             console.log('here createion')
-            console.log(hash)
+            // console.log(hash)
             const response = await uploadNftAction(formData1);
             setIsLoading(false);
-            if (!response) {
-              throw new Error('No response from uploadNftAction');
-            }
+            // if (!response) {
+            //   throw new Error('No response from uploadNftAction');
+            // }
             console.log('in here')
-            if ('success' in response && response.success) {
+            // if ('success' in response && response.success) {
               toast({
                 title: "Operation Success",
                 description: "Your NFT has been successfully minted.",
@@ -233,21 +265,35 @@ const UploadNFt = () => {
                   fontFamily: 'Manrope',
                 },
               })
-              push('/bitsi-nft');
-            }
-            else if ('error' in response && response.error) {
-              toast({
-                title: "Operation Failed",
-                description: response.error,
-                duration: 2000,
-                style: {
-                  backgroundColor: '#900808',
-                  color: 'white',
-                  fontFamily: 'Manrope',
-                },
-              })
-            } 
+              // push('/bitsi-nft');
+            // }
+            // else if ('error' in response && response.error) {
+            //   toast({
+            //     title: "Operation Failed",
+            //     description: response.error,
+            //     duration: 2000,
+            //     style: {
+            //       backgroundColor: '#900808',
+            //       color: 'white',
+            //       fontFamily: 'Manrope',
+            //     },
+            //   })
+            // } 
           } 
+          else if(!transaction){
+            toast({
+              title: "Error getting transaction hash",
+              description: "Please try again.",
+              duration: 2000,
+              style: {
+                backgroundColor: '#900808',
+                color: 'white',
+                fontFamily: 'Manrope',
+              },
+            })
+            return;
+          }
+          console.log('end of the code')
         }
       }
     } catch (error) {
@@ -264,8 +310,22 @@ const UploadNFt = () => {
         },
       })
       console.log('error')
+      setIsLoading(false)
+      setShowCheckout(false);
     }
   }
+
+  // useEffect(()=>{
+  //   if(receipt){
+  //     while(receipt.status != 'success'){
+  //       console.log('in here')
+  //     }
+  //     if(receipt.status === 'success'){
+  //       console.log('yay success');
+  //       setConfirmTrans(true);
+  //     }
+  //   }
+  // } , [ hashOfContract])
   return (
     <>
       <div className='navbar-space'>
