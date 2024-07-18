@@ -16,7 +16,7 @@ const metadata = {
 }
 
 
-const chains = [  polygonAmoy, polygon] as const   
+const chains = [  polygonAmoy] as const   
 export const config = defaultWagmiConfig({
   chains,
   projectId,
