@@ -228,7 +228,7 @@ const UploadNFt = () => {
             // console.log(isPending);
             // console.log(isConfirmed)
             // console.log(isError)
-            await new Promise(resolve => setTimeout(resolve, 7000));
+            await new Promise(resolve => setTimeout(resolve, 5000));
             // while(isPending){
             //   await new Promise(resolve => setTimeout(resolve, 1000));
             //   console.log('value of confirm trans' , confirmTrans)
