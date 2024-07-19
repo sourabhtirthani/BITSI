@@ -13,7 +13,7 @@ import { revalidatePath } from 'next/cache'
 
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
-export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : string): Promise<uploadNFtTyp> => {
+export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : string , idOfNft : number): Promise<uploadNFtTyp> => {
     try {
         console.log(formdata)
         if (formdata == null) {
@@ -89,6 +89,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
       // const nftImageUrl = 'bacd'
         const nft = await db.nft.create({
             data: {
+              id : idOfNft,
               nft_name: name,
               nft_price: price,
               nft_image: nftImageUrl,

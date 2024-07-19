@@ -219,7 +219,7 @@ const UploadNFt = () => {
 
           if (transaction) {
             // await new Promise(resolve => setTimeout(resolve, 4000));
-            const response = await uploadNftAction(formData1 , nftImageUrl.secure_url);
+            const response = await uploadNftAction(formData1 , nftImageUrl.secure_url, tokenId);
             
             if (!response) {
               throw new Error('No response from uploadNftAction');
@@ -240,7 +240,7 @@ const UploadNFt = () => {
             }
             else if ('error' in response && response.error) {
               toast({
-                title: "Operation Failed",
+                title: "DB OPERATION FAILED",
                 description: response.error,
                 duration: 2000,
                 style: {

@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Nft{
-  id                   Int      @id @default(autoincrement())
+  id                   Int      @id 
   nft_name             String       
   nft_price            Float
   nft_image            String
