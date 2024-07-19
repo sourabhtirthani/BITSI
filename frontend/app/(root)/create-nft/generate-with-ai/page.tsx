@@ -46,7 +46,7 @@ const GenrateWithAi = () => {
                   <FormRow className=' p-4'>
                     <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection*</FormLabel>
                     {/* <InputText id='collection' name='collection' type='text' placeHolder='Please enter your collection name' className='p-3' /> */}
-                    <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collection}  />
+                    <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collectionId}  />
                     <CollectionCombobox setCollectionValue={setColleciton} setCollectionId = {setCollectionid} />
                     {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
                   </FormRow>

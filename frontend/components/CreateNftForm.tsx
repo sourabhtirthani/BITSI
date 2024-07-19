@@ -163,6 +163,7 @@ import { CollectionCombobox } from './CollectionCombobox'
 
 const CreateNftForm = () => {
     const [collection, setColleciton] = useState('');
+    const [collectionId , setCollectionid] = useState('')
     const [preview, setPreview] = useState<string>('/icons/default-nft-preview.png');
     const form = useForm<z.infer<typeof uploadNftformSchema>>({
         resolver: zodResolver(uploadNftformSchema),
@@ -227,7 +228,7 @@ const CreateNftForm = () => {
                         <div className='flex justify-between max-sm:flex-col sm:mb-10 gap-2'>
                             <div className='sm:w-1/2 p-4 md:px-8'>
                                 <CustomInput control={form.control} formLabel='' nameOfField='collection' placeHolder='' />
-                                <CollectionCombobox setCollectionValue={setColleciton} />
+                                <CollectionCombobox setCollectionValue={setColleciton} setCollectionId = {setCollectionid} />
                             </div>
                             <div className='sm:w-1/2 p-4 md:px-8'>
                                 <CustomInput control={form.control} formLabel='Royalties' nameOfField='royalties' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' />
