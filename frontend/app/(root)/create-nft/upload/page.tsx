@@ -180,7 +180,6 @@ const UploadNFt = () => {
       if (!address) {
         return;
       }
-      // address ,  nftName, description, imageUrl
       if (address) {
         console.log('beor file')
         
@@ -193,13 +192,10 @@ const UploadNFt = () => {
           console.log('before file image')
           console.log(fileImage)
 
-          const nftImageUrl  = await uploadImage(formData1 , 'uploads');
+          const nftImageUrl  = await uploadImage(formData1 , 'uploads'); // to make it better decalare an empty formadata add the image file to it and then send it to the function
           if(nftImageUrl.secure_url == ''){
               throw new Error('NO image url is returned')
           }
-          console.log('after thie')
-          // const res = fixTinaResults(rawRes)
-          // const nftImageUrl = res.secure_url;
           const { tokenId, tokenURI } = await generateMetadata(stringAddress, tempName, tempDescription, nftImageUrl.secure_url)
           if (!tokenId || !tokenURI) {
             toast({
@@ -221,56 +217,14 @@ const UploadNFt = () => {
             args: [address, 1, tokenURI, tokenId],
           });
 
-          // console.log('in here too after await wrtei contract')
-          // console.log('transactino hash acbdin line 205');
-          console.log(transaction)
-          console.log(`trasnsaion ${transaction}`)
-          // while (!isConfirmed) {
-          //   await new Promise(resolve => setTimeout(resolve, 1000));
-          //   console.log("the has hi s" + hash)
-          //   console.log(hash)
-          // }
-          // console.log('hash is ' , hash);
-          // console.log(hash)
-          // console.log("crossed that path")
-          // while(!hash){
-          //   await new Promise(resolve => setTimeout(resolve, 1000));
-          //   console.log("the has but this time in hash" + hash)
-          // }
           if (transaction) {
-            // setHashOfContract(transaction);
-            // if(isConfirming){
-              // console.log('it is loading')
-            // }
-            // console.log(isPending);
-            // console.log(isConfirmed)
-            // console.log(isError)
-            await new Promise(resolve => setTimeout(resolve, 4000));
-            // while(isPending){
-            //   await new Promise(resolve => setTimeout(resolve, 1000));
-            //   console.log('value of confirm trans' , confirmTrans)
-            //    console.log('in here in the while lolp first one')
-            //    console.log(receipt)
-            //    console.log('fetching ingo ' , isFetching)
-            //    console.log('fetched info ' , isFetched)
-            //    console.log('error info' , isError)
-            //    console.log(isPending);
-            // console.log(isConfirmed)
-            // }
-            
-            //  while (!isConfirmed) {
-            //     await new Promise(resolve => setTimeout(resolve, 1000));
-            //    console.log('in here in the while lolp')
-            //   }
-            console.log('here createion')
-            // console.log(hash)
+            // await new Promise(resolve => setTimeout(resolve, 4000));
             const response = await uploadNftAction(formData1 , nftImageUrl.secure_url);
             
-            // if (!response) {
-            //   throw new Error('No response from uploadNftAction');
-            // }
-            console.log('in here')
-            // if ('success' in response && response.success) {
+            if (!response) {
+              throw new Error('No response from uploadNftAction');
+            }
+            if ('success' in response && response.success) {
               toast({
                 title: "Operation Success",
                 description: "Your NFT has been successfully minted.",
@@ -283,19 +237,19 @@ const UploadNFt = () => {
               })
               setIsLoading(false);
               push('/bitsi-nft');
-            // }
-            // else if ('error' in response && response.error) {
-            //   toast({
-            //     title: "Operation Failed",
-            //     description: response.error,
-            //     duration: 2000,
-            //     style: {
-            //       backgroundColor: '#900808',
-            //       color: 'white',
-            //       fontFamily: 'Manrope',
-            //     },
-            //   })
-            // } 
+            }
+            else if ('error' in response && response.error) {
+              toast({
+                title: "Operation Failed",
+                description: response.error,
+                duration: 2000,
+                style: {
+                  backgroundColor: '#900808',
+                  color: 'white',
+                  fontFamily: 'Manrope',
+                },
+              })
+            } 
           } 
           else if(!transaction){
             toast({
@@ -310,7 +264,7 @@ const UploadNFt = () => {
             })
             return;
           }
-          console.log('end of the code')
+         
         }
       }
     } catch (error) {
