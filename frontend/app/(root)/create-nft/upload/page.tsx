@@ -1,5 +1,5 @@
 'use client'
-import { uploadNftAction } from '@/actions/uploadNft'
+import {  uploadNftAction } from '@/actions/uploadNft'
 import Button from '@/components/Button'
 import { CollectionCombobox } from '@/components/CollectionCombobox'
 // import CreateNftForm from '@/components/CreateNftForm'
@@ -20,10 +20,12 @@ import { useToast } from "@/components/ui/use-toast"
 import { generateMetadata } from '@/lib/generateMetadata'
 import { useAccount, useWriteContract,  useWaitForTransactionReceipt, type BaseError, UseWaitForTransactionReceiptReturnType } from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
-import Web3 from 'web3';
+// import { ClipLoader } from 'react-spinners';
 
 
 import { contractABI, contractAddress } from '@/lib/contract'
+import { uploadImage } from '@/lib/uploadToCloud'
+import { fixTinaResults } from '@/lib/utils'
 // import * as z from "zod";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from '@hookform/resolvers/zod'
@@ -56,6 +58,7 @@ const UploadNFt = () => {
   // const [confirmTrans , setConfirmTrans] = useState(false);
   const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
   const [isLoading, setIsLoading] = useState(false);
+  const [collectionId , setCollectionid] = useState('')
   // const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
 
 
@@ -101,7 +104,7 @@ const UploadNFt = () => {
     const formData = new FormData(form);
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
-    console.log(formData.get('collection'))
+    console.log('selected collection is' , formData.get('collection'))
     console.log(formData.get('royalties'))
     if (!address) {
       toast({
@@ -173,17 +176,31 @@ const UploadNFt = () => {
   const handleMintNft = async () => {
     try {
       setIsLoading(true);
-      console.log('in here in the handlemintnft funcitno')
+      
       if (!address) {
         return;
       }
       // address ,  nftName, description, imageUrl
       if (address) {
+        console.log('beor file')
+        
         const stringAddress: string = address;
-        if (formData1 && formData1.get('name') != null && formData1.get('description') != null) {
+        if (formData1 && formData1.get('name') != null && formData1.get('description') != null && formData1.get('nftFile') != null) {
           const tempName: string = formData1?.get('name')?.toString() ?? '';
           const tempDescription: string = formData1?.get('description')?.toString() ?? '';
-          const { tokenId, tokenURI } = await generateMetadata(stringAddress, tempName, tempDescription, "https://res.cloudinary.com/djdrlor2w/image/upload/v1721212344/uploads/hn03inxyyklf3tq3svmn.jpg")
+          // console.log(formData1.get('nftFile'))
+          const fileImage = formData1.get('nftFile') as File
+          console.log('before file image')
+          console.log(fileImage)
+
+          const nftImageUrl  = await uploadImage(formData1 , 'uploads');
+          if(nftImageUrl.secure_url == ''){
+              throw new Error('NO image url is returned')
+          }
+          console.log('after thie')
+          // const res = fixTinaResults(rawRes)
+          // const nftImageUrl = res.secure_url;
+          const { tokenId, tokenURI } = await generateMetadata(stringAddress, tempName, tempDescription, nftImageUrl.secure_url)
           if (!tokenId || !tokenURI) {
             toast({
               title: "token uri and token id error",
@@ -228,7 +245,7 @@ const UploadNFt = () => {
             // console.log(isPending);
             // console.log(isConfirmed)
             // console.log(isError)
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            await new Promise(resolve => setTimeout(resolve, 4000));
             // while(isPending){
             //   await new Promise(resolve => setTimeout(resolve, 1000));
             //   console.log('value of confirm trans' , confirmTrans)
@@ -247,8 +264,8 @@ const UploadNFt = () => {
             //   }
             console.log('here createion')
             // console.log(hash)
-            const response = await uploadNftAction(formData1);
-            setIsLoading(false);
+            const response = await uploadNftAction(formData1 , nftImageUrl.secure_url);
+            
             // if (!response) {
             //   throw new Error('No response from uploadNftAction');
             // }
@@ -264,7 +281,8 @@ const UploadNFt = () => {
                   fontFamily: 'Manrope',
                 },
               })
-              // push('/bitsi-nft');
+              setIsLoading(false);
+              push('/bitsi-nft');
             // }
             // else if ('error' in response && response.error) {
             //   toast({
@@ -393,8 +411,9 @@ const UploadNFt = () => {
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection*</FormLabel>
                   {/* <InputText id = 'collection' name = 'collection' type='text' placeHolder='Please enter the name of your collection' className='p-3' /> */}
-                  <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collection} />
-                  <CollectionCombobox setCollectionValue={setColleciton} />
+                  <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collectionId} />
+                  <div className='w-full'>
+                  <CollectionCombobox setCollectionValue={setColleciton} setCollectionId = {setCollectionid} /></div>
                   {collectionErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{collectionErrorMessage}*</p>}
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
@@ -463,8 +482,9 @@ const UploadNFt = () => {
                   <p className="text-black font-montserrat font-semibold">Total Price</p>
                   <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
                 </div>
-                <div className="self-center">
-                  <button onClick={handleMintNft} disabled={isLoading} className={` ${isLoading ? 'bg-gray-600' : 'bg-nft-text-gradient'} font-montserrat text-white font bold sm:min-w-[350px] py-4 sm:px-28 max-sm:px-14 text-[22px]  font-bold rounded-xl `}>{isLoading ? 'Loading...' : 'Buy'}</button>
+                <div className="self-center w-full">
+                  <button onClick={handleMintNft} disabled={isLoading} className={` ${isLoading ? ' bg-gray-300 w-full flex justify-center' : 'bg-nft-text-gradient'} font-montserrat text-white font bold w-full py-4  text-[22px]  font-bold rounded-xl `}>{isLoading ? <div className="spinner mr-2 "></div> : 'Buy'}</button>
+                  
                 </div>
               </div>
             </div>

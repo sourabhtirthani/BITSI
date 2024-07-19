@@ -19,33 +19,40 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import Image from "next/image"
+import { useRouter } from 'next/navigation';
 
 const collectionValues = [
   {
     value: "Collection1",
     label: "Collection1",
+    id: "1"
   },
   {
     value: "Collection2",
     label: "Collection2",
+     id: "2"
   },
   {
     value: "Collection3",
     label: "Collection3",
+     id: "3"
   },
   {
     value: "Collection4",
     label: "Collection4",
+     id: "4"
   },
   {
     value: "Collection5",
     label: "Collection5",
+     id: "5"
   },
 ]
 
-export function CollectionCombobox({setCollectionValue} : { setCollectionValue: React.Dispatch<React.SetStateAction<string>> }) {
+export function CollectionCombobox({setCollectionValue , setCollectionId} : { setCollectionValue: React.Dispatch<React.SetStateAction<string>>, setCollectionId: React.Dispatch<React.SetStateAction<string>>  }) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [value, setValue] = React.useState("");
+  const { push } = useRouter();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -58,9 +65,10 @@ export function CollectionCombobox({setCollectionValue} : { setCollectionValue: 
         <Command >
           <CommandInput placeholder="Search Or Create a new Collection" />
           <CommandList className="max-h-[150px]  overflow-y-auto table-body">
-            <CommandEmpty  onClick={()=>{console.log('create a new Collection clicked')}}>+ Create a new Collection</CommandEmpty>
+            <CommandEmpty className="relative flex hover:bg-gray-300 cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50"
+             onClick={()=>{push('/create-collection')}}>+ Create a new Collection</CommandEmpty>
             <CommandGroup>
-                <CommandItem>+ Create a new Collection</CommandItem>
+                <CommandItem onSelect={()=>{push('/create-collection')}}>+ Create a new Collection</CommandItem>
               {collectionValues.map((framework) => (
                 <CommandItem
                   key={framework.value}
@@ -68,6 +76,7 @@ export function CollectionCombobox({setCollectionValue} : { setCollectionValue: 
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setCollectionValue(currentValue === value ? "" : currentValue) 
+                    setCollectionId(framework.id)
                     setOpen(false)
                   }}
                 >

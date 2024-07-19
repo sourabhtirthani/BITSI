@@ -13,7 +13,7 @@ import { revalidatePath } from 'next/cache'
 
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
-export const uploadNftAction = async (formdata: FormData | null): Promise<uploadNFtTyp> => {
+export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : string): Promise<uploadNFtTyp> => {
     try {
         console.log(formdata)
         if (formdata == null) {
@@ -83,9 +83,9 @@ export const uploadNftAction = async (formdata: FormData | null): Promise<upload
       //   folder : 'uploads',
 
       // }).end(bytes);
-      const res : any = await uploadImage(nftFile , 'uploads');
-      console.log(res)
-      const nftImageUrl = res?.secure_url;
+      // const res : any = await uploadImage(nftFile , 'uploads');
+      // console.log(res)
+      // const nftImageUrl = res?.secure_url;
       // const nftImageUrl = 'bacd'
         const nft = await db.nft.create({
             data: {
@@ -127,3 +127,10 @@ export const getNftWithIdAction = async(nftId : string)=>{
     return {error : 'error occured while fetching data'}
   }
 }
+
+// export const uploadImageOnly = async(formdata: FormData , folder : string) : Promise<string>=>{
+//   const res : any = await uploadImage(imgFile , 'uploads');
+//       console.log(res)
+//       const nftImageUrl = res?.secure_url;
+//       return nftImageUrl
+// }

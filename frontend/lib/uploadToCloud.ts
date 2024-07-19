@@ -1,7 +1,9 @@
 'use server'
 import cloudinary from "./cloudinary";
 
-export const uploadImage = async (file: File, folder: string): Promise<any> => {
+export const uploadImage = async (formdata: FormData | null, folder: string):  Promise<{ secure_url: string }> => {
+  if(formdata!=null){
+    const file = formdata.get('nftFile') as File;
   const buffer = await file.arrayBuffer();
   const bytes = Buffer.from(buffer);
 
@@ -15,13 +17,17 @@ export const uploadImage = async (file: File, folder: string): Promise<any> => {
         if (err) {
           reject(err.message); 
         } else {
-          resolve(result); 
+          const secure_url  =result?.secure_url || '';
+          resolve({ secure_url })
         }
       }
     );
 
     uploadStream.end(bytes); 
   });
+}else{
+  return {secure_url : ''}
+}
 };
 
 interface CloudinaryUploadResult {
