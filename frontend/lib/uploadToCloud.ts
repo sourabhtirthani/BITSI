@@ -1,9 +1,9 @@
 'use server'
 import cloudinary from "./cloudinary";
 
-export const uploadImage = async (formdata: FormData | null, folder: string):  Promise<{ secure_url: string }> => {
+export const uploadImage = async (formdata: FormData | null, folder: string , fieldName : string):  Promise<{ secure_url: string }> => {
   if(formdata!=null){
-    const file = formdata.get('nftFile') as File;
+    const file = formdata.get(fieldName) as File;
   const buffer = await file.arrayBuffer();
   const bytes = Buffer.from(buffer);
 

@@ -18,7 +18,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { generateMetadata } from '@/lib/generateMetadata'
-import { useAccount, useWriteContract,  useWaitForTransactionReceipt, type BaseError, UseWaitForTransactionReceiptReturnType } from 'wagmi'
+import { useAccount, useWriteContract, } from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
 // import { ClipLoader } from 'react-spinners';
 
@@ -104,7 +104,7 @@ const UploadNFt = () => {
     const formData = new FormData(form);
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
-    console.log('selected collection is' , formData.get('collection'))
+    // console.log('selected collection is' , formData.get('collection'))
     console.log(formData.get('royalties'))
     if (!address) {
       toast({
@@ -181,7 +181,6 @@ const UploadNFt = () => {
         return;
       }
       if (address) {
-        console.log('beor file')
         
         const stringAddress: string = address;
         if (formData1 && formData1.get('name') != null && formData1.get('description') != null && formData1.get('nftFile') != null) {
@@ -192,7 +191,7 @@ const UploadNFt = () => {
           console.log('before file image')
           console.log(fileImage)
 
-          const nftImageUrl  = await uploadImage(formData1 , 'uploads'); // to make it better decalare an empty formadata add the image file to it and then send it to the function
+          const nftImageUrl  = await uploadImage(formData1 , 'uploads' , 'nftFile'); // to make it better decalare an empty formadata add the image file to it and then send it to the function
           if(nftImageUrl.secure_url == ''){
               throw new Error('NO image url is returned')
           }
@@ -216,10 +215,10 @@ const UploadNFt = () => {
             functionName: 'mint',
             args: [address, 1, tokenURI, tokenId],
           });
-
+          // const transaction = true;
           if (transaction) {
             // await new Promise(resolve => setTimeout(resolve, 4000));
-            const response = await uploadNftAction(formData1 , nftImageUrl.secure_url, tokenId);
+            const response = await uploadNftAction(formData1 , nftImageUrl.secure_url, tokenId , address, collection);
             
             if (!response) {
               throw new Error('No response from uploadNftAction');
@@ -250,6 +249,8 @@ const UploadNFt = () => {
                 },
               })
             } 
+            setIsLoading(false);
+            return;
           } 
           else if(!transaction){
             toast({

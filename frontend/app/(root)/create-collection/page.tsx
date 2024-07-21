@@ -1,14 +1,22 @@
 'use client'
+import { uploadCollection } from '@/actions/uploadNft';
 import FormLabel from '@/components/FormLabel'
 import FormRow from '@/components/FormRow'
 import { contractABI, contractAddress } from '@/lib/contract';
+import { generateRandomTokenId } from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
+import { useRouter } from 'next/navigation';
+import { useToast } from "@/components/ui/use-toast"
 
 const CreateCollection =  () => {
+  const { push } = useRouter();
+  const { toast } = useToast();
+  const { writeContractAsync } = useWriteContract()
     const { address , isConnected } = useAccount();
     const [fileError , setFileError] = useState(false);
+    const [loading , setLoading] = useState(false);
     const [previewImage , setPreviewIage] = useState('/icons/default-nft-preview.png');
    
     const handleOnChange = (e : React.ChangeEvent<HTMLInputElement>)=>{
@@ -19,16 +27,84 @@ const CreateCollection =  () => {
         }
         
     }
-
-    const handleSubmit = (formData:FormData)=>{
+    console.log(address)
+    const handleSubmit = async(formData:FormData)=>{
+      try{
         const file = formData.get('collectionFile') as File;
         if(!file.name){
             setFileError(true);
             return;
         }
-        console.log('submission logic here');
-        console.log(formData.get('floorPrice'))
-        setFileError(false);
+        if(address){
+          
+          const floorPrice = formData.get("floorPrice") as string;
+          const priceInWei = Number(Math.floor(parseFloat(floorPrice) * 10 ** 18));
+          setLoading(true);
+          const idOfCollection = generateRandomTokenId();
+         
+          // const transaction = true
+          const transaction = await writeContractAsync({
+              address: contractAddress,
+              abi: contractABI,
+              functionName: 'mintCollection',
+              args: [idOfCollection, priceInWei],
+            });
+            
+            if(transaction){
+        const res = await uploadCollection(formData , idOfCollection , address);
+        if('success' in res && res.success){
+          toast({
+            title: "Operation Success",
+            description: "Your Collection has been successfully Created.",
+            duration: 2000,
+            style: {
+              backgroundColor: '#4CAF50',
+              color: 'white',
+              fontFamily: 'Manrope',
+            },
+          });
+          setLoading(false);
+          push('/create-nft');
+        
+        }else if('error' in res && res.error){
+          toast({title: "DB ORERATION FAILED",description:'Failed to save the record',duration: 2000,
+            style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',}})
+            setLoading(false);
+          return;
+        }
+      }else{
+        toast({title: "Transaction Failed",description:'Please refresh the page and try again ',duration: 2000,
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',},});
+          setLoading(false);
+          return;
+      }
+        }else{
+          toast({
+            title: "Wallet Not Connected",
+            description:'Please Connect Wallet In Order To Proceed',
+            duration: 2000,
+            style: {
+              backgroundColor: '#900808',
+              color: 'white',
+              fontFamily: 'Manrope',
+            },
+          })
+          return;
+        }
+      }catch(error){
+        console.log(error)
+        setLoading(false);
+        toast({
+          title: " OPERATION FAILED",
+          description: 'Error uploading Collection',
+          duration: 2000,
+          style: {
+            backgroundColor: '#900808',
+            color: 'white',
+            fontFamily: 'Manrope',
+          },
+        })
+      }
     }
   return (
     <>
@@ -72,9 +148,10 @@ const CreateCollection =  () => {
                   <p className='text-white text-[18px] text-opacity-65 font-bold font-montserrat mt-2'>The description you added here will be shown in the NFT preview Section</p>
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
                 </FormRow>
+                {/* <input id = 'collectionId' value={generateRandomTokenId()} required name = 'collectionId' type = 'numer' hidden/> */}
                 {/*  */}
     
-                <button disabled = {!isConnected}  type='submit' className='disabled:bg-gray-400 text-white font-manrope flex flex-col items-center justify-center font-bold text-[20px] self-end mt-4 px-14 max-sm:px-7 py-2 bg-success-511 w-fit rounded-md'>{isConnected ? 'Create' : 'No Wallets Found'}</button>
+                <button disabled = {loading}  type='submit' className='disabled:bg-gray-400 text-white font-manrope flex flex-col items-center justify-center font-bold text-[20px] self-end mt-4 px-14 max-sm:px-7 py-2 bg-success-511 w-fit rounded-md'>{loading ? <div className="spinner mr-2 "></div> : 'Create'}</button>
       </form>
       </div>
       </>

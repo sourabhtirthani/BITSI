@@ -10,6 +10,7 @@ export async function GET(){
             nft_name : true,
             nft_price : true,
             nft_image : true,
+            // nft_collection_id : true,
             nft_collection_name : true,
             nft_mint_time : true
         },

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
+import Image from 'next/image'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -13,47 +13,63 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
-import {
+import { 
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import Image from "next/image"
 import { useRouter } from 'next/navigation';
+import { collectionListInCreateNft } from "@/types"
+import {useAccount} from 'wagmi'
+import { getCollecitonOfUserWithAddress } from "@/actions/uploadNft"
 
-const collectionValues = [
-  {
-    value: "Collection1",
-    label: "Collection1",
-    id: "1"
-  },
-  {
-    value: "Collection2",
-    label: "Collection2",
-     id: "2"
-  },
-  {
-    value: "Collection3",
-    label: "Collection3",
-     id: "3"
-  },
-  {
-    value: "Collection4",
-    label: "Collection4",
-     id: "4"
-  },
-  {
-    value: "Collection5",
-    label: "Collection5",
-     id: "5"
-  },
-]
+// const collectionValues = [
+//   {
+//     value: "Collection1",
+//     label: "Collection1",
+//     id: "1"
+//   },
+//   {
+//     value: "Collection2",
+//     label: "Collection2",
+//      id: "2"
+//   },
+//   {
+//     value: "Collection3",
+//     label: "Collection3",
+//      id: "3"
+//   },
+//   {
+//     value: "Collection4",
+//     label: "Collection4",
+//      id: "4"
+//   },
+//   {
+//     value: "Collection5",
+//     label: "Collection5",
+//      id: "5"
+//   },
+// ]
 
 export function CollectionCombobox({setCollectionValue , setCollectionId} : { setCollectionValue: React.Dispatch<React.SetStateAction<string>>, setCollectionId: React.Dispatch<React.SetStateAction<string>>  }) {
+  const [collectionValues, setCollectionValues] = React.useState<collectionListInCreateNft[]>([])
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("");
   const { push } = useRouter();
+  const {address} = useAccount();
+  React.useEffect(()=>{
+    const getCollections  = async()=>{
+      if(address){
+      const res = await getCollecitonOfUserWithAddress(address);
+      console.log("in here int he collectionfetch funcitn")
+      console.log(res);
+      console.log(JSON.stringify(res))
+      setCollectionValues(res)
+      }
 
+    }
+    getCollections()
+  }, [address])
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild className="w-full">
@@ -69,24 +85,26 @@ export function CollectionCombobox({setCollectionValue , setCollectionId} : { se
              onClick={()=>{push('/create-collection')}}>+ Create a new Collection</CommandEmpty>
             <CommandGroup>
                 <CommandItem onSelect={()=>{push('/create-collection')}}>+ Create a new Collection</CommandItem>
+                {/* <CommandItem onSelect={()=>{push('/create-collection')}}>{collectionValues[0].image}</CommandItem> */}
               {collectionValues.map((framework) => (
                 <CommandItem
-                  key={framework.value}
-                  value={framework.value}
+                  key={framework.name}
+                  value={framework.name}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue)
                     setCollectionValue(currentValue === value ? "" : currentValue) 
-                    setCollectionId(framework.id)
+                    setCollectionId(framework.id.toString())
                     setOpen(false)
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === framework.value ? "opacity-100" : "opacity-0"
+                      value === framework.name ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  {framework.label}
+                  <Image src={framework.image} height={15} width={15} alt="icon" />
+                  &nbsp;&nbsp;{framework.name}
                 </CommandItem>
               ))}
             </CommandGroup>

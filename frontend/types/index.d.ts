@@ -78,8 +78,18 @@ declare interface buyNftDialogProps {
 
 }
 
+declare interface collectionListInCreateNft{
+    id : number,
+    name : string,
+    image : string
+}
+
 declare type AboutUsContextType = {
     filterValue: string;
     setFilterValue: React.Dispatch<React.SetStateAction<string>>;
   };
   
+
+declare type UploadCollectionSuccess = { success: true };
+declare type UploadCollectionError = { error: string };
+declare type UploadCollectionType = UploadCollectionSuccess | UploadCollectionError;

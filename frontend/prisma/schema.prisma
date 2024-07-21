@@ -24,6 +24,7 @@ model Nft{
   nft_liked            Int?
   is_insured           Boolean
   events               Nft_events[]
+  collection           Collection @relation(fields: [nft_collection_id], references: [id])
 }
 
 model Nft_events {
@@ -39,4 +40,16 @@ model Nft_events {
 
   @@index([nftId])
   
+}
+
+model Collection {
+  id           Int      @id 
+  name         String
+  ownerAddress String
+  price        Float
+  image        String
+  totalNfts    Int  @default(0)
+  creationTime DateTime @default(now())
+
+  nfts         Nft[]
 }

@@ -13,9 +13,9 @@ import { revalidatePath } from 'next/cache'
 
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
-export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : string , idOfNft : number): Promise<uploadNFtTyp> => {
+export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : string , idOfNft : number, address : string, collection : string): Promise<uploadNFtTyp> => {
     try {
-        console.log(formdata)
+        // console.log(formdata)
         if (formdata == null) {
             console.log('formdata null ')
             return { error: "Invalid/Missing data" };
@@ -23,7 +23,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
         const nftFile = formdata.get('nftFile') as File;
         const name = formdata.get('name') as string;
         const price = parseFloat(formdata.get('price') as string);
-        const collection = formdata.get('collection') as string;
+        const collectionId = parseInt(formdata.get('collection') as string);
         const royalties = parseFloat(formdata.get('royalties') as string);
         const description = formdata.get('description') as string;
         // if (!Number.isFinite(price) || isNaN(price)) {
@@ -94,11 +94,11 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nft_price: price,
               nft_image: nftImageUrl,
               nft_collection_name: collection,
-              nft_collection_id: 1,
+              nft_collection_id: collectionId,
               nft_royalties: royalties,
               nft_description: description,
-              nft_owner_address: '123456677890', 
-              nft_creator_address: '123456677890', 
+              nft_owner_address: address, 
+              nft_creator_address: address, 
               nft_mint_time: new Date(),
               is_admin_minted: false,
               nft_liked: 0,
@@ -125,7 +125,25 @@ export const getNftWithIdAction = async(nftId : string)=>{
     })
     return {record}
   }catch(error){
-    return {error : 'error occured while fetching data'}
+    throw new Error("Could not fetch nft");
+  }
+}
+
+export const getCollecitonOfUserWithAddress = async(address : String)=>{
+  try{
+    const collections = await db.collection.findMany({
+      where : {ownerAddress : address as string},
+      select : {
+        id : true,
+        name : true, 
+        image : true
+      }
+    })
+    revalidatePath('/create-nft/upload')
+    return collections;
+  }catch(error){
+    console.error("Error fetching collections: ", error);
+    throw new Error("Could not fetch collections");
   }
 }
 
@@ -135,3 +153,34 @@ export const getNftWithIdAction = async(nftId : string)=>{
 //       const nftImageUrl = res?.secure_url;
 //       return nftImageUrl
 // }
+
+type uploadCollecitonType = {success : boolean} | {error : string}
+export const uploadCollection = async(formData : FormData, collectionId : number, address : string) : Promise<uploadCollecitonType> =>{
+  try{
+      if(!formData.get("name") || !formData.get("collectionFile") || !formData.get("description") || !formData.get("floorPrice") || !collectionId){
+        console.log("in here in the rror")
+        return {error : "Missing Values"}
+      }
+    //  const collectionFile = formData.get("collectionFile") as File;
+     const cloudUpload = await uploadImage(formData , 'collectionUploads' , 'collectionFile');
+     const nameOfCollection = formData.get("name") as string;
+     const description = formData.get("description") as string;
+     const floorPrice = parseFloat(formData.get('floorPrice') as string);
+     const collectionUpl = await db.collection.create({
+      data : {
+        id : collectionId,
+        image : cloudUpload.secure_url,
+        name : nameOfCollection,
+        ownerAddress : address,
+        price : floorPrice,
+        creationTime : new Date(),
+      }
+     })
+    //  revalidatePath('/create-nft/upload');
+      return {success : true}
+  }catch(error){
+    console.log(`errror uploading collleciotn ${JSON.stringify(error)}`)
+    // throw new Error("Could not fetch collections");
+    return {error : JSON.stringify(error)}
+  }
+}
