@@ -7,16 +7,19 @@ import DropdownNav from './DropdownNav';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
 import { formatAddress } from '@/lib/utils';
+// import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
+// import { useToast } from './ui/use-toast';
 
 
 
 const Navbar = () => {
+  // const {toast} = useToast();
   const {address , isConnected} = useAccount();
   const { open } = useWeb3Modal();
   const handleConnect = async () => {
     try {
       await open();
-    } catch (error) {
+    } catch (error) { 
       console.error('Failed to connect wallet:', error);
     }
   };
@@ -25,6 +28,22 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  // useEffect(()=>{
+  //   const createUserWithAct = async ()=>{
+  //     if(address){
+  //       console.log('in if address is found go to the backend')
+  //     const res = await createProfileWhenWalletConnect(address);
+  //     if(res.success == true){
+  //       toast({title: "Wallet Connected", description: "Wallet is now connected.", duration: 2000,
+  //         style: {backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope',},
+  //       });
+       
+  //     }
+  //     }
+  //   }
+  //   createUserWithAct();
+  // }, [address])
 
 
 

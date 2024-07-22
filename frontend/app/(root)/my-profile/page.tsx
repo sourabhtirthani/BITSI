@@ -85,8 +85,11 @@ const MyProfile = () => {
               </div>
             </div>
           </div>
-          <div className={`p-5 ${(enableEdit && filterValue == 'MyProfile') ? '' : 'hidden'}`} onClick={handleEditClick}>
-          <Link href={'/my-profile/edit-profile'}> <button className='bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white'><Image src='/icons/edit-icon.png' height={18} width={18} alt='edit' />EDIT</button></Link> 
+          <div className={`p-5 ${(filterValue == 'MyProfile') ? '' : 'hidden'}`} onClick={handleEditClick} >
+          <Link href={'/my-profile/edit-profile'}> <button className={`${!enableEdit ? 'bg-gray-300 disabled px-10' : 'bg-success-511'} py-3 px-6 font-bold gap-1 rounded-xl flex text-white`}>
+            {!enableEdit ? <div className="spinner mr-2 "></div> : <>
+            <Image src='/icons/edit-icon.png' height={18} width={18} alt='edit' />EDIT </>}
+            </button></Link> 
           </div>
         </div>
 

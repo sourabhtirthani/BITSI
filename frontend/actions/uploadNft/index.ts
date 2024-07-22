@@ -184,3 +184,29 @@ export const uploadCollection = async(formData : FormData, collectionId : number
     return {error : JSON.stringify(error)}
   }
 }
+
+type createProfileWhenWalletConnectType = {success : boolean}
+export const createProfileWhenWalletConnect = async(address : string) : Promise<createProfileWhenWalletConnectType>=>{
+  try{
+    console.log("in here in the create profile when the wallet is connected is function")
+    const existingUser = await db.
+    user.findUnique({
+      where : {
+        walletAddress : address
+      }
+    });
+    if(!existingUser){
+      await db.user.create({
+        data : {
+          walletAddress : address
+        }
+      })
+    }
+    return {success : true}
+  }catch(error){
+    console.log(error);
+    console.log('error creating database entry')
+    // throw new Error('Error creating database entry');
+    return {success : false}
+  }
+}

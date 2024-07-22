@@ -53,3 +53,13 @@ model Collection {
 
   nfts         Nft[]
 }
+
+model User {
+  id            Int      @id @default(autoincrement())
+  walletAddress String   @unique
+  name          String?  
+  email         String?  
+  number        String?  
+  address       String?
+  bio           String?  
+}
