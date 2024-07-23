@@ -210,3 +210,92 @@ export const createProfileWhenWalletConnect = async(address : string) : Promise<
     return {success : false}
   }
 }
+
+// export const getUserDetails = async(address : string)=>{
+//   try{
+//     console.log('in here in the action of get user details')
+//     const user = await db.user.findUnique({
+//       where : {
+//         walletAddress : address
+//       },
+//     });
+//     if(!user){
+//       return null;
+//     }
+//     return user;
+
+//   }catch(error){
+//     throw new Error('error getting details from database');
+//   }
+// }
+type upsertUserProfileType = {success : string}
+export const upsertUserProfile = async (formData: FormData): Promise<upsertUserProfileType> => {
+  try {
+    const walletAddress = formData.get('walletAddress') as string;
+    if (!walletAddress) {
+      throw new Error('Wallet address is required');
+    }
+    const address = formData.get('address') as string | undefined;
+    const bio = formData.get('bio') as string | undefined;
+    const number = formData.get('number') as string | undefined;
+    const email = formData.get('email') as string | undefined;
+    const name = formData.get('name') as string | undefined;
+
+    let imgUrl: string | undefined;
+
+    const imgSrcFile = formData.get('imgSrc') as File;
+    if (imgSrcFile && imgSrcFile.size > 0) {
+      // console.log(formData.get('imgSrc'))
+      const uplImg = await uploadImage(formData, 'users', 'imgSrc');
+      imgUrl = uplImg.secure_url;
+    }
+
+    // key !== 'imgSrc'
+    const formObject: { [key: string]: string } = {};
+    formData.forEach((value, key) => {
+      if (typeof(value) == 'string') {
+        formObject[key] = value;
+      }
+    });
+    
+    
+    if (imgUrl) {
+      formObject.imgSrc = imgUrl;
+    }
+    
+    
+    console.log(formObject)
+    const data: { [key: string]: any } = { ...formObject };
+
+   
+    const existingUser = await db.user.findUnique({
+      where: { walletAddress },
+    });
+
+    if (existingUser) {
+      
+      await db.user.update({
+        where: { walletAddress },
+        data,
+      });
+      return { success: 'Profile Updated Successfully' };
+    } else {
+     
+      await db.user.create({
+        data: {
+          walletAddress,
+          imgSrc: imgUrl,
+          name,
+          address,
+          bio,
+          email,
+          number,
+        },
+      });
+      return { success: 'Profile Created Successfully' };
+    }
+  } catch (error) {
+    console.error('Error editing profile:', error);
+    throw new Error('Error editing profile, please try again');
+  }
+};

@@ -61,5 +61,6 @@ model User {
   email         String?  
   number        String?  
   address       String?
-  bio           String?  
+  bio           String? 
+  imgSrc        String? 
 }

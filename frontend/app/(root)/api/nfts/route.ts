@@ -22,6 +22,6 @@ export async function GET(){
     console.log('error clause');
     return NextResponse.json({
         error : 'Inernal server error' 
-    })
+    } , {status : 500})
 }
 }

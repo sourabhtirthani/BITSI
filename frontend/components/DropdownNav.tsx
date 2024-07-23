@@ -11,18 +11,23 @@ import { DropdownProps } from "@/types";
 import Image from 'next/image'
 import Link from "next/link";
 import { formatAddress } from "@/lib/utils";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 
 
 const DropdownNav = () => {
   const {isConnected , address} = useAccount();
   const [kycValue ,setKycValue] = useState('pending');
+  const { disconnect } = useDisconnect()
 
   const { open } = useWeb3Modal();
   const handleConnect = async () => {
     try {
+      if(!isConnected){
       await open();
+      }else{
+        disconnect();
+      }
     } catch (error) {
       console.error('Failed to connect wallet:', error);
     }

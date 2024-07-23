@@ -1,4 +1,5 @@
 'use client'
+// import { getUserDetails } from '@/actions/uploadNft';
 import Button from '@/components/Button';
 import CardNftMyProfile from '@/components/CardNftMyProfile';
 import Dropdown from '@/components/Dropdown';
@@ -6,21 +7,33 @@ import DropdownMyProfile from '@/components/DropdownMyProfile';
 import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
+import { useToast } from '@/components/ui/use-toast';
 import { listOfNFtsMyProfile, myHistoryWalletDropDown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { formatAddressUserZone } from '@/lib/utils';
+import { UserData } from '@/types';
 import Image from 'next/image'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useAccount } from 'wagmi';
+import { useRouter } from 'next/navigation';
 //515/511
 const MyProfile = () => {
-  
+  const {toast} = useToast();
+   const { push } = useRouter();
+  const {address , isConnected} = useAccount();
   // const [myProfile, setMyProfile] = useState(true);
-  const [enableEdit , SetEnableEdit] = useState(true);
+  const [enableEdit , setEnableEdit] = useState(false);
   const [filterValue , setFilterValue] = useState('MyProfile');
   const [nftDetailsFilterValue, setNftDetailsFilterValue] = useState('') // for inside table
   const [nftDetailsFilterValueOutside , setNftDetailsFilterValueOutside] = useState('')
   const [coinsDetailsFilterValue , setCoinDetailsFilterValue] = useState(''); // for inside
   const [coinsDetailsFilterValueOutside , setCoinsDetailsFilterValueOutside] = useState('');
   const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
+  const [imgOfUser , setImageOfUser] = useState('/icons/profile-logo.png')
+  // const [nameOfuser , setNameOfUser] = useState('');
+  // const [emailOfUser , setEmailOfUser] = useState('');
+  // const [numberOfUser , setNumberOfUser] = useState('')
+  const [dataOfUser , setDataOfUser] = useState<UserData>()
 
   useEffect(()=>{
     const selectedItems: string[] = [];
@@ -35,12 +48,19 @@ const MyProfile = () => {
     }
   } , [])
 
-  const handleEditClick = ()=>{
-  if(enableEdit == true){
-  SetEnableEdit(false);
-  return;
+ const handleEditClick = async()=>{
+  setEnableEdit(true);
+  if(!address || !isConnected){
+     toast({ title: "No wallets found", description: "Please Connect Wallet to edit your profile", duration: 2000,
+      style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+      setEnableEdit(false);
+      return;
+  }else{
+    // setEnableEdit(false);
+     push('/my-profile/edit-profile');
   }
-  }
+
+ }
 
   const handleMyProfileClick = () => {
     // setMyProfile(true);
@@ -58,38 +78,69 @@ const MyProfile = () => {
   //   setMyProfile(false);
   // }
 
-  const handleSubmit  = (e: React.SyntheticEvent)=>{
-    e.preventDefault();
-    console.log('in here')
-    SetEnableEdit(true);
-  }
+  // const handleSubmit  = (e: React.SyntheticEvent)=>{
+  //   e.preventDefault();
+  //   console.log('in here')
+  //   SetEnableEdit(true);
+  // }
 
-  const handleCancelFormSave = ()=>{
-    SetEnableEdit(true);
-  }
+
   const handleHistoryClick = ()=>{
     setFilterValue('My History')
   }
+
+  useEffect(()=>{
+    const getUser = async()=>{
+      try{
+        if(isConnected){
+          const res = await fetch(`/api/user/${address}` ,{cache : 'no-cache'})
+          if(res.status == 404){
+            setDataOfUser({address : '' , name : '' , bio : '' , email : '' , number : '' , walletAddress : '' , id : '' , imgSrc : ''})
+          }
+          if(!res){
+            toast({ title: "Operation Failed", description: "Error Fetching data , Please try again", duration: 2000,
+              style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+              
+          }else{
+            const userData = await res.json();
+  
+              setDataOfUser(userData);
+              if(userData.imgSrc){
+              setImageOfUser(userData.imgSrc)
+              }
+              // setImageOfUser(userData?.imgSrc);
+          }
+        }else{
+          setDataOfUser({address : '' , name : '' , bio : '' , email : '' , number : '' , walletAddress : '' , id : '' ,  imgSrc : ''})
+        }
+      }catch(error){
+        console.log(error);
+        toast({ title: "Operation Failed", description: "Error getting user Details", duration: 2000,
+          style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+      }
+    }
+    getUser();
+  }, [address, isConnected])
   return (
     <>
       <div className='navbar-space'></div>
       <section className='bg-success-503 '>
         <div className='mt-8 px-5 max-md:px-2.5 flex justify-between max-sm:flex-col mb-10 sm:items-center'>
           <div className='flex items-center gap-2'>
-            <Image src='/icons/profile-logo.png' height={200} width={200} alt='Profile Image' className='p-2' />
+            <Image src={imgOfUser} height={200} width={200} alt='Profile Image' className='p-2 h-[200px] w-[200px] rounded-full' />
             <div className='flex flex-col gap-2 '>
-              <p className='text-success-515 font-manrope text-[32px] max-sm:text-[24px]'>Sanorita Hubdj</p>
+              <p className='text-success-515 font-manrope text-[32px] max-sm:text-[24px]'>{dataOfUser?.name || 'No name specified'}</p>
               <div className='flex gap-2 max-sm:flex-col'>
-                <p className='text-white text-opacity-50 text-[23px] max-sm:text-[17px] font-manrope font-normal'> 0xb1...iodhu00eF</p>
-                <button className='bg-success-518 px-4 py-1 w-fit text-white font-manrope font-semibold '>Copy</button>
+                <p className='text-white text-opacity-50 text-[23px] max-sm:text-[17px] font-manrope font-normal'>{address ? formatAddressUserZone(address) : 'Please Connect Wallet '}</p>
+                {/* <button className='bg-success-518 px-4 py-1 w-fit text-white font-manrope font-semibold '>Copy</button> */}
               </div>
             </div>
           </div>
           <div className={`p-5 ${(filterValue == 'MyProfile') ? '' : 'hidden'}`} onClick={handleEditClick} >
-          <Link href={'/my-profile/edit-profile'}> <button className={`${!enableEdit ? 'bg-gray-300 disabled px-10' : 'bg-success-511'} py-3 px-6 font-bold gap-1 rounded-xl flex text-white`}>
-            {!enableEdit ? <div className="spinner mr-2 "></div> : <>
+          <button  className={`${enableEdit ? 'bg-gray-300 disabled px-10' : 'bg-success-511'} py-3 px-6 font-bold gap-1 rounded-xl flex text-white`}>
+            {enableEdit ? <div className="spinner mr-2 "></div> : <>
             <Image src='/icons/edit-icon.png' height={18} width={18} alt='edit' />EDIT </>}
-            </button></Link> 
+            </button>
           </div>
         </div>
 
@@ -106,43 +157,42 @@ const MyProfile = () => {
         </div>
 
         {filterValue == 'MyProfile' && (<div className='flex flex-col mt-4'>
-          <form onSubmit={handleSubmit}>
+          <form >
             <div className='flex justify-between  max-sm:flex-col sm:mb-0 sm:gap-24 px-4  '>
               <FormRow className='sm:w-1/2 p-4'>
                 <FormLabel htmlFor='name' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Name</FormLabel>
-                {/* block w-full  rounded  */}
-                {/* <InputText  id='name' name='name' type='text' placeHolder='Name' className='p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white  focus:border-b-4' /> */}
-                <input disabled = {enableEdit} id ='name' name='name' type='text' placeholder='Name' className='block w-full  p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white  focus:border-b-4' />
-                {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
+              
+                <input disabled = {true} id ='name' name='name' type='text' placeholder='Name' className='block w-full  p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white  focus:border-b-4' value={dataOfUser?.name || ''} />
+              
               </FormRow>
               <FormRow className='sm:w-1/2 p-4'>
                 <FormLabel htmlFor='whatsapp' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Whatsapp&nbsp;(Optional)</FormLabel>
-                <input disabled = {enableEdit} id='whatsapp' name='whatsapp' type='text' placeholder='Phone Number' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' />
-                {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
+                <input disabled = {true} id='whatsapp' name='whatsapp' type='text' placeholder='Phone Number' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.number || ''} />
+               
               </FormRow>
             </div>
 
             <div className='flex justify-between  max-sm:flex-col sm:mb-0 sm:gap-24  px-4 '>
               <FormRow className='sm:w-1/2 p-4'>
                 <FormLabel htmlFor='email' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Email</FormLabel>
-                <input disabled = {enableEdit} id='email' name='email' type='email' placeholder='Email' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' />
-                {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
+                <input disabled = {true} id='email' name='email' type='email' placeholder='Email' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.email || ''} />
+               
               </FormRow>
               <FormRow className='sm:w-1/2 p-4'>
                 <FormLabel htmlFor='address' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Address&nbsp;(Optional)</FormLabel>
-                <input disabled = {enableEdit}  id='address' name='address' type='text' placeholder='Address here' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' />
-                {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
+                <input disabled = {true}  id='address' name='address' type='text' placeholder='Address here' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.address || ''} />
+             
               </FormRow>
             </div>
             <FormRow className='py-4 px-7'>
               <FormLabel htmlFor='bio' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Bio&nbsp;(Optional)</FormLabel>
-              <input disabled = {enableEdit} id='bio' name='bio' type='text' placeholder='Bio' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' />
-              {/* {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>} */}
+              <input disabled = {true} id='bio' name='bio' type='text' placeholder='Bio' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.bio || ''} />
+            
             </FormRow>
-            <div className='flex gap-4 p-4'>
+            {/* <div className='flex gap-4 p-4'>
             <button className={`bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white mb-10 ${enableEdit ? 'hidden' : ''}`} type='submit'>Save</button>
             <button className={`bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white mb-10 ${enableEdit ? 'hidden' : ''}`} onClick={handleCancelFormSave}>Cancel</button>
-            </div>
+            </div> */}
           </form>
         </div>)}
 

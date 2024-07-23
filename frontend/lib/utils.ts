@@ -52,7 +52,10 @@ export const formatChainAsNum = (chainIdHex: string) => {
 export const formatAddress = (addr: string | undefined) => {
   return `${addr?.substring(0, 8)}...`;
 };
-// return `${addr?.substring(0, 6)}...${addr?.substring(addr.length - 4)}`; this is another way to format address
+
+export const formatAddressUserZone = (address : string)=>{
+  return `${address?.substring(0, 4)}....${address?.substring(address.length - 5)}`; 
+}
 
 export const generateRandomTokenId = (): number => {
   return Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;

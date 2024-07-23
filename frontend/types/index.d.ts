@@ -93,3 +93,14 @@ declare type AboutUsContextType = {
 declare type UploadCollectionSuccess = { success: true };
 declare type UploadCollectionError = { error: string };
 declare type UploadCollectionType = UploadCollectionSuccess | UploadCollectionError;
+
+declare interface UserData {
+    id: string;
+    walletAddress: string;
+    name: string | null;
+    email: string | null;
+    number: string | null;
+    address: string | null;
+    bio: string | null;
+    imgSrc : string | null;
+  }
