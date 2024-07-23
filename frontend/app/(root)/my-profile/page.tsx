@@ -112,6 +112,7 @@ const MyProfile = () => {
           }
         }else{
           setDataOfUser({address : '' , name : '' , bio : '' , email : '' , number : '' , walletAddress : '' , id : '' ,  imgSrc : ''})
+          setImageOfUser('/icons/profile-logo.png')
         }
       }catch(error){
         console.log(error);
