@@ -347,7 +347,6 @@ export const events = [
     'Token Standard' : 'ERC-721',
     'Chain' : 'Base',
     'Last Updated' : '2 Months Ago',
-    'Creator Earnings' : '8'
   }
 
 
@@ -373,6 +372,21 @@ export const events = [
     {Date : '11/01/24' , Asset : 'Coin' , EventName : 'Published' , insuranceCoverage : 'YES' , insuraceExpiry : '11/01/2025'},
    
     
+  ]
+
+  export const tableMyInsurance = [
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'No' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'No' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'No' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'No' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'No' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    
+  ]
+
+  export const tableMyInsuraceCoin = [
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'Yes' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'Yes' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
+    {Date : '11/01/24' , marketPlace : 'OpenSea' , ID : '12345' , eventName : 'Sold' , Price : '5 ETHR' , insured : 'Yes' , insuranceCOverage : 'Yes' , insuranceExpiry : '-'},
   ]
 
   export const tableMyHistory = [
@@ -484,6 +498,11 @@ export const events = [
         name : 'Insurance',
         icon : '/icons/incusrance-icon-userzone.svg'
     }
+  ]
+
+  export const myInsuranceDropdown = [
+    {id: 1,name : 'Purchase' , icon : ""}, {id: 2,name : 'Upgrade' , icon : ""}, {id: 3,name : 'Extend' , icon : ""} , 
+    {id: 4,name : 'Claim' , icon : ""} , {id: 5,name : 'Unlock' , icon : ""}
   ]
 
   export const buycollectionsTable = [

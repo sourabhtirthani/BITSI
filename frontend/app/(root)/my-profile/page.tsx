@@ -8,7 +8,7 @@ import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
 import { useToast } from '@/components/ui/use-toast';
-import { listOfNFtsMyProfile, myHistoryWalletDropDown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { listOfNFtsMyProfile, myHistoryWalletDropDown, myInsuranceDropdown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import { formatAddressUserZone } from '@/lib/utils';
 import { UserData } from '@/types';
 import Image from 'next/image'
@@ -16,6 +16,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
+import MyInsuranceTableUserProfile from '@/components/MyInsuranceTableUserProfile';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -152,6 +153,8 @@ const MyProfile = () => {
           <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
+          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <Dropdown buttonName='My Insurance' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
           <button onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
           <button onClick={handleCollectionClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
@@ -442,6 +445,10 @@ const MyProfile = () => {
           </div>
           </>
         )}
+
+          {filterValue == 'Purchase' && (
+            <MyInsuranceTableUserProfile filterValue={filterValue} />
+          )}
 
       </section>
     </>
