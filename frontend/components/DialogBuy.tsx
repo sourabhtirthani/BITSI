@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -12,14 +13,22 @@ import { buyNftDialogProps } from "@/types"
 import  Checkbox  from "./Checkbox1"
 import Link from "next/link"
 import Image from 'next/image'
+import { useState } from "react"
 
-export function DialogBuy({totalItems , buttonName, showSelectedItem , nameOfClass , currencyText } : buyNftDialogProps ) {
+export function DialogBuy({totalItems , lstOfItems , buttonName, showSelectedItem , nameOfClass , currencyText , nameOfNft , imgSrc , collectionName , nftPrice , royalty } : buyNftDialogProps ) {
+  // console.log(lstOfItems)
+  // const numberArray: number[] = stringArray.map(Number);
+  const [isLoading , setIsLoading] = useState(false);
+
+  const handleBuyClick = async()=>{
+    setIsLoading(true);
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
         <button className= {nameOfClass}>{buttonName}</button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white ">
+      <DialogContent  className="sm:max-w-[370px] bg-white ">
         <DialogHeader>
           <DialogTitle className="text-black font-montserrat  font-bold">Checkout</DialogTitle>
           <DialogDescription className="flex flex-col gap-3">
@@ -27,14 +36,14 @@ export function DialogBuy({totalItems , buttonName, showSelectedItem , nameOfCla
           {showSelectedItem && (<>
             <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
             <div className="flex items-center p-3 border-2 border-success-511 gap-3">
-                <Image src = '/icons/nft-desc.png' height={63.48} width={70} alt="nft image" />
+                <Image src = {imgSrc || ''} height={63.48} width={70} alt="nft image" className="w-[70px] h-[65px]" />
                 <div className="flex flex-col gap-2">
-                    <p className="text-black font-manrope font-bold text-[22px]">Minions Serious Eye</p>
+                    <p className="text-black font-manrope font-bold text-[22px]">{nameOfNft}</p>
                     <div className="flex">
                     <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
-                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">35%&nbsp;</p>
+                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">{royalty}%&nbsp;</p>
                     <p className="text-black text-[12px] font-montserrat font-semibold">Collection&nbsp;</p>
-                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">Luxury</p>
+                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">{collectionName}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +61,7 @@ export function DialogBuy({totalItems , buttonName, showSelectedItem , nameOfCla
             </div>
             <div className="flex justify-between">
                 <p className="text-black font-montserrat font-semibold">NFT Price</p>
-                <p className="text-black font-montserrat font-semibold">0.9 {currencyText}</p>
+                <p className="text-black font-montserrat font-semibold">{nftPrice} {currencyText}</p>
             </div>
             <div className="flex justify-between">
                 <p className="text-black font-montserrat font-semibold">Insurance Price</p>
@@ -62,15 +71,15 @@ export function DialogBuy({totalItems , buttonName, showSelectedItem , nameOfCla
                 <p className="text-black font-montserrat font-semibold">Total Price</p>
                 <p className="text-black font-montserrat font-semibold">1.11 {currencyText}</p>
             </div>
-            <div className="self-center">
-                <Link href='/abcdef'><button className="font-montserrat text-white font bold bg-nft-text-gradient py-4 px-28 text-[22px] font-bold rounded-xl ">Buy</button></Link>
+            <div className="self-center w-full">
+                <button onClick={handleBuyClick} disabled = {isLoading}  className={`${isLoading ? 'bg-gray-300 ' : 'bg-nft-text-gradient '} font-montserrat w-full flex justify-center text-white font bold  py-4  text-[22px] font-bold rounded-xl `}>{isLoading ? <div className="spinner mr-2 "></div> : 'Buy' }</button>
             </div>
            </div>
           </DialogDescription>
         </DialogHeader>
-        <div className=" py-0.5">
-        </div>
+        
       </DialogContent>
     </Dialog>
   )
 }
+{/* <button onClick={handleMintNft} disabled={isLoading} className={` ${isLoading ? ' bg-gray-300 w-full flex justify-center' : 'bg-nft-text-gradient'} font-montserrat text-white font bold w-full py-4  text-[22px]  font-bold rounded-xl `}>{isLoading ? <div className="spinner mr-2 "></div> : 'Buy'}</button> */}

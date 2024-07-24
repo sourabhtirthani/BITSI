@@ -23,7 +23,7 @@ const config = {
       backgroundImage :{
          'custom-gradient': 'linear-gradient(90deg, rgba(253, 251, 251, 0.325) 0%, rgba(235, 237, 238, 0.52) 100%)',
          'custom-radial': 'linear-gradient(to right, #FDFBFB 32.5%, #EBEDEE 52%);',
-         'hero-image': "url('/icons/landingImage.png')",
+         'hero-image': "url('/icons/bg-hero-new.jpeg')",
          'about-us' : "url('/icons/development-opportunity-strategy-improvement-word.png')",
          'hero-image-bitsi-coin' :  "url('/icons/image_hero_coin.png')",
          'custom-radial-gradient': 'radial-gradient(#D7C7A4 100%, #FFE340 100%)',     // for the about us photo and insurance text

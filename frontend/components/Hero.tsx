@@ -34,7 +34,7 @@ const Hero = () => {
       </div>
       </div>
 
-      <div className='h-full flex  justify-center p-4 max-md:hidden opacity-75 max-h-[490px] max-w-[750px]'>
+      <div className='h-full flex  justify-center p-4 max-md:hidden opacity-85 max-h-[490px] max-w-[750px]'>
         {/* <video src='/icons/nft-vid-2.mp4' /> */}
         <VideoPlayer options={videoJsOptions} />
       {/* <Image src = '/icons/nft-thumbnail.png' height={400} width={650} alt = 'video icon' className=' opacity-90 custom-xxl:h-[600px] custom-xxl:w-[840px]' />  */}

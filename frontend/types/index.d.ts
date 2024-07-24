@@ -70,11 +70,17 @@ declare interface CoinPriceHeroLandingPageProps{
 
 
 declare interface buyNftDialogProps {
-    totalItems : number,
-    buttonName : string , 
-    showSelectedItem : boolean,
-    nameOfClass : string,
-    currencyText : string
+    totalItems : number;
+    buttonName : string ;
+    showSelectedItem : boolean;
+    nameOfClass : string;
+    currencyText : string;
+    lstOfItems : string[];
+    nameOfNft?: string; 
+    collectionName?: string; 
+    royalty?: Float; 
+    imgSrc?: string;
+    nftPrice? : Float;
 
 }
 

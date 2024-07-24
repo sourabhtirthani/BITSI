@@ -85,7 +85,7 @@ const GenrateWithAi = () => {
             <div className=' p-2 max-w-[570px] max-h-[262px] bg-success-503 secondary-shadow11 rounded-xl flex items-center justify-center'>
               <Image src={preview} height={229} width={521} alt='image' className='max-w-full max-h-full ' />
             </div>
-            <p className='text-[12px] text-white text-opacity-65 mt-4'>Note : Once your NTF is Minted You can’t be changed any details </p>
+            <p className='text-[12px] text-white text-opacity-65 mt-4'>Note : Once your NTF is Minted You can&apos;t be changed any details </p>
             <Button className='text-white max-sm:w-full  bg-success-513  py-4 sm:mt-6 rounded-3xl text-[20px]'>MINT</Button>
           </div>
         </div>
