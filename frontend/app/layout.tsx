@@ -5,7 +5,7 @@ import { config } from '@/config'
 import Web3ModalProvider from '@/context'
 import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
-
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ["latin"], variable : '--font-inter' });
 const poppinss = Poppins({
@@ -64,6 +64,7 @@ export default function RootLayout({
       <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         
         </body>
+      <Script defer src="https://app.fastbots.ai/embed.js" data-bot-id="clyzhodvg0gf6r9bcqn59tpxl"  ></Script>
     </html>
   );
 }
