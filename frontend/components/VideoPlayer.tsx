@@ -19,8 +19,9 @@ export const VideoPlayer: FunctionComponent<VideoPlayerProps> = ({ options }) =>
       videoRef.current.appendChild(videoElement);
       const player = (playerRef.current = videojs(videoElement, {
         ...options,
-        controls: false, 
+        controls: true, 
         autoplay: true, 
+        muted: true,
         loop: true, 
         
       }));
