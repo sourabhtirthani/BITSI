@@ -446,7 +446,7 @@ const MyProfile = () => {
           </>
         )}
 
-          {filterValue == 'Purchase' && (
+          {(filterValue == 'Purchase' || filterValue == 'Upgrade' || filterValue == 'Extend' || filterValue == 'Claim' || filterValue == 'Unlock'   )&& (
             <MyInsuranceTableUserProfile filterValue={filterValue} />
           )}
 
