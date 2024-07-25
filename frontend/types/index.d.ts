@@ -77,13 +77,14 @@ declare interface buyNftDialogProps {
     showSelectedItem: boolean;
     nameOfClass: string;
     currencyText: string;
-    lstOfItems: string[];
+    lstOfItems: string[] | number[];
     nameOfNft?: string;
     collectionName?: string;
     royalty?: Float;
     imgSrc?: string;
     nftPrice?: Float;
     ownerAddress: string;
+    pricesArray? : number[];
 
 }
 

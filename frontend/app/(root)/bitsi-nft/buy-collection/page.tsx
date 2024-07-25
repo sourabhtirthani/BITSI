@@ -22,7 +22,8 @@ const BuyCollection = () => {
   //   })
   const {address , isConnected} = useAccount();
   const { toast } = useToast()
-  const [ids, setIds] = useState<string[]>([]);
+  const [ids, setIds] = useState<number[]>([]);
+  const [priceLst , setPriceLst] = useState<number[]>([])
   const [selectedNftsData , setSelectedNftsData] = useState<nftDataForMulitpleNftSelectPage[]>([]);
   const [disableBuyBtn , setDisbleBuyBtn] = useState(false);
   let errDescription = '';
@@ -37,23 +38,33 @@ const BuyCollection = () => {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.forEach((value) => {
       // console.log(value)
-      setIds(prevIds => [...prevIds, value]);
+      // setIds(prevIds => [...prevIds, value]);
       selectedItems.push(value);
       // setIds(prevIds => [...prevIds, value]);
     });
     console.log(selectedItems)
     // await setIds(selectedItems);
     // console.log(`the ids are`)
-    console.log(ids)
+    // console.log(ids)
     // let idOfNftsArr: number[] = [];
     // for (let i = 0; i < ids.length; i++) {
     //       idOfNftsArr.push(Number(ids[i]));
     //     }
         // console.log(idOfNftsArr); 
         const getAllSelectedNfts = await getMultipleNftsWithIds(selectedItems);
-        console.log(getAllSelectedNfts)
+        // console.log(getAllSelectedNfts)
     if(getAllSelectedNfts!=null){
       setSelectedNftsData(getAllSelectedNfts);
+      const newIds: number[] = [];
+    const newPrices: number[] = [];
+      for(let i = 0; i< getAllSelectedNfts.length ; i++){
+        const nft = getAllSelectedNfts[i];
+        newIds.push(nft.id);
+        const priceInWei = Number(Math.floor(nft.nft_price) * 10 ** 18);
+        newPrices.push(priceInWei);
+      }
+      setIds(newIds);
+      setPriceLst(newPrices);
     }
     
       }catch(error){
@@ -80,13 +91,13 @@ const BuyCollection = () => {
         setDisbleBuyBtn(true);
         errDescription = 'No Wallets Connected , Please connect allet to continue.'
         toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
-          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',},})
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope' },})
       }
       else if(selectedNftsData[i].nft_owner_address === address ){
         setDisbleBuyBtn(true);
         errDescription = 'Selected NFTs contains owned NFts , please remove them in order to proceed'
         toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
-          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',},})
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope'},})
           return;
       }else{
         setDisbleBuyBtn(false);
@@ -118,7 +129,7 @@ const BuyCollection = () => {
             {/* owner address to be changed later */}
             {/* <button className='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl'>Buy</button> */}
             {disableBuyBtn == true ? <div className='bg-gray-400 cursor-pointer w-full py-2 font-bold text-white text-[24px] flex justify-center rounded-xl'>Buy</div> : 
-            <DialogBuy ownerAddress={''} totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px]  rounded-xl' />}
+            <DialogBuy ownerAddress={''} pricesArray={priceLst} totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px]  rounded-xl' />}
           </div>
         </div>
 

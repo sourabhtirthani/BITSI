@@ -20,8 +20,8 @@ import { buyNft } from "@/actions/uploadNft"
 import { useRouter } from 'next/navigation';
 import { contractABI, contractAddress } from "@/lib/contract"
 
-export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, nameOfNft, imgSrc, collectionName, nftPrice, royalty }: buyNftDialogProps) {
-  console.log(lstOfItems)
+export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, pricesArray, nameOfNft, imgSrc, collectionName, nftPrice, royalty }: buyNftDialogProps) {
+  // console.log(lstOfItems)
   // const numbersArray = lstOfItems.map(item => Number(item));
   // console.log(numbersArray);
   // const numberArray: number[] = stringArray.map(Number);
@@ -33,7 +33,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
 
   const handleBuyClick = async () => {
     try{
-    console.log(lstOfItems)
+    // console.log(lstOfItems)
     setIsLoading(true);
     if (isConnected) {
       if (address as string == ownerAddress) {
@@ -69,16 +69,34 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
               title: "Transaction Failed", description: 'Please Try again.', duration: 2000,
               style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
             })
+            setIsLoading(false);
             return;
           }
         }else{
-          console.log("in here when multiple nfts are selected here")
-          return;
+          // if(pricesArray!= null){
+
+          // }
+          console.log(lstOfItems)
+          console.log(pricesArray)
+          const transaction = await writeContractAsync({
+            address: contractAddress,
+            abi: contractABI,
+            functionName: 'buyNFT',
+            args: [lstOfItems, pricesArray],
+          });
+          if(!transaction){
+            toast({
+              title: "Transaction Failed", description: 'Please Try again.', duration: 2000,
+              style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
+            })
+            setIsLoading(false);
+            return;
+          }
         }
         
         const purchaseNftAction = await buyNft(address as string , idOfNftsArr);
         if(purchaseNftAction.success){
-          toast({title: "Operation Success",description: "Your NFT has been successfully minted.",duration: 2000,
+          toast({title: "Operation Success",description: "You have successfully bought the nfts.",duration: 2000,
             style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
           setIsLoading(false);
           push('/my-profile');
@@ -110,7 +128,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
         <DialogHeader>
           <DialogTitle className="text-black font-montserrat  font-bold">Checkout</DialogTitle>
           <DialogDescription className="flex flex-col gap-3">
-            {!showSelectedItem && (<p className="font-semibold text-black font-montserrat ">Total NFTs - {totalItems}</p>)}
+            {!showSelectedItem && (<><p className="font-semibold text-black font-montserrat ">Total NFTs - {totalItems}</p> </>)}
             {showSelectedItem && (<>
               <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
               <div className="flex items-center p-3 border-2 border-success-511 gap-3">
