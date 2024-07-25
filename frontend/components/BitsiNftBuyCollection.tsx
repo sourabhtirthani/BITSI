@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { CarouselNext, CarouselPrevious } from './ui/carousel'
 import Image from 'next/image'
+import { nftDataForMulitpleNftSelectPage } from '@/types';
 
-const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {selectedItems : number , imgSource : string , current : number , count : number}) => {
+const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count , selectedItemData} : {selectedItems : number , imgSource : string , current : number , count : number , selectedItemData : nftDataForMulitpleNftSelectPage}) => {
   // const [elements , setElements] = useState<string[]>([])
   let elements : string[]= [];
-  for(let i =1 ; i<= count ; i++){
+  for(let i =1 ; i<= selectedItems ; i++){
     if(i==current){
       elements[i] = '/icons/Ellipse_2163.svg'
     }else{
@@ -20,10 +21,10 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
       <p className='bg-success-513 rounded-3xl font-bold font-manrope w-fit px-4 py-2 mb-3 text-[22px] text-white '>{selectedItems} Selected</p>
       
       <div className='relative'>
-      <Image src= {imgSource} height={546} width={604} alt='NFT IMAGE' />
+      <Image src= {selectedItemData.nft_image || ''} height={546} width={604} alt='NFT IMAGE' className='h-[546px] w-[604px]' />
       <div className='absolute rounded-full ml-4 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex bottom-3 py-2 justify-between'>
         <div className='flex flex-col items-center'>
-          <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>4.25 ETH</p>
+          <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{selectedItemData.nft_price} ETH</p>
           <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Floor Price</p>
         </div>
         <div className='bg-success-511 rounded-full p-2'>
@@ -34,12 +35,12 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count} : {
     <div className='lg:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>
       <div className='flex justify-between items-center'>
         <div className='flex flex-col gap-0'>
-        <h4 className='font-manrope font-semibold lg:text-[32px] max-md:text-[14px] md:text-[22px] text-success-513 '>Minions Serious EYE</h4>
-        <p className='text-white text-opacity-70 text-[22px] font-manrope font-semibold'>Collection - Luxury</p>
+        <h4 className='font-manrope font-semibold lg:text-[32px] max-md:text-[14px] md:text-[22px] text-success-513 '>{selectedItemData.nft_name}</h4>
+        <p className='text-white text-opacity-70 text-[22px] font-manrope font-semibold'>Collection - {selectedItemData.nft_collection_name}</p>
         </div>
           <Image src='/icons/mdi_delete.svg' height={32} width={31.72} alt='Share' />
       </div>
-      <p className='text-success-516 text-[22px] text-opacity-40 max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>Own a unique digital minion NFT! Each minion comes with distinct traits and exclusive artwork, making it a one-of-a-kind collectible on the blockchain.</p>
+      <p className='text-success-516 text-[22px] text-opacity-40 max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>{selectedItemData.nft_description}</p>
       {/* <div className='flex justify-between lg:mt-8 max-lg:mt-4'>
         <div className='flex flex-col gap-4 max-lg:gap-2'>
           <p className='text-white font-montserrat font-semibold text-[22px] max-md:text-[14px]'>Owned By</p>

@@ -5,7 +5,11 @@ import { buycollectionsTable } from '@/constants';
 import { DialogBuy } from '@/components/DialogBuy';
 import { CarouselNft } from '@/components/CarouselNft';
 import { AlertBoxBuyNfy } from '@/components/AlertBoxBuyNft';
+import { getMultipleNftsWithIds } from '@/actions/uploadNft';
 // import { useSearchParams } from 'next/navigation';
+import { useToast } from "@/components/ui/use-toast"
+import { nftDataForMulitpleNftSelectPage } from '@/types';
+import { useAccount } from 'wagmi';
 
 
 const BuyCollection = () => {
@@ -16,17 +20,81 @@ const BuyCollection = () => {
   //   searchParams.forEach((item) => {
   //     selectedItems.push(item);
   //   })
+  const {address , isConnected} = useAccount();
+  const { toast } = useToast()
   const [ids, setIds] = useState<string[]>([]);
+  const [selectedNftsData , setSelectedNftsData] = useState<nftDataForMulitpleNftSelectPage[]>([]);
+  const [disableBuyBtn , setDisbleBuyBtn] = useState(false);
+  let errDescription = '';
+  const selectedItems: string[] = [];
 
   useEffect(() => {
-    const selectedItems: string[] = [];
+    const getAllNftsOnPageRender = async()=>{
+      try{
+    if(selectedItems.length > 0){
+      return;
+    }
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.forEach((value) => {
+      // console.log(value)
+      setIds(prevIds => [...prevIds, value]);
       selectedItems.push(value);
+      // setIds(prevIds => [...prevIds, value]);
     });
-
-    setIds(selectedItems);
+    console.log(selectedItems)
+    // await setIds(selectedItems);
+    // console.log(`the ids are`)
+    console.log(ids)
+    // let idOfNftsArr: number[] = [];
+    // for (let i = 0; i < ids.length; i++) {
+    //       idOfNftsArr.push(Number(ids[i]));
+    //     }
+        // console.log(idOfNftsArr); 
+        const getAllSelectedNfts = await getMultipleNftsWithIds(selectedItems);
+        console.log(getAllSelectedNfts)
+    if(getAllSelectedNfts!=null){
+      setSelectedNftsData(getAllSelectedNfts);
+    }
+    
+      }catch(error){
+        console.log(error);
+        toast({
+          title: "Error Retrieving Nfts",
+          description: 'Unable To retrieve NFTs at the moment , please refresh the page and try again',
+          duration: 2000,
+          style: {
+            backgroundColor: '#900808',
+            color: 'white',
+            fontFamily: 'Manrope',
+          },
+        })
+      }
+      }
+      getAllNftsOnPageRender();
   }, []);
+
+  useEffect(()=>{
+    const checkForAddress = ()=>{
+    for(let i =0 ;i< selectedNftsData.length ; i++){
+      if(!isConnected){
+        setDisbleBuyBtn(true);
+        errDescription = 'No Wallets Connected , Please connect allet to continue.'
+        toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',},})
+      }
+      else if(selectedNftsData[i].nft_owner_address === address ){
+        setDisbleBuyBtn(true);
+        errDescription = 'Selected NFTs contains owned NFts , please remove them in order to proceed'
+        toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',},})
+          return;
+      }else{
+        setDisbleBuyBtn(false);
+      }
+    }
+  }
+  checkForAddress();
+  }, [address , selectedNftsData , isConnected])
   return (    
     <>
       <div className='navbar-space'></div>
@@ -38,7 +106,7 @@ const BuyCollection = () => {
         </div>
         <div className='p-8 max-md:p-4'>
           <div className=' bg-success-512 secondary-shadow11'>
-        <CarouselNft selectedItems={ids.length} />
+        <CarouselNft allSelectedItems={selectedNftsData} />
         </div>
         </div>
         <div className='p-8 mb-40 max-md:mb-20'>
@@ -49,7 +117,8 @@ const BuyCollection = () => {
             </div>
             {/* owner address to be changed later */}
             {/* <button className='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl'>Buy</button> */}
-            <DialogBuy ownerAddress={''} totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
+            {disableBuyBtn == true ? <div className='bg-gray-400 cursor-pointer w-full py-2 font-bold text-white text-[24px] flex justify-center rounded-xl'>Buy</div> : 
+            <DialogBuy ownerAddress={''} totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px]  rounded-xl' />}
           </div>
         </div>
 

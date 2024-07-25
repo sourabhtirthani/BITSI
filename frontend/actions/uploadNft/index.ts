@@ -330,3 +330,34 @@ export const buyNft = async(address : string , nftId : number[]) : Promise<buyNF
     throw new Error('Error Buying Nfts')
   }
 }
+
+
+export const getMultipleNftsWithIds = async (nftLst : string[]) =>{
+  try{
+    let idOfNftsArr: number[] = [];
+    for (let i = 0; i < nftLst.length; i++) {
+          idOfNftsArr.push(Number(nftLst[i]));
+        }
+    const allSelectedNfts = await db.nft.findMany({
+      where : {id : { in :idOfNftsArr}},
+      select: {
+        id: true,
+        nft_name: true,
+        nft_price: true,
+        nft_image: true,
+        nft_collection_name: true,
+        nft_collection_id: true,
+        nft_royalties: true,
+        nft_description: true,
+        nft_owner_address: true,
+      }
+    });
+    if(!allSelectedNfts){
+      return null;
+    }
+    return allSelectedNfts;
+  }catch(error){
+    console.log(error);
+    throw new Error('Error getting details of NFT')
+  }
+}

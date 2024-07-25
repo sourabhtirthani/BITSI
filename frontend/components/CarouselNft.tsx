@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/carousel"
 import CoinPriceHeroLandingPage from "./CoinPriceHeroLandingPage"
 import BitsiNftBuyCollection from "./BitsiNftBuyCollection"
+import { nftDataForMulitpleNftSelectPage } from "@/types"
 
 
-export function CarouselNft({selectedItems} : {selectedItems : number}) {
+export function CarouselNft({ allSelectedItems} : { allSelectedItems : nftDataForMulitpleNftSelectPage[]}) {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
-  const arrayOfSelectedItems = new Array(selectedItems).fill(null);
+  const arrayOfSelectedItems = new Array(allSelectedItems.length).fill(null);
   React.useEffect(() => {
     if (!api) {
       console.log('in here in the no')
@@ -42,10 +43,10 @@ export function CarouselNft({selectedItems} : {selectedItems : number}) {
       className=""
     >
       <CarouselContent className="">
-        {arrayOfSelectedItems.map((item , index)=>{
+        {allSelectedItems.map((item , index)=>{
           return (
             <CarouselItem key={index}>
-               <BitsiNftBuyCollection selectedItems={selectedItems} imgSource = '/icons/nft-desc.png' current = {current} count = {count}  />
+               <BitsiNftBuyCollection selectedItemData={item} selectedItems={allSelectedItems.length} imgSource = '/icons/nft-desc.png' current = {current} count = {count}  />
             </CarouselItem>
           )
         })}
