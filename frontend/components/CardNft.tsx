@@ -6,13 +6,15 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Checkbox } from "@/components/ui/checkbox"
+import { useAccount } from 'wagmi';
 
 
 // const DynamicImage = dynamic(() => import('next/image'));
 // const DynamicVideo = dynamic(() => import('next/video'));
 
-const CardNft = ({ id, nft_name, nft_price,  nft_image, nft_collection_name , setCheckedItems , checkedItems }: NFTCardProps) => {
+const CardNft = ({ id, nft_name, nft_price, nft_owner_address,  nft_image, nft_collection_name , setCheckedItems , checkedItems }: NFTCardProps) => {
     const currPath = usePathname();
+    const {address , isConnected} = useAccount();
     const [isClient, setIsClient] = useState(false);
     const getFileExtension = (url: string): string => {
         return url.split('.').pop()!.toLowerCase();
@@ -56,9 +58,10 @@ const CardNft = ({ id, nft_name, nft_price,  nft_image, nft_collection_name , se
                 {/* <Link href={`${currPath}/${id}`} className='h-full'>
                 <button className='bg-success-513 py-2.5 px-3 mt-0.5  text-white text-[14px] rounded-xl'>Buy</button></Link> */}
                 {/* <input type='checkbox'  onChange={(e)=>{handleCheckboxChange(e)}}  className={`border-2 border-white text-white ${!checkbox ? 'opacity-10' : ''} md:size-7 max-md:size-5`} /> */}
+                {address === nft_owner_address? <div className='w-fit h-fit text-white bg-red-500 rounded- font-montserrat text-[12px] px-1 py-1.5' style={{ borderRadius: '0.45rem' }}>Owned</div>: 
                 <div className='text-white'>
                 <Checkbox defaultChecked={checkedItems?.includes(id)} onCheckedChange={handleCheckboxChange}  />
-                </div>
+                </div>}
                 </div>
             </div>
             </>)}

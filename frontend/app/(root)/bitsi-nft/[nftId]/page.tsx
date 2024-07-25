@@ -1,12 +1,12 @@
 // 'use client'
 import { getNftWithIdAction } from '@/actions/uploadNft';
+import BuyOwnButtonWithNftId from '@/components/BuyOwnButtonWithNftId';
 import { DialogBuy } from '@/components/DialogBuy';
 import { detailsTabData, events, filterOptions } from '@/constants';
 import { contractAddress } from '@/lib/contract';
 import { formatAddressUserZone } from '@/lib/utils';
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react'
 
 // recheck for server client
 
@@ -43,7 +43,8 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
         <div className='bg-success-511 rounded-full p-2'>
         <Image src = '/icons/price-buy-col.svg' height={50} width={50} alt='icon'  /></div>
       </div>
-      <DialogBuy collectionName={getNftRecord.record?.nft_collection_name} imgSrc={getNftRecord.record?.nft_image} nameOfNft={getNftRecord.record?.nft_name} nftPrice={getNftRecord.record?.nft_price} royalty={getNftRecord.record?.nft_royalties} buttonName='Buy' lstOfItems={idsArry} nameOfClass='w-full bg-nft-text-gradient rounded-xl text-white font-monserrat text-[22px]  mt-3 px-4 py-2' currencyText='Matic' showSelectedItem = {true} totalItems={0} />
+      <BuyOwnButtonWithNftId  nameOfCollection={getNftRecord.record?.nft_collection_name || ""} ownerAddress={getNftRecord.record?.nft_owner_address as string} srcOfImage={getNftRecord.record?.nft_image || ""} nftName={getNftRecord.record?.nft_name || ""} nftPrice={String(getNftRecord.record?.nft_price) || ""} nftRoyality={String(getNftRecord.record?.nft_royalties)|| ""} arrOfIds={idsArry} />
+      {/* <DialogBuy collectionName={getNftRecord.record?.nft_collection_name} ownerAddress={getNftRecord.record?.nft_owner_address as string} imgSrc={getNftRecord.record?.nft_image} nameOfNft={getNftRecord.record?.nft_name} nftPrice={getNftRecord.record?.nft_price} royalty={getNftRecord.record?.nft_royalties} buttonName='Buy' lstOfItems={idsArry} nameOfClass='w-full bg-nft-text-gradient rounded-xl text-white font-monserrat text-[22px]  mt-3 px-4 py-2' currencyText='Matic' showSelectedItem = {true} totalItems={0} /> */}
             </div>
             {/* <div className='flex justify-between md:mt-8 max-md:mt-4'>
               <div className='flex flex-col gap-4 max-md:gap-2'>

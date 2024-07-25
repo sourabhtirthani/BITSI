@@ -10,6 +10,7 @@ declare type nftData ={
     nft_image : string,
     nft_collection_name : string
     nft_mint_time : Date
+    nft_owner_address : string;
 }
 
 declare interface DropdownProps {
@@ -26,6 +27,7 @@ declare interface NFTCardProps {
     nft_collection_name: string;
     setCheckedItems: React.Dispatch<React.SetStateAction<string[]>>;
     checkedItems: string[];
+    nft_owner_address : string;
 
 }
 
@@ -81,6 +83,7 @@ declare interface buyNftDialogProps {
     royalty?: Float; 
     imgSrc?: string;
     nftPrice? : Float;
+    ownerAddress : string;
 
 }
 

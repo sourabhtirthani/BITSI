@@ -299,3 +299,34 @@ export const upsertUserProfile = async (formData: FormData): Promise<upsertUserP
     throw new Error('Error editing profile, please try again');
   }
 };
+
+
+type buyNFtType = {success : boolean}
+export const buyNft = async(address : string , nftId : number[]) : Promise<buyNFtType>=>{
+  try{
+    const findNft = await db.nft.findMany({
+      where : {id : { in :nftId}}
+    });
+    if(!findNft){
+      throw new Error('NO NFts Found');
+    }else{
+      const conflictingNfts =  findNft.find(nft=>nft.nft_owner_address === address);
+      if(conflictingNfts){
+        throw new Error("Cannot Buy your Own NFt");
+      }else{
+        for (const nft of findNft) {
+          await db.nft.update({
+            where: { id: nft.id },
+            data: { nft_owner_address: address }
+          });
+        }
+        revalidatePath('/bitsi-nft')
+        revalidatePath('my-profile')
+        return {success : true}
+      }
+    }
+  }catch(error){
+    console.log(error);
+    throw new Error('Error Buying Nfts')
+  }
+}

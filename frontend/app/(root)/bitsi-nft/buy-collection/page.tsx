@@ -47,8 +47,9 @@ const BuyCollection = () => {
               <p className='text-success-516 text-opacity-50  font-manrope text-[22px] max-md:text-[18px] font-semibold'>Total&nbsp;Price</p>
               <p className='text-white font-montserrat text-[22px] max-md:text-[18px] font-bold'>10&nbsp;BITSI</p>
             </div>
+            {/* owner address to be changed later */}
             {/* <button className='bg-success-513 py-2.5  text-white text-[22px] max-sm:px-10 px-20 rounded-xl'>Buy</button> */}
-            <DialogBuy totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
+            <DialogBuy ownerAddress={''} totalItems={ids?.length} lstOfItems={ids} buttonName='Buy' showSelectedItem={false} currencyText='BITSI' nameOfClass='w-full bg-nft-text-gradient py-2.5 font-bold  text-white text-[24px] max-sm:px-10 px-32 rounded-xl' />
           </div>
         </div>
 

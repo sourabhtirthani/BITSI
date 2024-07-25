@@ -1,4 +1,5 @@
 import prisma from "@/db";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 
@@ -12,9 +13,11 @@ export async function GET(){
             nft_image : true,
             // nft_collection_id : true,
             nft_collection_name : true,
-            nft_mint_time : true
+            nft_mint_time : true,
+            nft_owner_address : true
         },
     });
+    // revalidatePath('/bitsi-nft')
     return NextResponse.json({
         nfts 
     })

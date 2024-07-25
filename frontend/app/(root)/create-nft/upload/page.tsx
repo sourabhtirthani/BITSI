@@ -209,11 +209,12 @@ const UploadNFt = () => {
             })
             return;
           }
+          const colId = parseInt(collectionId);
           const transaction = await writeContractAsync({
             address: contractAddress,
             abi: contractABI,
             functionName: 'mint',
-            args: [address, 1, tokenURI, tokenId],
+            args: [address, colId, tokenURI, tokenId],
           });
           // const transaction = true;
           if (transaction) {
