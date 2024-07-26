@@ -64,7 +64,7 @@ export default function RootLayout({
       <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         
         </body>
-      <Script defer src="https://app.fastbots.ai/embed.js" data-bot-id="clyzhodvg0gf6r9bcqn59tpxl"  ></Script>
+      {/* <Script defer src="https://app.fastbots.ai/embed.js" data-bot-id="clyzhodvg0gf6r9bcqn59tpxl"  ></Script> */}
     </html>
   );
 }
