@@ -27,7 +27,7 @@ export const VideoPlayer: FunctionComponent<VideoPlayerProps> = ({ options }) =>
       }));
       
       player.on('loadedmetadata', () => {
-        player.play();
+        // player.play();
         // player.responsive(true)
         player.fill(true)
         player.width(options.width)
