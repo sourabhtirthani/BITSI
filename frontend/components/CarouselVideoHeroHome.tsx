@@ -13,6 +13,7 @@ import {
 import CoinPriceHeroLandingPage from "./CoinPriceHeroLandingPage"
 import CarouselVideoComponent from "./CarouselVideoComponent"
 import { heroHomeVideos } from "@/constants"
+import Image from "next/image"
 
 export function CarouselVideoHeroHome() {
     
@@ -36,7 +37,17 @@ export function CarouselVideoHeroHome() {
 //   const plugin = React.useRef(
 //     // Autoplay({ delay: 2000, stopOnInteraction : false  })
 //   )
-  
+let elements: string[] = [];
+let widthArr : number[]=[]
+for (let i = 1; i <= count; i++) {
+    if (i == current) {
+        elements[i] = '/icons/slider-selected-hero.svg'
+        widthArr[i] = 45
+    } else {
+        elements[i] = '/icons/Ellipse_2164.svg'
+        widthArr[i] = 15
+    }
+}
 
   return (
     <Carousel setApi={setApi}
@@ -52,10 +63,18 @@ export function CarouselVideoHeroHome() {
           )
         })}
         
-            
            
      
       </CarouselContent>
+        <div className='flex items-center  py-2 mb-4 justify-center gap-1'>
+                 {elements.map((item, index) => {
+                    return (
+                     
+                        <Image src={item} height={45} width={widthArr[index]} alt='image tag' key={index} />
+                    )
+                })}
+            </div> 
+             <p>fdsklajfklsd;</p>
      
     </Carousel>
   )
