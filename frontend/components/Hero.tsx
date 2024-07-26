@@ -6,7 +6,7 @@ import VideoPlayer from './VideoPlayer';
 const Hero = () => {
   const videoJsOptions = {
     sources: [{
-      src: 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721834150/bitsi-video_srgij5.mp4',
+      src: 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4',
       type: 'video/mp4'
     }],
     auto : true,  
