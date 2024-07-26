@@ -18,7 +18,7 @@ const Hero = () => {
   };
   return (
     
-  <section className='bg-hero-image bg-current bg-cover   bg-no-repeat ' style={{background: "linear-gradient(90deg, rgba(35, 37, 38, 0.44) 0%, rgba(65, 67, 69, 0.44) 100%), url('/icons/bg-hero-new.jpeg');"}}>
+  <section className='bg-hero-image bg-current bg-cover   bg-no-repeat '>
     <div className='w-full h-[100px] max-md:max-h-[50px]'>
     </div>
 
