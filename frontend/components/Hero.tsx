@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { CarouselRoot } from './CarouselRoot'
 import VideoPlayer from './VideoPlayer';
+import { CarouselVideoHeroHome } from './CarouselVideoHeroHome';
 
 const Hero = () => {
   const videoJsOptions = {
@@ -17,7 +18,7 @@ const Hero = () => {
   };
   return (
     
-  <section className='bg-hero-image bg-current bg-cover   bg-no-repeat '>
+  <section className='bg-hero-image bg-current bg-cover   bg-no-repeat ' style={{background: "linear-gradient(90deg, rgba(35, 37, 38, 0.44) 0%, rgba(65, 67, 69, 0.44) 100%), url('/icons/bg-hero-new.jpeg');"}}>
     <div className='w-full h-[100px] max-md:max-h-[50px]'>
     </div>
 
@@ -34,9 +35,10 @@ const Hero = () => {
       </div>
       </div>
 
-      <div className='h-full flex  justify-center p-4 max-md:hidden opacity-85 max-h-[490px] max-w-[750px]'>
+      <div className='h-full flex-col flex  p-4 max-md:hidden opacity-85 max-h-[490px] max-w-[750px]'>
         {/* <video src='/icons/nft-vid-2.mp4' /> */}
-        <VideoPlayer options={videoJsOptions} />
+        {/* <VideoPlayer options={videoJsOptions} /> */}
+        <CarouselVideoHeroHome />
       {/* <Image src = '/icons/nft-thumbnail.png' height={400} width={650} alt = 'video icon' className=' opacity-90 custom-xxl:h-[600px] custom-xxl:w-[840px]' />  */}
       </div>
 

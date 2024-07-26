@@ -20,8 +20,8 @@ export const VideoPlayer: FunctionComponent<VideoPlayerProps> = ({ options }) =>
       const player = (playerRef.current = videojs(videoElement, {
         ...options,
         controls: true, 
-        autoplay: true, 
-        muted: true,
+        autoplay: false, 
+        muted: false,
         loop: true, 
         
       }));

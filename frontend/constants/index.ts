@@ -536,3 +536,10 @@ export const nftMintingDropDown = [
         icon : ''
     }
 ]
+
+
+export const heroHomeVideos = [
+    {vidSrc : "https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4"},
+    {vidSrc : "https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4"},
+    {vidSrc : 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4'}
+]
