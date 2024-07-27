@@ -362,3 +362,30 @@ export const getMultipleNftsWithIds = async (nftLst : string[]) =>{
     throw new Error('Error getting details of NFT')
   }
 }
+
+export const getNFtsOfUser = async(address : string)=>{
+  try{
+    if(!address){
+      throw new Error('NO address Provided');
+    }
+    const allNfts = await db.nft.findMany({
+      where : {nft_owner_address : address},
+      select:{
+        nft_name : true,
+        nft_collection_name : true,
+        collection : {
+          select : {
+            image : true
+          }
+        },
+        nft_image : true
+      }
+    })
+    return allNfts;
+  }catch(error){
+    console.log(error)
+      // throw new Error('error')
+      return;
+    
+  }
+}

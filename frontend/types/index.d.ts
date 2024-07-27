@@ -35,6 +35,16 @@ declare interface NFTCardProps {
 
 }
 
+declare interface nftInUserZone {
+    nft_name: string;
+    nft_image: string;
+    nft_collection_name: string;
+    collection: {
+        image: string;
+    };
+}
+
+
 declare interface CardNftMyProfileProps {
     id: string;
     name: string

@@ -354,7 +354,7 @@ const UploadNFt = () => {
               <div className='flex justify-between  max-sm:flex-col sm:mb-0 gap-2  '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Name Of Your NFT*</FormLabel>
-                  <InputText id='name' name='name' type='text' placeHolder='eg-cratoNFT' className='p-3' />
+                  <input  id='name' name='name' minLength={4} maxLength={15} type='text' placeholder='eg-cratoNFT' className='p-3 block w-full  rounded' />
                   {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>}
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
@@ -381,7 +381,7 @@ const UploadNFt = () => {
               <div className='flex max-sm:flex-col sm:items-center sm:mb-10 gap-2  '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Description</FormLabel>
-                  <InputText id='description' name='description' type='text' placeHolder='Describe about your NFT' className='p-6' />
+                  <input id='description' maxLength={172} name='description' type='text' placeholder='Describe about your NFT' className='p-6 block w-full  rounded' />
                 </FormRow>
                 <div className='h-fit sm:w-1/2 place-content-center items-center max-sm:p-4'>
                   <button className='text-white max-sm:w-full  bg-success-513 sm:px-24  sm:ml-10 lg:px-48  py-4 sm:mt-6 rounded-xl text-[20px]'>MINT

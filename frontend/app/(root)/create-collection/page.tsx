@@ -134,7 +134,7 @@ const CreateCollection =  () => {
                   </FormRow>
                   <FormRow >
                   <FormLabel htmlFor='name' className='font-montserrat text-white  text-[22px] font-semibold'>Name Of Your Collection*</FormLabel>
-                  <input id='name' name='name' type='text' required className='p-3 w-full  rounded' />
+                  <input id='name' name='name' minLength={4} maxLength={14} type='text' required className='p-3 w-full  rounded' />
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
                 </FormRow>
                 <FormRow >

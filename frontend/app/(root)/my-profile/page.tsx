@@ -10,13 +10,14 @@ import InputText from '@/components/InputText';
 import { useToast } from '@/components/ui/use-toast';
 import { listOfNFtsMyProfile, myHistoryWalletDropDown, myInsuranceDropdown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import { formatAddressUserZone } from '@/lib/utils';
-import { UserData } from '@/types';
+import { nftInUserZone, UserData } from '@/types';
 import Image from 'next/image'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import MyInsuranceTableUserProfile from '@/components/MyInsuranceTableUserProfile';
+import { getNFtsOfUser } from '@/actions/uploadNft';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -29,6 +30,7 @@ const MyProfile = () => {
   const [nftDetailsFilterValueOutside , setNftDetailsFilterValueOutside] = useState('')
   const [coinsDetailsFilterValue , setCoinDetailsFilterValue] = useState(''); // for inside
   const [coinsDetailsFilterValueOutside , setCoinsDetailsFilterValueOutside] = useState('');
+  const [dataOfNftsOfUser , setDataOfNftsOfUser] = useState<nftInUserZone[]>([])
   const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
   const [imgOfUser , setImageOfUser] = useState('/icons/profile-logo.png')
   // const [nameOfuser , setNameOfUser] = useState('');
@@ -71,7 +73,13 @@ const MyProfile = () => {
   const handleCompensationClick =  ()=>{
     setFilterValue('Compensation');
   }
-  const handleCollectionClick =  ()=>{
+  const handleCollectionClick = async ()=>{
+    if(address){
+    const getAllNfts = await getNFtsOfUser(address)
+    if(getAllNfts){
+      setDataOfNftsOfUser(getAllNfts);
+    }
+    }
     setFilterValue('Collections');
   }
 
@@ -297,9 +305,9 @@ const MyProfile = () => {
 
         {filterValue == 'Collections' && (
           <div className=' max-h-full grid mb-4 lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
-          {listOfNFtsMyProfile.map((item) => {
+          {dataOfNftsOfUser.map((item , index) => {
             return (
-              <div key={item.id} className='p-1 w-fit mt-1 '>
+              <div key={index} className='p-1 w-fit mt-1 '>
                 <CardNftMyProfile {...item}  />
                 {/*  name={item.name} id={item.id} price={item.price} category={item.category} checked = {item.checked} nftImg={item.nftImg} */}
               </div>
