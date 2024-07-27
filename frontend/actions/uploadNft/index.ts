@@ -305,19 +305,19 @@ type buyNFtType = {success : boolean}
 export const buyNft = async(address : string , nftId : number[]) : Promise<buyNFtType>=>{
   try{
     const findNft = await db.nft.findMany({
-      where : {id : { in :nftId}}
+      where : {id : { in :nftId} }
     });
     if(!findNft){
       throw new Error('NO NFts Found');
     }else{
-      const conflictingNfts =  findNft.find(nft=>nft.nft_owner_address === address);
-      if(conflictingNfts){
-        throw new Error("Cannot Buy your Own NFt");
+      const notForSaleOrOwned = findNft.find(nft => !nft.up_for_sale || nft.nft_owner_address === address);
+      if(notForSaleOrOwned){
+        throw new Error("NFt thaat you are trying to buy is eitheralready sold or not for sale.");
       }else{
         for (const nft of findNft) {
           await db.nft.update({
             where: { id: nft.id },
-            data: { nft_owner_address: address }
+            data: { nft_owner_address: address, up_for_sale : false }
           });
         }
         revalidatePath('/bitsi-nft')
@@ -350,6 +350,7 @@ export const getMultipleNftsWithIds = async (nftLst : string[]) =>{
         nft_royalties: true,
         nft_description: true,
         nft_owner_address: true,
+        up_for_sale : true
       }
     });
     if(!allSelectedNfts){

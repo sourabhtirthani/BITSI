@@ -6,6 +6,9 @@ import { NextResponse } from "next/server";
 export async function GET(){
     try{
     const nfts = await prisma.nft.findMany({
+        where : {
+            up_for_sale : true
+        },
         select: {
             id: true,
             nft_name : true,

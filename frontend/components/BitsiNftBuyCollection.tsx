@@ -5,23 +5,25 @@ import { nftDataForMulitpleNftSelectPage } from '@/types';
 
 const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count , selectedItemData} : {selectedItems : number , imgSource : string , current : number , count : number , selectedItemData : nftDataForMulitpleNftSelectPage}) => {
   // const [elements , setElements] = useState<string[]>([])
-  let elements : string[]= [];
-  for(let i =1 ; i<= selectedItems ; i++){
-    if(i==current){
-      elements[i] = '/icons/Ellipse_2163.svg'
-    }else{
-      elements[i] = '/icons/Ellipse_2164.svg'
-    }
-  }
+  // let elements : string[]= [];
+  // for(let i =1 ; i<= selectedItems ; i++){
+  //   if(i==current){
+  //     elements[i] = '/icons/Ellipse_2163.svg'
+  //   }else{
+  //     elements[i] = '/icons/Ellipse_2164.svg'
+  //   }
+  // }
   return (
     <>
+    <div className='p-8 max-md:p-4'>
+    <div className=' bg-success-512 secondary-shadow11'>
     <div className='flex max-lg:flex-col '>
 
     <div className='lg:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
       <p className='bg-success-513 rounded-3xl font-bold font-manrope w-fit px-4 py-2 mb-3 text-[22px] text-white '>{selectedItems} Selected</p>
       
       <div className='relative'>
-      <Image src= {selectedItemData.nft_image || ''} height={546} width={604} alt='NFT IMAGE' className='h-[546px] w-[604px]' />
+      <Image src= {selectedItemData.nft_image ?? ''} height={546} width={604} alt='NFT IMAGE' className='h-[546px] w-[604px]' />
       <div className='absolute rounded-full ml-4 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex bottom-3 py-2 justify-between'>
         <div className='flex flex-col items-center'>
           <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{selectedItemData.nft_price} ETH</p>
@@ -78,13 +80,8 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count , se
       </div> */}
     </div>
   </div>
-      <div className='flex items-center py-2 mb-4 justify-center gap-2'>
-      {elements.map((item , index)=>{
-        return (
-            <Image src={item} height={15} width={15} alt = 'image tag' key={index} />
-        )
-      })}
-      </div>
+  </div>
+  </div>
   </>
   )
 }

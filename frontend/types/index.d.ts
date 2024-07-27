@@ -129,4 +129,5 @@ declare interface nftDataForMulitpleNftSelectPage {
     nft_royalties: number;
     nft_description: string;
     nft_owner_address: string;
+    up_for_sale : boolean;
 }

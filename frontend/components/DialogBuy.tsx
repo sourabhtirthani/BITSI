@@ -90,6 +90,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
           // if(pricesArray!= null){
 
           // }
+          idOfNftsArr = lstOfItems.map(item => Number(item))   
           console.log(lstOfItems)
           console.log(pricesArray)
 
@@ -111,7 +112,8 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
           }
         }
         }
-        
+        console.log(`all the ids here are`)
+        console.log(idOfNftsArr)
         const purchaseNftAction = await buyNft(address as string , idOfNftsArr);
         if(purchaseNftAction.success){
           toast({title: "Operation Success",description: "You have successfully bought the nfts.",duration: 2000,

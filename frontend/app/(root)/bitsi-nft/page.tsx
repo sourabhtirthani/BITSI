@@ -296,7 +296,7 @@ const BitsiNft = () => {
           {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
           {/* </Link> */}
         </div>
-        <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
+        <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5  custom-2xl:grid-cols-6'>
           {filteredLstOfNfts.slice(startIndex, endIndex).map((item) => {
             return (
               <div key={item.id} className='p-1 w-fit mt-1 '>

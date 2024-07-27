@@ -42,7 +42,8 @@ const config = {
         'custom-lg' : '1035px', // for the reviews in the testimonials in home  might change it to 1083 later
         'custom-md1' : '780px',  //for photo in about us for ipad mini
         "custom-sm" : '360px',
-        "custom-xxl" : '2500px',
+        "custom-xsxl" : '2500px',
+        "custom-2xl" : '1770px'
       },
       opacity: {
         '66': '0.66',

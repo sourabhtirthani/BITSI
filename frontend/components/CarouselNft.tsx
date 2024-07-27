@@ -33,6 +33,14 @@ export function CarouselNft({ allSelectedItems} : { allSelectedItems : nftDataFo
       setCurrent(api.selectedScrollSnap() + 1)
     })
   }, [api])
+  let elements : string[]= [];
+  for(let i =1 ; i<= allSelectedItems.length ; i++){
+    if(i==current){
+      elements[i] = '/icons/Ellipse_2163.svg'
+    }else{
+      elements[i] = '/icons/Ellipse_2164.svg'
+    }
+  }
   // const plugin = React.useRef(
   //   Autoplay({  delay: 8000, stopOnInteraction: true    })
   // )
@@ -62,6 +70,13 @@ export function CarouselNft({ allSelectedItems} : { allSelectedItems : nftDataFo
 
        
       </CarouselContent>
+      <div className='flex items-center py-2 mb-4 justify-center gap-2'>
+      {elements.map((item , index)=>{
+        return (
+            <Image src={item} height={15} width={15} alt = 'image tag' key={index} />
+        )
+      })}
+      </div>
       {/* <CarouselPrevious />
       <CarouselNext /> */}
      

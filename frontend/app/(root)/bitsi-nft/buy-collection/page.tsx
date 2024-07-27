@@ -99,7 +99,14 @@ const BuyCollection = () => {
         toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
           style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope'},})
           return;
-      }else{
+      }else if(selectedNftsData[i].up_for_sale == false){
+        setDisbleBuyBtn(true);
+        errDescription = 'Some Items in the cart are not for sale or are either sold.'
+        toast({title: "Cannot Purchase NFTs",description: errDescription,duration: 5000,
+          style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope'},})
+          return;
+      }
+        else{
         setDisbleBuyBtn(false);
       }
     }
@@ -115,11 +122,11 @@ const BuyCollection = () => {
             <AlertBoxBuyNfy />
           </div>
         </div>
-        <div className='p-8 max-md:p-4'>
-          <div className=' bg-success-512 secondary-shadow11'>
+        {/* <div className='p-8 max-md:p-4'>
+          <div className=' bg-success-512 secondary-shadow11'> */}
         <CarouselNft allSelectedItems={selectedNftsData} />
-        </div>
-        </div>
+        {/* </div> */}
+        {/* </div> */}
         <div className='p-8 mb-40 max-md:mb-20'>
           <div className='flex   w-full items-center sm:gap-32 max-sm:gap-20'>
             <div className='flex flex-col justify-between'>
