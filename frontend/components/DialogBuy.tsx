@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { buyNft } from "@/actions/uploadNft"
 import { useRouter } from 'next/navigation';
 import { contractABI, contractAddress } from "@/lib/contract"
+// import { InjectedConnector } from '@web3modal/wagmi';
 
 export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, pricesArray, nameOfNft, imgSrc, collectionName, nftPrice, royalty }: buyNftDialogProps) {
   // console.log(lstOfItems)
@@ -57,11 +58,18 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
           console.log(arrOfPrice)
           idOfNftsArr.push(Number(lstOfItems[0]))
           console.log(idOfNftsArr)
+          let sum  = 0  ;
+          for(let i = 0; i< arrOfPrice.length ; i++){
+            sum = sum + arrOfPrice[i];
+          }
           const transaction = await writeContractAsync({
             address: contractAddress,
             abi: contractABI,
             functionName: 'buyNFT',
             args: [idOfNftsArr, arrOfPrice],
+           
+            value: BigInt(sum),
+           
           });
 
           if(!transaction){
@@ -73,17 +81,26 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
             return;
           }
         }else{
+          if(pricesArray!= null){
+          let sum  = 0  ;
+          for(let i = 0; i< pricesArray.length ; i++){
+            sum = sum + pricesArray[i];
+          
+          }
           // if(pricesArray!= null){
 
           // }
           console.log(lstOfItems)
           console.log(pricesArray)
+
           const transaction = await writeContractAsync({
             address: contractAddress,
             abi: contractABI,
             functionName: 'buyNFT',
-            args: [lstOfItems, pricesArray],
+            args: [lstOfItems, pricesArray], 
+            value : BigInt(sum)
           });
+          
           if(!transaction){
             toast({
               title: "Transaction Failed", description: 'Please Try again.', duration: 2000,
@@ -93,13 +110,14 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
             return;
           }
         }
+        }
         
         const purchaseNftAction = await buyNft(address as string , idOfNftsArr);
         if(purchaseNftAction.success){
           toast({title: "Operation Success",description: "You have successfully bought the nfts.",duration: 2000,
             style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
           setIsLoading(false);
-          push('/my-profile');
+          push('/');
         }
       }
     } else {
@@ -133,13 +151,13 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
               <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
               <div className="flex items-center p-3 border-2 border-success-511 gap-3">
                 <Image src={imgSrc || ''} height={63.48} width={70} alt="nft image" className="w-[70px] h-[65px]" />
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 overflow-clip">
                   <p className="text-black font-manrope font-bold text-[22px]">{nameOfNft}</p>
                   <div className="flex">
                     <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
                     <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">{royalty}%&nbsp;</p>
                     <p className="text-black text-[12px] font-montserrat font-semibold">Collection&nbsp;</p>
-                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">{collectionName}</p>
+                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">{collectionName && collectionName?.length > 7 ? `${collectionName?.slice(0, 7)}...` : `${collectionName}`}</p>
                   </div>
                 </div>
               </div>

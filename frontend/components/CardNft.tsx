@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi';
 // const DynamicImage = dynamic(() => import('next/image'));
 // const DynamicVideo = dynamic(() => import('next/video'));
 
-const CardNft = ({ id, nft_name, nft_price, nft_owner_address,  nft_image, nft_collection_name , setCheckedItems , checkedItems }: NFTCardProps) => {
+const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address,  nft_image, nft_collection_name , setCheckedItems , checkedItems }: NFTCardProps) => {
     const currPath = usePathname();
     const {address , isConnected} = useAccount();
     const [isClient, setIsClient] = useState(false);
@@ -47,7 +47,7 @@ const CardNft = ({ id, nft_name, nft_price, nft_owner_address,  nft_image, nft_c
             {((extension == 'mp4' && isClient ) && <video height={254}  width={299} className='rounded-xl overflow-hidden h-full'  autoPlay loop muted><source src={nft_image} type="video/mp4" /> Your browser does not support the video tag.</video> )}
             {/* {extension == 'mp4' && VideoPlayer/>} */}
             </Link>
-            <Image src='/icons/nft-luxury.svg' height={24} width={24} alt='NFT IMAGE' className='absolute mt-2 ml-4 ' />
+            <Image src={collectionImage} height={24} width={24} alt='NFT IMAGE' className='absolute mt-2 ml-4 ' />
             <div className='  bg-success-509 bg-opacity-30  items-center   flex justify-between rounded-xl p-2'>
                 <div className='flex flex-col   -mt-1'>
                     <p className='text-white font-manrope max-text-[20px] font-semibold'>{nft_name}</p>

@@ -14,7 +14,12 @@ export async function GET(){
             // nft_collection_id : true,
             nft_collection_name : true,
             nft_mint_time : true,
-            nft_owner_address : true
+            nft_owner_address : true,
+            collection : {
+                select : {
+                    image : true
+                }
+            }
         },
     });
     // revalidatePath('/bitsi-nft')

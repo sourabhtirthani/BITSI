@@ -22,6 +22,7 @@ model Nft{
   nft_mint_time        DateTime @default(now())
   is_admin_minted      Boolean
   nft_liked            Int?
+  up_for_sale          Boolean   @default(true)
   is_insured           Boolean
   events               Nft_events[]
   collection           Collection @relation(fields: [nft_collection_id], references: [id])
