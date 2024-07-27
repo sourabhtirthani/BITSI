@@ -5,7 +5,7 @@ import VideoPlayer from './VideoPlayer';
 const CarouselVideoComponent = ({ current, count }: { current: number, count: number }) => {
     const videoJsOptions = {
         sources: [{
-          src: 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4',
+          src: 'https://res.cloudinary.com/djdrlor2w/video/upload/v1722121730/bitsi_new_vid_cjw9gf.mp4',
           type: 'video/mp4'
         }],
         auto : false,  
