@@ -60,11 +60,17 @@ const BuyCollection = () => {
       for(let i = 0; i< getAllSelectedNfts.length ; i++){
         const nft = getAllSelectedNfts[i];
         newIds.push(nft.id);
-        const priceInWei = Number(Math.floor(nft.nft_price) * 10 ** 18);
+        console.log(nft.nft_price)
+        // const priceInWei = Number(Math.floor(nft.nft_price) * 10 ** 18);
+        const priceInWei = Number(Math.floor(parseFloat(nft.nft_price.toString()) * 10 ** 18));
+        console.log(priceInWei)
         newPrices.push(priceInWei);
       }
       setIds(newIds);
+      console.log(priceLst)
+      console.log('thi was befreo ti was set and this is after')
       setPriceLst(newPrices);
+      console.log(priceLst)
     }
     
       }catch(error){
