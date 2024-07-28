@@ -17,6 +17,7 @@ import FilterButtonUI from '@/components/FilterButtonUI';
 import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
+import { getAllNfts } from '@/actions/uploadNft';
 // import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
 // import PopOver from '@/components/PopOver';
 
@@ -47,9 +48,10 @@ const BitsiNft = () => {
   const getData = async () => {
     try {
       const uniqueQueryParam = new Date().getTime();
-      const res = await fetch(`/api/nfts?cache_buster=${uniqueQueryParam}` , { cache :'no-store'});
-      const data: { nfts: nftData[] } = await res.json();
-      // const data = await getAllNfts()
+      // const res = await fetch(`/api/nfts?cache_buster=${uniqueQueryParam}` , { cache :'no-store'});
+      // const data: { nfts: nftData[] } = await res.json();
+      const nfts: nftData[] = await getAllNfts();
+    const data: { nfts: nftData[] } = { nfts };
       setNftList(data.nfts);
       setFilteredListOfnfts(data.nfts);
       setFilteredListOfnftsDialog(data.nfts)

@@ -363,7 +363,7 @@ export const getMultipleNftsWithIds = async (nftLst : string[]) =>{
   }
 }
 
-export const getNFtsOfUser = async(address : string)=>{
+export const getNFtsOfUser = async(address : string) =>{
   try{
     if(!address){
       throw new Error('NO address Provided');
@@ -391,7 +391,7 @@ export const getNFtsOfUser = async(address : string)=>{
 }
 
 type nftData = {
-  id: string,
+  id: number,
   nft_name: string,
   nft_price: number,
   nft_image: string,
@@ -402,8 +402,41 @@ type nftData = {
       image: string;
   };
 }
-// export const getAllNfts = async()=>{
-//   const res = await fetch("https://bitsi-nine.vercel.app/api/nfts" , { cache :'no-store'});
-//   const data: { nfts: nftData[] } = await res.json();
-//   return data;
-// }
+export const getAllNfts = async() : Promise<nftData[]>=>{
+  try{
+    const nfts = await db.nft.findMany({
+        where : {
+            up_for_sale : true
+        },
+        select: {
+            id: true,
+            nft_name : true,
+            nft_price : true,
+            nft_image : true,
+            // nft_collection_id : true,
+            nft_collection_name : true,
+            nft_mint_time : true,
+            nft_owner_address : true,
+            collection : {
+                select : {
+                    image : true
+                }
+            }
+        },
+    });
+    // revalidatePath('/bitsi-nft')
+    //  return new NextResponse(JSON.stringify({ nfts }), {
+    //   status: 200,
+    //   headers: {
+    //     'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    //     'Pragma': 'no-cache',
+    //     'Expires': '0',
+    //     'Surrogate-Control': 'no-store',
+    //   },
+    // });
+    return nfts
+}catch(error){
+   throw new Error('error gettig=ng nfts')
+}
+
+}

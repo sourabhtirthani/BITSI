@@ -4,7 +4,7 @@ declare interface OurServicesProps {
 
 }
 declare type nftData = {
-    id: string,
+    id: number,
     nft_name: string,
     nft_price: number,
     nft_image: string,
@@ -23,7 +23,7 @@ declare interface DropdownProps {
 }
 
 declare interface NFTCardProps {
-    id: string;
+    id: number;
     nft_name: string
     nft_price: number
     nft_image: string;

@@ -33,9 +33,9 @@ const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address, 
         // const target = event.target as HTMLInputElement;
         setCheckbox((checkbox) => !checkbox);
         if (!checkbox) {
-            setCheckedItems((prevCheckedItems) => [...prevCheckedItems, id]);
+            setCheckedItems((prevCheckedItems) => [...prevCheckedItems, id.toString()]);
         } else {
-            setCheckedItems((prevCheckedItems) => prevCheckedItems.filter(item => item !== id));
+            setCheckedItems((prevCheckedItems) => prevCheckedItems.filter(item => item !== id.toString()));
         }
       };
     return (
@@ -60,7 +60,7 @@ const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address, 
                 {/* <input type='checkbox'  onChange={(e)=>{handleCheckboxChange(e)}}  className={`border-2 border-white text-white ${!checkbox ? 'opacity-10' : ''} md:size-7 max-md:size-5`} /> */}
                 {address === nft_owner_address? <div className='w-fit h-fit text-white bg-red-500 rounded- font-montserrat text-[12px] px-1 py-1.5' style={{ borderRadius: '0.45rem' }}>Owned</div>: 
                 <div className='text-white'>
-                <Checkbox defaultChecked={checkedItems?.includes(id)} onCheckedChange={handleCheckboxChange}  />
+                <Checkbox defaultChecked={checkedItems?.includes(id.toString())} onCheckedChange={handleCheckboxChange}  />
                 </div>}
                 </div>
             </div>
