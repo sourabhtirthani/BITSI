@@ -46,14 +46,7 @@ const BitsiNft = () => {
 
   const getData = async () => {
     try {
-      const res = await fetch("/api/nfts", {
-        method: 'GET',
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        },
-      });
+      const res = await fetch("/api/nfts" , { next : {revalidate : 0}});
       const data: { nfts: nftData[] } = await res.json();
       setNftList(data.nfts);
       setFilteredListOfnfts(data.nfts);

@@ -26,15 +26,18 @@ export async function GET(){
         },
     });
     // revalidatePath('/bitsi-nft')
-    return new NextResponse(JSON.stringify({ nfts }), {
-        status: 200,
-        headers: {
-          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-          'Surrogate-Control': 'no-store',
-        },
-      });
+    //  return new NextResponse(JSON.stringify({ nfts }), {
+    //   status: 200,
+    //   headers: {
+    //     'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    //     'Pragma': 'no-cache',
+    //     'Expires': '0',
+    //     'Surrogate-Control': 'no-store',
+    //   },
+    // });
+    return NextResponse.json({
+        nfts 
+    })
 }catch(error){
     console.log('error clause');
     return NextResponse.json({
