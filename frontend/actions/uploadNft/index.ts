@@ -402,8 +402,8 @@ type nftData = {
       image: string;
   };
 }
-export const getAllNfts = async()=>{
-  const res = await fetch("https://bitsi-nine.vercel.app/api/nfts" , { cache :'no-store'});
-  const data: { nfts: nftData[] } = await res.json();
-  return data;
-}
+// export const getAllNfts = async()=>{
+//   const res = await fetch("https://bitsi-nine.vercel.app/api/nfts" , { cache :'no-store'});
+//   const data: { nfts: nftData[] } = await res.json();
+//   return data;
+// }
