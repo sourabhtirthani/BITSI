@@ -389,3 +389,21 @@ export const getNFtsOfUser = async(address : string)=>{
     
   }
 }
+
+type nftData = {
+  id: string,
+  nft_name: string,
+  nft_price: number,
+  nft_image: string,
+  nft_collection_name: string
+  nft_mint_time: Date
+  nft_owner_address: string;
+  collection: {
+      image: string;
+  };
+}
+export const getAllNfts = async()=>{
+  const res = await fetch("https://bitsi-nine.vercel.app/api/nfts" , { cache :'no-store'});
+  const data: { nfts: nftData[] } = await res.json();
+  return data;
+}
