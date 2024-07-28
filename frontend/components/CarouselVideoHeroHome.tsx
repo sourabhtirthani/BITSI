@@ -74,7 +74,7 @@ for (let i = 1; i <= count; i++) {
                     )
                 })}
             </div> 
-             <p>fdsklajfklsd;</p>
+             
      
     </Carousel>
   )

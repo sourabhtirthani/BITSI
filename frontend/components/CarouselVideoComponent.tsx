@@ -28,7 +28,7 @@ const CarouselVideoComponent = ({ current, count }: { current: number, count: nu
     return (
         // <div className='h-[100vh] flex flex-col  justify-center p-4 max-md:hidden opacity-85 max-h-[490px] max-w-[750px]'>
             <>
-            <div className='custom-lg:h-[80vh] md:h-[20vh] max-h-[400px]'>
+            <div className='custom-lg:h-[80vh] md:h-[39vh] max-h-[400px]'>
              <VideoPlayer  options={videoJsOptions} /></div>
               {/* <div className='flex items-center  py-2 mb-4 justify-center gap-1'>
                  {elements.map((item, index) => {

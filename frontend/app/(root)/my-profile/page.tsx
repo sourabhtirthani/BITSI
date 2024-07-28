@@ -304,7 +304,7 @@ const MyProfile = () => {
         )}
 
         {filterValue == 'Collections' && (
-          <div className=' max-h-full grid mb-4 lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 custom-xxl:grid-cols-7'>
+          <div className=' max-h-full grid px-4 mb-4 lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 '>
           {dataOfNftsOfUser.map((item , index) => {
             return (
               <div key={index} className='p-1 w-fit mt-1 '>

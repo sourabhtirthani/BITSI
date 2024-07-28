@@ -43,7 +43,7 @@ const CardNftMyProfile = ({ collection, nft_collection_name , nft_image, nft_nam
             <div className='  bg-success-509 bg-opacity-30  items-center   flex justify-between rounded-xl p-2'>
                 <div className='flex flex-col -mt-1'>
                     <p className='text-white font-manrope max-text-[20px] font-semibold'>{nft_name}</p>
-                    <p className='font-manrope max-text-[18px] text-white'>Collection: <span>{nft_collection_name.slice(0, 7)}{nft_collection_name.length > 7 ? '.....' : ''}</span></p>
+                    <p className='font-manrope max-text-[18px] text-white'>Collection: <span>{nft_collection_name.slice(0, 17)}{nft_collection_name.length > 17 ? '.....' : ''}</span></p>
                 </div>
             </div>
             </>)}
