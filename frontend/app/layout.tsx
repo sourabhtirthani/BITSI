@@ -5,7 +5,6 @@ import { config } from '@/config'
 import Web3ModalProvider from '@/context'
 import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
-import Script from 'next/script'
 
 const inter = Inter({ subsets: ["latin"], variable : '--font-inter' });
 const poppinss = Poppins({

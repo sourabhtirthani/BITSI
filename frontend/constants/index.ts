@@ -345,7 +345,7 @@ export const events = [
 
   export const detailsTabData = {
     'Token Standard' : 'ERC-721',
-    'Chain' : 'Base',
+    'Chain' : 'Polygon',
     'Last Updated' : '2 Months Ago',
   }
 

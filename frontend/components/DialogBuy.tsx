@@ -14,7 +14,7 @@ import Checkbox from "./Checkbox1"
 import Link from "next/link"
 import Image from 'next/image'
 import { useState } from "react"
-import { useAccount, useWriteContract } from "wagmi"
+import { useAccount, useWriteContract, useBalance } from "wagmi"
 import { useToast } from "@/components/ui/use-toast"
 import { buyNft } from "@/actions/uploadNft"
 import { useRouter } from 'next/navigation';
@@ -29,6 +29,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
   const { address, isConnected } = useAccount();
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { data: balance} = useBalance({address : address});
   const { push } = useRouter();
   const { writeContractAsync } = useWriteContract()
 
@@ -156,8 +157,8 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
                 <div className="flex flex-col gap-2 overflow-clip">
                   <p className="text-black font-manrope font-bold text-[22px]">{nameOfNft}</p>
                   <div className="flex">
-                    <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
-                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">{royalty}%&nbsp;</p>
+                    {/* <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
+                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">{royalty}%&nbsp;</p> */}
                     <p className="text-black text-[12px] font-montserrat font-semibold">Collection&nbsp;</p>
                     <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">{collectionName && collectionName?.length > 7 ? `${collectionName?.slice(0, 7)}...` : `${collectionName}`}</p>
                   </div>
@@ -173,21 +174,21 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
 
               <div className="flex flex-col border-2 border-success-511 p-4 gap-5">
                 <div className="flex justify-between">
-                  <p className="text-black font-montserrat font-semibold">Your Balance</p>
-                  <p className="text-black font-montserrat font-semibold">0.55 {currencyText}</p>
+                  <p className="text-black font-montserrat font-semibold">Your&nbsp;Balance</p>
+                  <p className="text-black font-montserrat font-semibold">{balance ? `${balance.formatted.slice(0,4)} ${balance.symbol}` : 'N/A'}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">NFT Price</p>
                   <p className="text-black font-montserrat font-semibold">{nftPrice} {currencyText}</p>
                 </div>
-                <div className="flex justify-between">
+                {/* <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">Insurance Price</p>
                   <p className="text-black font-montserrat font-semibold">1.02 {currencyText}</p>
-                </div>
-                <div className="flex justify-between">
+                </div> */}
+                {/* <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">Total Price</p>
                   <p className="text-black font-montserrat font-semibold">1.11 {currencyText}</p>
-                </div>
+                </div> */}
                 {address === ownerAddress ?  (<div className="w-full  font-montserrat flex justify-center bg-red-500 text-white font-bold py-4 rounded-xl">Owned</div>)
                   :
                   (<div className="self-center w-full">

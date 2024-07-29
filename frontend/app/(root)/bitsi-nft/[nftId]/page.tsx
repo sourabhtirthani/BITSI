@@ -37,7 +37,7 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
             <p className='text-success-516 text-[22px]  max-md:text-[16px] font-montserrat font-semibold md:mt-8 max-md:mt-2'>{getNftRecord.record?.nft_description}</p>
             <div className=' rounded-full mt-5 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex  py-2 justify-between'>
         <div className='flex flex-col items-center'>
-          <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{getNftRecord.record?.nft_price} ETH</p>
+          <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{getNftRecord.record?.nft_price} Matic</p>
           <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Floor Price</p>
         </div>
         <div className='bg-success-511 rounded-full p-2'>
@@ -162,14 +162,23 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
               <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>Token Id</p>
               <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>{getNftRecord.record?.id}</p>
               </div>
-              {Object.entries(detailsTabData).map(([key, value], index)=>{
+              <div className='flex justify-between '>
+              <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>Chain</p>
+              <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>Polygon</p>
+              </div>
+              <div className='flex justify-between '>
+              <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>Last Updated</p>
+              <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>{getNftRecord.record?.nft_mint_time.toDateString()}</p>
+              </div>
+             
+              {/* {Object.entries(detailsTabData).map(([key, value], index)=>{
                 return (
                   <div key={index} className='flex justify-between'>
                      <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>{key}</p>
                      <p className='text-white text-[22px] font-semibold  max-md:text-[14px]'>{value}</p>
                   </div>
                 )
-              })}
+              })} */}
           </div>)}
           
 
