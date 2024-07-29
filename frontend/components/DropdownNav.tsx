@@ -57,7 +57,7 @@ const DropdownNav = () => {
         </DropdownMenuItem>
         <DropdownMenuItem className="flex   gap-2 bg-black" asChild>
 
-          <Link href='/my-profile' className="flex self-start gap-3 cursor-pointer "><Image src='/icons/user-icon1.svg' height={18} width={18} alt='user-icon' />
+          <Link href='/my-profile'  className={`flex self-start gap-3 cursor-pointer ${isConnected ? '' : 'hidden'} `}><Image src='/icons/user-icon1.svg' height={18} width={18} alt='user-icon' />
             <p className="text-success-506 text-[14px] font-normal ">User Zone</p></Link>
 
         </DropdownMenuItem>
@@ -67,7 +67,7 @@ const DropdownNav = () => {
             <p className="text-success-506 text-[14px] font-normal">Support</p></Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex  gap-2 bg-black" asChild>
-          <Link href={`${kycValue == 'pending' ? '/kyc-auth' : '/null'}`} className="flex self-start gap-3"><Image src='/icons/support-icon.svg' height={18} width={18} alt='user-icon' />
+          <Link href={`${kycValue == 'pending' ? '/kyc-auth' : '/null'}`} className={`${isConnected ? '' : 'hidden'} flex self-start gap-3`}><Image src='/icons/support-icon.svg' height={18} width={18} alt='user-icon' />
             <p className="text-success-506 text-[14px] font-normal">KYC<span className="align-super text-[7px]">({kycValue})</span></p></Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="flex  gap-2 bg-black" asChild>

@@ -39,6 +39,11 @@ const MyProfile = () => {
   const [dataOfUser , setDataOfUser] = useState<UserData>()
 
   useEffect(()=>{
+    if(!isConnected){
+      push('/')
+    }
+  }, [isConnected])
+  useEffect(()=>{
     const selectedItems: string[] = [];
     const searchParams = new URLSearchParams(window.location.search);
     // searchParams.forEach((value) => {
@@ -156,15 +161,15 @@ const MyProfile = () => {
 
         <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full flex-wrap'>
           <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Profile</button>
-          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
-          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
-          <div className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Insurance' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
-          <button onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
-          <button onClick={handleCollectionClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collection</button>
+          <button hidden = {!isConnected} onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
+          <button hidden = {!isConnected} onClick={handleCollectionClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 
@@ -212,7 +217,7 @@ const MyProfile = () => {
         { filterValue == 'NFTs' && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
-            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>NFT Details</p>
+            <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>NFT Details</p>
             <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
@@ -260,7 +265,7 @@ const MyProfile = () => {
 {filterValue == 'Coin' && (
   <>
   <div className='flex justify-between p-4 md:p-8'>
-            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>Coin</p>
+            <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>Coin</p>
             <DropdownMyProfile insideTable={false} setValue={setCoinsDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
@@ -305,6 +310,7 @@ const MyProfile = () => {
 
         {filterValue == 'Collections' && (
           <div className=' max-h-full grid px-4 mb-4 lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5 '>
+            
           {dataOfNftsOfUser.map((item , index) => {
             return (
               <div key={index} className='p-1 w-fit mt-1 '>
@@ -313,13 +319,14 @@ const MyProfile = () => {
               </div>
             )
           })}
+          {dataOfNftsOfUser.length == 0 && <div className='w-full justify-center flex items-center self-center'><p className='text-white font-manrope text-[22px] font-bold'>No NFT&apos; to show. <span className='text-success-511 font-manrope'>Buy NFT</span></p></div>}
         </div>
         )}
 
         {(filterValue == 'Coins' || filterValue == 'NFT'  ) && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
-            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
+            <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
@@ -369,7 +376,7 @@ const MyProfile = () => {
         { filterValue == 'Insurance' && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
-            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
+            <p className=' px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
@@ -415,7 +422,7 @@ const MyProfile = () => {
         {filterValue == 'Compensation' && (
           <>
            <div className='flex justify-between p-4 md:p-8'>
-            <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>My Compensation</p>
+            <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>My Compensation</p>
             <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>

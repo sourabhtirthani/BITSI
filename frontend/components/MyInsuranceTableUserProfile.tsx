@@ -5,7 +5,7 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
   return (
     <>
     <div className='flex justify-between p-4 md:p-8'>
-      <p className='bg-success-512 hover:bg-success-509  px-3 text-white text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
+      <p className='text-success-511  px-3   text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
      
     </div>
     <div className='max-h-[700px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
