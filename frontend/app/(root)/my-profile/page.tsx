@@ -217,7 +217,7 @@ const MyProfile = () => {
         { filterValue == 'NFTs' && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
-            <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>NFT Details</p>
+            <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
@@ -239,15 +239,15 @@ const MyProfile = () => {
                     <React.Fragment key={index}>
                       <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                         {/* <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td> */}
-                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                        <td className='p-2 py-5 max-sm:p-1'>{item.Date}</td>
                         <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
                         <td className='p-2 max-sm:p-1'>{item.nftId}</td>
                         <td className='p-2 max-sm:p-1'>{item.nftPrice}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance}</td>
                         <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                        <td>
-                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td>
+                        {/* <td>
+                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>
                       <tr>
                         <td  className='h-5'></td>
@@ -270,7 +270,7 @@ const MyProfile = () => {
           </div>
           <div className='max-h-[500px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
             <table className='w-full text-left mt-4 border-spacing-20'>
-              <thead className='text-success-502 font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
+              <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
                 <tr>
                   <th className='p-2 max-sm:p-1'>Date</th>
                   <th className='p-2 max-sm:p-1' >Marketplace</th>
@@ -285,18 +285,18 @@ const MyProfile = () => {
                 {tableMyWalletCoin.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
-                      <tr className='bg-success-512  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'>{item.Date}</td>
+                      <tr className='bg-success-512 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                        <td className='p-2 py-5 max-sm:p-1'>{item.Date}</td>
                         <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
                         <td className='p-2 max-sm:p-1'>{item.CoinId}</td>
                         <td className='p-2 max-sm:p-1'>{item.coinPrice}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance}</td>
                         <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                        <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/>
+                        {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
                       </tr>
                       <tr>
-                        <td  className='h-4'></td>
+                        <td  className='h-6'></td>
                       </tr>
                     </React.Fragment>
                   )

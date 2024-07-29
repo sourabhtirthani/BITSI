@@ -55,10 +55,10 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
         if(nftPrice){  // this is for single nft purchase 
           const priceInWei = Number(Math.floor(parseFloat(nftPrice) * 10 ** 18));
           arrOfPrice.push(priceInWei)
-          console.log('the lenth of lst of itmes is ', lstOfItems.length);
-          console.log(arrOfPrice)
+          // console.log('the lenth of lst of itmes is ', lstOfItems.length);
+          // console.log(arrOfPrice)
           idOfNftsArr.push(Number(lstOfItems[0]))
-          console.log(idOfNftsArr)
+          // console.log(idOfNftsArr)
           let sum  = 0  ;
           for(let i = 0; i< arrOfPrice.length ; i++){
             sum = sum + arrOfPrice[i];
