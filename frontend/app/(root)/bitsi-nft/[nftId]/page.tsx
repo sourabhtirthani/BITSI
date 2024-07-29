@@ -167,6 +167,10 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
               <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>Polygon</p>
               </div>
               <div className='flex justify-between '>
+              <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>Token Standard</p>
+              <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>ERC-721</p>
+              </div>
+              <div className='flex justify-between '>
               <p className='text-white text-[22px] font-semibold  max-md:text-[14px] '>Last Updated</p>
               <p className='text-success-517 text-[22px] font-semibold  max-md:text-[14px]'>{getNftRecord.record?.nft_mint_time.toDateString()}</p>
               </div>
