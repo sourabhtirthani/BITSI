@@ -8,7 +8,7 @@ import FormLabel from '@/components/FormLabel';
 import FormRow from '@/components/FormRow';
 import InputText from '@/components/InputText';
 import { useToast } from '@/components/ui/use-toast';
-import { listOfNFtsMyProfile, myHistoryWalletDropDown, myInsuranceDropdown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
+import { insuranceDropDownItemsMyProfile, listOfNFtsMyProfile, myHistoryWalletDropDown, myInsuranceDropdown, myProfileNftOrderDropDownItems, myProfileWalletDropDown, orderDropDownItem, priceDropDownItems, tableInsurance, tableMyCompensation, tableMyHistory, tableMyWallet, tableMyWalletCoin } from '@/constants';
 import { formatAddressUserZone } from '@/lib/utils';
 import { nftInUserZone, UserData } from '@/types';
 import Image from 'next/image'
@@ -18,6 +18,7 @@ import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import MyInsuranceTableUserProfile from '@/components/MyInsuranceTableUserProfile';
 import { getNFtsOfUser } from '@/actions/uploadNft';
+import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -33,6 +34,9 @@ const MyProfile = () => {
   const [dataOfNftsOfUser , setDataOfNftsOfUser] = useState<nftInUserZone[]>([])
   const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
   const [imgOfUser , setImageOfUser] = useState('/icons/image_pfp_no_pfp.png')
+  const [orderFilter, setOrderFilter] = useState('');
+  const [priceFilter, setPriceFilter] = useState('');
+  const [myHistoryInsuranceFilter , setMyHistroyInsuranceFilter] = useState('')
   // const [nameOfuser , setNameOfUser] = useState('');
   // const [emailOfUser , setEmailOfUser] = useState('');
   // const [numberOfUser , setNumberOfUser] = useState('')
@@ -231,7 +235,8 @@ const MyProfile = () => {
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className='text-success-511 text-center  px-3  text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
-            <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            {/* <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
+            <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -279,7 +284,8 @@ const MyProfile = () => {
   <>
   <div className='flex justify-between p-4 md:p-8'>
             <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>Coin</p>
-            <DropdownMyProfile insideTable={false} setValue={setCoinsDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            {/* <DropdownMyProfile insideTable={false} setValue={setCoinsDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
+            <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
           <div className='max-h-[500px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -340,7 +346,7 @@ const MyProfile = () => {
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
-            <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -390,7 +396,8 @@ const MyProfile = () => {
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className=' px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
-            <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            {/* <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
+            <DropdownBitsiNFt  itemsOrder={orderDropDownItem}  setOrd={setOrderFilter} itemsAsset={insuranceDropDownItemsMyProfile} setAsset={setMyHistroyInsuranceFilter}  />
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -436,13 +443,14 @@ const MyProfile = () => {
           <>
            <div className='flex justify-between p-4 md:p-8'>
             <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>My Compensation</p>
-            <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/>
+            {/* <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
+            <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
             <table className='w-full text-center mt-4 border-spacing-20'>
               <thead className='text-success-502 font-semibold font-montserrat text-[22px] max-sm:text-[10px]   '>
                 <tr>
-                  <th className='p-2 max-sm:p-1'>Request&nbsp;Date</th>
+                  <th className='p-2  max-sm:p-1'>Request&nbsp;Date</th>
                   <th className='p-2 max-sm:p-1' >Asset</th>
                   <th className='p-2 max-sm:p-1'>Confirm/Rejection date</th>
                   <th className='p-2 max-sm:p-1'>Loss to Compensate</th>
@@ -454,7 +462,7 @@ const MyProfile = () => {
                   return (
                     <React.Fragment key={index}>
                       <tr className='bg-success-512 h-12 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 max-sm:p-1'>{item.requestDate}</td>
+                        <td className='p-2 py-5 max-sm:p-1'>{item.requestDate}</td>
                         <td className='p-2 max-sm:p-1'>{item.Asset}</td>
                         <td className='p-2 max-sm:p-1'>{item.confirmDate}</td>
                         <td className='p-2 max-sm:p-1'>{item.lossToCompensate}</td>

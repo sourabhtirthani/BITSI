@@ -12,7 +12,7 @@ import Image from 'next/image'
 import { CollapsibleBitsiNft } from "./CollapsiableBitsiNft";
 
 
-const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , setPrice}: { itemsCol: DropdownProps[], itemsOrder : DropdownProps[],itemsPrice : DropdownProps[]  , setCol : Dispatch<SetStateAction<string>> , setOrd: Dispatch<SetStateAction<string>> , setPrice : Dispatch<SetStateAction<string>>}) => {
+const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , setPrice, setAsset, itemsAsset }: { itemsCol?: DropdownProps[], itemsOrder : DropdownProps[],itemsPrice? : DropdownProps[], itemsAsset? : DropdownProps[]  , setCol? : Dispatch<SetStateAction<string>> , setOrd: Dispatch<SetStateAction<string>> , setPrice? : Dispatch<SetStateAction<string>> , setAsset? : Dispatch<SetStateAction<string>>}) => {
 //   const handleClick = (nameToSet : string)=>{
 //     setValue(nameToSet);
 //   }
@@ -34,11 +34,13 @@ const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , 
           </DropdownMenuItem>
         ))} */}
         <div className="max-h-[240px] overflow-y-auto table-body">
-        <CollapsibleBitsiNft btnName="Colleciton" items={itemsCol} setValue={setCol}  />
-        <hr className="mt-1 border-success-527 ml-2 mr-2"/>
+        {(itemsCol != null && setCol) && <><CollapsibleBitsiNft btnName="Colleciton" items={itemsCol} setValue={setCol}  />
+        <hr className="mt-1 border-success-527 ml-2 mr-2"/></>}
         <CollapsibleBitsiNft btnName="Date" items={itemsOrder} setValue={setOrd}  />
         <hr className="mt-1 border-success-527 ml-2 mr-2"/>
-        <CollapsibleBitsiNft btnName="Price" items={itemsPrice} setValue={setPrice}  /></div>
+        {(itemsPrice != null && setPrice) && <CollapsibleBitsiNft btnName="Price" items={itemsPrice} setValue={setPrice}  />}</div>
+        {(itemsAsset != null && setAsset) && <> 
+         <CollapsibleBitsiNft btnName="Asset" items={itemsAsset} setValue={setAsset}  /> </>} 
       </DropdownMenuContent>
     </DropdownMenu>
 

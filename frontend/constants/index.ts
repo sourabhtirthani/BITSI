@@ -135,6 +135,25 @@ export const orderDropDownItem = [
     },
 ]
 
+export const insuranceDropDownItemsMyProfile = [
+
+    // {
+    //     id : 1,
+    //     name : 'Latest',
+    //     icon : '/icons/descOrder.svg'
+    // },
+    {
+        id : 1,
+        name : 'Coin',
+        icon : '/icons/coin-icon-userzone.svg'
+    },
+    {
+        id : 2,
+        name : 'Nft',
+        icon : '/icons/nft-icon-userzone.svg'
+    },
+]
+
 export const newBitsiNftDropDownItems = [
     {
         id : 1,
