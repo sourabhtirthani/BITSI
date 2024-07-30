@@ -23,9 +23,12 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
   const { toast } = useToast();
     const [userData ,setUserData] = useState<UserData>();
     const [previewImage , setPreviewImage] = useState('/icons/image_pfp_no_pfp.png')
-    const [formSubmitting , setFormSubmitting] =  useState(false);
-    const handleFormSubmit = async(formData : FormData)=>{
-        // setFormSubmitting(true);
+    const [formSubmitting , setFormSubmitting] =  useState<boolean>(false);
+    const handleFormSubmit = async(e: React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+        setFormSubmitting(true);
+    
+        const formData = new FormData(e.currentTarget);
         try{
         const res = await upsertUserProfile(formData);
         if(res.success){
@@ -78,7 +81,8 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
         fetchData(addressOfUser);
     } , [addressOfUser])
   return (
-    <form action={(formData)=>handleFormSubmit(formData)}>
+    // action={(formData)=>handleFormSubmit(formData)}
+    <form onSubmit={handleFormSubmit}>
     <div className='mt-40 overflow-hidden  flex max-md:flex-col max-md:gap-4 p-8 justify-center items-center mb-20'>
         <div className='bg-success-512 md:z-50  max-md:w-3/4 flex gap-4 max-md:p-10 py-20 max-lg:px- px-24 flex-col items-center justify-center secondary-shadow11'>
             <p className='text-white text-[32px] font-manrope font-bold'>Profile&nbsp;Image</p>
@@ -97,7 +101,7 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
                 <input defaultValue={userData?.number || ''} minLength={10} maxLength={10}  name = 'number' id='number' placeholder='Whatsapp' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' />
                 <input defaultValue={userData?.address || ''}  name = 'address' id='address' placeholder='Address' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' />
                 {/* <input defaultValue={userData?.bio || ''}  name = 'bio' id='bio' placeholder='Bio' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' /> */}
-                <button onClick={()=>setFormSubmitting(true)} type='submit' className={`w-full ${formSubmitting ? 'bg-gray-300 disabled' : 'bg-success-511'}  text-white font-manrope font-bold p-4 max-lg:p-2 text-[22px]`}>{formSubmitting ? <div className='flex items-center justify-center'><div className="spinner mr-2 "></div></div> : <p>Update&nbsp;Profile</p>}</button>
+                <button  type='submit' className={`w-full ${formSubmitting ? 'bg-gray-300 disabled' : 'bg-success-511'}  text-white font-manrope font-bold p-4 max-lg:p-2 text-[22px]`}>{formSubmitting ? <div className='flex items-center justify-center'><div className="spinner mr-2 "></div></div> : <p>Update&nbsp;Profile</p>}</button>
             </div>
         </div>
     </div>

@@ -230,7 +230,7 @@ const MyProfile = () => {
         { filterValue == 'NFTs' && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
-            <p className='text-success-511  px-3  text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
+            <p className='text-success-511 text-center  px-3  text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/>
           </div>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
