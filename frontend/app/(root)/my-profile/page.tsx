@@ -208,17 +208,17 @@ const MyProfile = () => {
                 <input disabled = {true} id='email' name='email' type='email' placeholder='Email' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.email || ''} />
                
               </FormRow>
-              <FormRow className='sm:w-1/2 p-4'>
+              <FormRow className='sm:w-1/2 p-4 mb-8'>
                 <FormLabel htmlFor='address' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Address&nbsp;(Optional)</FormLabel>
                 <input disabled = {true}  id='address' name='address' type='text' placeholder='Address here' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.address || ''} />
              
               </FormRow>
             </div>
-            <FormRow className='py-4 px-7'>
+            {/* <FormRow className='py-4 px-7'>
               <FormLabel htmlFor='bio' className='font-montserrat text-white text-opacity-50 text-[22px] font-semibold'>Bio&nbsp;(Optional)</FormLabel>
               <input disabled = {true} id='bio' name='bio' type='text' placeholder='Bio' className='block w-full p-3 bg-transparent border-b-2 rounded-none border-dotted border-success-505 text-white focus:border-b-4' value={dataOfUser?.bio || ''} />
             
-            </FormRow>
+            </FormRow> */}
             {/* <div className='flex gap-4 p-4'>
             <button className={`bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white mb-10 ${enableEdit ? 'hidden' : ''}`} type='submit'>Save</button>
             <button className={`bg-success-511 py-3 px-6 font-bold gap-1 rounded-xl flex text-white mb-10 ${enableEdit ? 'hidden' : ''}`} onClick={handleCancelFormSave}>Cancel</button>
