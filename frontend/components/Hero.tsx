@@ -35,7 +35,7 @@ const Hero = () => {
       </div>
       </div>
 
-      <div className='h-full flex-col flex mt-4  p-4 max-md:hidden opacity-85 max-h-[490px] max-w-[750px]'>
+      <div className='h-full flex-col flex mt-4  p-4  opacity-85 max-h-[490px] max-w-[750px]'>
         {/* <video src='/icons/nft-vid-2.mp4' /> */}
         {/* <VideoPlayer options={videoJsOptions} /> */}
         <CarouselVideoHeroHome />

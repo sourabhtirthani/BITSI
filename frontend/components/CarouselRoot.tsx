@@ -13,16 +13,18 @@ import CoinPriceHeroLandingPage from "./CoinPriceHeroLandingPage"
 
 export function CarouselRoot() {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction : false  })
+    Autoplay({ delay: 2000, stopOnInteraction : false}),
   )
+  
 
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="w-full max-w-md max-sm:max-w-xs max-custom-sm:hidden"
+      className="w-full max-w-2xl max-sm:max-w-xs max-custom-sm:hidden"
+      
     >
-      <CarouselContent>
-        <CarouselItem className="flex">
+      <CarouselContent >
+        <CarouselItem className="flex ">
             <CoinPriceHeroLandingPage headingText="First Hand Coin" amount="11.65&nbsp;BITSI" val = 'up' />
             <CoinPriceHeroLandingPage headingText="Policy Coverage" amount="56.23&nbsp;ETH" val = 'up' />
         </CarouselItem>

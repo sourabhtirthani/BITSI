@@ -32,7 +32,7 @@ const MyProfile = () => {
   const [coinsDetailsFilterValueOutside , setCoinsDetailsFilterValueOutside] = useState('');
   const [dataOfNftsOfUser , setDataOfNftsOfUser] = useState<nftInUserZone[]>([])
   const [historyDetailtsFilterValue , setHistoryDetailsFilterValue] = useState('');
-  const [imgOfUser , setImageOfUser] = useState('/icons/profile-logo.png')
+  const [imgOfUser , setImageOfUser] = useState('/icons/image_pfp_no_pfp.png')
   // const [nameOfuser , setNameOfUser] = useState('');
   // const [emailOfUser , setEmailOfUser] = useState('');
   // const [numberOfUser , setNumberOfUser] = useState('')
@@ -79,14 +79,26 @@ const MyProfile = () => {
     setFilterValue('Compensation');
   }
   const handleCollectionClick = async ()=>{
-    if(address){
-    const getAllNfts = await getNFtsOfUser(address)
-    if(getAllNfts){
-      setDataOfNftsOfUser(getAllNfts);
-    }
-    }
+    // if(address){
+    // const getAllNfts = await getNFtsOfUser(address)
+    // if(getAllNfts){
+    //   setDataOfNftsOfUser(getAllNfts);
+    // }
+    // }
     setFilterValue('Collections');
   }
+
+  useEffect(()=>{
+    const handleCollectionClick = async ()=>{
+      if(address){
+      const getAllNfts = await getNFtsOfUser(address)
+      if(getAllNfts){
+        setDataOfNftsOfUser(getAllNfts);
+      }
+      }
+    }
+    handleCollectionClick();
+  } , [address])
 
   // const handleMyWalletClick = () => {
   //   setMyProfile(false);
@@ -127,7 +139,7 @@ const MyProfile = () => {
           
         }else{
           setDataOfUser({address : '' , name : '' , bio : '' , email : '' , number : '' , walletAddress : '' , id : '' ,  imgSrc : ''})
-          setImageOfUser('/icons/profile-logo.png')
+          setImageOfUser('/icons/image_pfp_no_pfp.png')
         }
       }catch(error){
         console.log(error);
@@ -170,7 +182,7 @@ const MyProfile = () => {
           <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Insurance' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
           <button hidden = {!isConnected} onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Compensation</button>
-          <button hidden = {!isConnected} onClick={handleCollectionClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My Collection</button>
+          <button hidden = {!isConnected} onClick={handleCollectionClick} className={`${dataOfNftsOfUser.length === 0 ? 'hidden' : ''} bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2`}>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 

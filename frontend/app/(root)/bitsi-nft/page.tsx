@@ -246,7 +246,7 @@ const BitsiNft = () => {
           <div className='flex flex-col'>
 
             <div className='flex '>
-              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none sm:px-1 text-[20px] text-pretty pl-3   max-sm:text-[14px] rounded-xl rounded-r-none w-[353px]  max-sm:w-[200px] font-montserrat max-md:h-[40px] h-[60px]`} value={searchValue} onChange={(e) => handleInputChange(e)} />
+              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none sm:px-1 text-[20px] text-pretty placeholder-style   max-sm:text-[14px] rounded-xl rounded-r-none w-[353px]  max-sm:w-[200px] font-manrope max-md:h-[40px] h-[60px]`} style={{padding : '5px 17px ' , fontSize : '17px'}} value={searchValue} onChange={(e) => handleInputChange(e)} />
               <Image src='/icons/search-bg-yellow.svg' height={60} width={73} alt='search icon' className='relative cursor-pointer max-md:h-[40px] max-md:w-[49px]' onClick={handleSearchingOfNft} />
             </div>
             {/* <PopOver filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
