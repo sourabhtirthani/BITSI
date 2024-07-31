@@ -22,6 +22,11 @@ declare interface DropdownProps {
     icon: string;
 }
 
+declare interface DropdownPropsForInsuranceTable {
+    id: number;
+    name: string;
+}
+
 declare interface NFTCardProps {
     id: number;
     nft_name: string

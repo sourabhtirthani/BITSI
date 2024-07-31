@@ -7,12 +7,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { DropdownProps } from "@/types";
+import { DropdownProps, DropdownPropsForInsuranceTable } from "@/types";
 import Image from 'next/image'
 import { CollapsibleBitsiNft } from "./CollapsiableBitsiNft";
 
-
-const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , setPrice, setAsset, itemsAsset }: { itemsCol?: DropdownProps[], itemsOrder : DropdownProps[],itemsPrice? : DropdownProps[], itemsAsset? : DropdownProps[]  , setCol? : Dispatch<SetStateAction<string>> , setOrd: Dispatch<SetStateAction<string>> , setPrice? : Dispatch<SetStateAction<string>> , setAsset? : Dispatch<SetStateAction<string>>}) => {
+//this drop down is also used in the user zone page
+const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , setPrice, setAsset, itemsAsset , itemsPurchase, itemsUpgrade , itemsExtend, itemsClaim , itemsUnlock, setInsuraceFilter }: { itemsCol?: DropdownProps[], itemsOrder? : DropdownProps[],itemsPrice? : DropdownProps[], itemsAsset? : DropdownProps[]  , setCol? : Dispatch<SetStateAction<string>> , setOrd?: Dispatch<SetStateAction<string>> , setPrice? : Dispatch<SetStateAction<string>> , setAsset? : Dispatch<SetStateAction<string>> , setInsuraceFilter? : Dispatch<SetStateAction<string>> , itemsUnlock? : DropdownProps[] , itemsClaim? : DropdownProps[] , itemsExtend? : DropdownProps[] , itemsUpgrade? : DropdownProps[] , itemsPurchase? : DropdownProps[]}) => {
 //   const handleClick = (nameToSet : string)=>{
 //     setValue(nameToSet);
 //   }
@@ -36,11 +36,30 @@ const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , 
         <div className="max-h-[240px] overflow-y-auto table-body">
         {(itemsCol != null && setCol) && <><CollapsibleBitsiNft btnName="Colleciton" items={itemsCol} setValue={setCol}  />
         <hr className="mt-1 border-success-527 ml-2 mr-2"/></>}
-        <CollapsibleBitsiNft btnName="Date" items={itemsOrder} setValue={setOrd}  />
-        <hr className="mt-1 border-success-527 ml-2 mr-2"/>
-        {(itemsPrice != null && setPrice) && <CollapsibleBitsiNft btnName="Price" items={itemsPrice} setValue={setPrice}  />}</div>
+        { (itemsOrder != null && setOrd) && <><CollapsibleBitsiNft btnName="Date" items={itemsOrder} setValue={setOrd}  />
+        <hr className="mt-1 border-success-527 ml-2 mr-2"/></>}
+        {(itemsPrice != null && setPrice) && <CollapsibleBitsiNft btnName="Price" items={itemsPrice} setValue={setPrice}  />}
         {(itemsAsset != null && setAsset) && <> 
          <CollapsibleBitsiNft btnName="Asset" items={itemsAsset} setValue={setAsset}  /> </>} 
+
+
+
+
+         {(itemsPurchase != null && setInsuraceFilter) && <> 
+          <CollapsibleBitsiNft insuranceFilters = {true} btnName="Purchase" items={itemsPurchase} setValue={setInsuraceFilter}  /> <hr className="mt-1 border-success-527 ml-2 mr-2"/> </>} 
+
+          {(itemsUpgrade != null && setInsuraceFilter) && <> 
+            <CollapsibleBitsiNft insuranceFilters = {true}  btnName="Upgrade" items={itemsUpgrade} setValue={setInsuraceFilter}  /> <hr className="mt-1 border-success-527 ml-2 mr-2"/> </>} 
+
+            {(itemsExtend != null && setInsuraceFilter) && <> 
+              <CollapsibleBitsiNft insuranceFilters = {true} btnName="Extend" items={itemsExtend} setValue={setInsuraceFilter}  /> <hr className="mt-1 border-success-527 ml-2 mr-2"/> </>} 
+
+              {(itemsClaim != null && setInsuraceFilter) && <> 
+                <CollapsibleBitsiNft insuranceFilters = {true} btnName="Claim" items={itemsClaim} setValue={setInsuraceFilter}  /> <hr className="mt-1 border-success-527 ml-2 mr-2"/> </>} 
+
+                {(itemsUnlock != null && setInsuraceFilter) && <> 
+                  <CollapsibleBitsiNft insuranceFilters = {true} btnName="Unlock" items={itemsUnlock} setValue={setInsuraceFilter}  /> <hr className="mt-1 border-success-527 ml-2 mr-2"/> </>} 
+                  </div>
       </DropdownMenuContent>
     </DropdownMenu>
 

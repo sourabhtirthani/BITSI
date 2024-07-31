@@ -177,16 +177,16 @@ const MyProfile = () => {
         </div>
 
         <div className='flex p-2 gap-4 px-7 max-sm:flex-col w-full flex-wrap'>
-          <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-8 py-2 max-sm:py-3.5 '>My Profile</button>
-          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <button onClick={handleMyProfileClick} className='bg-success-512 hover:bg-success-509 max-md:text-[20px]  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-4 mx max-sm:text-left py-2 max-sm:py-3.5 '>My Profile</button>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex  h-fit w-fit max-sm:w-full   px-3 py-2'>
           <Dropdown buttonName='My Wallet' items={myProfileWalletDropDown} setValue={setFilterValue} /></div>
-          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex  h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
-          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white text-[22px] rounded-xl max-sm:flex max-sm:justify-center h-fit w-fit max-sm:w-full  px-3 py-2'>
+          <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white max-md:text-[20px] text-[22px] rounded-xl max-sm:flex  h-fit w-fit max-sm:w-full  px-3 py-2'>
           <Dropdown buttonName='My Insurance' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
-          <button hidden = {!isConnected} onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-8 py-2 max-sm:py-3.5'>My Compensation</button>
-          <button hidden = {!isConnected} onClick={handleCollectionClick} className={`${dataOfNftsOfUser.length === 0 ? 'hidden' : ''} bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-8 py-2 max-sm:py-3.5`}>My Collection</button>
+          <button hidden = {!isConnected} onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509 max-md:text-[20px]  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-4 py-2 max-sm:text-left max-sm:py-3.5'>My Compensation</button>
+          <button hidden = {!isConnected} onClick={handleCollectionClick} className={`${dataOfNftsOfUser.length === 0 ? 'hidden' : ''} bg-success-512 hover:bg-success-509  secondary-shadow11 text-white max-md:text-[20px] text-[22px] font-bold px-8 rounded-xl max-sm:text-left max-sm:px-4 py-2 max-sm:py-3.5`}>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
         </div>
 

@@ -117,12 +117,6 @@ export const priceDropDownItems = [
 
 
 export const orderDropDownItem = [
-
-    // {
-    //     id : 1,
-    //     name : 'Latest',
-    //     icon : '/icons/descOrder.svg'
-    // },
     {
         id : 2,
         name : 'Asc Order',
@@ -134,6 +128,12 @@ export const orderDropDownItem = [
         icon : '/icons/high-low-logo.svg'
     },
 ]
+
+export const purchaseDropDownItem = [
+    {id : 1,name : 'Uninsured Nfts',icon : ''},
+    {id : 2,name : 'Uninsured Coins',icon : ''},
+]
+
 
 export const insuranceDropDownItemsMyProfile = [
 

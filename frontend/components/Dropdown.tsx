@@ -22,7 +22,7 @@ const Dropdown = ({ items , buttonName , setValue , showIcon = true , arrowImage
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={`${showIcon == false ? ' bg-success-512 justify-between' : 'justify-center'} w-full flex gap-2 max-md:w-fit  items-center  hover:bg-success-509  rounded-xl px-4 py-0.5`}>
+      <DropdownMenuTrigger className={`${showIcon == false ? '  bg-success-512 justify-between' : 'justify-center'} w-full flex gap-2 max-md:w-fit  items-center   hover:bg-success-509  rounded-xl md:px-4 py-0.5`}>
       <p className={`${showIcon == false ? '' : 'justify-center'} text-[22px]   max-md:text-[20px] w-full font-montserrat font-bold max-md:p-1 flex items-center gap-2 text-white  overflow-hidden selection:border-none focus:border-none`}>{(selected == true && showIcon == false) ? buttonName : buttonName}
             </p>
             <Image src = {arrowImage} height={9.21} width={16} alt = 'drowpdown'  />
