@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { CarouselRoot } from './CarouselRoot'
 import VideoPlayer from './VideoPlayer';
 import { CarouselVideoHeroHome } from './CarouselVideoHeroHome';
+import MarqueeHomeHero from './MarqueeHomeHero';
 
 const Hero = () => {
   const videoJsOptions = {
@@ -31,7 +32,9 @@ const Hero = () => {
         <button className='hover:bg-success-509 text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-4 xl:px-8'>Contact Us</button>
         </div>
         <div className='mt-8'>
-        <CarouselRoot /></div>
+          <MarqueeHomeHero />
+        {/* <CarouselRoot /> */}
+        </div>
       </div>
       </div>
 
