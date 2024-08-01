@@ -217,23 +217,30 @@ const BitsiNft = () => {
     <>
       <div className='navbar-space'>
       </div>
-      <section className='bg-bitsi-nft flex bg-current max-md:bg-contain '>
-        <div className='xl:w-full flex flex-col lg:px-8 lg:py-14 md:p-10 max-md:p-4'>
+      <section className='bg-bitsi-nft flex  bg-current max-md:bg-contain '>
+        <div className='w-full flex flex-col lg:px-8 lg:py-14 md:p-10 max-md:p-4'>
           <h1 className='font-manrope text-white font-bold lg:text-[52px] md:text-[44px] max-md:text-[26px] max-md:mb-4 custom-xxl:text-[83px]'>
             Discover, Create, Trade and Buy Exclusive Digital Art: Welcome to BITSI NFT!
           </h1>
-          <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden' />
-          <div className='flex gap-4 mb-2'>
+          <div className='flex justify-between'>
+            <div className='flex 2xl:mt-4  flex-col gap-3'>
+          <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' />
+          <div className='flex gap-4 2xl:mt-4 '>
             <Link href='/create-nft'><button className='bg-success-506 border-success-506 border-2 text-black font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Create NFT</button></Link>
             <button className=' text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>View Insurance</button>
           </div>
+            </div>
+            <div className='-mt-2 max-2xl:-mt-12 max-xl:hidden '>
+          <Image src='/icons/bitst-nft-hero-new.png' height={351.17} width={517.4} alt='nft group' className='' /></div>
+          </div>
+         
         </div>
 
-        <div className='h-full xl:w-full  max-xl:hidden mt-1 mr-10 '>
+        {/* <div className=' w-fit justify-end items-end flex flex-col    max-xl:hidden mt-1  '>
 
-          <Image src='/icons/nft-group-img.png' height={532} width={717.41} alt='nft group' className='custom-xxl:h-[610px] custom-xxl:w-[800px]' />
+          <Image src='/icons/bitst-nft-hero-new.png' height={481.17} width={617.4} alt='nft group' className='self-end place-items-end custom-xxl:h-[610px] custom-xxl:w-[800px]' />
 
-        </div>
+        </div> */}
 
       </section>
 
