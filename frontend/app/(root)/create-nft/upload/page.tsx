@@ -346,7 +346,7 @@ const UploadNFt = () => {
                   <p className='text-white font-montserrat text-[22px] font-semibold'>Preview here</p>
                   <p className='text-white font-montserrat text-[22px] font-thin text-opacity-66'>Uploaded pic will be shown here</p>
                   <div className=' p-2 max-w-[570px] max-h-[262px] bg-success-503 secondary-shadow11 rounded-xl flex items-center justify-center'>
-                    <Image src={previewTemp} height={229} width={521} alt='image' className='max-w-full max-h-full overflow-hidden' />
+                    <Image src={previewTemp} height={229} width={521} alt='image' className='max-w-[521px] max-h-[229px] overflow-hidden' />
                   </div>
                 </div>
               </div>
