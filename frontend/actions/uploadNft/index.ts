@@ -87,6 +87,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
       // console.log(res)
       // const nftImageUrl = res?.secure_url;
       // const nftImageUrl = 'bacd'
+      const dateOfNft = new Date();
         const nft = await db.nft.create({
             data: {
               id : idOfNft,
@@ -99,7 +100,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nft_description: description,
               nft_owner_address: address, 
               nft_creator_address: address, 
-              nft_mint_time: new Date(),
+              nft_mint_time: dateOfNft,
               is_admin_minted: false,
               nft_liked: 0,
               is_insured: false,
@@ -108,6 +109,18 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               id: true,
             },
           });
+          await db.nft_events.create({
+            data : {
+              from : address,
+              nft_event : 'mint',
+              nft_price : price,
+              time : dateOfNft,
+              to : address , 
+              nftId : nft.id,
+              
+
+            }
+          })
           revalidatePath('/api/nfts');
           return { success: true, id: nft.id };
     } catch (error) {

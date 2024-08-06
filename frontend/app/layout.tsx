@@ -5,6 +5,7 @@ import { config } from '@/config'
 import Web3ModalProvider from '@/context'
 import { cookieToInitialState } from 'wagmi'
 import { headers } from 'next/headers'
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"], variable : '--font-inter' });
 const poppinss = Poppins({
@@ -59,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable}`}>
-        
+      <NextTopLoader />
       <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         
         </body>

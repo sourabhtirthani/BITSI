@@ -30,7 +30,7 @@ model Nft{
 
 model Nft_events {
   id        Int      @id @default(autoincrement())
-  s_no      Int
+  // s_no      Int
   nft_event String
   nft_price Float
   from      String

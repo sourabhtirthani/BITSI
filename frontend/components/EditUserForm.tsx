@@ -80,6 +80,23 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
         }
         fetchData(addressOfUser);
     } , [addressOfUser])
+
+
+    const validatePhoneNumber = (value: string): boolean => {
+        const phoneNumberPattern = /^\d{10}$/;
+        return phoneNumberPattern.test(value);
+      };
+    const handleInvalid = (event: React.FormEvent<HTMLInputElement>) => {
+        const input = event.target as HTMLInputElement;
+        if (!validatePhoneNumber(input.value)) {
+          input.setCustomValidity('Please enter 10-digit phone number.');
+        } else {
+          input.setCustomValidity('');
+        }
+        
+        
+        input.focus();
+      };
   return (
     // action={(formData)=>handleFormSubmit(formData)}
     <form onSubmit={handleFormSubmit}>
@@ -98,7 +115,7 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
                 <input value={addressOfUser} name = 'walletAddress' id = 'walletAddress' hidden />
                 <input defaultValue={userData?.name || ''} maxLength={19}  name = 'name' id='name' placeholder='Name*' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' required/>
                 <input defaultValue={userData?.email || ''}  type='email' name = 'email' id='email' placeholder='email*' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' required/>
-                <input defaultValue={userData?.number || ''} minLength={10} maxLength={10}  name = 'number' id='number' placeholder='Whatsapp' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' />
+                <input defaultValue={userData?.number || ''} onInvalid={handleInvalid}   type='tel' pattern="[0-9]{10}"   name = 'number' id='number' placeholder='Whatsapp' className=' text-black font-manrope bg-transparent p-3 border-2 no-spinners border-gray-400 rounded-xl' />
                 <input defaultValue={userData?.address || ''}  name = 'address' id='address' placeholder='Address' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' />
                 {/* <input defaultValue={userData?.bio || ''}  name = 'bio' id='bio' placeholder='Bio' className=' text-black font-manrope bg-transparent p-3 border-2 border-gray-400 rounded-xl' /> */}
                 <button  type='submit' className={`w-full ${formSubmitting ? 'bg-gray-300 disabled' : 'bg-success-511'}  text-white font-manrope font-bold p-4 max-lg:p-2 text-[22px]`}>{formSubmitting ? <div className='flex items-center justify-center'><div className="spinner mr-2 "></div></div> : <p>Update&nbsp;Profile</p>}</button>
