@@ -83,7 +83,7 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
 
 
     const validatePhoneNumber = (value: string): boolean => {
-        const phoneNumberPattern = /^\d{10}$/;
+        const phoneNumberPattern = /^(?:\d{10})?$/;
         return phoneNumberPattern.test(value);
       };
     const handleInvalid = (event: React.FormEvent<HTMLInputElement>) => {
@@ -95,7 +95,7 @@ export default  function EditUserForm({addressOfUser} : { addressOfUser : string
         }
         
         
-        input.focus();
+        // input.focus();
       };
   return (
     // action={(formData)=>handleFormSubmit(formData)}
