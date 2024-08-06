@@ -328,10 +328,24 @@ export const buyNft = async(address : string , nftId : number[]) : Promise<buyNF
         throw new Error("NFt thaat you are trying to buy is eitheralready sold or not for sale.");
       }else{
         for (const nft of findNft) {
+          const previousOwner = nft.nft_owner_address;
+          const nftPrice = nft.nft_price
           await db.nft.update({
             where: { id: nft.id },
             data: { nft_owner_address: address, up_for_sale : false }
           });
+
+          await db.nft_events.create({
+            data: {
+              nft_event: 'buy',
+              nft_price: nftPrice,
+              from: previousOwner,
+              to: address,
+              time: new Date(),
+              nftId: nft.id
+            }
+          });
+        
         }
         revalidatePath('/bitsi-nft')
         revalidatePath('my-profile')
