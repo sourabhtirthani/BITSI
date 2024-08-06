@@ -16,6 +16,17 @@ declare type nftData = {
     };
 }
 
+
+declare interface NftEventGet {
+    id: number;
+    nft_event: string;
+    nft_price: number;
+    from: string;
+    to: string;
+    time: Date;
+    nftId: number;
+  }
+
 declare interface DropdownProps {
     id: number;
     name: string;

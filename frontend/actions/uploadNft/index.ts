@@ -453,3 +453,29 @@ export const getAllNfts = async() : Promise<nftData[]>=>{
 }
 
 }
+
+// type GetUserEventsType = {
+//   id: number;
+//   nft_event: string;
+//   nft_price: number;
+//   from: string;
+//   to: string;
+//   time: Date;
+//   nftId: number;
+// }
+// export const getUserEvents = async(address : string) : Promise<GetUserEventsType[] | null>=>{
+//   try{
+//     const events = await db.nft_events.findMany({
+//       where : {
+//           to :{
+//             equals: address
+//           }
+//       },
+//   })
+ 
+//     return events;
+  
+//   }catch(error){
+//     throw new Error('error in user events')
+//   }
+// }

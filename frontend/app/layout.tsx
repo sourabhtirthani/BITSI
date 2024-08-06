@@ -60,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable}`}>
-      <NextTopLoader />
+      <NextTopLoader showSpinner = {false}   />
       <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         
         </body>
