@@ -16,6 +16,13 @@ declare type nftData = {
     };
 }
 
+declare interface MyWalletNftUserZone {
+    id: number;
+    nft_mint_time: Date;
+    is_insured: boolean;
+    nft_price: number;
+  }
+
 
 declare interface NftEventGet {
     id: number;

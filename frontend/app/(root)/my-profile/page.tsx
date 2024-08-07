@@ -20,6 +20,7 @@ import MyInsuranceTableUserProfile from '@/components/MyInsuranceTableUserProfil
 import { getNFtsOfUser } from '@/actions/uploadNft';
 import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 import MyHistoryUserzone from '@/components/MyHistoryUserzone';
+import MyWalletNftUserzone from '@/components/MyWalletNftUserzone';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -239,45 +240,7 @@ const MyProfile = () => {
             {/* <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
-          <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
-            <table className='w-full text-left mt-4 border-spacing-20'>
-              <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[16px] underline  '>
-                <tr>
-                  <th className='p-2 max-sm:p-1'>Date</th>
-                  <th className='p-2 max-sm:p-1' >Marketplace</th>
-                  <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>NFT&nbsp;Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
-                </tr>
-              </thead>
-              <tbody className='overflow-y-auto '>
-                {tableMyWallet.map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        {/* <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td> */}
-                        <td className='p-2 py-5 max-sm:p-1'>{item.Date}</td>
-                        <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
-                        <td className='p-2 max-sm:p-1'>{item.nftId}</td>
-                        <td className='p-2 max-sm:p-1'>{item.nftPrice}</td>
-                        <td className='p-2 max-sm:p-1'>{item.insurance}</td>
-                        <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
-                        <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                        {/* <td>
-                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
-                      </tr>
-                      <tr>
-                        <td  className='h-5'></td>
-                      </tr>
-                    </React.Fragment>
-                  )
-                })}
-              </tbody>
-
-            </table>
-          </div>
+          <MyWalletNftUserzone address = {address as string} />
           </>
         )}
 

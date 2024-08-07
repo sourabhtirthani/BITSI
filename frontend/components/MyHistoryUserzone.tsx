@@ -15,21 +15,24 @@ import LoaderComp from './LoaderComp';
 // }
 export default   function  MyHistoryUserzone({address , filterValue} : {address : string , filterValue : 'NFT' | 'Coins'}){
   const [eventDetails , setEventDetails] = useState<NftEventGet[]>([])
-  const [loaderState , setLoaderState] = useState(false);
+  const [loaderState , setLoaderState] = useState(true);
   useEffect(()=>{
     const getEventDetailsData = async()=>{
       try{
+        if(address){
           const res = await fetch(`/api/events/nfts/${address}` , {method : "GET" , next : {revalidate : 0} , } ,  )
           const respos = await res.json();
           setEventDetails(respos);
-          setLoaderState(true)
+        }
+          setLoaderState(false)
       }catch(error){
         console.log('error fetching data from the backend')
         console.log(error)
+        setLoaderState(false)
       }
     }
     getEventDetailsData()
-  } , [])
+  } , [address])
     // let eventDetails = [];
     // try{
     //  eventDetails = await fetch(`/api/events/nfts/${address}` , {method : "GET" , next : {revalidate : 0}} ).then(res =>res.json().then(data => data as any[]));
@@ -69,7 +72,7 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
      
       <tbody className='overflow-y-auto '>
         
-        {loaderState == true && eventDetails && eventDetails.length > 0 && Array.isArray(eventDetails) && eventDetails.map((item, index) => {
+        {loaderState == false && eventDetails && eventDetails.length > 0 && Array.isArray(eventDetails) && eventDetails.map((item, index) => {
           return (
             <React.Fragment key={index}>
               <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -94,7 +97,7 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
       </tbody>
 
     </table>
-         {loaderState == false &&<LoaderComp /> }
+         {loaderState == true &&<LoaderComp /> }
   </div>) 
 
 // }  catch (error) {
