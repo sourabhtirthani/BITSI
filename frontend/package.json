@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "start:background": "npx ts-node scripts/transferListener.ts",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -34,8 +35,10 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
     "embla-carousel-autoplay": "^8.1.5",
     "embla-carousel-react": "^8.1.5",
+    "ethers": "^6.13.2",
     "formidable": "^3.5.1",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.383.0",
@@ -60,7 +63,7 @@
     "viem": "^2.17.4",
     "wagmi": "^2.10.10",
     "walletconnect-web3-provider": "^0.7.28",
-    "web3": "^4.11.0",
+    "web3": "^4.11.1",
     "web3modal": "^1.9.12",
     "zod": "^3.23.8"
   },
