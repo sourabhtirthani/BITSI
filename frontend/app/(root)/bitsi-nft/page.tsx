@@ -18,6 +18,7 @@ import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
 import { getAllNfts } from '@/actions/uploadNft';
+import LoaderComp from '@/components/LoaderComp';
 // import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
 // import PopOver from '@/components/PopOver';
 
@@ -37,7 +38,8 @@ const BitsiNft = () => {
   const [orderFilter, setOrderFilter] = useState('');
   const [checkedItems, setCheckeditems] = useState<string[]>([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(20);  
+  const [endIndex, setEndIndex] = useState(20); 
+  const [loaderShow , setLoaderShow] = useState(true); 
   const itemsPerPage = 20; 
 
 
@@ -55,8 +57,10 @@ const BitsiNft = () => {
       setNftList(data.nfts);
       setFilteredListOfnfts(data.nfts);
       setFilteredListOfnftsDialog(data.nfts)
+      setLoaderShow(false);
     } catch (error) {
-      alert('error getting nfts ')
+      // alert('error getting nfts ')
+      setLoaderShow(false);
     }
   }
   useEffect(() => {
@@ -307,7 +311,7 @@ const BitsiNft = () => {
           {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
           {/* </Link> */}
         </div>
-        <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5  custom-2xl:grid-cols-6'>
+        {loaderShow == false ? <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5  custom-2xl:grid-cols-6'>
           {filteredLstOfNfts.slice(startIndex, endIndex).map((item) => {
             return (
               <div key={item.id} className='p-1 w-fit mt-1 '>
@@ -316,7 +320,7 @@ const BitsiNft = () => {
               </div>
             )
           })}
-        </div>
+        </div> : <LoaderComp />}
         <Pagination className='mb-14 mt-5 justify-between px-4'>
           <PaginationContent>
             <PaginationItem>

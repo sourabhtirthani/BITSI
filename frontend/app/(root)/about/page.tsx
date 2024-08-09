@@ -56,16 +56,16 @@ const About = () => {
                 <h1 className='text-white lg:text-[47px] max-lg:text-[35px] max-sm:text-[25px] font-montserrat font-semibold mb-14 lg:mb-24'>Create and sell your NFTs</h1>
                 </div>
 
-                <div className='grid grid-cols-3 max-md:grid-cols-1 p-8 max-md:p-4 '>
+                <div className='grid  grid-cols-3 max-md:grid-cols-1 p-8 max-md:p-4 '>
                 {createAndSellNFT.map((item)=>{
                     return (
-                        <div key={item.id} className='p-2 '>
+                        <div key={item.id} className='p-2 relative'>
                         <div  className='hover:bg-success-509 hover:animate-in  bg-success-512 add-border rounded-2xl  h-full secondary-shadow11'>
-                            <Image src={item.icon} height={64.48} width={62} alt = "icon" className='relative left-[80%] bottom-[8%]' />
-                            <p className='  text-success-511 text-[22px] max-md:text-[18px] px-2 font-manrope'>{item.step}</p>
-                            <h3 className='text-white text-[30px] max-md:text-[28]  mb-2 font-montserrat p-2'>{item.heading}</h3>
-                            <p className='p-4 text-white lg:text-[22px] md:text-[15px] max-md:text-[16px]  font-montserrat'>{item.content}</p>
-                            <Image src = '/icons/arrow-right.svg' height={35} width={35} alt = 'arrow-right' className='mt-auto'/>
+                            <Image src={item.icon} height={64.48} width={62} alt = "icon" className='absolute -top-4 right-2' />
+                            <p className='  text-success-511 text-[22px] mt-6 ml-2  max-md:text-[18px] px-2 font-manrope'>{item.step}</p>
+                            <h3 className='text-white text-[30px] max-md:text-[28] ml-2  mb-2 font-montserrat p-2'>{item.heading}</h3>
+                            <p className='p-4 mb-16 text-white lg:text-[22px] md:text-[15px] max-md:text-[16px]  font-montserrat'>{item.content}</p>
+                            <Image src = '/icons/arrow-right.svg' height={35} width={35} alt = 'arrow-right' className=' absolute bottom-9 left-6 '/>
                             
                             </div>
                         </div>

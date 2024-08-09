@@ -1,14 +1,10 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-// import Router from 'next/router'
 
 import React from 'react'
 
 const CreateNFT = () => {
-    // const handleGoToUploadNFt = ()=>{
-    //     push('/create-nft/upload')
-    // }
   
   return (
     <>
