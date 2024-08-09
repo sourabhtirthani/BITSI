@@ -55,7 +55,7 @@ const MobileNav = () => {
           <SheetClose asChild>
           <Link href="/bitsi-coin" className={`flex gap-3 ${isActive('/bitsi-coin') ? 'border-r-4 border-success-525' : ''}`}><Image src = '/icons/coin-icon-userzone.svg' height={24} width={24} alt='icon' />BITSI COIN</Link></SheetClose>
           <SheetClose asChild>
-          <Link href="/insurance" className={`flex gap-3  ${isActive('/insurance') ? 'border-r-4 border-success-525' : ''}`}><Image src = '/icons/incusrance-icon-userzone.svg' height={24} width={24} alt='icon' />Insurance</Link></SheetClose>
+          <Link href="/protection" className={`flex gap-3  ${isActive('/protection') ? 'border-r-4 border-success-525' : ''}`}><Image src = '/icons/incusrance-icon-userzone.svg' height={24} width={24} alt='icon' />Protection</Link></SheetClose>
           <SheetClose asChild>
            
            

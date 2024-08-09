@@ -186,7 +186,7 @@ const MyProfile = () => {
           <Dropdown buttonName='My History' items={myHistoryWalletDropDown} setValue={setFilterValue} /></div>
           {/* <button onClick={handleHistoryClick} className='bg-success-512 hover:bg-success-509  secondary-shadow11 text-white text-[22px] font-bold px-14 rounded-xl max-sm:px-8 py-2'>My History</button> */}
           <div hidden = {!isConnected} className='bg-success-512 hover:bg-success-509 secondary-shadow11 text-white max-md:text-[20px] text-[22px] rounded-xl max-sm:flex  h-fit w-fit max-sm:w-full  px-3 py-2'>
-          <Dropdown buttonName='My Insurance' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
+          <Dropdown buttonName='My Protection' items={myInsuranceDropdown} showIcon = {false} setValue={setFilterValue} /></div>
           <button hidden = {!isConnected} onClick={handleCompensationClick} className='bg-success-512 hover:bg-success-509 max-md:text-[20px]  secondary-shadow11 text-white text-[22px] font-bold px-8 rounded-xl max-sm:px-4 py-2 max-sm:text-left max-sm:py-3.5'>My Compensation</button>
           <button hidden = {!isConnected} onClick={handleCollectionClick} className={`${dataOfNftsOfUser.length === 0 ? 'hidden' : ''} bg-success-512 hover:bg-success-509  secondary-shadow11 text-white max-md:text-[20px] text-[22px] font-bold px-8 rounded-xl max-sm:text-left max-sm:px-4 py-2 max-sm:py-3.5`}>My Collection</button>
           {/* <button onClick={handleMyWalletClick} className='bg-success-512  secondary-shadow11 text-white text-[22px] px-14 rounded-xl max-sm:px-6 py-2'>My Wallet</button> */}
@@ -259,9 +259,9 @@ const MyProfile = () => {
                   <th className='p-2 max-sm:p-1' >Marketplace</th>
                   <th className='p-2 max-sm:p-1'>Coin&nbsp;Id</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coin&nbsp;Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
@@ -315,7 +315,7 @@ const MyProfile = () => {
           <MyHistoryUserzone address={address as string} filterValue={filterValue}  />
           </>
         )}
-        { filterValue == 'Insurance' && (
+        { filterValue == 'Protection' && (
           <>
           <div className='flex justify-between p-4 md:p-8'>
             <p className=' px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
@@ -329,8 +329,8 @@ const MyProfile = () => {
                   <th className='p-2 max-sm:p-1'>Date</th>
                   <th className='p-2 max-sm:p-1' >Asset</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Event&nbsp;Name</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
                   {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th> */}
                 </tr>
               </thead>

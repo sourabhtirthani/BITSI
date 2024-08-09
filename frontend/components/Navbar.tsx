@@ -58,11 +58,11 @@ const Navbar = () => {
     <Image src = '/icons/animate-star.gif' height={30} width={30} alt ='sd' className='absolute mt-10 ml-16 max-md:mt-8 max-md:ml-1' />
     <Image src = '/icons/animate-star.gif' height={30} width={30} alt ='sd' className='absolute mt-7 mr-10 max-md:hidden' />
     <Image src = '/icons/animate-star.gif' height={40} width={40} alt ='sd' className='absolute ml-[25px] mb-[30px] max-md:ml-[-10px] max-md:mb-[2px]' />
-    <div className="hidden md:flex space-x-8  ml-3 text-yellow-300 font-manrope gap-20 xl:text-lg lg:text-[15px] md:text-[12px] max-xl:gap-7 max-lg:gap-0">
+    <div className="hidden md:flex space-x-8 max-md:ml-3 max-xl:-ml-10 xl:ml-3 text-yellow-300 font-manrope gap-20 xl:text-lg lg:text-[15px] md:text-[12px] max-xl:gap-7 max-lg:gap-0">
           <Link onClick={()=>{setSelectedComp('Home')}} href="/" className={`${selectedComp == 'Home' ? 'text-white' : 'text-yellow-300'} font-bold`}>Home</Link>
           <Link onClick={()=>{setSelectedComp('BitsiNft')}} href="/bitsi-nft" className={`${selectedComp == 'BitsiNft' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI NFT</Link>
           <Link onClick={()=>{setSelectedComp('BitsiCoin')}} href="/bitsi-coin" className={`${selectedComp == 'BitsiCoin' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI COIN</Link>
-          <Link onClick={()=>{setSelectedComp('Insurance')}} href="/insurance" className={`${selectedComp == 'Insurance' ? 'text-white' : 'text-yellow-300'} font-bold`}>Insurance</Link>
+          <Link onClick={()=>{setSelectedComp('Protection')}} href="/protection" className={`${selectedComp == 'Protection' ? 'text-white' : 'text-yellow-300'} font-bold`}>Protection</Link>
           <Link onClick={()=>{setSelectedComp('About')}} href="/about" className={`${selectedComp == 'About' ? 'text-white' : 'text-yellow-300'} font-bold`}>About</Link>
         </div>
     </div>

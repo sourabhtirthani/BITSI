@@ -26,6 +26,7 @@ import { type UseWriteContractParameters } from 'wagmi'
 import { contractABI, contractAddress } from '@/lib/contract'
 import { uploadImage } from '@/lib/uploadToCloud'
 import { fixTinaResults } from '@/lib/utils'
+import ComboBoxPriceCurency from '@/components/ComboBoxPriceCurency'
 // import * as z from "zod";
 // import { useForm } from "react-hook-form";
 // import { zodResolver } from '@hookform/resolvers/zod'
@@ -59,6 +60,7 @@ const UploadNFt = () => {
   const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
   const [isLoading, setIsLoading] = useState(false);
   const [collectionId , setCollectionid] = useState('')
+  const [currencyForPrice , setCurrencyForPrice] = useState('Matic')
   // const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
 
 
@@ -100,6 +102,7 @@ const UploadNFt = () => {
   const handleOnSubmit = async (e: React.SyntheticEvent) => {
     // console.log(e?.target?.name?.value);
     e.preventDefault();
+    console.log(`the price of the currency is ${currencyForPrice}`)
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
@@ -359,7 +362,10 @@ const UploadNFt = () => {
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
+                  <div className='flex  gap-1.5 items-center'>
                   <InputText id='price' name='price' step="0.01" type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
+                    <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} />
+                  </div>
                   {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}
                 </FormRow>
               </div>

@@ -30,9 +30,9 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                   <th className='p-2 max-sm:p-1' >Marketplace</th>
                   <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>NFT&nbsp;Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>

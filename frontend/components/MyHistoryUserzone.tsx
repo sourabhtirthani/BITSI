@@ -63,9 +63,9 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
           <th className='p-2 max-sm:p-1'>ID</th>
           <th className='p-2 max-sm:p-1 overflow-hidden'>Event&nbsp;Name</th>
           <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
-          <th className='p-2 max-sm:p-1 overflow-hidden'>Insured</th>
-          <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
-          <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Expiry</th>
+          <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
+          <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+          <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
           {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th> */}
         </tr>
       </thead>
@@ -76,7 +76,7 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
           return (
             <React.Fragment key={index}>
               <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                <td className='p-6 max-sm:p-3'>{}s</td>
+                <td className='p-6 max-sm:p-3'>{new Date(item.time).toDateString()}</td>
                 <td className='p-2 max-sm:p-1'>BITSI</td>
                 <td className='p-2 max-sm:p-1'>{item.nftId}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft_event}</td>

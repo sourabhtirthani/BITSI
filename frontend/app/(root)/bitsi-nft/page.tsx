@@ -311,7 +311,7 @@ const BitsiNft = () => {
           {filteredLstOfNfts.slice(startIndex, endIndex).map((item) => {
             return (
               <div key={item.id} className='p-1 w-fit mt-1 '>
-                <CardNft {...item} collectionImage={item.collection.image} setCheckedItems={setCheckeditems} checkedItems={checkedItems} />
+                <CardNft {...item} collectionImage='/icons/bitsi.svg' setCheckedItems={setCheckeditems} checkedItems={checkedItems} />
                 {/*  name={item.name} id={item.id} price={item.price} category={item.category} checked = {item.checked} nftImg={item.nftImg} */}
               </div>
             )

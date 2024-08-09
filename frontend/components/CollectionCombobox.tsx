@@ -61,9 +61,8 @@ export function CollectionCombobox({setCollectionValue , setCollectionId} : { se
     const getCollections  = async()=>{
       if(address){
       const res = await getCollecitonOfUserWithAddress(address);
-      console.log("in here int he collectionfetch funcitn")
-      console.log(res);
-      console.log(JSON.stringify(res))
+      
+     
       setCollectionValues(res)
       }
 

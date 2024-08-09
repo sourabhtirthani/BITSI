@@ -2,9 +2,9 @@ export const ourServicesLinks = [
     {
         id : 1,
         imgURL : '/icons/incusrance-icon-userzone.svg',
-        label : 'INSURANCE',
+        label : 'PROTECTION',
         info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.' ,
-        url : '/insurance'
+        url : '/protection'
     },
     {
         id : 2,
@@ -514,7 +514,7 @@ export const events = [
     },
     {
         id: 3,
-        name : 'Insurance',
+        name : 'Protection',
         icon : '/icons/incusrance-icon-userzone.svg'
     }
   ]

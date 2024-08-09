@@ -39,7 +39,7 @@ const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address, 
         }
       };
     return (
-        <div className='h-full secondary-shadow11 bg-success-512 max-w-[420px] max-h-[370px] gap-2 2xl:max-h-full flex flex-col rounded-2xl p-1 hover:bg-success-509'>
+        <div className='h-full secondary-shadow11 bg-success-512 max-w-[420px] max-h-[370px] gap-2 2xl:max-h-full flex flex-col rounded-2xl p-1 hover:bg-success-509 relative'>
              
             {isClient && (<>
                 <Link href={`${currPath}/${id}`} className='h-full'>
@@ -47,11 +47,13 @@ const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address, 
             {((extension == 'mp4' && isClient ) && <video height={254}  width={299} className='rounded-xl overflow-hidden h-full'  autoPlay loop muted><source src={nft_image} type="video/mp4" /> Your browser does not support the video tag.</video> )}
             {/* {extension == 'mp4' && VideoPlayer/>} */}
             </Link>
-            <Image src={collectionImage} height={24} width={24} alt='NFT IMAGE' className='absolute mt-2 ml-4 ' />
+            <Image src={collectionImage} height={24} width={24} alt='NFT IMAGE' className='absolute left-1.5 top-1.5 ' />
+            <div  className='absolute  right-1 top-1 bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.75rem 0 0'}}><p className='text-white font-bold font-manrope text-[10px] p-1'>BITSI EQUIVALENT : 12423</p></div>
             <div className='  bg-success-509 bg-opacity-30  items-center   flex justify-between rounded-xl p-2'>
-                <div className='flex flex-col   -mt-1'>
+                {/* -mt-1 down line */}
+                <div className='flex flex-col items-center '>
                     <p className='text-white font-manrope max-text-[20px] font-semibold'>{nft_name}</p>
-                    <p className='font-manrope max-text-[18px] text-white'>Floor <span>{nft_price} BITSI</span></p>
+                    {/* <p className='font-manrope max-text-[18px] text-white'>Floor <span>{nft_price} BITSI</span></p> */}
                 </div>
                 {/* the div in the next line will be removed if the checkbox or the buy button is removed */}
                 <div className='flex items-center gap-2'> 

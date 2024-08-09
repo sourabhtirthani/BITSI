@@ -17,7 +17,7 @@ const Home = () => {
           return(
             <Link href = {item.url} key = {item.id} className="p-1 mb-4">
             {/* <div className='  ' > */}
-        <div className='hover:bg-success-509  bg-success-507 secondary-shadow11 rounded-xl flex flex-col items-center max-md:p-2 md:p-4 max-h-[500px] h-full' >
+        <div className='hover:bg-success-509 bg-success-507 secondary-shadow11 rounded-xl flex flex-col items-center max-md:p-2 md:p-4 max-h-[520px] h-full' >
           <Image src = {item.imgURL} alt = 'logo' width = {70} height = {70} />
           <p className='text-success-505 mt-2 font-manrope-400'>{item.label}</p>
           <p className='text-white font-manrope font-normal items-center md:p-8 max-md:p-2 lg:text-[18px]'>{item.info}</p>

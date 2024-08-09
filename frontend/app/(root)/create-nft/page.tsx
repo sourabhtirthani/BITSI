@@ -1,10 +1,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+// import Router from 'next/router'
 
 import React from 'react'
 
 const CreateNFT = () => {
+    // const handleGoToUploadNFt = ()=>{
+    //     push('/create-nft/upload')
+    // }
   
   return (
     <>
@@ -19,26 +23,26 @@ const CreateNFT = () => {
 
                 <div className='grid grid-rows-2 px-8 max-md:px-3'>
                 <div className='flex flex-col '>
-                    <Link href={`/create-nft/upload`}><div className='flex gap-3 '>
+                   <div className='flex gap-3 '>
                 <Image src = '/icons/upload-icon.svg' height={48} width={48} alt='upload icon' />
                 <h1 className='text-white text-[38px] max-md:text-[24px] font-semibold hover:text-red-500'>Upload</h1>
-                </div></Link>
+                </div>
 
                 
-                <div className='flex bg-white bg-opacity-40 rounded-2xl md:mt-4 max-md:mt-2 p-4 mb-3 '>
-                    <p className='  text-white opacity-60  lg:text-[20px] md:max-text-[20px]'>Here, you can upload your NFT in various formats including MP4, JPG, and SVG, ensuring your digital assets are versatile and accessible to a wide audience.</p>
-                    <Image src = '/icons/arrow-right.svg' width={35} height={35} alt = 'arrow' />
+                <div className='flex justify-between bg-white bg-opacity-40 rounded-2xl md:mt-4 max-md:mt-2 p-4 mb-3 '>
+                    <p className='w-11/12  text-white opacity-60 max-xl:text-[15px] xl:text-[20px] max-custom-lg:text-[20px]'>Here, you can upload your NFT in various formats including MP4, JPG, and SVG, ensuring your digital assets are versatile and accessible to a wide audience.</p>
+                  <Link className='flex items-center h-full w-fit' href={`/create-nft/upload`}><Image src = '/icons/arrow-right.svg' width={50} height={50} alt = 'arrow'   /></Link>
                 </div>
                 </div>
                 <div className='flex flex-col '>
-                    <Link href={`/create-nft/generate-with-ai`}>
+                   
                     <div className='flex gap-3'>
                 <Image src = '/icons/stars-AI.svg' height={48} width={48} alt='AI icon' />
                 <h1 className='text-white md:text-[38px] max-md:text-[24px] font-semibold hover:text-red-500'>Generate With AI</h1>
-                </div></Link>
-                <div className='flex bg-white bg-opacity-40 rounded-2xl md:mt-4 max-md:mt-2 p-4 mb-3'>
-                    <p className=' text-white opacity-60  lg:text-[20px] md:max-text-[20px]'>Now you can generate an NFT with our specialized AI, creating unique digital assets effortlessly and ready for sale on our platform.  </p>
-                    <Image src = '/icons/arrow-right.svg' width={35} height={35} alt = 'arrow' />
+                </div>
+                <div className='flex justify-between bg-white bg-opacity-40 rounded-2xl md:mt-4 max-md:mt-2 p-4 mb-3'>
+                    <p className='w-11/12  text-white opacity-60 max-xl:text-[15px]  xl:text-[20px] max-custom-lg:text-[20px]'>Now you can generate an NFT with our specialized AI, creating unique digital assets effortlessly and ready for sale on our platform.  </p>
+                    <Link className='flex items-center h-full w-fit' href={`/create-nft/generate-with-ai`}><Image src = '/icons/arrow-right.svg' width={50} height={50} alt = 'arrow' /></Link>
                 </div>
                 </div>
                 </div>
