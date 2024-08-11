@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import { contractABI, contractAddress } from "@/lib/contract"
 // import { InjectedConnector } from '@web3modal/wagmi';
 
-export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, pricesArray, nameOfNft, imgSrc, collectionName, nftPrice, royalty }: buyNftDialogProps) {
+export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, pricesArray, nameOfNft, imgSrc, collectionName, nftPrice }: buyNftDialogProps) {
   // console.log(lstOfItems)
   // const numbersArray = lstOfItems.map(item => Number(item));
   // console.log(numbersArray);

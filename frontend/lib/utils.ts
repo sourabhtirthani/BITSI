@@ -34,7 +34,7 @@ export const uploadNftformSchema  = z.object({
   name: z.string().min(1, { message: 'Name Of Your NFT is required' }),
   price: z.string().min(1, { message: 'Price is required' }),
   collection: z.string().min(1, { message: 'Collection is required' }),
-  royalties: z.string().min(1, { message: 'Royalties are required' }),
+  // royalties: z.string().min(1, { message: 'Royalties are required' }),
   description: z.string().optional()
 });
 

@@ -117,7 +117,7 @@ declare interface buyNftDialogProps {
     lstOfItems: string[] | number[];
     nameOfNft?: string;
     collectionName?: string;
-    royalty?: Float;
+    // royalty?: Float;
     imgSrc?: string;
     nftPrice?: Float;
     ownerAddress: string;
@@ -159,7 +159,7 @@ declare interface nftDataForMulitpleNftSelectPage {
     nft_image: string;
     nft_collection_name: string;
     nft_collection_id: number;
-    nft_royalties: number;
+    // nft_royalties: number;
     nft_description: string;
     nft_owner_address: string;
     up_for_sale : boolean;

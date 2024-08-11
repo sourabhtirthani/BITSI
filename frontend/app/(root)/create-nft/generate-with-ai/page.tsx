@@ -52,11 +52,11 @@ const GenrateWithAi = () => {
                   </FormRow>
                 
                  
-                  <FormRow className=' p-4'>
+                  {/* <FormRow className=' p-4'>
                     <FormLabel htmlFor='royalties' className='font-montserrat text-white text-[22px] font-semibold'>Royalties*</FormLabel>
                     <InputText id='royaltes' name='royaltes' type='text' placeHolder='eg-cratoNFT' className='p-3' />
-                    {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
-                  </FormRow>
+                   
+                  </FormRow> */}
                   <FormRow className=' p-4'>
                     <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
                     <InputText id='price' name='price' type='text' placeHolder='1-BITSI' className='p-3' />

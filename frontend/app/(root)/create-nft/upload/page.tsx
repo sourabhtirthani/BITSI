@@ -49,7 +49,7 @@ const UploadNFt = () => {
   const [errorMessageNftFile, setErrorMessageNftFile] = useState('');
   const [preview, setPreview] = useState<string>('/icons/default-nft-preview.png');
   const [collectionErrorMessage, setCollectionErrorMessage] = useState('');
-  const [royaltiesErrorMessage, setRoyaltiesnErrorMessage] = useState('');
+  // const [royaltiesErrorMessage, setRoyaltiesnErrorMessage] = useState('');
   const [priceErrorMessage, setPriceErrorMessage] = useState('');
   const [showAlertDialog, setShowAlertDialog] = useState('');
   // const [hashOfContract, setHashOfContract] = useState<`0x${string}` | undefined>(undefined);
@@ -108,7 +108,6 @@ const UploadNFt = () => {
     const fileInput = form.elements.namedItem('nftFile') as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
     // console.log('selected collection is' , formData.get('collection'))
-    console.log(formData.get('royalties'))
     if (!address) {
       toast({
         title: "No Wallet Connected",
@@ -150,15 +149,9 @@ const UploadNFt = () => {
       // return;
     } else {
       setPriceErrorMessage('');
-    } if (!formData.get('royalties')) {
-      console.log('in here royal')
-      setRoyaltiesnErrorMessage('Please Enter Royality');
-      // return;
-    } else {
-      setRoyaltiesnErrorMessage('');
-    }
+    } 
 
-    if (!formData.get('royalties') || !file || !formData.get('name') || !formData.get('collection') || !formData.get('price')) {
+    if ( !file || !formData.get('name') || !formData.get('collection') || !formData.get('price')) {
       return;
     }
 
@@ -316,7 +309,7 @@ const UploadNFt = () => {
               <div className='flex justify-between  max-sm:flex-col'>
                 <div className='sm:w-1/2'>
                   <FormRow className='p-4 md:px-8 w-fit h-fit'>
-                    <p className='text-white font-montserrat font-semibold text-[22px] mb-2'>Upload Here*</p>
+                    <p className='text-white font-montserrat font-semibold text-[22px] mb-2'>Upload Here</p>
                     <input type='file' name='nftFile' className='hidden' id='nftFile' accept=".jpg,.png,.svg,.mp4,.gif" onChange={handleOnChange} />
 
                     <label htmlFor="nftFile" className='w-fit h-fit'>
@@ -356,12 +349,12 @@ const UploadNFt = () => {
 
               <div className='flex justify-between  max-sm:flex-col sm:mb-0 gap-2  '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
-                  <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Name Of Your NFT*</FormLabel>
+                  <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Name Of Your NFT</FormLabel>
                   <input  id='name' name='name' minLength={4} maxLength={15} type='text' placeholder='eg-cratoNFT' className='p-3 block w-full  rounded' />
                   {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>}
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
-                  <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price*</FormLabel>
+                  <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price</FormLabel>
                   <div className='flex  gap-1.5 items-center'>
                   <InputText id='price' name='price' step="0.01" type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
                     <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} />
@@ -371,7 +364,7 @@ const UploadNFt = () => {
               </div>
               <div className='flex justify-between max-sm:flex-col sm:mb-10 gap-2 '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
-                  <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection*</FormLabel>
+                  <FormLabel htmlFor='collection' className='font-montserrat text-white text-[22px] font-semibold'>Collection</FormLabel>
                   {/* <InputText id = 'collection' name = 'collection' type='text' placeHolder='Please enter the name of your collection' className='p-3' /> */}
                   <input id='collection' name='collection' type='text' placeholder='' className='hidden' value={collectionId} />
                   <div className='w-full'>
@@ -379,9 +372,9 @@ const UploadNFt = () => {
                   {collectionErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{collectionErrorMessage}*</p>}
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
-                  <FormLabel htmlFor='royalties' className='font-montserrat text-white text-[22px] font-semibold'>Royalties*</FormLabel>
-                  <InputText id='royalties' name='royalties' step="0.01" type='number' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' className='p-3 no-spinners' />
-                  {royaltiesErrorMessage && <p className='text-success-517 text-[11px] font-normal '>{royaltiesErrorMessage}*</p>}
+                  <FormLabel htmlFor='bitsiEquivalent' className='font-montserrat text-white text-[22px] font-semibold'>Bitsi Equivalent</FormLabel>
+                  <input id='bitsiEquivalent' name='bitsiEquivalent' step="0.01" type='number' placeholder='S' value={'123'} className=' p-3 block w-full rounded  no-spinners' />
+                  {/* {royaltiesErrorMessage && <p className='text-success-517 text-[11px] font-normal '>{royaltiesErrorMessage}*</p>} */}
                 </FormRow>
               </div>
               <div className='flex max-sm:flex-col sm:items-center sm:mb-10 gap-2  '>

@@ -71,9 +71,9 @@ export function CollectionCombobox({setCollectionValue , setCollectionId} : { se
   }, [address])
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="w-full">
+      <PopoverTrigger asChild className="w-full  rounded">
         <div className="w-full flex justify-between px-3 bg-white">
-        {/* button to run the combox here  */}<button id="collection" name="collection" className="font-manrope font-bold text-[17px] bg-white  py-3">{value == "" ? 'Select From Collection' : value}</button>
+        {/* button to run the combox here  */}<button id="collection" name="collection" className="font-manrope font-bold text-[18px] bg-white  py-2.5">{value == "" ? 'Select From Collection' : value}</button>
         <Image src = "/icons/CollectionDropDownIcon.svg"  height={9.21} width={16} alt="dropdown button"/></div>
       </PopoverTrigger>
       <PopoverContent className="w-full  bg-white p-0">

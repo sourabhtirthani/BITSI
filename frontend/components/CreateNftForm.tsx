@@ -230,9 +230,9 @@ const CreateNftForm = () => {
                                 <CustomInput control={form.control} formLabel='' nameOfField='collection' placeHolder='' />
                                 <CollectionCombobox setCollectionValue={setColleciton} setCollectionId = {setCollectionid} />
                             </div>
-                            <div className='sm:w-1/2 p-4 md:px-8'>
+                            {/* <div className='sm:w-1/2 p-4 md:px-8'>
                                 <CustomInput control={form.control} formLabel='Royalties' nameOfField='royalties' placeHolder='Suggested 0. 10%, 20%, 30%, 40% MAX is 70%' />
-                            </div>
+                            </div> */}
                         </div>
                         <div className='flex max-sm:flex-col sm:items-center sm:mb-10 gap-2'>
                             <div className='sm:w-1/2 p-4 md:px-8'>

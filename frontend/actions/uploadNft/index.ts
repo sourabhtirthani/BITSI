@@ -24,7 +24,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
         const name = formdata.get('name') as string;
         const price = parseFloat(formdata.get('price') as string);
         const collectionId = parseInt(formdata.get('collection') as string);
-        const royalties = parseFloat(formdata.get('royalties') as string);
+        // const royalties = parseFloat(formdata.get('royalties') as string);
         const description = formdata.get('description') as string;
         // if (!Number.isFinite(price) || isNaN(price)) {
         //     return { error: "Invalid price format" };
@@ -33,7 +33,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
         //   if (!Number.isFinite(royalties) || isNaN(royalties)) {
         //     return { error: "Invalid royalties format" };
         //   }
-        if(!nftFile || !name || !price || !collection || !royalties){
+        if(!nftFile || !name || !price || !collection){
             console.log('in here in the insufficent data proveded clause')
             return {error : "Please fill in all the details"}
         }
@@ -96,7 +96,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nft_image: nftImageUrl,
               nft_collection_name: collection,
               nft_collection_id: collectionId,
-              nft_royalties: royalties,
+              // nft_royalties: royalties,
               nft_description: description,
               nft_owner_address: address, 
               nft_creator_address: address, 
@@ -374,7 +374,7 @@ export const getMultipleNftsWithIds = async (nftLst : string[]) =>{
         nft_image: true,
         nft_collection_name: true,
         nft_collection_id: true,
-        nft_royalties: true,
+        // nft_royalties: true,
         nft_description: true,
         nft_owner_address: true,
         up_for_sale : true

@@ -15,7 +15,7 @@ model Nft{
   nft_image            String
   nft_collection_name  String
   nft_collection_id    Int
-  nft_royalties        Float
+  // nft_royalties        Float
   nft_description      String  @default("no description provided")
   nft_owner_address    String
   nft_creator_address  String
