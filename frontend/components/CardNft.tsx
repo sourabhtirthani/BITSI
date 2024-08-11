@@ -47,8 +47,8 @@ const CardNft = ({ id, nft_name, nft_price,collectionImage,  nft_owner_address, 
             {((extension == 'mp4' && isClient ) && <video height={254}  width={299} className='rounded-xl overflow-hidden h-full'  autoPlay loop muted><source src={nft_image} type="video/mp4" /> Your browser does not support the video tag.</video> )}
             {/* {extension == 'mp4' && VideoPlayer/>} */}
             </Link>
-            <Image src={collectionImage} height={24} width={24} alt='NFT IMAGE' className='absolute left-1.5 top-1.5 ' />
-            <div  className='absolute  right-1 top-1 bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.75rem 0 0'}}><p className='text-white font-bold font-manrope text-[10px] p-1'>BITSI EQUIVALENT : 12423</p></div>
+            {/* <Image src={collectionImage} height={24} width={24} alt='NFT IMAGE' className='absolute left-1.5 top-1.5 ' /> */}
+            <div  className='absolute  right-1 top-1 bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.75rem 0 0'}}><p className='text-white font-bold font-manrope text-[10px] p-1'>12423</p></div>
             <div className='  bg-success-509 bg-opacity-30  items-center   flex justify-between rounded-xl p-2'>
                 {/* -mt-1 down line */}
                 <div className='flex flex-col items-center '>

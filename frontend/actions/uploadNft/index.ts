@@ -81,7 +81,10 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
       // const res = await cloudinary.uploader.upload_stream({
       //   resource_type : 'auto',
       //   folder : 'uploads',
-
+        let adminMinted : boolean = false;
+        if(address == process.env.ADMIN_ADDRESS){
+          adminMinted = true;
+        }
       // }).end(bytes);
       // const res : any = await uploadImage(nftFile , 'uploads');
       // console.log(res)
@@ -101,7 +104,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nft_owner_address: address, 
               nft_creator_address: address, 
               nft_mint_time: dateOfNft,
-              is_admin_minted: false,
+              is_admin_minted: adminMinted,
               nft_liked: 0,
               is_insured: false,
             },
@@ -433,7 +436,8 @@ export const getAllNfts = async() : Promise<nftData[]>=>{
   try{
     const nfts = await db.nft.findMany({
         where : {
-            up_for_sale : true
+            up_for_sale : true,
+            is_admin_minted: true,
         },
         select: {
             id: true,

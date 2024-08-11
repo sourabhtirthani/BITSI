@@ -27,7 +27,7 @@ const BitsiNftBuyCollection = ({selectedItems , imgSource , current , count , se
       <div className='absolute rounded-full ml-4 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex bottom-3 py-2 justify-between'>
         <div className='flex flex-col items-center'>
           <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{selectedItemData.nft_price} Matic</p>
-          <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Floor Price</p>
+          <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Price</p>
         </div>
         <div className='bg-success-511 rounded-full p-2'>
         <Image src = '/icons/price-buy-col.svg' height={50} width={50} alt='icon'  /></div>

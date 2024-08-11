@@ -60,7 +60,7 @@ const UploadNFt = () => {
   const [previewTemp, SetPrivewTemp] = useState('/icons/default-nft-preview.png')
   const [isLoading, setIsLoading] = useState(false);
   const [collectionId , setCollectionid] = useState('')
-  const [currencyForPrice , setCurrencyForPrice] = useState('Matic')
+  const [currencyForPrice , setCurrencyForPrice] = useState('MATIC')
   // const {data : receipt ,  isLoading: isConfirming, isSuccess: isConfirmed  , isError ,isFetching , isFetched, isPending} = useWaitForTransactionReceipt({ hash : hashOfContract || undefined})
 
 
@@ -187,7 +187,7 @@ const UploadNFt = () => {
           console.log('before file image')
           console.log(fileImage)
 
-          const nftImageUrl  = await uploadImage(formData1 , 'uploads' , 'nftFile'); // to make it better decalare an empty formadata add the image file to it and then send it to the function
+          const nftImageUrl  = await uploadImage(formData1 , 'uploads' , 'nftFile' , true); // to make it better decalare an empty formadata add the image file to it and then send it to the function
           if(nftImageUrl.secure_url == ''){
               throw new Error('NO image url is returned')
           }
@@ -356,7 +356,7 @@ const UploadNFt = () => {
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price</FormLabel>
                   <div className='flex  gap-1.5 items-center'>
-                  <InputText id='price' name='price' step="0.01" type='number' placeHolder='1-BITSI' className='p-3 no-spinners' />
+                  <InputText id='price' name='price' step="0.01" type='number' placeHolder='Enter price here' className='p-3 no-spinners' />
                     <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} />
                   </div>
                   {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
+import ComboBoxPriceCurency from '@/components/ComboBoxPriceCurency';
 
 const CreateCollection =  () => {
   const { push } = useRouter();
@@ -18,6 +19,7 @@ const CreateCollection =  () => {
     const [fileError , setFileError] = useState(false);
     const [loading , setLoading] = useState(false);
     const [previewImage , setPreviewIage] = useState('/icons/default-nft-preview.png');
+    const [currencyForPrice , setCurrencyForPrice] = useState('MATIC')
    
     const handleOnChange = (e : React.ChangeEvent<HTMLInputElement>)=>{
         if(e.target?.files?.[0]){
@@ -120,30 +122,33 @@ const CreateCollection =  () => {
       <FormRow className=''>
                     
                     <input onChange={(e)=>{handleOnChange(e)}} type='file' name='collectionFile' className='hidden' id='collectionFile' accept=".jpg,.png,.svg,.gif"   />
-
+                    <div className='flex max-lg:flex-col justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                     <label  htmlFor="collectionFile" className='w-fit h-fit'>
                         <div className='flex justify-between'>  
                       <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[462px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                        <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> or drag and drop it here
                        Only .PNG, .JPG</p>
                        </div>
-                       <Image src={previewImage} height={212} width={381} alt='image' className='max-w-[381px] max-h-[212px] overflow-hidden' />
                       </div>
                     </label>
+                       <Image src={previewImage} height={212} width={381} alt='image' className='max-w-[381px] max-h-[212px] overflow-hidden' />
+                       </div>
                     {fileError && <p className='text-success-517 text-[11px] font-normal'>Please upload Image before Proceding</p>}
                   </FormRow>
                   <FormRow >
-                  <FormLabel htmlFor='name' className='font-montserrat text-white  text-[22px] font-semibold'>Name Of Your Collection*</FormLabel>
+                  <FormLabel htmlFor='name' className='font-montserrat text-white  text-[22px] font-semibold'>Name Of Your Collection</FormLabel>
                   <input id='name' name='name' minLength={4} maxLength={14} type='text' required className='p-3 w-full  rounded' />
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
                 </FormRow>
                 <FormRow >
-                  <FormLabel htmlFor='floorPrice' className='font-montserrat text-white text-[22px] font-semibold '>Floor Price*</FormLabel>
+                  <FormLabel htmlFor='floorPrice' className='font-montserrat text-white text-[22px] font-semibold '>Price</FormLabel>
+                  <div className='flex gap-2'>
                   <input  id='floorPrice' name='floorPrice' required type='number' step='0.01' min='0'  className='p-3 no-spinners w-full rounded' />
+                  <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} /></div>
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
                 </FormRow>
                 <FormRow >
-                  <FormLabel htmlFor='description' className='font-montserrat text-white text-[22px] font-semibold'>Description*</FormLabel>
+                  <FormLabel htmlFor='description' className='font-montserrat text-white text-[22px] font-semibold'>Description</FormLabel>
                   <input id='description' name='description' type='text'  className='p-8 w-full rounded' required />
                   <p className='text-white text-[18px] text-opacity-65 font-bold font-montserrat mt-2'>The description you added here will be shown in the NFT preview Section</p>
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}

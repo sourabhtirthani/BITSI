@@ -15,7 +15,9 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
   // const hadnleDetailsArrowClick = ()=>{
   //   setArrowDetialsTab(!arrowDetailsTab);
   // }
+  try{
   const getNftRecord = await getNftWithIdAction(params.nftId);
+  
   const idsArry : string[] = [params.nftId]
   let arrowDetailsTab =  true;
 
@@ -26,8 +28,11 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
       <section className='bg-success-503'>
         <div className=' p-8 max-md:p-4'>
           <div className='bg-success-512 flex max-md:flex-col  secondary-shadow11'>
-          <div className='md:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
+          <div className='  md:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
+          <div className='relative w-fit'>
             <Image src={getNftRecord.record?.nft_image || ''} height={546} width={604} alt='NFT IMAGE' className='md:h-[546px]' />
+            <div  className='absolute top-0 right-0  bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.05rem 0 0'}}><p className='text-white font-bold font-manrope text-[10px] p-1'>12423</p></div>
+            </div>
           </div>
           <div className='md:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>
             <div className='flex flex-col gap-3'>
@@ -38,7 +43,7 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
             <div className=' rounded-full mt-5 w-full max-w-[300px] max-sm:max-w-[250px] secondary-shadow11 items-center px-4  bg-gray-500 bg-opacity-45 flex  py-2 justify-between'>
         <div className='flex flex-col items-center'>
           <p className='font-manrope text-white text-[20px] max-sm:text-[18px] '>{getNftRecord.record?.nft_price} Matic</p>
-          <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Floor Price</p>
+          <p className='text-white text-opacity-50 text-[14px] font-manrope max-sm:text-[13px]'>Price</p>
         </div>
         <div className='bg-success-511 rounded-full p-2'>
         <Image src = '/icons/price-buy-col.svg' height={50} width={50} alt='icon'  /></div>
@@ -193,6 +198,10 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
 
 
   )
+} 
+catch(error){
+  return <div className='navbar-space '></div>;
+  }
 }
 
 export default NFTId;

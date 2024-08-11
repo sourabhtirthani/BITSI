@@ -231,7 +231,7 @@ const BitsiNft = () => {
           <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' />
           <div className='flex gap-4 2xl:mt-4 '>
             <Link href='/create-nft'><button className='bg-success-506 border-success-506 border-2 text-black font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Create NFT</button></Link>
-            <button className=' text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>View Insurance</button>
+            <Link href='/protection'><button className=' text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Protection</button></Link>
           </div>
             </div>
             <div className='-mt-2 max-2xl:-mt-12 max-xl:hidden '>

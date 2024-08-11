@@ -21,8 +21,8 @@ import {
  
 const currencies = [
   {
-    value: "Matic",
-    label: "Matic",
+    value: "MATIC",
+    label: "MATIC",
   },
   {
     value: "USDT",
@@ -32,7 +32,7 @@ const currencies = [
 
 const ComboBoxPriceCurency = ({setCurrency} : {setCurrency :React.Dispatch<React.SetStateAction<string>>}) => {
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState("Matic")
+    const [value, setValue] = React.useState("MATIC")
     return (
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
