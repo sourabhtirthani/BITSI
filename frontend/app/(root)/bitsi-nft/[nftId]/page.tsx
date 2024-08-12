@@ -31,7 +31,7 @@ const NFTId = async ({ params , searchParams }: { params: { nftId: string} , sea
           <div className='  md:w-1/2 p-8 max-lg:p-4 max-md:p-2 '>
           <div className='relative w-fit'>
             <Image src={getNftRecord.record?.nft_image || ''} height={546} width={604} alt='NFT IMAGE' className='md:h-[546px]' />
-            <div  className='absolute top-0 right-0  bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.05rem 0 0'}}><p className='text-white font-bold font-manrope text-[10px] p-1'>12423</p></div>
+            <div  className='absolute top-0 right-0  bg-gray-500  bg-opacity-35 w-fit h-fit' style={{borderRadius : '0 0.05rem 0 0' , padding : '8px 14px'}}><p className='text-white font-bold font-manrope text-[14px] '>12423</p></div>
             </div>
           </div>
           <div className='md:w-1/2  flex flex-col p-8 max-md:p-2 max-lg:p-4 '>

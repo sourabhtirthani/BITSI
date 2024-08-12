@@ -5,8 +5,9 @@ import Link from 'next/link';
 import MobileNav from './MobileNav';
 import DropdownNav from './DropdownNav';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount } from 'wagmi';
+import { useAccount , useSwitchChain } from 'wagmi';
 import { formatAddress } from '@/lib/utils';
+import {  polygonAmoy } from 'wagmi/chains'
 // import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
 // import { useToast } from './ui/use-toast';
 
@@ -14,11 +15,15 @@ import { formatAddress } from '@/lib/utils';
 
 const Navbar = () => {
   // const {toast} = useToast();
+  const { switchChain } = useSwitchChain()
   const {address , isConnected} = useAccount();
   const { open } = useWeb3Modal();
   const handleConnect = async () => {
     try {
       await open();
+
+      
+
     } catch (error) { 
       console.error('Failed to connect wallet:', error);
     }
@@ -28,6 +33,14 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(()=>{
+
+    if(isConnected){
+       switchChain({ chainId: polygonAmoy.id });
+    }
+
+  }, [isConnected , switchChain])
 
   // useEffect(()=>{
   //   const createUserWithAct = async ()=>{
