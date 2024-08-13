@@ -228,7 +228,11 @@ const BitsiNft = () => {
           </h1>
           <div className='flex justify-between'>
             <div className='flex 2xl:mt-4  flex-col gap-3'>
-          <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' />
+              <div className='flex gap-3 mb-6'>
+              <Link href="https://testnets.opensea.io/collection/bitsi-nft"><Image src='/icons/opensea_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              <Link href="https://testnet.rarible.com/collection/0xd2e148dba9af5e204ee33b6f962ded0bba78b95a/items"><Image src='/icons/rarible_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              </div>
+          {/* <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' /> */}
           <div className='flex gap-4 2xl:mt-4 '>
             <Link href='/create-nft'><button className='bg-success-506 border-success-506 border-2 text-black font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Create NFT</button></Link>
             <Link href='/protection'><button className=' text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Protection</button></Link>

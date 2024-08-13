@@ -320,41 +320,45 @@ export const upsertUserProfile = async (formData: FormData): Promise<upsertUserP
 type buyNFtType = {success : boolean}
 export const buyNft = async(address : string , nftId : number[]) : Promise<buyNFtType>=>{
   try{
-    const findNft = await db.nft.findMany({
-      where : {id : { in :nftId} }
-    });
-    if(!findNft){
-      throw new Error('NO NFts Found');
-    }else{
-      const notForSaleOrOwned = findNft.find(nft => !nft.up_for_sale || nft.nft_owner_address === address);
-      if(notForSaleOrOwned){
-        throw new Error("NFt thaat you are trying to buy is eitheralready sold or not for sale.");
-      }else{
-        for (const nft of findNft) {
-          const previousOwner = nft.nft_owner_address;
-          const nftPrice = nft.nft_price
-          await db.nft.update({
-            where: { id: nft.id },
-            data: { nft_owner_address: address, up_for_sale : false }
-          });
+    // const findNft = await db.nft.findMany({
+    //   where : {id : { in :nftId} }
+    // });
+    // if(!findNft){
+    //   throw new Error('NO NFts Found');
+    // }else{
+    //   const notForSaleOrOwned = findNft.find(nft => !nft.up_for_sale || nft.nft_owner_address === address);
+    //   if(notForSaleOrOwned){
+    //     throw new Error("NFt thaat you are trying to buy is eitheralready sold or not for sale.");
+    //   }else{
+    //     for (const nft of findNft) {
+    //       const previousOwner = nft.nft_owner_address;
+    //       const nftPrice = nft.nft_price
+    //       await db.nft.update({
+    //         where: { id: nft.id },
+    //         data: { nft_owner_address: address, up_for_sale : false }
+    //       });
 
-          await db.nft_events.create({
-            data: {
-              nft_event: 'buy',
-              nft_price: nftPrice,
-              from: previousOwner,
-              to: address,
-              time: new Date(),
-              nftId: nft.id
-            }
-          });
+    //       await db.nft_events.create({
+    //         data: {
+    //           nft_event: 'buy',
+    //           nft_price: nftPrice,
+    //           from: previousOwner,
+    //           to: address,
+    //           time: new Date(),
+    //           nftId: nft.id
+    //         }
+    //       });
         
-        }
-        revalidatePath('/bitsi-nft')
-        revalidatePath('my-profile')
-        return {success : true}
-      }
-    }
+    //     }
+    //     revalidatePath('/bitsi-nft')
+    //     revalidatePath('/my-profile')
+    //     return {success : true}
+    //   }
+    // }
+
+    revalidatePath('/bitsi-nft')
+    revalidatePath('/my-profile')
+    return {success : true}
   }catch(error){
     console.log(error);
     throw new Error('Error Buying Nfts')

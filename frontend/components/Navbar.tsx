@@ -7,7 +7,7 @@ import DropdownNav from './DropdownNav';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount , useSwitchChain } from 'wagmi';
 import { formatAddress } from '@/lib/utils';
-import {  polygonAmoy } from 'wagmi/chains'
+import {  polygonAmoy, sepolia } from 'wagmi/chains'
 // import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
 // import { useToast } from './ui/use-toast';
 
@@ -37,7 +37,7 @@ const Navbar = () => {
   useEffect(()=>{
 
     if(isConnected){
-       switchChain({ chainId: polygonAmoy.id });
+       switchChain({ chainId: sepolia.id });
     }
 
   }, [isConnected , switchChain])

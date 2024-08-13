@@ -15,8 +15,8 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-
-const chains = [  polygonAmoy] as const   
+console.log(`the chain id of sepolia is : ${sepolia.id}`)
+const chains = [  sepolia] as const   
 export const config = defaultWagmiConfig({
   chains,
   projectId,
