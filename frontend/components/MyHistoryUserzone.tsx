@@ -16,6 +16,7 @@ import LoaderComp from './LoaderComp';
 export default   function  MyHistoryUserzone({address , filterValue} : {address : string , filterValue : 'NFT' | 'Coins'}){
   const [eventDetails , setEventDetails] = useState<NftEventGet[]>([])
   const [loaderState , setLoaderState] = useState(true);
+  // const [nftIds , setNftIds] = useState([])
   useEffect(()=>{
     const getEventDetailsData = async()=>{
       try{

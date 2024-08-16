@@ -26,6 +26,7 @@ model Nft{
   is_insured           Boolean
   events               Nft_events[]
   collection           Collection @relation(fields: [nft_collection_id], references: [id])
+  insurance            Insurance?
 }
 
 model Nft_events {
@@ -64,4 +65,17 @@ model User {
   address       String?
   bio           String? 
   imgSrc        String? 
+}
+
+model Insurance {
+  id                    Int       @id @default(autoincrement())
+  coverage              Int       @default(100)
+  startTime             DateTime  @default(now())
+  expiration            DateTime
+  active                Boolean
+  approved              Boolean
+  soldValue             Float?
+  nftId                 Int       @unique
+  nft                   Nft       @relation(fields: [nftId], references: [id])
+  currentOwner          String?
 }

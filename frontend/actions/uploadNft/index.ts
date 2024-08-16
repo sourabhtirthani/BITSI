@@ -106,7 +106,7 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nft_mint_time: dateOfNft,
               is_admin_minted: adminMinted,
               nft_liked: 0,
-              is_insured: false,
+              is_insured: true,
             },
             select: {
               id: true,
@@ -122,6 +122,18 @@ export const uploadNftAction = async (formdata: FormData | null , nftImageUrl : 
               nftId : nft.id,
               
 
+            }
+          })
+          const expirationDate = new Date(dateOfNft);
+          expirationDate.setFullYear(dateOfNft.getFullYear() + 2);
+          await db.insurance.create({
+            data : {     
+              active : true,
+              approved : false,
+              startTime : dateOfNft,
+              expiration : expirationDate,
+              nftId : idOfNft,
+              currentOwner : address
             }
           })
           revalidatePath('/api/nfts');
