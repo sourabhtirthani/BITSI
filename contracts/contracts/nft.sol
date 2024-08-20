@@ -1,66 +1,88 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity 0.8.25;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
 interface INSURANCE  {
     function purchasePolicy(uint256 nftId, uint256 price) external  ;
 }
-
-contract BITSINFT is ERC721URIStorage, Ownable, ReentrancyGuard {
-    using Counters for Counters.Counter;
+contract BITSINFT is ERC721URIStorage, Ownable {
     INSURANCE public nftInsurance;
-    Counters.Counter private _tokenIds;
+    bool private isSaleStart=true;
     address public compensationWallet;
-    uint256 public mintingPrice;
     uint256 public feePercentageCompensationWallet = 3968; // 39.68% (with 2 decimals)
     uint256 public feePercentageOwnerWallet = 6032; // 60.32% (with 2 decimals)
-    mapping(bytes32 => bool) public usedSignatures;
-
-    event NFTMinted(address indexed minter, uint256 indexed tokenId);
-
-    constructor(
-        string memory name,
-        string memory symbol,
-        address _compensationWallet,
-        uint256 _mintingPrice,
-        address addInsurance
-    ) ERC721(name, symbol) Ownable (msg.sender){
+    constructor(string memory name,string memory symbol,address addInsurance, address _compensationWallet) ERC721(name, symbol) Ownable(msg.sender) {
         compensationWallet = _compensationWallet;
-        mintingPrice = _mintingPrice;
         nftInsurance=INSURANCE(addInsurance);
     }
 
-    function mint(
-        address to,
-        uint256[] calldata tokenIds,
-        string [] calldata tokenURIs,
-        uint256 price
-    ) external payable nonReentrant {
-        require(price == mintingPrice, "Incorrect price");
-        require(msg.value == price * tokenIds.length, "Incorrect payment amount");
-        // Mint the NFTs
-        for (uint256 i = 0; i < tokenIds.length; i++) {
-            _mint(to, tokenIds[i]);
-            _setTokenURI(tokenIds[i], tokenURIs[i]);
-            nftInsurance.purchasePolicy(tokenIds[i], msg.value/tokenIds.length);
-            emit NFTMinted(to, tokenIds[i]);
-        }
-
-        // Calculate and distribute fees
-        uint256 totalFee = msg.value;
-        uint256 feeForCompensation = (totalFee * feePercentageCompensationWallet) / 10000;
-        uint256 feeForOwner = (totalFee * feePercentageOwnerWallet) / 10000;
-
-        payable(compensationWallet).transfer(feeForCompensation);
-        payable(owner()).transfer(feeForOwner);
+    struct Collection {
+        uint256 id;
+        uint256 price;
     }
 
-    function setMintingPrice(uint256 _mintingPrice) external onlyOwner {
-        mintingPrice = _mintingPrice;
+    struct NFT {
+        uint256 id;
+        address owner;
+        uint256 price;
+        uint256 collectionId;
+    }
+    mapping(uint256 => Collection) public collections;
+    mapping(uint256 => bool) public collectionExists;
+    mapping (uint256=>NFT) public nfts;
+
+    // function for mint collections 
+    function mintCollection(uint256 collectionId, uint256 price) external  {
+        require(!collectionExists[collectionId], "Collection already exists");
+        collections[collectionId] = Collection(collectionId, price);
+        collectionExists[collectionId] = true;
+    }
+    
+    function mint(address to, uint256 collectionId, string memory tokenURI,uint256 tokenId ) external   {
+        // Check that collection exits or not 
+        require(collectionExists[collectionId], "Collection does not exist");
+        // Mint the NFT
+        _safeMint(to, tokenId);
+        _setTokenURI(tokenId, tokenURI);
+        nfts[tokenId].owner=to;
+        nfts[tokenId].price=collections[collectionId].price;
+        nfts[tokenId].id=tokenId;
+        nfts[tokenId].collectionId=collectionId;
+        nftInsurance.purchasePolicy(tokenId,collections[collectionId].price);
+    }
+
+    function toggleResell(bool _isResell) external onlyOwner{
+        isSaleStart=_isResell;
+    }
+
+    // New function to buy an NFT
+     function buyNFT(uint256[] calldata tokenIds, uint256[] calldata buyPrices) external payable {
+        require(isSaleStart, "Sale is not yet started");
+        require(tokenIds.length == buyPrices.length, "Token IDs and buy prices must match");
+
+        for (uint256 i = 0; i < tokenIds.length; i++) {
+            uint256 tokenId = tokenIds[i];
+            uint256 buyPrice = buyPrices[i];
+
+            require(ownerOf(tokenId) != msg.sender, "You cannot buy your own NFT");
+
+            address currentOwner = ownerOf(tokenId);
+            require(currentOwner==owner(),"only owner nfts can sell here");
+            uint256 collectionPrice = collections[nfts[tokenId].collectionId].price;
+            require(buyPrice >= collectionPrice, "Insufficient funds for admin-owned NFT");
+
+            uint256 feeForCompensation = (buyPrice * feePercentageCompensationWallet) / 10000;
+            uint256 feeForOwner = (buyPrice * feePercentageOwnerWallet) / 10000;
+
+            payable(compensationWallet).transfer(feeForCompensation);
+            payable(owner()).transfer(feeForOwner);
+            
+
+            _transfer(currentOwner, msg.sender, tokenId);
+            nfts[tokenId].owner=msg.sender;
+        }
     }
 
     function setCompensationWallet(address _compensationWallet) external onlyOwner {
