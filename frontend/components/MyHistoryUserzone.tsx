@@ -1,8 +1,9 @@
 'use client'
 import { tableMyHistory } from '@/constants'
-import { NftEventGet } from '@/types';
+import { NftEventGet, NftEventGetInsurace } from '@/types';
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
+import { number } from 'zod';
 // const getData = async(address : String) : Promise<NftEventGet[] | null>=>{
 //     try{
 //         const response = await fetch(`/api/events/nfts/${address}`);
@@ -14,7 +15,9 @@ import LoaderComp from './LoaderComp';
 //     }
 // }
 export default   function  MyHistoryUserzone({address , filterValue} : {address : string , filterValue : 'NFT' | 'Coins'}){
-  const [eventDetails , setEventDetails] = useState<NftEventGet[]>([])
+  // const [eventDetails , setEventDetails] = useState<NftEventGet[]>([])
+  const [eventDetailsInsurace , setEventDetailsInsurace] = useState<NftEventGetInsurace[]>([]);
+
   const [loaderState , setLoaderState] = useState(true);
   // const [nftIds , setNftIds] = useState([])
   useEffect(()=>{
@@ -23,7 +26,27 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
         if(address){
           const res = await fetch(`/api/events/nfts/${address}` , {method : "GET" , next : {revalidate : 0} , } ,  )
           const respos = await res.json();
-          setEventDetails(respos);
+          // setEventDetails(respos);
+          const uniqueNftIds = new Set(respos.map((item: any) => item.nftId));
+          const nftIdString = Array.from(uniqueNftIds).map(nftId => `nftId=${nftId}`).join(',');
+          const insuranceRes = await fetch(`/api/insurance/nfts/${nftIdString}` , {method : "GET" , next : {revalidate : 0} , } ,  )
+          const insuranceResponse = await insuranceRes.json();
+          const insuranceMap = new Map<number, any>(insuranceResponse.map((item: { nftId: number }) => [item.nftId, item]));
+
+          const combined = respos.map((event : any) => {
+         
+            const insurance = insuranceMap.get(event.nftId) || {};
+            console.log(insurance)
+            return {
+              ...event,
+              soldValue: insurance.soldValue || '-',
+              coverage: insurance.coverage || '-',
+              expiration: insurance.expiration || null,
+            };
+          });
+         
+          setEventDetailsInsurace(combined)
+        
         }
           setLoaderState(false)
       }catch(error){
@@ -73,7 +96,7 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
      
       <tbody className='overflow-y-auto '>
         
-        {loaderState == false && eventDetails && eventDetails.length > 0 && Array.isArray(eventDetails) && eventDetails.map((item, index) => {
+        {loaderState == false && eventDetailsInsurace && eventDetailsInsurace.length > 0 && Array.isArray(eventDetailsInsurace) && eventDetailsInsurace.map((item, index) => {
           return (
             <React.Fragment key={index}>
               <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -82,9 +105,9 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
                 <td className='p-2 max-sm:p-1'>{item.nftId}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft_event}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft_price} Matic</td>
-                <td className='p-2 max-sm:p-1'>-</td>
-                <td className='p-2 max-sm:p-1'>-</td>
-                <td className='p-2 max-sm:p-1'>-</td>
+                <td className='p-2 max-sm:p-1'>{ new Date(item.expiration) > new Date() ? 'Yes' : 'No'}</td>
+                <td className='p-2 max-sm:p-1'>{item.coverage}</td>
+                <td className='p-2 max-sm:p-1'>{item.expiration && new Date(item.expiration).toDateString() || '-'}</td>
                 {/* <td className='p-2 max-sm:p-1'>{item.Compensation}</td> */}
                
                 {/* <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/> */}

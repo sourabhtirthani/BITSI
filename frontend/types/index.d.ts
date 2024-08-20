@@ -32,7 +32,29 @@ declare interface NftEventGet {
     to: string;
     time: Date;
     nftId: number;
+   
   }
+
+  declare interface NftEventGetInsurace {
+    id: number;
+    nft_event: string;
+    nft_price: number;
+    from: string;
+    to: string;
+    time: Date;
+    nftId: number;
+    expiration : Date;
+    soldValue : any;
+    coverage : any;
+  }
+
+//  declare interface InsuranceDetail {
+//     id : number;
+//     nftId: number;
+//     soldValue?: string;
+//     coverage?: string;
+//     expiration?: string;
+//   }
 
 declare interface DropdownProps {
     id: number;

@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import db from "@/db";
 
-export async function GET(request : Request, context :  {params : { userAddress: string}}){
+export async function GET(request : Request, context :  {params : { nftIds: string}}){
 try{
     const  {params} = context;
-    if(!params.userAddress){
+    if(!params.nftIds){
         return NextResponse.json({error : 'No address Provided'}, {status : 400})
     }
+
+    const nftIdArray = params.nftIds.split(',');
+    const nftIdNumbers = nftIdArray.map(item => Number(item.split('=')[1]));
+  
     const insurances = await db.insurance.findMany({
         where : {
-            currentOwner :{ equals: params.userAddress}
+            nftId :{  in: nftIdNumbers,}
         },
     })
     if(!insurances){
