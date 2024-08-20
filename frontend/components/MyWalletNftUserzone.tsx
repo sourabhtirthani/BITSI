@@ -1,10 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
-import { MyWalletNftUserZone } from '@/types';
+import { MyWalletNftUserZone, MyWalletNftUserZoneWithInsurace } from '@/types';
 
 const MyWalletNftUserzone = ({address} : {address : string}) => {
     const [dataOfNft , setDataofNft] = useState<MyWalletNftUserZone[]>([]);
+    const [dataOfNftWithInsurance , setDataofNftWithInsurace] = useState<MyWalletNftUserZoneWithInsurace[]>([]);
     const [loaderState , setLoaderState] = useState(true);
     useEffect(()=>{
         const getNftsOFUserData = async()=>{
@@ -12,7 +13,26 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                 if(address){
                 const res = await fetch(`/api/nfts/user/${address}`)
                 const nftRes = await res.json();
-                setDataofNft(nftRes);
+                // setDataofNft(nftRes);
+                const uniqueNftIds = new Set(nftRes.map((item: any) => item.id));
+          const nftIdString = Array.from(uniqueNftIds).map(id => `nftId=${id}`).join(',');
+          const insuranceRes = await fetch(`/api/insurance/nfts/${nftIdString}` , {method : "GET" , next : {revalidate : 0} , } ,  )
+          const insuranceResponse = await insuranceRes.json();
+          const insuranceMap = new Map<number, any>(insuranceResponse.map((item: { nftId: number }) => [item.nftId, item]));
+
+          const combined = nftRes.map((event : any) => {
+         
+            const insurance = insuranceMap.get(event.id) || {};
+            // console.log(insurance)
+            return {
+              ...event,
+              soldValue: insurance.soldValue || '-',
+              coverage: insurance.coverage || '-',
+              expiration: insurance.expiration || null,
+            };
+          });
+         
+          setDataofNftWithInsurace(combined)
             }
             setLoaderState(false)
             }catch(error){
@@ -36,7 +56,7 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
-                {dataOfNft.map((item, index) => {
+                {dataOfNftWithInsurance && dataOfNftWithInsurance.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
                       <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -45,9 +65,9 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>BITSI</td>
                         <td className='p-2 max-sm:p-1'>{item.id}</td>
                         <td className='p-2 max-sm:p-1'>{item.nft_price}</td>
-                        <td className='p-2 max-sm:p-1'>{item.is_insured == false ? '-' : 'YES'}</td>
-                        <td className='p-2 max-sm:p-1'>-</td>
-                        <td className='p-2 max-sm:p-1'>-</td>
+                        <td className='p-2 max-sm:p-1'>{new Date(item.expiration) > new Date() ? 'Yes' : 'No'}</td>
+                        <td className='p-2 max-sm:p-1'>{item.coverage}</td>
+                        <td className='p-2 max-sm:p-1'>{item.expiration && new Date(item.expiration).toDateString() || '-'}</td>
                         {/* <td>
                         <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>
