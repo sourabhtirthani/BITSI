@@ -4,6 +4,7 @@ import db from "@/db";
 export async function GET(request : Request, context :  {params : { nftIds: string}}){
 try{
     const  {params} = context;
+    console.log('in the nftIds function')
     if(!params.nftIds){
         return NextResponse.json({error : 'No address Provided'}, {status : 400})
     }

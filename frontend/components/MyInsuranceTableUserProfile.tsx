@@ -2,6 +2,7 @@
 import { purchaseDropDownItem, tableMyInsuraceCoin, tableMyInsurance } from '@/constants'
 import React, { useState } from 'react'
 import DropdownBitsiNFt from './DropDownBitsiNft'
+import MyInsuranceTableClaim from './MyInsuranceTableClaim'
 
 const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => {
   const [insuraceFilter , setInsuranceFilter] = useState('')
@@ -11,7 +12,8 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
       <p className='text-success-511  px-3   text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
       <DropdownBitsiNFt  itemsPurchase={purchaseDropDownItem} setInsuraceFilter={setInsuranceFilter} itemsClaim={purchaseDropDownItem} itemsExtend={purchaseDropDownItem} itemsUpgrade={purchaseDropDownItem} itemsUnlock={purchaseDropDownItem} />
     </div>
-    <div className='max-h-[700px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
+    {filterValue == 'Claim' && <MyInsuranceTableClaim />}
+    {/* <div className='max-h-[700px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
       <table className='w-full text-left mt-4 border-spacing-20'>
         <thead className='text-success-502  text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline mb-10 '>
           <tr>
@@ -23,11 +25,11 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
             <th className='p-2 max-sm:p-1 overflow-hidden'>Insured</th>
             <th className='p-2 max-sm:p-1 overflow-hidden'>Insurance&nbsp;Coverage</th>
             <th className='p-2 max-sm:p-1 overflow-hidden '>Insurance&nbsp;Expiry</th>
-            {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th> */}
+         
           </tr>
         </thead>
         <tbody className='overflow-y-auto '>
-            {/* <p className='font-montserrat text-white mb-8 mt-8 font-bold text-[12px]'>Uninsured NFTs <span>({tableMyInsurance.length})</span></p> */}
+            
           {tableMyInsurance.map((item, index) => {
             return (
               <React.Fragment key={index}>
@@ -40,9 +42,7 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
                   <td className='p-2 max-sm:p-1'>{item.insured}</td>
                   <td className='p-2 max-sm:p-1'>{item.insuranceCOverage}</td>
                   <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                  {/* <td className='p-2 max-sm:p-1'>{item.Compensation}</td> */}
                  
-                  {/* <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/> */}
                 </tr>
                 <tr>
                   <td  className='h-5'></td>
@@ -52,7 +52,7 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
           })}
         </tbody>
       </table>
-    </div>
+    </div> */}
     </>
   )
 }

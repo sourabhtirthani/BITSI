@@ -65,6 +65,18 @@ declare interface NftEventGet {
 //     expiration?: string;
 //   }
 
+declare interface CompensationDetails {
+    id: number;
+    requestDate: Date;
+    loss: number;
+    lossPercent: number;
+    compensationAmount: number;
+    userAddress: string;
+    insuranceId: number;
+    assetId: number;
+    Status: string;
+}
+
 declare interface DropdownProps {
     id: number;
     name: string;

@@ -78,4 +78,19 @@ model Insurance {
   nftId                 Int       @unique
   nft                   Nft       @relation(fields: [nftId], references: [id])
   currentOwner          String?
+  compensation          Compensation[]
+}
+
+
+model Compensation {
+  id                     Int       @id @default(autoincrement())
+  requestDate            DateTime  @default(now())
+  loss                   Float
+  lossPercent            Float
+  compensationAmount     Float
+  userAdress             String
+  insuranceId            Int       @unique
+  insurance              Insurance @relation(fields: [insuranceId], references: [id])
+  assetId                Int
+  Status                 String
 }

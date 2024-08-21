@@ -513,3 +513,100 @@ export const getAllNfts = async() : Promise<nftData[]>=>{
 //     throw new Error('error in user events')
 //   }
 // }
+
+type generateCompensationType = {success : boolean} | {error : string}
+export const generateCompensation = async(formdata: FormData) : Promise<generateCompensationType> =>{
+  try{
+    const nftId = formdata.get('nftId') as string;
+    const userAddress = formdata.get('address')as string;
+    const eventId = formdata.get('eventId') as string;
+
+    if(!userAddress || !nftId || !eventId){
+      return {error : 'Insufficient details provided'}
+    }
+    const insuranceOfAsset = await db.insurance.findUnique({
+      where:{nftId : Number(nftId)},
+      select:{
+        id : true,
+        expiration : true
+      }
+    });
+    if(!insuranceOfAsset){
+      return {error : 'Asset Not Insured'};
+    }
+    const currentDate = new Date();
+    if(new Date(insuranceOfAsset.expiration) < currentDate ){
+      return {error : "Insurance has Expired"};
+    }
+    const checkForCompensationAlreadtClaimed = await db.compensation.findFirst({
+      where :{
+        userAdress : userAddress,
+        assetId : Number(nftId),
+        insuranceId : insuranceOfAsset.id
+      } ,
+      select : {
+        Status : true,
+        id : true
+      }
+    });
+    if(checkForCompensationAlreadtClaimed){
+      if(checkForCompensationAlreadtClaimed.Status == 'Pending'){
+        return {error : 'Please wait for the claim to be approved'};
+      }else{
+        return {error : 'You cannot claim compensation for asset twice'};
+      }
+    }
+    const latestBuyEvent = await db.nft_events.findFirst({
+      where: {
+        nft_event: 'buy',
+        to: userAddress,
+        nftId : Number(nftId)
+      },
+      orderBy: {
+        time: 'desc',
+      },
+    });
+   
+    if(!latestBuyEvent){
+      console.log("no latest event found");
+      return {error : 'Unable to fetch the details of when you bought the nft'};
+    }
+    const soldEvent = await db.nft_events.findUnique({
+      where:{
+        id : Number(eventId)
+      }
+    })
+    if(!soldEvent){
+      console.log('no event found')
+      return {error :'unable to fetch the details of the sold event'};
+    }
+    console.log(latestBuyEvent.nft_price - soldEvent.nft_price);
+    const lossAmount = Number((latestBuyEvent.nft_price - soldEvent.nft_price).toFixed(2));
+    if(latestBuyEvent.nft_price - soldEvent.nft_price < 0){
+      return {error :'Cannot claim compensation when there is no loss'}
+    }
+    const lossAmountWithoutFixed = Number((latestBuyEvent.nft_price - soldEvent.nft_price))
+    const lossPercentage = Number((((latestBuyEvent.nft_price- soldEvent.nft_price)/latestBuyEvent.nft_price) * 100).toFixed(2));
+    if(lossPercentage < 10){
+      return {error : 'Cannot Claim compensation when loss percent is less than 10'}
+    }
+    console.log(`loss percenteage is : ${lossPercentage}`)
+    const eightyPercentOfLoss = Number((lossAmountWithoutFixed * 0.80).toFixed(4));
+    await db.compensation.create({
+      data:{
+        loss : lossAmount,
+        assetId : Number(nftId),
+        lossPercent : lossPercentage,
+        compensationAmount : eightyPercentOfLoss,
+        userAdress : userAddress,
+        insuranceId : insuranceOfAsset.id,
+        Status : 'Pending'
+      }
+    })
+    return {success : true};
+  }catch(error){
+    console.log(error)
+    throw new Error('Error occured')
+    
+  }
+}
