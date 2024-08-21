@@ -29,7 +29,7 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
       <thead className='text-success-502 font-semibold font-montserrat text-[22px] max-sm:text-[10px]   '>
         <tr>
           <th className='p-2  max-sm:p-1'>Request&nbsp;Date</th>
-          <th className='p-2 max-sm:p-1' >Asset</th>
+          <th className='p-2 max-sm:p-1' >AssetId</th>
           <th className='p-2 max-sm:p-1'>Status</th>
           <th className='p-2 max-sm:p-1'>Loss Percentage</th>
           <th className='p-2 max-sm:p-1'>Compensation Amount </th>
@@ -41,7 +41,7 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
             <React.Fragment key={index}>
               <tr className='bg-success-512 h-12 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                 <td className='p-2 py-5 max-sm:p-1'>{new Date(item.requestDate).toDateString()}</td>
-                <td className='p-2 max-sm:p-1'>NFT</td>
+                <td className='p-2 max-sm:p-1'>{item.assetId}</td>
                 <td className='p-2 max-sm:p-1'>{item.Status}</td>
                 <td className='p-2 max-sm:p-1'>{item.lossPercent}%</td>
                 <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
