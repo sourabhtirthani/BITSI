@@ -1,10 +1,39 @@
 'use client'
+import { AdminDialogPayCompensationConfirm } from '@/components/AdminDialogPayCompensationConfirm'
 import { tableAdminCompensation } from '@/constants'
+import { CompensationDetails } from '@/types'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useToast } from "@/components/ui/use-toast"
+import LoaderComp from '@/components/LoaderComp'
+import { formatAddress, formatAddressUserZone } from '@/lib/utils'
 
 const Compensation = () => {
+  const { toast } = useToast()
     const [searchValue , setSearchValue] = useState('')
+    const [loaderState ,setLoaderState] = useState(true);
+    const [compensationDetails , setCompensationDetails] = useState<CompensationDetails[]>([]);
+    useEffect(()=>{
+      const getAllCompensation = async()=>{
+        try{
+        const res = await fetch(`/api/admin/compensation`, { method: "GET", next: { revalidate: 0 }, },)
+        const compensation = await res.json();
+        console.log(compensation)
+        setCompensationDetails(compensation);
+        console.log(compensationDetails)
+        }catch(error){
+          console.log(error)
+          toast({ title: "Fetching error", description: "Error fetching all compensation details", duration: 2000,
+            style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',
+            },
+          })
+        }finally{
+          setLoaderState(false);
+        }
+      }
+      getAllCompensation();
+    }, [])
+
     const handleSearchClick = ()=>{
         console.log('serach button clicked')
     }
@@ -26,29 +55,36 @@ const Compensation = () => {
       </div>
       </div>
       </div>
-       <div className='max-h-[500px]  px-8 max-md:px-4 overflow-x-scroll max-xl:table-body xl:scrollbar-none overflow-y-auto mb-20 table-body'>
+       <div className='max-h-[500px]  px-8 max-md:px-4 overflow-x-auto max-xl:table-body scrollbar-none overflow-y-auto mb-20 table-body'>
         <table className='w-full text-left mt-4 border-spacing-20'>
-          <thead className='text-success-502 text-center bg-success-511 font-semibold font-manrope text-[22px] max-sm:text-[10px]   '>
+          <thead className='text-success-502 overflow-x-auto text-center bg-success-511 font-semibold font-manrope text-[22px] max-sm:text-[10px]   '>
             <tr>
-              <th className='p-2 max-sm:p-1'>Date</th>
+              <th className='p-2 max-sm:p-1'>Request&nbsp;Date</th>
               <th className='p-2 max-sm:p-1' >UserName</th>
               <th className='p-2 max-sm:p-1'>Loss</th>
+              <th className='p-2 max-sm:p-1'>Loss%</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Compensation Amount</th>
+              <th className='p-2 max-sm:p-1 overflow-hidden'>Compensate</th>
             </tr>
           </thead>
           <tbody className='overflow-y-auto '>
            
-            {tableAdminCompensation.map((item, index) => {
+            {loaderState == false && compensationDetails.map((item, index) => {
               return (
                 <React.Fragment key={index}>
                     
                   <tr className=' w-full  text-white text-center font-montserrat text-[18px] max-sm:text-[8px] font-semibold'>
-                    <td className='p-2 max-sm:p-1'>{item.date}</td>
-                    <td className='p-2 max-sm:p-1'>{item.username}</td>
+                    <td className='p-2 max-sm:p-1'>{new Date(item.requestDate).toDateString()}</td>
+                    <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.userAdress as string)}</td>
                     <td className='p-2 max-sm:p-1'>{item.loss}</td>
+                    <td className='p-2 max-sm:p-1'>{item.lossPercent}</td>
                     <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
+                    <td className='p-2 max-sm:p-1'><AdminDialogPayCompensationConfirm userAddress={item.userAdress} amount={item.loss} /></td>
+                    
                   </tr>
                   <tr>
+                    <td  className='h-4 '><hr /></td>
+                    <td  className='h-4 '><hr /></td>
                     <td  className='h-4 '><hr /></td>
                     <td  className='h-4 '><hr /></td>
                     <td  className='h-4 '><hr /></td>
@@ -62,6 +98,7 @@ const Compensation = () => {
 
         </table>
       </div>
+        {loaderState == true && <LoaderComp />}
       
 </div>
   )

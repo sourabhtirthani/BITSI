@@ -71,7 +71,7 @@ declare interface CompensationDetails {
     loss: number;
     lossPercent: number;
     compensationAmount: number;
-    userAddress: string;
+    userAdress: string;
     insuranceId: number;
     assetId: number;
     Status: string;
