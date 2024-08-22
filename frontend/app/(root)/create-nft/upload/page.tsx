@@ -18,7 +18,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { generateMetadata } from '@/lib/generateMetadata'
-import { useAccount, useWriteContract, } from 'wagmi'
+import { useAccount, useWriteContract, useBalance} from 'wagmi'
 import { type UseWriteContractParameters } from 'wagmi'
 // import { ClipLoader } from 'react-spinners';
 
@@ -40,6 +40,7 @@ const UploadNFt = () => {
   //   resolver: zodResolver(uploadNftformSchema)
   // });
   const { address } = useAccount();
+  const { data: balance} = useBalance({address : address});
   // const web3 = new Web3(window?.ethereum);
   const { push } = useRouter();
   const { toast } = useToast()
@@ -350,7 +351,7 @@ const UploadNFt = () => {
               <div className='flex justify-between  max-sm:flex-col sm:mb-0 gap-2  '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Name Of Your NFT</FormLabel>
-                  <input  id='name' name='name' minLength={4} maxLength={15} type='text' placeholder='eg-cratoNFT' className='p-3 block w-full  rounded' />
+                  <input  id='name' name='name' minLength={4} maxLength={25} type='text' placeholder='eg-cratoNFT' className='p-3 block w-full  rounded' />
                   {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>}
                 </FormRow>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
@@ -394,23 +395,23 @@ const UploadNFt = () => {
       </section>
 
       {showCheckout && (
-        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50'>
-          <div className=' z-50 flex justify-center items-center sm:max-w-[425px] bg-white p-5 max-sm:p-3'>
-            <div className='flex flex-col gap-3'>
+        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 '>
+          <div className=' z-50 flex justify-center items-center sm:max-w-[425px] bg-white p-5 max-sm:p-3 '>
+            <div className='flex flex-col gap-3 min-w-[325px]'>
               <div className='flex justify-between'>
                 <p className="text-black font-montserrat  font-bold">Checkout</p>
                 <Image src='/icons/cross-icons.svg' height={25} width={25} alt='remove' onClick={() => { setShowCheckout(false) }} />
               </div>
               <p className="font-semibold text-black font-montserrat ">Selected Item:</p>
               <div className="flex items-center p-3 border-2 border-success-511 gap-3">
-                <Image src='/icons/nft-desc.png' height={63.48} width={70} alt="nft image" />
+                <Image src={preview} height={63.48} width={70} alt="nft image" />
                 <div className="flex flex-col gap-2">
-                  <p className="text-black font-manrope font-bold text-[22px]">Minions Serious Eye</p>
+                  <p className="text-black font-manrope font-bold text-[22px]">{formData1 != null && formData1.get('name') as string}</p>
                   <div className="flex">
-                    <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p>
-                    <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">35%&nbsp;</p>
+                    {/* <p className="text-black text-[12px] font-montserrat font-semibold">Royality&nbsp;</p> */}
+                    {/* <p className=" bg-nft-text-gradient bg-clip-text text-transparent text-[12px] font-montserrat font-semibold">35%&nbsp;</p> */}
                     <p className="text-black text-[12px] font-montserrat font-semibold">Collection&nbsp;</p>
-                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">Luxury</p>
+                    <p className="bg-nft-text-gradient bg-clip-text text-transparent text-nft-text-gradient text-[12px] font-montserrat font-semibold">{collection}</p>
                   </div>
                 </div>
               </div>
@@ -423,19 +424,19 @@ const UploadNFt = () => {
               <div className="flex flex-col border-2 border-success-511 p-4 gap-5">
                 <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">Your Balance</p>
-                  <p className="text-black font-montserrat font-semibold">0.55 Matic</p>
+                  <p className="text-black font-montserrat font-semibold">{balance ? `${balance.formatted.slice(0,4)} ${balance.symbol}` : 'N/A'}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">NFT Price</p>
-                  <p className="text-black font-montserrat font-semibold">0.9 Matic</p>
+                  <p className="text-black font-montserrat font-semibold">{`${formData1 != null && formData1.get('price') as string} ${balance?.symbol}`}</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">Insurance Price</p>
-                  <p className="text-black font-montserrat font-semibold">1.02 Matic</p>
+                  <p className="text-black font-montserrat font-semibold">------</p>
                 </div>
                 <div className="flex justify-between">
                   <p className="text-black font-montserrat font-semibold">Total Price</p>
-                  <p className="text-black font-montserrat font-semibold">1.11 Matic</p>
+                  <p className="text-black font-montserrat font-semibold">{`${formData1 != null && formData1.get('price') as string} ${balance?.symbol}`}</p>
                 </div>
                 <div className="self-center w-full">
                   <button onClick={handleMintNft} disabled={isLoading} className={` ${isLoading ? ' bg-gray-300 w-full flex justify-center' : 'bg-nft-text-gradient'} font-montserrat text-white font bold w-full py-4  text-[22px]  font-bold rounded-xl `}>{isLoading ? <div className="spinner mr-2 "></div> : 'Buy'}</button>

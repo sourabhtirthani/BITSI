@@ -26,7 +26,7 @@ const Footerr = () => {
             <p className='text-yellow-300 md:mb-5 font-bold  font-manrope text-[20px]'>Services</p>
           <Link href='/bitsi-nft' className='font-poppins text-white text-[16px]'>BITSI NFT</Link>
           <Link href='/bitsi-coin' className='font-poppins text-white text-[16px]'>BITSI COIN</Link>
-          <Link href='/insurance' className='font-poppins text-white text-[16px]'>INSURANCE</Link>
+          <Link href='/protection' className='font-poppins text-white text-[16px]'>PROTECTION</Link>
             </div>
 
             <div className='flex flex-col gap-2 mt-8 ' >
