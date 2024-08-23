@@ -3,6 +3,7 @@ import FooterAdmin from "@/components/FooterAdmin";
 import Footerr from "@/components/Footerr";
 import Sidebar from "@/components/Sidebar";
 import SidebarAdminMob from "@/components/SidebarAdminMob";
+import { Toaster } from "@/components/ui/toaster"
 
 export default function RootLayout({
     children,
@@ -18,6 +19,7 @@ export default function RootLayout({
         </div>
           {children}
       </div>
+      <Toaster  />
       <FooterAdmin />
       </div>
       

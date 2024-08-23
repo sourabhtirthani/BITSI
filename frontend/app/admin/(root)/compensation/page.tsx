@@ -7,9 +7,12 @@ import React, { useEffect, useState } from 'react'
 import { useToast } from "@/components/ui/use-toast"
 import LoaderComp from '@/components/LoaderComp'
 import { formatAddress, formatAddressUserZone } from '@/lib/utils'
+import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel'
+
 
 const Compensation = () => {
   const { toast } = useToast()
+  
     const [searchValue , setSearchValue] = useState('')
     const [loaderState ,setLoaderState] = useState(true);
     const [compensationDetails , setCompensationDetails] = useState<CompensationDetails[]>([]);
@@ -42,7 +45,8 @@ const Compensation = () => {
       
     <div className='flex justify-between max-xl:justify-start max-xl:gap-4 items-center'>
         <p className='font-manrope font-bold text-[18px] text-success-511'>Views & Analysis </p>
-        <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button>
+        {/* <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button> */}
+        <AdminAdressButtonForAdminPanel />
     </div>
   <div className='flex max-md:flex-col  gap-10'>
     <div className='flex justify-between max-w-screen'>
@@ -61,7 +65,7 @@ const Compensation = () => {
             <tr>
               <th className='p-2 max-sm:p-1'>Request&nbsp;Date</th>
               <th className='p-2 max-sm:p-1' >UserName</th>
-              <th className='p-2 max-sm:p-1'>Loss</th>
+              {/* <th className='p-2 max-sm:p-1'>Loss</th> */}
               <th className='p-2 max-sm:p-1'>Loss%</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Compensation Amount</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Compensate</th>
@@ -76,10 +80,10 @@ const Compensation = () => {
                   <tr className=' w-full  text-white text-center font-montserrat text-[18px] max-sm:text-[8px] font-semibold'>
                     <td className='p-2 max-sm:p-1'>{new Date(item.requestDate).toDateString()}</td>
                     <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.userAdress as string)}</td>
-                    <td className='p-2 max-sm:p-1'>{item.loss}</td>
+                    {/* <td className='p-2 max-sm:p-1'>{item.loss}</td> */}
                     <td className='p-2 max-sm:p-1'>{item.lossPercent}</td>
                     <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
-                    <td className='p-2 max-sm:p-1'><AdminDialogPayCompensationConfirm userAddress={item.userAdress} amount={item.loss} /></td>
+                    <td className='p-2 max-sm:p-1'><AdminDialogPayCompensationConfirm userAddress={item.userAdress} amount={item.compensationAmount} idOfNft = {item.assetId} compensationId={item.id} /></td>
                     
                   </tr>
                   <tr>

@@ -581,11 +581,11 @@ export const generateCompensation = async(formdata: FormData) : Promise<generate
       return {error :'unable to fetch the details of the sold event'};
     }
     console.log(latestBuyEvent.nft_price - soldEvent.nft_price);
-    const lossAmount = Number((latestBuyEvent.nft_price - soldEvent.nft_price).toFixed(2));
+    const lossAmount = (latestBuyEvent.nft_price - soldEvent.nft_price);
     if(latestBuyEvent.nft_price - soldEvent.nft_price < 0){
       return {error :'Cannot claim compensation when there is no loss'}
     }
-    const lossAmountWithoutFixed = Number((latestBuyEvent.nft_price - soldEvent.nft_price))
+    const lossAmountWithoutFixed = latestBuyEvent.nft_price - soldEvent.nft_price;
     const lossPercentage = Number((((latestBuyEvent.nft_price- soldEvent.nft_price)/latestBuyEvent.nft_price) * 100).toFixed(2));
     if(lossPercentage < 10){
       return {error : 'Cannot Claim compensation when loss percent is less than 10'}
@@ -608,5 +608,40 @@ export const generateCompensation = async(formdata: FormData) : Promise<generate
     console.log(error)
     throw new Error('Error occured')
     
+  }
+}
+
+type compensateUserType = {success : boolean}
+export const compensateUser = async(idOfCompensation : number ) : Promise<compensateUserType>=>{
+  try{
+    console.log('in the function of compensate user')
+    if(!idOfCompensation){
+      throw new Error('No Id Provided')
+    }
+    const updatedCompensation = await db.compensation.update({
+      where: { id: idOfCompensation },
+      data: { Status: 'Confirmed' },
+    });
+    revalidatePath('/admin/compensation')
+    return {success : true}
+  }catch(error){
+    console.log(error);
+    throw new Error('Error occured')
+  }
+}
+type declineCompensationType = {success : boolean}
+export const declineCompensation = async (idOfCompensation : number ) : Promise<declineCompensationType> =>{
+  try{
+    if(!idOfCompensation){
+      throw new Error('No Id Provided')
+    }
+    const updatedCompensation = await db.compensation.update({
+      where: { id: idOfCompensation },
+      data: { Status: 'Declined' },
+    });
+    revalidatePath('/admin/compensation')
+    return {success : true}
+  }catch(error){
+    throw new Error('Error Occured')
   }
 }

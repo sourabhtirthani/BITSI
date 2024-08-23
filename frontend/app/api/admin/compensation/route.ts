@@ -10,7 +10,7 @@ try{
       });
       
    
-      console.log(compensation)
+     
         return NextResponse.json(compensation, { status: 200 });
 }catch(error){
     return NextResponse.json({ error : 'Internal server error' }, { status: 500 })

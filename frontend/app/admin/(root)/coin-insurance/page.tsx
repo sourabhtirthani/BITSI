@@ -1,4 +1,5 @@
 'use client'
+import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel';
 import Image from 'next/image'
 import React, { useState } from 'react'
 
@@ -21,7 +22,8 @@ const CoinInsurance = () => {
         <p className='font-manrope font-bold text-[24px] text-success-511'>Coin Insurace Parameters</p>
         <p className='text-white text-opacity-50 font-bold font-manrope text-[18px]'>Manage your Coin Insurance here</p>
         </div>
-        <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button>
+        {/* <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button> */}
+        <AdminAdressButtonForAdminPanel />
     </div>
         <div className='flex flex-col mt-4 gap-10 w-3/4'>
             <div className='flex flex-col gap-3'>
