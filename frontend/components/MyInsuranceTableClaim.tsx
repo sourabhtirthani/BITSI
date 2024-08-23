@@ -14,7 +14,7 @@ const MyInsuranceTableClaim = () => {
   const [loaderState, setLoaderState] = useState(true);
 
   const [eventDetailsInsurace, setEventDetailsInsurace] = useState<NftEventGetInsurace[]>([]);
-
+  useEffect(() => {
   const getEventDetailsData = async () => {
     try {
       if (address) {
@@ -51,7 +51,7 @@ const MyInsuranceTableClaim = () => {
       setLoaderState(false)
     }
   }
-  useEffect(() => {
+  
     getEventDetailsData()
   }, [address])
 
