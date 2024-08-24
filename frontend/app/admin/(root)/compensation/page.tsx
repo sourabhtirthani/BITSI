@@ -42,17 +42,7 @@ const Compensation = () => {
         console.log('serach button clicked')
     }
 
-    const handleMailsend = async()=>{
-      // {userMail , claimStatus , assetId , userName
-      const sendMail = await sendClaimAcceptRejectEmail('kalanishivam@gmail.com' , 'Confirmed' , 5222 , 'kalanishivam');
-      if(sendMail.success == true){
-        console.log('succes is true')
-      }else if(sendMail.succes == false){
-        console.log("success is false")
-      }else{
-        console.log("nothing to print my ")
-      }
-    }
+   
   return (
     <div className='bg-success-503 w-full   flex flex-col gap-12 p-8 max-md:p-4'>
       
@@ -97,7 +87,7 @@ const Compensation = () => {
                     <td className='p-2 max-sm:p-1'>{item.lossPercent}</td>
                     <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
                     <td className='p-2 max-sm:p-1'><AdminDialogPayCompensationConfirm userAddress={item.userAdress} amount={item.compensationAmount} idOfNft = {item.assetId} compensationId={item.id} /></td>
-                    <td ><button onClick={handleMailsend}>sendemial</button></td>
+                  
                   </tr>
                   <tr>
                     <td  className='h-4 '><hr /></td>
