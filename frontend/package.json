@@ -55,6 +55,7 @@
     "react-dropzone": "^14.2.3",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.52.0",
+    "resend": "^4.0.0",
     "sharp": "^0.33.4",
     "siwe": "^2.3.2",
     "stream": "^0.0.3",

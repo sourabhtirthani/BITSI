@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label"
 
 import { useWriteContract , useAccount } from 'wagmi'
 import { useToast } from "@/components/ui/use-toast"
-import { compensateUser, declineCompensation } from "@/actions/uploadNft"
+import { compensateUser, declineCompensation, userCompensateMailSend } from "@/actions/uploadNft"
 import { insuraceContractAddress, insuranceContractABI } from "@/lib/insuranceContract"
 import { useState } from "react"
  
@@ -54,6 +54,11 @@ export function AdminDialogPayCompensationConfirm({amount , userAddress , idOfNf
        if(res.success){
         toast({title: "Operation Success",description: "Successfully Compensated the user",duration: 2000,
           style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+          const sendMailForSuccess = await userCompensateMailSend(idOfNft, 'Confirmed', userAddress)
+          if(sendMailForSuccess.success == true){
+           toast({title: "User Notifed",description: "User is notified about the compensation",duration: 2000,
+             style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+          }
        }
       }
       setOpen(false)
@@ -87,6 +92,11 @@ export function AdminDialogPayCompensationConfirm({amount , userAddress , idOfNf
         if(res.success){
           toast({title: "Operation Success",description: "Successfully declined Compensation for the user",duration: 2000,
             style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+            const sendMailForSuccess = await userCompensateMailSend(idOfNft, 'Declined', userAddress)
+          if(sendMailForSuccess.success == true){
+           toast({title: "User Notifed",description: "User is notified about the compensation",duration: 2000,
+             style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+          }
          }
       }catch(error){
         console.log(error);
