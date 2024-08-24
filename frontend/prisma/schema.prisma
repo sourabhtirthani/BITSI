@@ -93,4 +93,5 @@ model Compensation {
   insurance              Insurance @relation(fields: [insuranceId], references: [id])
   assetId                Int
   Status                 String
+  claimed                Boolean   @default(false)
 }

@@ -10,7 +10,8 @@ try{
     }
     const events = await db.compensation.findMany({
         where: {
-          userAdress : params.userAddress
+          userAdress : params.userAddress,
+          claimed : false
         },
       });
     if(!events){

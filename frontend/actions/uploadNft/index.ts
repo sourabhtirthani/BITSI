@@ -678,3 +678,16 @@ export const userCompensateMailSend = async (assetId: number, claimStatus: strin
     return { success: false }
   }
 }
+
+type compensateClaimedType = { success: boolean }
+export const compensateClaimed = async(compensationId : number) : Promise<compensateClaimedType>=>{
+  try{
+    const updateCompensation = await db.compensation.update({
+      where: { id: compensationId },
+      data: { claimed : true },
+    });
+    return {success : true}
+  }catch(error){
+    throw new Error('error')
+  }
+}
