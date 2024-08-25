@@ -75,6 +75,7 @@ declare interface CompensationDetails {
     insuranceId: number;
     assetId: number;
     Status: string;
+    soldValue : number;
 }
 
 declare interface DropdownProps {

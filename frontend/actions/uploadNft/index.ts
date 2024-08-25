@@ -521,6 +521,7 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
     const nftId = formdata.get('nftId') as string;
     const userAddress = formdata.get('address') as string;
     const eventId = formdata.get('eventId') as string;
+    const soldValue = formdata.get('soldValue') as string;
 
     if (!userAddress || !nftId || !eventId) {
       return { error: 'Insufficient details provided' }
@@ -601,7 +602,8 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
         compensationAmount: eightyPercentOfLoss,
         userAdress: userAddress,
         insuranceId: insuranceOfAsset.id,
-        Status: 'Pending'
+        Status: 'Pending',
+        soldValue : Number(soldValue)
       }
     })
     return { success: true };

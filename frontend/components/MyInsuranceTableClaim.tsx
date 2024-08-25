@@ -55,13 +55,14 @@ const MyInsuranceTableClaim = () => {
     getEventDetailsData()
   }, [address])
 
-  const handleRequestClick = async (address: string, nftId: number, eventId: number) => {
+  const handleRequestClick = async (address: string, nftId: number, eventId: number , soldValue : number) => {
     setLoaderForButton(true);
     try {
       const formData = new FormData();
       formData.append('address', address);
       formData.append('nftId', nftId.toString());
       formData.append('eventId', eventId.toString());
+      formData.append('soldValue' , soldValue.toString())   // this reflects the price of nft 
       const res = await generateCompensation(formData);
       if('error' in res){
         toast({
@@ -123,11 +124,11 @@ const MyInsuranceTableClaim = () => {
                   <td className='p-2 max-sm:p-1'>BITSI</td>
                   <td className='p-2 max-sm:p-1'>{item.nftId}</td>
                   <td className='p-2 max-sm:p-1'>{item.nft_event}</td>
-                  <td className='p-2 max-sm:p-1'>{item.nft_price} Matic</td>
+                  <td className='p-2 max-sm:p-1'>{item.nft_price}  </td>
                   <td className='p-2 max-sm:p-1'>{new Date(item.expiration) > new Date() ? 'Yes' : 'No'}</td>
                   <td className='p-2 max-sm:p-1'>{item.coverage}</td>
                   <td className='p-2 max-sm:p-1'>{item.expiration && new Date(item.expiration).toDateString() || '-'}</td>
-                  <td><button disabled = {loaderForButton} onClick={() => { handleRequestClick(item.to, item.nftId, item.id) }} className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '}text-white    p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Request&nbsp;Claim</p>}</button></td>
+                  <td><button disabled = {loaderForButton} onClick={() => { handleRequestClick(item.to, item.nftId, item.id , item.nft_price) }} className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '}text-white    p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Request&nbsp;Claim</p>}</button></td>
                   {/* <td className='p-2 max-sm:p-1'>{item.Compensation}</td> */}
 
                   {/* <DropdownMyProfile setValue={setHistoryDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems}/> */}

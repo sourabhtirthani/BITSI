@@ -5,9 +5,12 @@ import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
 import { compensateClaimed } from '@/actions/uploadNft';
 import { useToast } from "@/components/ui/use-toast"
+import { useWriteContract} from 'wagmi'
+import { insuraceContractAddress, insuranceContractABI } from '@/lib/insuranceContract';
 
 
 const MyCompensationUserProfile = ({address} : {address : string}) => {
+  const {writeContractAsync} = useWriteContract();
     const [loaderState, setLoaderState] = useState(true);
     const [loaderForButton, setLoaderForButton] = useState(false);
     const [compensationInfo , setCompensationInfo] = useState<CompensationDetails[]>([]);
@@ -31,14 +34,22 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
     } , [address, refresh])
 
 
-    const handleCompensateClick = async(id : number)=>{
+    const handleCompensateClick = async(id : number, salePrice : number)=>{
       try{
         setLoaderForButton(true);
-
+        const priceInWei = Number(Math.floor(parseFloat(salePrice.toString()) * 10 ** 18));
+        const transaction = await writeContractAsync({
+          address: insuraceContractAddress,
+          abi: insuranceContractABI,
+          functionName: 'claim',
+          args: [id , priceInWei],
+        });
+          if(transaction){
         const claimUser = await compensateClaimed(id);
         toast({ title: "Operation Success", description: "Successfully claimed compensation", duration: 2000,
           style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope', },});
         setRefresh(prev => !prev);
+      }
 
       }catch(error){
         console.log(error);
@@ -72,8 +83,7 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
                 <td className='p-2 max-sm:p-1'>{item.Status}</td>
                 <td className='p-2 max-sm:p-1'>{item.lossPercent}%</td>
                 <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
-                <td  ><button disabled = {loaderForButton} onClick={()=>{handleCompensateClick(item.id)}}  className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '} ${item.Status != 'Confirmed' ? 'hidden' : ''}   text-white     p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Claim</p>}</button></td>
-              
+                <td  ><button disabled = {loaderForButton} onClick={()=>{handleCompensateClick(item.assetId , item.soldValue)}}   className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '} ${item.Status != 'Confirmed' ? 'hidden' : ''}   text-white     p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Claim</p>}</button></td>
               </tr>
               <tr>
                 <td  className='h-6'></td>
