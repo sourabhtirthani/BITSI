@@ -13,18 +13,21 @@ import { sendClaimAcceptRejectEmail } from '@/lib/sendEmails'
 
 const Compensation = () => {
   const { toast } = useToast()
-  
+
     const [searchValue , setSearchValue] = useState('')
     const [loaderState ,setLoaderState] = useState(true);
     const [compensationDetails , setCompensationDetails] = useState<CompensationDetails[]>([]);
+    const [historyCompensationDetails , setHistoryCompensationDetails] = useState<CompensationDetails[]>([]);
     useEffect(()=>{
       const getAllCompensation = async()=>{
         try{
-        const res = await fetch(`/api/admin/compensation`, { method: "GET", next: { revalidate: 0 }, },)
+        const res = await fetch(`/api/admin/compensation/pending`, { method: "GET", next: { revalidate: 0 }, },)
         const compensation = await res.json();
         console.log(compensation)
         setCompensationDetails(compensation);
-        console.log(compensationDetails)
+        const resOfHistory = await fetch(`/api/admin/compensation/completed`, { method: "GET", next: { revalidate: 0 }, },)
+        const allCompHistory = await resOfHistory.json();
+        setHistoryCompensationDetails(allCompHistory);
         }catch(error){
           console.log(error)
           toast({ title: "Fetching error", description: "Error fetching all compensation details", duration: 2000,
@@ -107,6 +110,47 @@ const Compensation = () => {
       </div>
         {loaderState == true && <LoaderComp />}
       
+          <p className='text-white text-[24px] font-manrope font-bold'>History</p>
+        <div className='max-h-[500px]  px-8 max-md:px-4 overflow-x-auto max-xl:table-body scrollbar-none overflow-y-auto mb-20 table-body'>
+        <table className='w-full text-left mt-4 border-spacing-20'>
+          <thead className='text-black overflow-x-auto text-center bg-white font-semibold font-manrope text-[22px] max-sm:text-[10px]   '>
+            <tr>
+              <th className='p-2 max-sm:p-1'>Request&nbsp;Date</th>
+              <th className='p-2 max-sm:p-1' >UserName</th>
+              {/* <th className='p-2 max-sm:p-1'>Loss</th> */}
+              <th className='p-2 max-sm:p-1'>Loss%</th>
+              <th className='p-2 max-sm:p-1 overflow-hidden'>Compensation Amount</th>
+              <th className='p-2 max-sm:p-1 overflow-hidden'>Status</th>
+            </tr>
+          </thead>
+          <tbody className='overflow-y-auto bg-success-532'>
+           
+            {loaderState == false && historyCompensationDetails.map((item, index) => {
+              return (
+                <React.Fragment key={index}>
+                    
+                  <tr className=' w-full  text-white text-center font-montserrat text-[18px] max-sm:text-[8px] font-semibold'>
+                    <td className='p-2 max-sm:p-1'>{new Date(item.requestDate).toDateString()}</td>
+                    <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.userAdress as string)}</td>
+                    {/* <td className='p-2 max-sm:p-1'>{item.loss}</td> */}
+                    <td className='p-2 max-sm:p-1'>{item.lossPercent}</td>
+                    <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
+                    <td className='p-2 max-sm:p-1'>{item.Status}</td>
+                    {/* <td className='p-2 max-sm:p-1'><AdminDialogPayCompensationConfirm userAddress={item.userAdress} amount={item.compensationAmount} idOfNft = {item.assetId} compensationId={item.id} /></td> */}
+                  
+                  </tr>
+                  
+                  
+                </React.Fragment>
+              )
+            })}
+          </tbody>
+
+        </table>
+
+      </div>
+      {loaderState == true && <LoaderComp />}
+
 </div>
   )
 }
