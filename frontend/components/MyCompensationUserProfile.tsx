@@ -37,6 +37,12 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
     const handleCompensateClick = async(id : number, salePrice : number)=>{
       try{
         setLoaderForButton(true);
+        const abcd = true;
+        if(abcd == true){
+          toast({ title: "NOTE", description: "You can claim compendsation after 7 days.", duration: 2000,
+            style: {  backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }, })
+            return;
+        }
         const priceInWei = Number(Math.floor(parseFloat(salePrice.toString()) * 10 ** 18));
         const transaction = await writeContractAsync({
           address: insuraceContractAddress,
