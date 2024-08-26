@@ -9,6 +9,7 @@ import cloudinary from "@/lib/cloudinary";
 import { sendClaimAcceptRejectEmail } from "@/lib/sendEmails";
 import { uploadImage } from "@/lib/uploadToCloud";
 import { revalidatePath } from 'next/cache'
+import {hash} from 'bcryptjs'
 // import formidable from 'formidable';
 
 
@@ -691,5 +692,58 @@ export const compensateClaimed = async(compensationId : number) : Promise<compen
     return {success : true}
   }catch(error){
     throw new Error('error')
+  }
+}
+
+type createAdminType = { success: boolean }
+export const createAdmin = async(formData : FormData):Promise<createAdminType>=>{
+  try{
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    if(!email || !password){
+      throw new Error('Please Provide Email and Password');
+    }
+    const checUserExists = await db.admin.findUnique({
+      where : {email : email}
+    })
+    if(checUserExists){
+      throw new Error("User with that email already exists, please choose different email");
+    }else{
+      const hashedPassword = await hash(password , 10);
+      await db.admin.create({
+        data : {
+          email : email,
+          password : hashedPassword
+        }
+      })
+      return {success : true}
+
+    }
+
+
+  }catch(error){
+    throw new Error('error');
+  }
+}
+
+type saveOtpToDbType = { success: boolean }
+export const saveOtpToDb = async (otp : string , email : string , id : string) : Promise<saveOtpToDbType>=>{
+  try{
+    if(!otp || !email || !id){
+      throw new Error('Please privde with all the details');
+    }
+    await db.otp.create({
+      data : {
+        id : id,
+        email : email, 
+        expiry : new Date(Date.now() + 10 * 60 * 1000),
+        hashedOtp : otp,
+      }
+    })
+    return { success : true}
+  }catch(error){
+    console.log(`error saving otp to database`)
+    console.log(error)
+    return {success : false}
   }
 }
