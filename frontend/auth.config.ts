@@ -5,6 +5,7 @@ export const authConfig = {
         signIn: '/admin',
         signOut : '/admin'
     },
+    secret: process.env.AUTH_SECRET,
     session: {
         strategy: 'jwt',
     },
