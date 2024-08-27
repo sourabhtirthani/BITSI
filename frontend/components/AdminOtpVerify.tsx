@@ -13,8 +13,8 @@ const AdminOtpVerify = () => {
     
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            console.log(`address is  ${address as string}`)
-            console.log(` the prisec is ${process.env.NEXT_PUBLIC_ADMIN_ADDRESS}`)
+            // console.log(`address is  ${address as string}`)
+            // console.log(` the prisec is ${process.env.NEXT_PUBLIC_ADMIN_ADDRESS}`)
             if (event.key === 'Enter' && value === '1234') {
                 if(!address || address as string != process.env.NEXT_PUBLIC_ADMIN_ADDRESS){
                     toast({
