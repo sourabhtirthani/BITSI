@@ -5,7 +5,7 @@ export const authConfig = {
         signIn: '/admin',
         signOut : '/admin'
     },
-    // secret: process.env.NEXT_PUBLIC_SECRET,
+    secret: process.env.NEXT_PUBLIC_SECRET,
     session: {
         strategy: 'jwt',
     },
@@ -17,7 +17,7 @@ export const authConfig = {
             return isAuthenticated;
         },
         async redirect({ url, baseUrl }) {
-            return baseUrl+  "/admin/compensation"; // Modify this to your desired path
+            return baseUrl+  "/admin/compensation"; 
           }
     },
 

@@ -11,10 +11,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="flex flex-col items-center  overflow-hidden  bg-success-503">
+        <div >
             <Toaster  />
-            <div className="mt-4 max-md:mt-2">
-                <Image src='icons/bitsi.svg' height={209} width={212} alt='bitsi' /></div>
+            {/* <div className="mt-4 max-md:mt-2">
+                <Image src='icons/bitsi.svg' height={209} width={212} alt='bitsi' />
+                </div> */}
             {children}
         </div>
 

@@ -76,6 +76,11 @@ body{
   border: 0.1px solid rgba(108, 134, 136, 0.004);
 }
 
+.secondary-shadow12{  
+
+  border: 0.1px solid black;
+}
+
 .table-body::-webkit-scrollbar {
   width: 10px; 
 

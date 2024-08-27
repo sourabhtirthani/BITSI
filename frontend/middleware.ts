@@ -4,10 +4,10 @@ import { authConfig } from '@/auth.config';
 
 const { auth } = NextAuth(authConfig);
 export default auth((req) => {
-  console.log("in the middleware funciton")
+  // console.log("in the middleware funciton")
   const isAuthenticated = !!req.auth;
 	const { nextUrl } = req;
-  console.log('isauthenticate'  , isAuthenticated)
+  // console.log('isauthenticate'  , isAuthenticated)
   // if(req.nextUrl.pathname.startsWith('/admin') && req.nextUrl.pathname === '/admin' && !isAuthenticated){
   //       console.log(req.nextUrl.pathname)
   //       console.log('this is the admin home ');

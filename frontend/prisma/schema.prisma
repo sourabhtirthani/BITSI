@@ -106,7 +106,7 @@ model Admin {
 }
 
 model Otp {
-  id        String   @id 
+  id        Int       @id @default(autoincrement())
   email     String   
   hashedOtp String   
   expiry    DateTime 

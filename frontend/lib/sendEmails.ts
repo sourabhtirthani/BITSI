@@ -2,7 +2,6 @@
 import { Resend } from 'resend';
 import { ClaimTemplate } from '@/components/emails/ClaimTemplate';
 import { OtpTemplate } from '@/components/emails/OtpTemplate';
-import {hash} from 'bcryptjs'
 import { saveOtpToDb } from '@/actions/uploadNft';
 
 
@@ -24,17 +23,17 @@ export const sendClaimAcceptRejectEmail = async(userMail : string, claimStatus :
 }
 
 type sendOtpToAdminType = {success : Boolean}
-export const sendOtpToAdmin = async(emailAddress :string , idOfOtp : string) : Promise<sendOtpToAdminType>=>{
+export const sendOtpToAdmin = async(emailAddress :string) : Promise<sendOtpToAdminType>=>{
     try{
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const hashedOtp = await hash(otp, 10);
-        await saveOtpToDb(hashedOtp, emailAddress, idOfOtp);
+        const otp = Math.floor(1000 + Math.random() * 9000).toString();
+        
         const { data, error } = await resend.emails.send({
             from: 'onboarding@resend.dev',
             to: emailAddress,
             subject: `OTP for secure access`,
-            react: OtpTemplate({otp : 123})
-          });
+            react: OtpTemplate({otp : otp})
+        });
+        await saveOtpToDb(otp, emailAddress);
         return {success : true}
     }catch(error){
         console.log('error sending mail for admin otp error');

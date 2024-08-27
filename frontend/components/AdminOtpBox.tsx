@@ -12,19 +12,22 @@ export function AdminOtpBox({value , setValue} : {value : string , setValue : Re
   return (
     <InputOTP maxLength={4} value={value} onChange={(val) => setValue(val)} >
       <InputOTPGroup>
-        <InputOTPSlot index={0} className="bg-success-512 secondary-shadow11 text-white" />
+        <InputOTPSlot index={0} className="bg-white  h-20 w-20 secondary-shadow12  text-black text-[24px]" />
       </InputOTPGroup>
-      <InputOTPSeparator />
+      {/* <InputOTPSeparator /> */}
+      <div className="w-[5px]"></div>
       <InputOTPGroup>
-        <InputOTPSlot index={1}  className="bg-success-512 secondary-shadow11 text-white" />
+        <InputOTPSlot index={1}  className="bg-white  h-20 w-20 secondary-shadow12 text-black text-[24px]" />
       </InputOTPGroup>
-      <InputOTPSeparator />
+      {/* <InputOTPSeparator /> */}
+      <div className="w-[5px]"></div>
       <InputOTPGroup>
-        <InputOTPSlot index={2}  className="bg-success-512 secondary-shadow11 text-white"/>
+        <InputOTPSlot index={2}  className="bg-white h-20 w-20 secondary-shadow12 text-black text-[24px]"/>
       </InputOTPGroup>
-      <InputOTPSeparator />
+      {/* <InputOTPSeparator /> */}
+      <div className="w-[5px]"></div>
       <InputOTPGroup>
-        <InputOTPSlot index={3} className="bg-success-512 secondary-shadow11 text-white" />
+        <InputOTPSlot index={3} className="bg-white h-20 w-20 secondary-shadow12 text-black text-[24px]" />
       </InputOTPGroup>
     </InputOTP>
   )

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface OtpTemplateProps {
- otp : number
+ otp : string
 }
 
 export const OtpTemplate: React.FC<Readonly<OtpTemplateProps>> = ({

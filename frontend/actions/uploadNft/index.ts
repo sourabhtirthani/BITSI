@@ -9,7 +9,9 @@ import cloudinary from "@/lib/cloudinary";
 import { sendClaimAcceptRejectEmail } from "@/lib/sendEmails";
 import { uploadImage } from "@/lib/uploadToCloud";
 import { revalidatePath } from 'next/cache'
-import {hash} from 'bcryptjs'
+import {hash , compare} from 'bcryptjs'
+import { signIn, signOut } from '@/auth'
+import { AuthError } from 'next-auth';
 // import formidable from 'formidable';
 
 
@@ -727,17 +729,17 @@ export const createAdmin = async(formData : FormData):Promise<createAdminType>=>
 }
 
 type saveOtpToDbType = { success: boolean }
-export const saveOtpToDb = async (otp : string , email : string , id : string) : Promise<saveOtpToDbType>=>{
+export const saveOtpToDb = async (otp : string , email : string) : Promise<saveOtpToDbType>=>{
   try{
-    if(!otp || !email || !id){
-      throw new Error('Please privde with all the details');
+    if(!otp || !email){
+      throw new Error('Please provide with all the details');
     }
+    const otpHashed = await hash(otp, 10);
     await db.otp.create({
       data : {
-        id : id,
         email : email, 
         expiry : new Date(Date.now() + 10 * 60 * 1000),
-        hashedOtp : otp,
+        hashedOtp : otpHashed,
       }
     })
     return { success : true}
@@ -747,3 +749,101 @@ export const saveOtpToDb = async (otp : string , email : string , id : string) :
     return {success : false}
   }
 }
+
+type validateAdminPasswordType = { success: boolean }
+export  const validateAdminPassword = async(email : string , password : string):Promise<validateAdminPasswordType>=>{
+  try{
+    if(!email || !password){
+      return {success : false}
+    }
+    const adminExists = await db.admin.findUnique({
+      where : {email : email}
+    })
+    if(!adminExists){
+     
+      return {success : false}
+    }
+    const isMatched = await compare(password , adminExists.password);
+    if(isMatched){
+     
+      return {success : true}
+    }else{
+      
+      return {success : false}
+    }
+  }catch(error){
+    return { success : false}
+  }
+}
+
+
+type validateOtpType = { success: boolean }
+export const validateOtp = async(otp :string , emailAddress : string) : Promise<validateOtpType>=>{
+  try{
+    if(!otp || !emailAddress){
+      return {success : false}
+    }
+    const latestOtpRecord = await db.otp.findFirst({
+      where: {
+        email: emailAddress,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    if (!latestOtpRecord || latestOtpRecord.expiry < new Date()) {
+      return { success: false };
+    }
+    const isOtpValid = await compare(otp, latestOtpRecord.hashedOtp);
+    if(isOtpValid){
+      return{success : true}
+    }else{
+      return {success : false}
+    }
+
+  }catch(error){
+    return {success : false}
+  }
+}
+type handleLoginForAdminType = { success: boolean }
+export const handleLoginForAdmin = async(email : string , password : string , otp : string):Promise<handleLoginForAdminType>=>{
+    
+    try{
+      if(!email || !password){
+        return {success : false};
+      }
+    const res = await signIn("credentials", {
+      email : email,
+      password : password,
+      otp : otp,
+      redirect : false,
+      // redirect : true,
+      // redirectTo : '/admin/compensation'
+    })
+    console.log(`the res is ${res}`)
+    return {success : true};
+    // redirect('/admin/compensation')
+  }catch(error){
+    console.log("in the error clasuse")
+    if (error instanceof AuthError) {
+			if(error.type == 'CredentialsSignin'){
+        console.log('invalid details')
+        return {success : false};
+      }else{
+        return {success : false}
+      }
+		}
+    console.log("in here wrong everything")
+    throw error;
+		
+	}
+  }
+
+
+  export const signoutFromAdminPanel = async()=>{
+    try{
+      await signOut();
+    }catch(error){
+
+    }
+  }

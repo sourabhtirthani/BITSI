@@ -380,7 +380,7 @@ const UploadNFt = () => {
               </div>
               <div className='flex max-sm:flex-col sm:items-center sm:mb-10 gap-2  '>
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
-                  <FormLabel htmlFor='name' className='font-montserrat text-white text-[22px] font-semibold'>Description</FormLabel>
+                  <FormLabel htmlFor='description' className='font-montserrat text-white text-[22px] font-semibold'>Description</FormLabel>
                   <input id='description' maxLength={172} name='description' type='text' placeholder='Describe about your NFT' className='p-6 block w-full  rounded' />
                 </FormRow>
                 <div className='h-fit sm:w-1/2 place-content-center items-center max-sm:p-4'>
