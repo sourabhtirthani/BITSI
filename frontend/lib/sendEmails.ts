@@ -22,8 +22,8 @@ export const sendClaimAcceptRejectEmail = async(userMail : string, claimStatus :
     }
 }
 
-type sendOtpToAdminType = {success : Boolean}
-export const sendOtpToAdmin = async(emailAddress :string) : Promise<sendOtpToAdminType>=>{
+type sendOtpType = {success : Boolean}
+export const sendOtp = async(emailAddress :string) : Promise<sendOtpType>=>{
     try{
         const otp = Math.floor(1000 + Math.random() * 9000).toString();
         

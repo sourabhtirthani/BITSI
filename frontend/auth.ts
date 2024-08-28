@@ -1,9 +1,5 @@
 import NextAuth, { CredentialsSignin } from "next-auth"
 import CredentialProvider from 'next-auth/providers/credentials'
-import db from "@/db";
-import { compare } from "bcryptjs";
-import { sendOtpToAdmin } from "./lib/sendEmails";
-import { v4 as uuidv4 } from 'uuid';
 import { validateAdminPassword, validateOtp } from "./actions/uploadNft";
  
 export const { auth, handlers, signIn, signOut } = NextAuth({

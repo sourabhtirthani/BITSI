@@ -70,3 +70,9 @@ export const fixTinaResults = <T>(data: T): T => {
     throw new Error("Handling data failed");
   }
 };
+
+
+export const isEmail = (text : string) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(text);
+}

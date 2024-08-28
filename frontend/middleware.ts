@@ -24,7 +24,10 @@ export const config = {
     , '/admin/minting' , '/admin/nft-minting', '/admin/coin-minting', '/admin/coin-insurance', '/admin/nft-insurance', '/admin/views-and-analysis'
   ], 
 };
-
+// export const config = {
+//   matcher: [ '/admin/nft-minting'
+//   ], 
+// };
 
 
 

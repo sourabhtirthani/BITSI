@@ -124,6 +124,7 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         time: dateOfNft,
         to: address,
         nftId: nft.id,
+        asset_name : 'NFT'
 
 
       }

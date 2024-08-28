@@ -17,7 +17,7 @@ import Image from "next/image"
 import { AdminOtpBox } from "./AdminOtpBox"
 import { useEffect, useState } from "react"
 import { handleLoginForAdmin, validateOtp } from "@/actions/uploadNft"
-import { sendOtpToAdmin } from "@/lib/sendEmails"
+import { sendOtp } from "@/lib/sendEmails"
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from "next/navigation";
 
@@ -74,7 +74,7 @@ export function DialogOtpAdmin({open , setOpen ,emailAddress, password} : {open 
     }
     const handleResendLink = async()=>{
         try{
-            const otpSent = await sendOtpToAdmin(emailAddress)
+            const otpSent = await sendOtp(emailAddress)
         if(otpSent.success == false){
           toast({ title: "ERROR Sending OTP", description: "Please try again later", duration: 2000,
             style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},

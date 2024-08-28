@@ -41,7 +41,24 @@ declare interface NftEventGet {
     to: string;
     time: Date;
     nftId: number;
+    assetName: string;
    
+  }
+  interface AdminNftEventDetail  {
+    id: number;           
+    nft_event: string;     
+    nft_price: number;     
+    from: string;        
+    to: string;         
+    time: Date;           
+    nftId: number;        
+    asset_name: string;   
+    nft: {
+      nft_name: string;   
+      collection: {
+        name: string;     
+      }
+    }
   }
 
   declare interface NftEventGetInsurace {

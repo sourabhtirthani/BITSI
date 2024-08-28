@@ -38,6 +38,7 @@ model Nft_events {
   to        String
   time      DateTime
   nftId     Int
+  asset_name String   
   nft       Nft      @relation(fields: [nftId], references: [id])
 
   @@index([nftId])

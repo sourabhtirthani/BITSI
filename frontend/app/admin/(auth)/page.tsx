@@ -8,7 +8,7 @@ import { DialogOtpAdmin } from '@/components/DialogOtpAdmin';
 // import { redirect } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import { validateAdminPassword } from '@/actions/uploadNft';
-import { sendOtpToAdmin } from '@/lib/sendEmails';
+import { sendOtp } from '@/lib/sendEmails';
 
 const AuthHOME = () => {  
   const { toast } = useToast()
@@ -43,7 +43,7 @@ const AuthHOME = () => {
         setShowErrorTextForInvalidDetails(false);
         setEmailText(email)
         setPassword(password)
-        const otpSent = await sendOtpToAdmin(email)
+        const otpSent = await sendOtp(email)
         if(otpSent.success == false){
           toast({ title: "ERROR Sending OTP", description: "Please try again later", duration: 2000,
             style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},

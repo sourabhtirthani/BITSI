@@ -1,18 +1,44 @@
 'use client'
-import React, { useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import Image from 'next/image'
 import FormRow from '@/components/FormRow'
 import FormLabel from '@/components/FormLabel'
 import InputText from '@/components/InputText'
 import Button from '@/components/Button'
 import { AdminOtpBox } from '@/components/AdminOtpBox'
+import { useRouter } from 'next/navigation';
+import { useAccount } from 'wagmi'
+import { KycOtpBox } from '@/components/KycOtpBox'
+import { isEmail } from '@/lib/utils'
+import { sendOtp } from '@/lib/sendEmails'
+
 const KycAuth = () => {
+  const {address , isConnected} = useAccount();
+  const { push } = useRouter();
   const [showOtp, setShowOtp] = useState(false);
   const [verifyText ,setVerifyText] = useState('Verify');
   const [optVal , setOtpVal] = useState('')
+  const [emailText , setEmailText] = useState('')
+  const [showNotAnEmailText , setShowNotAnEmailText] = useState(false);
+  const [showWrongOtpText , setShowWrongOtpText] = useState(false);
+  const [loaderForAuthenticate, setLoaderForAuthenticate] = useState(false);
+  
+  useEffect(()=>{
+    if(!isConnected){
+      push('/');
+    }
+  } , [isConnected])
 
   const handleVerifyClick = ()=>{
+    try{
     if(verifyText == 'Verify'){
+      if(!isEmail(emailText)){
+        setShowNotAnEmailText(true);
+       
+        return;
+      }
+      // const res = sendOtp(emailText);
+      setShowNotAnEmailText(false);
     setShowOtp(true);
     setVerifyText('Resend');
     return;
@@ -20,30 +46,34 @@ const KycAuth = () => {
     else if(verifyText == 'Resend'){
       console.log('logic to resend otp')
     }
+  }catch(error){
 
+  }
 
   }
 
   const handleSubmit = (e: React.SyntheticEvent)=>{
+    try{
     e.preventDefault();
+    setLoaderForAuthenticate(true)
     console.log('submitted form');
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
-    formData.append('otp' , optVal);
-    console.log(formData.get('otp'));
-    const jsonObject: { [key: string]: any } = {};
-    formData.forEach((value, key) => {
-      // Check if key already exists
-      if (jsonObject.hasOwnProperty(key)) {
-        if (!Array.isArray(jsonObject[key])) {
-          jsonObject[key] = [jsonObject[key]];
-        }
-        jsonObject[key].push(value);
-      } else {
-        jsonObject[key] = value;
-      }
-    });
-    console.log('Form data in JSON:', JSON.stringify(jsonObject));
+    const email = formData.get("email");
+    const otp = formData.get("otp");
+    if(!email || !otp){
+      return;
+    }
+    console.log(formData.get("username"))
+    console.log(formData.get("otp"))
+    console.log(formData.get("email"))
+    console.log(formData.get("nationality"))
+    
+    }catch(error){
+      
+    }finally{
+      setLoaderForAuthenticate(false);
+    }
   }
 
   return (
@@ -78,20 +108,23 @@ const KycAuth = () => {
             <div className='flex flex-col max-sm:flex-col sm:mb-0  sm:w-3/4'>
               <FormRow className='w-full p-4'>
                 <FormLabel htmlFor='email' className='font-montserrat text-white text-[22px] font-semibold'>Email*</FormLabel>
-                <div className='flex items-center'>
-                <InputText id='email' name='email' type='text' placeHolder='eg USA' className='w-fit p-3 bg-success-512 text-white  secondary-shadow11' />
-                <p onClick={handleVerifyClick} className='text-success-508 relative right-16 cursor-pointer'>{verifyText}?</p>
+                <div className='flex items-center relative'>
+                <input id='email' name='email' type='email'  onChange={(e: ChangeEvent<HTMLInputElement>) => setEmailText(e.target.value)} placeholder='eg USA' className='w-full rounded  block p-3 bg-success-512 text-white  secondary-shadow11' />
+                <p onClick={handleVerifyClick} className='text-success-508 absolute right-2 cursor-pointer'>{verifyText}?</p>
                 </div>
+                <p className={`text-red-700 font-manrope font-semibold ${showNotAnEmailText == true ? '' : 'hidden'}`}>Not an email</p>
               </FormRow>
               {showOtp && (
               <FormRow className=' p-4'>
-                <FormLabel htmlFor='otp' className='font-montserrat text-white text-[22px] w-fit font-semibold'>OTP*</FormLabel>
-                <AdminOtpBox value={optVal} setValue={setOtpVal} />
+                <label htmlFor='otp' className='font-montserrat block mb-2 text-white text-[22px] w-fit font-semibold'>OTP*</label>
+                <input id ='otp' name='otp' value={optVal} className='hidden' required />
+                <KycOtpBox value={optVal} setValue={setOtpVal} />
+                <p className={`text-red-700 font-manrope font-semibold ${showWrongOtpText == true ? '' : 'hidden'}`}>Please enter OTP</p>
               </FormRow>)}
             </div>
             {showOtp && (
             <div className='flex justify-center mb-24 max-sm:mb-10 mt-4'>
-            <Button className='bg-success-511 py-3 max-sm:px-24 px-32 font-bold gap-1 rounded-3xl flex justify-end text-white'>Authenticate</Button>
+            <button  className={`bg-success-511 py-3 max-sm:px-24 px-32 font-bold gap-1 rounded-3xl flex justify-end text-white`}>Authenticate</button>
             </div>)}
           </form>
 
