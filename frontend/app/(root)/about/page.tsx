@@ -83,6 +83,7 @@ const About = () => {
                     {topSellers.map((item , index)=>{
                         return (
                             <div key={index} className='p-1 '>
+                                {/* shadow-lg transition-shadow*/}
                                 <div className='bg-success-512 gap-2 py-3 px-5 flex items-center h-full hover:bg-success-509'>
                                     <p className='text-white  text-[28px] font-manrope font-bold'>{index +1}.</p>
                                     <div className='flex items-center gap-2 '>

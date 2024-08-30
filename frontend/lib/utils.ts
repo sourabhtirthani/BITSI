@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Message } from "ai";
 
 
 
@@ -76,3 +77,17 @@ export const isEmail = (text : string) => {
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailPattern.test(text);
 }
+
+
+export const generateMessages = (numMessages : number) => {
+  const messages : Message[] = [];
+  for (let i = 1; i <= numMessages; i++) {
+      const role = i % 2 === 0 ? 'user' : 'assistant'; // Alternate between 'user' and 'assistant'
+      messages.push({
+          id: i.toString(),
+          role: role,
+          content: `${role === 'user' ? 'User' : 'Assistant'} message  ${i}`
+      });
+  }
+  return messages;
+};

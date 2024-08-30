@@ -115,3 +115,10 @@ model Otp {
 
   @@index([email]) 
 }
+
+
+model Vectors {
+  id          Int      @id @default(autoincrement())
+  textChunk   String
+  embedding   Json     
+}

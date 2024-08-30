@@ -127,6 +127,27 @@ body{
 .animate-slide { 
  animation: slide-left-to-right 4s infinite;
 }
+.chat-box-enter {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.chat-box-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.chat-box-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-box-exit-active {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 200ms ease-in, transform 200ms ease-in;
+}
 
 
 @layer utilities {
