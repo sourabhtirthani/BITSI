@@ -311,7 +311,7 @@ const UploadNFt = () => {
                 <div className='sm:w-1/2'>
                   <FormRow className='p-4 md:px-8 w-fit h-fit'>
                     <p className='text-white font-montserrat font-semibold text-[22px] mb-2'>Upload Here</p>
-                    <input type='file' name='nftFile' className='hidden' id='nftFile' accept=".jpg,.png,.svg,.mp4,.gif" onChange={handleOnChange} />
+                    <input type='file' name='nftFile' className='hidden' id='nftFile' accept=".jpg,.png,.svg,.mp4,.gif,.jpeg" onChange={handleOnChange} />
 
                     <label htmlFor="nftFile" className='w-fit h-fit'>
                       <div className='bg-success-520 bg-opacity-55 border-2 border-dotted border-success-506 justify-center items-center cursor-pointer'>

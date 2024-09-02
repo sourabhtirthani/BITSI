@@ -8,14 +8,14 @@ export const ourServicesLinks = [
     },
     {
         id : 2,
-        imgURL : '/icons/nft-icon-userzone.svg', 
+        imgURL : '/icons/coin-icon-userzone.svg', 
         label : 'BITSI COIN',
         info : 'The native cryptocurrency of the BITSI ecosystem, likely used for transactions within the platform, incentivizing participation, and potentially powering features like staking or governance.',
         url : '/bitsi-coin'
     },
     {
         id : 3,
-        imgURL : '/icons/coin-icon-userzone.svg',
+        imgURL : '/icons/nft-icon-userzone.svg',
         label : 'BITSI NFT',
         info : 'A comprehensive system designed to provide financial security within the cryptocurrency space, offering safeguards against risks such as hacks, scams, or market volatility.',
         url : '/bitsi-nft'

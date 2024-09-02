@@ -212,7 +212,8 @@ export const uploadCollection = async (formData: FormData, collectionId: number,
     //  revalidatePath('/create-nft/upload');
     return { success: true }
   } catch (error) {
-    console.log(`errror uploading collleciotn ${JSON.stringify(error)}`)
+    console.log(`errror uploading collleciotn `)
+    console.log(error)
     // throw new Error("Could not fetch collections");
     return { error: JSON.stringify(error) }
   }

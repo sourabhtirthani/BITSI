@@ -1,7 +1,7 @@
 import { cn, generateMessages } from '@/lib/utils';
 import { useChat } from 'ai/react'
 import { Bot, Cross, Trash, XCircle } from 'lucide-react';
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import AiChatMessages from './AiChatMessages';
 interface AiChatBoxProps {
     open : boolean;
@@ -10,17 +10,28 @@ interface AiChatBoxProps {
 }
 const AiChatBox = ({open , onClose} : AiChatBoxProps) => {
     const {messages, input,handleInputChange, handleSubmit, setMessages,isLoading, error} = useChat({
-        initialMessages : generateMessages(20)
+        // initialMessages : generateMessages(20)
     });
     const inputRef = useRef<HTMLInputElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(()=>{
+        if(scrollRef.current){
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    } , [messages])
+    useEffect(()=>{
+        if(open){
+            inputRef.current?.focus();
+        }
+    }, [open])
 
     const lastMessageIsUser = messages[messages.length-1]?.role === "user";
   return (
     <div className={cn("z-10 fixed bottom-16 md:right-4 max-md:right-0 bg-white rounded-xl max-w-[500px]  p-1  w-full", open == true ? 'fixed' : 'hidden')}>
         <button onClick={onClose} className='mb-1 ms-auto block'><XCircle size={25} /></button>
         <div className='flex h-[500px] flex-col rounded bg-background border shadow-xl'>
-        <div className='h-full mt-2 overflow-y-auto table-body'> 
+        <div className='h-full mt-2 overflow-y-auto table-body' ref={scrollRef}> 
             {messages.map((message)=>{
                 return(
                     <AiChatMessages message={message} key={message.id} />
@@ -42,7 +53,7 @@ const AiChatBox = ({open , onClose} : AiChatBoxProps) => {
         </div>
         <form onSubmit={handleSubmit} className='m-0.5 flex gap-1'>
             <button onClick={()=>{setMessages([])}}><Trash size={24} /></button>
-            <input value={input} onChange={handleInputChange} placeholder='Talk To Ai' className='w-full bg-slate-100 border rounded-xl p-2.5 ' />
+            <input ref={inputRef} value={input} onChange={handleInputChange} placeholder='Talk To Ai' className='w-full bg-slate-100 border rounded-xl p-2.5 ' />
             <button type='submit' className='bg-gray-800 p-2 px-4 rounded-xl text-white'>Send</button>
         </form>
         </div>

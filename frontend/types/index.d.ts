@@ -225,3 +225,9 @@ declare interface nftDataForMulitpleNftSelectPage {
     nft_owner_address: string;
     up_for_sale : boolean;
 }
+
+declare interface DataOfNFtJsonAdmin {
+    name: string;
+    description: string;
+    image: string;
+}

@@ -121,7 +121,7 @@ const CreateCollection =  () => {
       <form className='w-full flex flex-col gap-6' action={(e)=>{handleSubmit(e)}}>
       <FormRow className=''>
                     
-                    <input onChange={(e)=>{handleOnChange(e)}} type='file' name='collectionFile' className='hidden' id='collectionFile' accept=".jpg,.png,.svg,.gif"   />
+                    <input onChange={(e)=>{handleOnChange(e)}} type='file' name='collectionFile' className='hidden' id='collectionFile' accept=".jpg,.png,.svg,.gif,.jpeg"   />
                     <div className='flex max-lg:flex-col justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                     <label  htmlFor="collectionFile" className='w-fit h-fit'>
                         <div className='flex justify-between'>  

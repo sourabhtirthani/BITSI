@@ -12,8 +12,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    // const loggedIn = {firstName  : 'Shivam' , lastName : 'Kalani'};
-    // making hereader relative now should change later if code breaks
+   
   return (
     <div className="flex flex-col font-inter container-whole ">
       {/* min-h-screen...might include later in the div */}
