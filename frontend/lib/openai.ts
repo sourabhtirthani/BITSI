@@ -3,6 +3,7 @@
 // const apiKey = process.env.OPENAI_API_KEY;
 // if(!apiKey){
 //     throw new Error("Open ai api key not set");
+    
 // }
 
 // const openai = new OpenAI({apiKey})
