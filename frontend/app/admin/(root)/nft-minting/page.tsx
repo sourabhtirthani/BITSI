@@ -10,9 +10,11 @@ import { DataOfNFtJsonAdmin } from '@/types';
 import Image from 'next/image';
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi';
+import { useToast } from "@/components/ui/use-toast"
 
 const NftMinting = () => {
   const [wallet, setWallet] = useState('');
+  const { toast } = useToast()
   const [numberOfNFtFiles, setNumberOfNftFiles] = useState(0);
   const { address, isConnected } = useAccount();
   const [notUploaded, setNotUploaded] = useState<string[]>([])
@@ -22,6 +24,10 @@ const NftMinting = () => {
       console.log('in here ')
       if(!address){
         console.log("no wallets connected")
+        toast({title: "Wallet Not Connected", description: "Please connect wallet in order to proceed.",duration: 2000,
+          style: {backgroundColor: '#900808', color: 'white',fontFamily: 'Manrope',
+          },
+        })
         return;
       }
       const stringAddress: string = address;
