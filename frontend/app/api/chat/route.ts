@@ -4,6 +4,8 @@
 // import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
 // import openai, { createEmbedding } from '@/lib/openai';
 
+import { NextResponse } from "next/server";
+
 
 
 // export const runtime = 'edge';
@@ -42,5 +44,5 @@
 
 
 export async function GET(){
-    
+    return new NextResponse('Something went wrong' , {status : 500});
 }
