@@ -21,7 +21,7 @@ export default auth((req) => {
 
 export const config = {
   matcher: ['/admin/compensation' , '/api/admin/:path*' , '/admin/analytic-dashboard' , '/admin/wallet-management' , '/admin/prices'
-    , '/admin/minting' , '/admin/nft-minting', '/admin/coin-minting', '/admin/coin-insurance', '/admin/nft-insurance', '/admin/views-and-analysis'
+    , '/admin/minting' , '/admin/nft-minting', '/admin/coin-minting', '/admin/coin-insurance', '/admin/nft-insurance', '/admin/views-and-analysis' , '/admin/coin-parameters'
   ], 
 };
 // export const config = {

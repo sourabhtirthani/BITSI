@@ -1,18 +1,18 @@
 // import Openai from 'openai';
-// import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
-// // import { NextResponse } from 'next/server';
-// import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
-// // import openai, { createEmbedding } from '@/lib/openai';
-// import {ChatOpenAI} from '@langchain/openai'
-// // import {ChatPromptTemplate} from 'langchain/prompts'
-// import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
+// import { NextResponse } from 'next/server';
+import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
+// import openai, { createEmbedding } from '@/lib/openai';
+import {ChatOpenAI} from '@langchain/openai'
+// import {ChatPromptTemplate} from 'langchain/prompts'
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-// import { NextResponse } from "next/server";
-// import { LangChainAdapter, LangChainStream } from 'ai';
+import { NextResponse } from "next/server";
+import { LangChainAdapter, LangChainStream } from 'ai';
 
 
 
-// // export const runtime = 'edge';
+// export const runtime = 'edge';
 
 // export async function POST(req : Request){
 //   try{
@@ -67,7 +67,7 @@
 //   }
 // }
 
-import { NextResponse } from "next/server";
+
 export async function GET(){
     return new NextResponse('Something went wrong' , {status : 500});
 }

@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start:background": "npx ts-node scripts/transferListener.ts",
-    "eventListner" : "npx ts-node scripts/transferListener.ts",
-    "build": "npm run eventListner && prisma generate && next build",
+    "listen" : "npx ts-node ./scripts/transferListener.ts",
+    "generate": "npx ts-node ./scripts/generate.ts",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
@@ -45,6 +45,7 @@
     "ethers": "^6.13.2",
     "formidable": "^3.5.1",
     "input-otp": "^1.2.4",
+    "langchain": "^0.2.17",
     "lucide-react": "^0.383.0",
     "next": "14.2.3",
     "next-auth": "^5.0.0-beta.20",

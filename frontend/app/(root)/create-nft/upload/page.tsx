@@ -357,7 +357,7 @@ const UploadNFt = () => {
                 <FormRow className='sm:w-1/2 p-4 md:px-8'>
                   <FormLabel htmlFor='price' className='font-montserrat text-white text-[22px] font-semibold'>Price</FormLabel>
                   <div className='flex  gap-1.5 items-center'>
-                  <InputText id='price' name='price' step="0.01" type='number' placeHolder='Enter price here' className='p-3 no-spinners' />
+                  <InputText id='price' name='price' step="0.00001" type='number' placeHolder='Enter price here' className='p-3 no-spinners' />
                     <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} />
                   </div>
                   {priceErrorMessage && <p className='text-success-517 text-[11px] font-normal'>{priceErrorMessage}*</p>}
