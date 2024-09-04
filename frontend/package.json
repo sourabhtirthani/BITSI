@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "listen" : "npx ts-node ./scripts/transferListener.ts",
+    "listen": "npx ts-node ./scripts/transferListener.ts",
     "generate": "npx ts-node ./scripts/generate.ts",
     "build": "prisma generate && next build",
     "start": "next start",
@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.40",
+    "@datastax/astra-db-ts": "^1.4.1",
     "@hookform/resolvers": "^3.6.0",
+    "@langchain/community": "^0.2.31",
     "@langchain/core": "^0.2.31",
     "@langchain/openai": "^0.2.8",
     "@nanostores/react": "github:ai/react",

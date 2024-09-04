@@ -1,27 +1,17 @@
-// import Openai from 'openai';
-import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
-// import { NextResponse } from 'next/server';
-import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
-// import openai, { createEmbedding } from '@/lib/openai';
-import {ChatOpenAI} from '@langchain/openai'
-// import {ChatPromptTemplate} from 'langchain/prompts'
-import { ChatPromptTemplate } from "@langchain/core/prompts";
-
+// import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
+// import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
+// import {ChatOpenAI} from '@langchain/openai'
+// import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { NextResponse } from "next/server";
-import { LangChainAdapter, LangChainStream } from 'ai';
+// import { LangChainAdapter, LangChainStream } from 'ai';
 
-
-
-// export const runtime = 'edge';
 
 // export async function POST(req : Request){
 //   try{
 //     const body  = await req.json();
 //     const messages : ChatCompletionMessage[] = body.messages;
 //     const currentMessageContent = messages[messages.length -1].content;
-
 //     const {handlers , stream} = LangChainStream();
-
 //     const chatModel = new ChatOpenAI({
 //         modelName : "gpt-3.5-turbo",
 //         streaming : true,
@@ -39,25 +29,6 @@ import { LangChainAdapter, LangChainStream } from 'ai';
 //     chain.invoke({
 //         input : currentMessageContent
 //     })
-//     // const messagesTruncatedVariable  = messages.slice(-6);
-//     // const embedding = await createEmbedding(
-//     //   messagesTruncatedVariable.map((messages)=>messages.content).join("\n")
-//     // )
-//     // const systemMessage : ChatCompletionMessageParam = {
-//     //   role : "system",
-//     //   content : "content here"
-//     // }
-
-
-//     // const response = await openai.chat.completions.create({
-//     //   model : "gpt-3.5-turbo",
-//     //   stream : true,
-//     //   messages : [systemMessage , ...messages]
-//     // })
-//   //   for await (const chunk of response) {
-//   //   process.stdout.write(chunk.choices[0]?.delta?.content || "");
-//   // }
-//     // const stream = OpenAIStream(response);
 //     return  new StreamingTextResponse(stream);
 //   }catch(error){
 //     console.log(error);

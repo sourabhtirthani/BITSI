@@ -97,7 +97,7 @@ export function DialogOtpAdmin({open , setOpen ,emailAddress, password} : {open 
       {/* <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
       </DialogTrigger> */}
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="sm:max-w-[425px] max-sm:max-w-fit bg-white">
         <DialogHeader>
           <DialogTitle className="flex flex-col gap-2 items-center justify-center">
             <Image src = '/icons/mail_icon.svg' height={48} width={48} alt="image" />
