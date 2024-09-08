@@ -10,6 +10,7 @@ import { useAccount, useWriteContract } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/use-toast"
 import ComboBoxPriceCurency from '@/components/ComboBoxPriceCurency';
+import { getTransactionFromHash } from '@/lib/getTransactionFromHash';
 
 const CreateCollection =  () => {
   const { push } = useRouter();
@@ -51,7 +52,11 @@ const CreateCollection =  () => {
               functionName: 'mintCollection',
               args: [idOfCollection, priceInWei],
             });
-            
+            const getRes = await getTransactionFromHash(transaction);
+            console.log(getRes);
+            if(getRes.success == false){
+              return;
+            }
             if(transaction){
         const res = await uploadCollection(formData , idOfCollection , address);
         if('success' in res && res.success){
@@ -143,7 +148,7 @@ const CreateCollection =  () => {
                 <FormRow >
                   <FormLabel htmlFor='floorPrice' className='font-montserrat text-white text-[22px] font-semibold '>Price</FormLabel>
                   <div className='flex gap-2'>
-                  <input  id='floorPrice' name='floorPrice' required type='number' step='0.01' min='0'  className='p-3 no-spinners w-full rounded' />
+                  <input  id='floorPrice' name='floorPrice' required type='number' step='0.0001' min='0'  className='p-3 no-spinners w-full rounded' />
                   <ComboBoxPriceCurency setCurrency={setCurrencyForPrice} /></div>
                   {/* {errorMessageName && <p className='text-success-517 text-[11px] font-normal'>{errorMessageName}*</p>} */}
                 </FormRow>

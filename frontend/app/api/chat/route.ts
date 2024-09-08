@@ -1,9 +1,9 @@
-// import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
-// import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
-// import {ChatOpenAI} from '@langchain/openai'
-// import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { OpenAIStream , StreamingTextResponse, AIStream, streamText } from 'ai';
+import { ChatCompletionMessage, ChatCompletionMessageParam, ChatCompletionSystemMessageParam } from 'openai/resources/index.mjs';
+import {ChatOpenAI} from '@langchain/openai'
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { NextResponse } from "next/server";
-// import { LangChainAdapter, LangChainStream } from 'ai';
+import { LangChainAdapter, LangChainStream } from 'ai';
 
 
 // export async function POST(req : Request){

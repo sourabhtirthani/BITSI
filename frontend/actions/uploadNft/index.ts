@@ -24,7 +24,7 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
       console.log('formdata null ')
       return { error: "Invalid/Missing data" };
     }
-    const nftFile = formdata.get('nftFile') as File;
+    // const nftFile = formdata.get('nftFile') as File;
     const name = formdata.get('name') as string;
     const price = parseFloat(formdata.get('price') as string);
     const collectionId = parseInt(formdata.get('collection') as string);
@@ -37,7 +37,7 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
     //   if (!Number.isFinite(royalties) || isNaN(royalties)) {
     //     return { error: "Invalid royalties format" };
     //   }
-    if (!nftFile || !name || !price || !collection) {
+    if (!name || !price || !collection) {
       console.log('in here in the insufficent data proveded clause')
       return { error: "Please fill in all the details" }
     }

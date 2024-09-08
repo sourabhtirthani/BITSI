@@ -229,8 +229,8 @@ const BitsiNft = () => {
           <div className='flex justify-between'>
             <div className='flex 2xl:mt-4  flex-col gap-3'>
               <div className='flex gap-3 mb-6'>
-              <Link target='_blank' href="https://testnets.opensea.io/collection/bitsi-nft-1"><Image src='/icons/opensea_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
-              <Link target='_blank' href="https://testnet.rarible.com/collection/0xA8e3EA5C06B1a958C20c240DF76a3861c78d2bC9/items"><Image src='/icons/rarible_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              <Link target='_blank' href="https://testnets.opensea.io/collection/bitsi-nft-2"><Image src='/icons/opensea_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              <Link target='_blank' href="https://testnet.rarible.com/collection/0xE35537fB88791314260a60347DDbb66a1ec7C177/items"><Image src='/icons/rarible_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
               </div>
           {/* <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' /> */}
           <div className='flex gap-4 2xl:mt-4 '>

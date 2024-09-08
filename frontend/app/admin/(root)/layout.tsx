@@ -17,7 +17,8 @@ export default function RootLayout({
         <div className="sm:hidden absolute">
           <SidebarAdminMob />
         </div>
-          {children}
+        <div className="max-h-screen overflow-auto scrollbar-none">
+          {children}</div>
       </div>
       <Toaster  />
       <FooterAdmin />
