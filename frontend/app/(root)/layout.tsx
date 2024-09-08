@@ -5,7 +5,7 @@ import MobileNav from "@/components/MobileNav";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster"
-// import AiChatButton from "@/components/AiChatButton";
+import AiChatButton from "@/components/AiChatButton";
 
 export default function RootLayout({
   children,
@@ -23,7 +23,7 @@ export default function RootLayout({
         {children}
         <Toaster  />
         <Footerr />
-        {/* <AiChatButton /> */}
+        <AiChatButton />
     </div>
   );
 }
