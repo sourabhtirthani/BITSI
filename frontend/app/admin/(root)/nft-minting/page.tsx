@@ -236,7 +236,8 @@ const NftMinting = () => {
                 <label htmlFor='price' className='font-montserrat mt-2 mb-2 text-white text-[22px] font-semibold '>Collection Price</label>
                 <div className='w-full flex relative'>
                 <input placeholder='Collection Price' id='price' name='price' required type='number' step='0.0001' min='0' className='p-3 no-spinners w-full rounded' />
-                <div className='text-black absolute  end-1 top-1.5 text-[24px] font-bold '>{balance?.symbol}</div></div>
+                <hr  className='border-2 end-14 border-black h-full absolute text-black'/>
+                <div className='text-black absolute bg end-1 top-1.5  text-[24px] font-bold '>{balance?.symbol ? balance?.symbol : 'N/A'}</div></div>
                 </div>
 
               <div className='flex flex-col w-1/3 max-xl:w-full'>
@@ -300,7 +301,11 @@ const NftMinting = () => {
     </svg>
     <span className="sr-only">Loading...</span>
 </div> :  
-            <button type='submit' className='text-white bg-success-508 px-4 rounded-xl py-2'>Mint Entire Colleciton</button>}
+        <>   
+        {isConnected ? 
+          <button type='submit' className='text-white font-bold bg-success-508 px-4 rounded-xl py-2'>Mint Entire Colleciton</button> : <button disabled className='text-black font-bold bg-gray-500 px-4 rounded-xl py-2'>Mint Entire Collection</button>}
+        </> 
+        }
           </div>
         </form>
       </div>
