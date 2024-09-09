@@ -69,7 +69,7 @@ const NftMinting = () => {
       // const transaction = true;
       if (transaction) {
         const getRes = await getTransactionFromHash(transaction);
-        if(getRes.success == true){
+        // if(getRes.success == true){
 
         const formData = new FormData();
         formData.append("name", collectionName.value as string);
@@ -142,9 +142,7 @@ const NftMinting = () => {
                   // const transactionOfNft = true;
                 if(transactionOfNft){
                   const resOfTransationNFt = await getTransactionFromHash(transactionOfNft);
-                  if(resOfTransationNFt.success == false){
-                    throw new Error('error uplaoding')
-                  }
+                 
                   console.log(tokenIds.length == metadataArray.length);
                   // console.log(metadataArray)
                   console.log(`the length of the token id : ${tokenIds.length}`)
@@ -163,17 +161,17 @@ const NftMinting = () => {
                           // nftsNotUploaded.push(nftNamesArray[i])
                           setNotUploaded(prev => [...prev, nftNamesArray[i]]);
                         }
-                        toast({
-                          title: "Operation Success",
-                          description: "Opereation succesfull.",
-                          duration: 2000,
-                          style: {
-                            backgroundColor: '#4CAF50',
-                            color: 'white',
-                            fontFamily: 'Manrope',
-                          },
-                        });
-                    }
+                      }
+                      toast({
+                        title: "Operation Success",
+                        description: "Opereation succesfull.",
+                        duration: 2000,
+                        style: {
+                          backgroundColor: '#4CAF50',
+                          color: 'white',
+                          fontFamily: 'Manrope',
+                        },
+                      });
                 }else{
                   // collection minted but nft transaction is cancelled
                   setLoaderSubmitBulkUploadForm(false);
@@ -195,7 +193,7 @@ const NftMinting = () => {
           console.error("No file selected");
           setLoaderSubmitBulkUploadForm(false);
         }
-      }
+      // }
       }else{
         toast({
           title: "Transaction failed",
