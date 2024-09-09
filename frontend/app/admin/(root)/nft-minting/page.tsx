@@ -9,7 +9,7 @@ import { generateRandomTokenId } from '@/lib/utils';
 import { DataOfNFtJsonAdmin } from '@/types';
 import Image from 'next/image';
 import React, { useState } from 'react'
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount, useWriteContract, useBalance } from 'wagmi';
 import { useToast } from "@/components/ui/use-toast"
 import { contractABI, contractAddress } from '@/lib/contract';
 import { AdminDialogImagesBulkNotUploaded } from '@/components/AdminDialogImagesBulkNotUploaded';
@@ -23,6 +23,7 @@ const NftMinting = () => {
   const { writeContractAsync } = useWriteContract();
   const [numberOfNFtFiles, setNumberOfNftFiles] = useState(0);
   const { address, isConnected } = useAccount();
+  const { data: balance} = useBalance({address : address});
   let tokenIds: number[] = [];
   let metadataArray: any[] = [];
   let nftImagesUrl: string[] = [];
@@ -233,7 +234,10 @@ const NftMinting = () => {
             <div className='flex justify-between max-xl:flex-col w-full gap-4'>
               <div className='flex flex-col w-1/3 max-xl:w-full'>
                 <label htmlFor='price' className='font-montserrat mt-2 mb-2 text-white text-[22px] font-semibold '>Collection Price</label>
-                <input placeholder='Collection Price' id='price' name='price' required type='number' step='0.0001' min='0' className='p-3 no-spinners w-full rounded' /></div>
+                <div className='w-full flex relative'>
+                <input placeholder='Collection Price' id='price' name='price' required type='number' step='0.0001' min='0' className='p-3 no-spinners w-full rounded' />
+                <div className='text-black absolute  end-1 top-1.5 text-[24px] font-bold '>{balance?.symbol}</div></div>
+                </div>
 
               <div className='flex flex-col w-1/3 max-xl:w-full'>
                 <label htmlFor='collectionName' className='font-montserrat mt-2 mb-2 text-white text-[22px] font-semibold '>Collection Name</label>
@@ -248,7 +252,7 @@ const NftMinting = () => {
                 <label htmlFor="collectionFile" className='w-fit h-fit'>
                   <div className='flex justify-between'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
-                      <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> Collection here</p>
+                      <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> Collection Image here</p>
                     </div>
                   </div>
                 </label>
@@ -263,7 +267,7 @@ const NftMinting = () => {
                 <label htmlFor="nftFile" className='w-fit h-fit'>
                   <div className='flex justify-between'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
-                      <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> All Nfts here</p>
+                      <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> All Nft Images here</p>
                     </div>
                   </div>
                 </label>
