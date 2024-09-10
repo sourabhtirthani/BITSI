@@ -24,6 +24,9 @@ const NftMinting = () => {
   const [numberOfNFtFiles, setNumberOfNftFiles] = useState(0);
   const { address, isConnected } = useAccount();
   const { data: balance} = useBalance({address : address});
+  const [collectionFilePreview, setCollectionFilePreview] = useState('/icons/default-nft-preview.png');
+  const [numberOfNftsUploaded , setNumberOfNftsUploaded] = useState<number>(0);
+  const [jsonFileUplaoded , setJsonFileUploaded] = useState(false);
   let tokenIds: number[] = [];
   let metadataArray: any[] = [];
   let nftImagesUrl: string[] = [];
@@ -31,10 +34,53 @@ const NftMinting = () => {
   let nftDescriptionArr : string[] = [];
   const [lengthOfNotUploadedNfts, setLengthOfNotUploadedNfts] = useState(0)
   let nftsNotUploaded : string[] = [];
-  // const [tokenIds , setTokenIds] = useState<number[]>([])
-  // const [metadataArray , setMetaDataArray] = useState<any[]>([])
-  // const [nftImagesUrl , setNftImagesUrl] = useState<string[]>([]);
   const [notUploaded, setNotUploaded] = useState<string[]>([])
+
+  const handleNFtBulkUplaodChange = (event: React.ChangeEvent<HTMLInputElement>)=>{
+    const filePre = new FileReader;
+    const number = event.target.files?.length;
+    if(number !=null){
+    setNumberOfNftFiles(number);
+    }else{
+      setNumberOfNftFiles(0);
+    }
+  }
+
+  const handleMetadataUploadChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
+    const filePre = new FileReader;
+    const file = event.target.files?.[0];
+    if(file){
+      setJsonFileUploaded(true);
+    }else{
+      setJsonFileUploaded(false);
+    }
+  }
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filePre = new FileReader;
+    const file = event.target.files?.[0];
+
+    if (file) {
+      const fileReader = new FileReader();
+      const imgURL = URL.createObjectURL(file);  // one way to preview image
+      setCollectionFilePreview(imgURL)
+      fileReader.onload = () => {
+        if (typeof fileReader.result === 'string') {  // second way to preview image..both preview and previewTemp holds the preview of the image
+          setCollectionFilePreview(fileReader.result);
+        }
+      };
+
+      fileReader.readAsDataURL(file); // Read the file as a data URL
+    }else{
+      setCollectionFilePreview('/icons/default-nft-preview.png');
+    }
+
+   
+
+  }
+
+
+
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
@@ -248,12 +294,13 @@ const NftMinting = () => {
                 <input placeholder='Collection Description' id='collectionDescription' name='collectionDescription' type='text' className='p-3 no-spinners w-full rounded' /></div>
             </div>
             <div className='flex flex-col'>
-              <input required type='file' name='collectionFile' className='hidden' id='collectionFile' accept=".jpg,.png,.svg,.gif" />
-              <div className='flex max-lg:flex-col justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
+              <input required type='file' name='collectionFile' onChange={handleOnChange} className='hidden' id='collectionFile' accept=".jpg,.png,.svg,.gif,.jpeg" />
+              <div className='flex max-lg:flex-col relative justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                 <label htmlFor="collectionFile" className='w-fit h-fit'>
                   <div className='flex justify-between'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                       <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> Collection Image here</p>
+                      <Image src={collectionFilePreview} height={110} width={110} alt='colleciton previre image'  className='absolute end-2 bottom-2 right-1 max-h-[110px] max-w-[110px]'/>
                     </div>
                   </div>
                 </label>
@@ -263,12 +310,13 @@ const NftMinting = () => {
             </div>
 
             <div className=''>
-              <input required type='file' name='nftFile' className='hidden' multiple id='nftFile' accept=".png,.jpeg,.jpg,.gif" />
-              <div className='flex max-lg:flex-col justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
+              <input onChange={handleNFtBulkUplaodChange} required type='file' name='nftFile' className='hidden' multiple id='nftFile' accept=".png,.jpeg,.jpg,.gif" />
+              <div className='flex max-lg:flex-col relative justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                 <label htmlFor="nftFile" className='w-fit h-fit'>
                   <div className='flex justify-between'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                       <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> All Nft Images here</p>
+                      <p className='absolute self-center bottom-0 text-white text-[14px] font-bold font-montserrat'>{numberOfNFtFiles} images selected</p>
                     </div>
                   </div>
                 </label>
@@ -278,12 +326,13 @@ const NftMinting = () => {
             </div>
 
             <div className=''>
-              <input required type='file' name='nftMetaData' className='hidden' id='nftMetaData' accept=".json" />
-              <div className='flex max-lg:flex-col justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
+              <input onChange={handleMetadataUploadChange} required type='file' name='nftMetaData' className='hidden' id='nftMetaData' accept=".json" />
+              <div className='flex max-lg:flex-col  justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                 <label htmlFor="nftMetaData" className='w-fit h-fit'>
-                  <div className='flex justify-between'>
+                  <div className='flex justify-between relative'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                       <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> Metadata here</p>
+                      <p className='absolute self-center bottom-0 text-white text-[14px] font-bold font-montserrat'>{jsonFileUplaoded ? <p className='text-success-531'>File Uploaded</p> : <p className='text-success-530'>No files selected</p> }</p>
                     </div>
                   </div>
                 </label>

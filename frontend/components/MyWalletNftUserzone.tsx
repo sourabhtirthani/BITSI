@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
 import { MyWalletNftUserZone, MyWalletNftUserZoneWithInsurace } from '@/types';
-
-const MyWalletNftUserzone = ({address} : {address : string}) => {
+// order filter sorts the data by date 
+const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : string , orderFilter : string , priceFilter : string}) => {
     const [dataOfNft , setDataofNft] = useState<MyWalletNftUserZone[]>([]);
     const [dataOfNftWithInsurance , setDataofNftWithInsurace] = useState<MyWalletNftUserZoneWithInsurace[]>([]);
     const [loaderState , setLoaderState] = useState(true);
@@ -41,6 +41,40 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
         }
         getNftsOFUserData();
     },[address])
+
+    useEffect(()=>{
+      const sortDataBasedOnOrderOfDate = async()=>{
+        
+
+        if(orderFilter == 'Asc Order'){
+          const sortedData = [...dataOfNftWithInsurance].sort((a, b) => new Date(a.nft_mint_time).getTime() - new Date(b.nft_mint_time).getTime());
+          setDataofNftWithInsurace(sortedData);
+        }else if(orderFilter == 'Desc Order'){
+          const sortedData = [...dataOfNftWithInsurance].sort((a, b) => new Date(b.nft_mint_time).getTime() - new Date(a.nft_mint_time).getTime());
+          setDataofNftWithInsurace(sortedData);
+        } else{
+
+        }
+      }
+      sortDataBasedOnOrderOfDate();
+
+    } , [orderFilter])
+
+    useEffect(()=>{
+      const sortDataBasedOnPrice = async()=>{
+        if(priceFilter == 'Low to High'){
+          const sortedData = [...dataOfNftWithInsurance].sort((a, b) => a.nft_price - b.nft_price);
+          setDataofNftWithInsurace(sortedData);
+
+        }else if(priceFilter == 'High to Low'){
+          const sortedData = [...dataOfNftWithInsurance].sort((a, b) => b.nft_price - a.nft_price);
+          setDataofNftWithInsurace(sortedData);
+        }else{
+
+        }
+      }
+      sortDataBasedOnPrice();
+    } , [priceFilter])
   return (
     <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -49,6 +83,8 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                   <th className='p-2 max-sm:p-1'>Date</th>
                   <th className='p-2 max-sm:p-1' >Marketplace</th>
                   <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th>
+                  <th className='p-2 max-sm:p-1'>NFT&nbsp;Name</th>
+
                   <th className='p-2 max-sm:p-1 overflow-hidden'>NFT&nbsp;Price</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
@@ -64,6 +100,7 @@ const MyWalletNftUserzone = ({address} : {address : string}) => {
                         <td className='p-2 py-5 max-sm:p-1'>{new Date(item.nft_mint_time).toDateString()}</td>
                         <td className='p-2 max-sm:p-1'>BITSI</td>
                         <td className='p-2 max-sm:p-1'>{item.id}</td>
+                        <td className='p-2 max-sm:p-1'>{item.nft_name}</td>
                         <td className='p-2 max-sm:p-1'>{item.nft_price}</td>
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration) > new Date() ? 'Yes' : 'No'}</td>
                         <td className='p-2 max-sm:p-1'>{item.coverage}</td>

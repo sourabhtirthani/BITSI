@@ -6,7 +6,7 @@
     "dev": "next dev",
     "listen": "npx ts-node ./scripts/transferListener.ts",
     "generate": "npx ts-node ./scripts/generate.ts",
-    "build": "npm run generate && prisma generate && next build",  
+    "build": "prisma generate && next build",  
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"

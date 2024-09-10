@@ -21,12 +21,14 @@ declare interface MyWalletNftUserZone {
     nft_mint_time: Date;
     is_insured: boolean;
     nft_price: number;
+    nft_name : string;
   }
   declare interface MyWalletNftUserZoneWithInsurace {
     id: number;
     nft_mint_time: Date;
     is_insured: boolean;
     nft_price: number;
+    nft_name: string;
     expiration : Date;
     soldValue : any;
     coverage : any;

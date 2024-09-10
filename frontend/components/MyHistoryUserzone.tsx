@@ -4,6 +4,7 @@ import { NftEventGet, NftEventGetInsurace } from '@/types';
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
 import { number } from 'zod';
+import { useBalance  } from 'wagmi';
 // const getData = async(address : String) : Promise<NftEventGet[] | null>=>{
 //     try{
 //         const response = await fetch(`/api/events/nfts/${address}`);
@@ -14,9 +15,10 @@ import { number } from 'zod';
 //         return 
 //     }
 // }
-export default   function  MyHistoryUserzone({address , filterValue} : {address : string , filterValue : 'NFT' | 'Coins'}){
+export default   function  MyHistoryUserzone({address , filterValue , orderFilter , priceFilter} : {address : string , filterValue : 'NFT' | 'Coins' , orderFilter : string , priceFilter : string}){
   // const [eventDetails , setEventDetails] = useState<NftEventGet[]>([])
   const [eventDetailsInsurace , setEventDetailsInsurace] = useState<NftEventGetInsurace[]>([]);
+  const { data: balance} = useBalance({address : address as '0x${string}'});
 
   const [loaderState , setLoaderState] = useState(true);
   // const [nftIds , setNftIds] = useState([])
@@ -57,6 +59,41 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
     }
     getEventDetailsData()
   } , [address])
+
+  useEffect(()=>{
+    const sortDataBasedOnOrderOfDate = async()=>{
+      
+
+      if(orderFilter == 'Asc Order'){
+        const sortedData = [...eventDetailsInsurace].sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+        setEventDetailsInsurace(sortedData);
+      }else if(orderFilter == 'Desc Order'){
+        const sortedData = [...eventDetailsInsurace].sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
+        setEventDetailsInsurace(sortedData);
+      } else{
+
+      }
+    }
+    sortDataBasedOnOrderOfDate();
+
+  } , [orderFilter])
+
+  useEffect(()=>{
+    const sortDataBasedOnPrice = async()=>{
+      if(priceFilter == 'Low to High'){
+        const sortedData = [...eventDetailsInsurace].sort((a, b) => a.nft_price - b.nft_price);
+        setEventDetailsInsurace(sortedData);
+
+      }else if(priceFilter == 'High to Low'){
+        const sortedData = [...eventDetailsInsurace].sort((a, b) => b.nft_price - a.nft_price);
+        setEventDetailsInsurace(sortedData);
+      }else{
+
+      }
+    }
+    sortDataBasedOnPrice();
+  } , [priceFilter])
+
     // let eventDetails = [];
     // try{
     //  eventDetails = await fetch(`/api/events/nfts/${address}` , {method : "GET" , next : {revalidate : 0}} ).then(res =>res.json().then(data => data as any[]));
@@ -104,9 +141,9 @@ export default   function  MyHistoryUserzone({address , filterValue} : {address 
                 <td className='p-2 max-sm:p-1'>BITSI</td>
                 <td className='p-2 max-sm:p-1'>{item.nftId}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft_event}</td>
-                <td className='p-2 max-sm:p-1'>{item.nft_price} Matic</td>
+                <td className='p-2 max-sm:p-1'>{item.nft_price} {balance?.symbol}</td>
                 <td className='p-2 max-sm:p-1'>{ new Date(item.expiration) > new Date() ? 'Yes' : 'No'}</td>
-                <td className='p-2 max-sm:p-1'>{item.coverage}</td>
+                <td className='p-2 max-sm:p-1'>{item.coverage}%</td>
                 <td className='p-2 max-sm:p-1'>{item.expiration && new Date(item.expiration).toDateString() || '-'}</td>
                 {/* <td className='p-2 max-sm:p-1'>{item.Compensation}</td> */}
                

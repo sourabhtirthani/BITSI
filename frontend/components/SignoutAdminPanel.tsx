@@ -25,7 +25,7 @@ const SignoutAdminPanel = () => {
         }
     }
   return (
-    <div><p onClick={handleClick} className='cursor-pointer text-[18px] font-manrope self-start text-white font-bold '>Signout</p></div>
+    <div><p onClick={handleClick} className='mb-7 cursor-pointer text-[18px] font-manrope self-start text-white font-bold '>Signout</p></div>
   )
 }
 

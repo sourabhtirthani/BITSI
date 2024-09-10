@@ -241,7 +241,7 @@ const MyProfile = () => {
             {/* <DropdownMyProfile insideTable={false} setValue={setNftDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
-          <MyWalletNftUserzone address = {address as string} />
+          <MyWalletNftUserzone address = {address as string} orderFilter={orderFilter} priceFilter={priceFilter} />
           </>
         )}
 
@@ -313,7 +313,7 @@ const MyProfile = () => {
             <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
-          <MyHistoryUserzone address={address as string} filterValue={filterValue}  />
+          <MyHistoryUserzone address={address as string} filterValue={filterValue} orderFilter={orderFilter} priceFilter={priceFilter}  />
           </>
         )}
         { filterValue == 'Protection' && (

@@ -18,7 +18,7 @@ export async function GET(request : Request, context :  {params : { userAddress:
             id : true,
             is_insured : true,
             nft_price : true,
-            
+            nft_name : true
           }
         });
         if(!nftsOfUser){
