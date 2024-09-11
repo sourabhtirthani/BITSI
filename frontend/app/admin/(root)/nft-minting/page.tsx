@@ -270,7 +270,7 @@ const NftMinting = () => {
       <div className='flex flex-col gap-3'>
         <p className='text-[18px] text-white font-montserrat font-bold '>Select Wallet*</p>
         <Dropdown items={nftMintingDropDown} showIcon={false} buttonName='Select Your Wallet' arrowImage='/icons/arrow-dropdown.svg' setValue={setWallet} />
-        <button className='bg-success-511 px-28 mt-8 self-end py-2 text-white font-bold text-[20px] w-fit rounded-3xl'>Mint</button>
+        {/* <button className='bg-success-511 px-28 mt-8 self-end py-2 text-white font-bold text-[20px] w-fit rounded-3xl'>Mint</button> */}
       </div>
       <div>
         <p className='font-bold text-[22px] font-manrope text-white mb-14 mt-20'>Upload Collection Image and select all the Nft images</p>
@@ -311,10 +311,10 @@ const NftMinting = () => {
 
             <div className=''>
               <input onChange={handleNFtBulkUplaodChange} required type='file' name='nftFile' className='hidden' multiple id='nftFile' accept=".png,.jpeg,.jpg,.gif" />
-              <div className='flex max-lg:flex-col relative justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
+              <div className='flex max-lg:flex-col  justify-between max-lg:gap-10  max-lg:justify-center max-lg:items-center'>
                 <label htmlFor="nftFile" className='w-fit h-fit'>
-                  <div className='flex justify-between'>
-                    <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
+                  <div className='flex  justify-between'>
+                    <div className='  border-2 relative border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                       <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> All Nft Images here</p>
                       <p className='absolute self-center bottom-0 text-white text-[14px] font-bold font-montserrat'>{numberOfNFtFiles} images selected</p>
                     </div>
@@ -332,7 +332,7 @@ const NftMinting = () => {
                   <div className='flex justify-between relative'>
                     <div className='  border-2 border-dashed px-14 max-sm:px-5 border-success-529 h-[212px] w-[400px] flex flex-col items-center justify-center max-sm:w-[212px] cursor-pointer'>
                       <p className='text-white font-mulish text-[22px] text-center text-opacity-66 '><span className='text-success-511 underline'>Upload</span> Metadata here</p>
-                      <p className='absolute self-center bottom-0 text-white text-[14px] font-bold font-montserrat'>{jsonFileUplaoded ? <p className='text-success-531'>File Uploaded</p> : <p className='text-success-530'>No files selected</p> }</p>
+                      <p className='absolute self-center bottom-0 text-white text-[14px] font-bold font-montserrat'>{jsonFileUplaoded ? <span className='text-success-531'>File Uploaded</span> : <span className='text-success-530'>No files selected</span> }</p>
                     </div>
                   </div>
                 </label>
