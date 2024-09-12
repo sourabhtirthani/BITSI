@@ -9,4 +9,8 @@ const nextConfig = {
       }
 };
 
+module.exports = {
+    generateEtags: false,
+  }
+
 export default nextConfig;
