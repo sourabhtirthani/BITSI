@@ -50,7 +50,8 @@ export const metadata: Metadata = {
     icon:'/icons/bitsi.svg'
   }
 };
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';  // this and next line is added to have no cache
+export const revalidate = 0;
 
 export default function RootLayout({
   children,
