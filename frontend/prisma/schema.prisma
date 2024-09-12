@@ -122,3 +122,16 @@ model Vectors {
   textChunk   String
   embedding   Json     
 }
+
+
+model AdminWallet {
+  id    Int    @id @default(autoincrement())
+  address  String
+  type  WalletType
+}
+
+enum WalletType {
+  MINT
+  COMPENSATION
+  OWNER
+}

@@ -9,7 +9,7 @@ import cloudinary from "@/lib/cloudinary";
 import { sendClaimAcceptRejectEmail } from "@/lib/sendEmails";
 import { uploadImage } from "@/lib/uploadToCloud";
 import { revalidatePath } from 'next/cache'
-import {hash , compare} from 'bcryptjs'
+import { hash, compare } from 'bcryptjs'
 import { signIn, signOut } from '@/auth'
 import { AuthError } from 'next-auth';
 // import formidable from 'formidable';
@@ -124,7 +124,7 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         time: dateOfNft,
         to: address,
         nftId: nft.id,
-        asset_name : 'NFT'
+        asset_name: 'NFT'
 
 
       }
@@ -571,7 +571,7 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
       },
       orderBy: {
         time: 'desc',
-      },
+      },   // check here
     });
 
     if (!latestBuyEvent) {
@@ -608,7 +608,7 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
         userAdress: userAddress,
         insuranceId: insuranceOfAsset.id,
         Status: 'Pending',
-        soldValue : Number(soldValue)
+        soldValue: Number(soldValue)
       }
     })
     return { success: true };
@@ -658,25 +658,25 @@ export const declineCompensation = async (idOfCompensation: number): Promise<dec
 type userCompensateMailSendType = { success: boolean }
 export const userCompensateMailSend = async (assetId: number, claimStatus: string, userAddress: string): Promise<userCompensateMailSendType> => {
   try {
-    if(!assetId || !claimStatus || !userAddress){
-      return {success :false}
+    if (!assetId || !claimStatus || !userAddress) {
+      return { success: false }
     }
     const userDetails = await db.user.findUnique({
-      where : {walletAddress : userAddress}
+      where: { walletAddress: userAddress }
     });
-    if(!userDetails){
-      return {success : false}
-    }else{
+    if (!userDetails) {
+      return { success: false }
+    } else {
       const userMail = userDetails.email;
       const userName = userDetails.name ?? '';
-      if(!userMail){
-        return {success : false}
+      if (!userMail) {
+        return { success: false }
       }
-      const sendMail = await sendClaimAcceptRejectEmail(userMail , claimStatus , assetId, userName);
-      if(sendMail.success == true){
-        return {success : true}
-      }else{
-        return {success : false}
+      const sendMail = await sendClaimAcceptRejectEmail(userMail, claimStatus, assetId, userName);
+      if (sendMail.success == true) {
+        return { success: true }
+      } else {
+        return { success: false }
       }
     }
   } catch (error) {
@@ -687,103 +687,103 @@ export const userCompensateMailSend = async (assetId: number, claimStatus: strin
 }
 
 type compensateClaimedType = { success: boolean }
-export const compensateClaimed = async(compensationId : number) : Promise<compensateClaimedType>=>{
-  try{
+export const compensateClaimed = async (compensationId: number): Promise<compensateClaimedType> => {
+  try {
     const updateCompensation = await db.compensation.update({
       where: { id: compensationId },
-      data: { claimed : true },
+      data: { claimed: true },
     });
-    return {success : true}
-  }catch(error){
+    return { success: true }
+  } catch (error) {
     throw new Error('error')
   }
 }
 
 type createAdminType = { success: boolean }
-export const createAdmin = async(formData : FormData):Promise<createAdminType>=>{
-  try{
+export const createAdmin = async (formData: FormData): Promise<createAdminType> => {
+  try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    if(!email || !password){
+    if (!email || !password) {
       throw new Error('Please Provide Email and Password');
     }
     const checUserExists = await db.admin.findUnique({
-      where : {email : email}
+      where: { email: email }
     })
-    if(checUserExists){
+    if (checUserExists) {
       throw new Error("User with that email already exists, please choose different email");
-    }else{
-      const hashedPassword = await hash(password , 10);
+    } else {
+      const hashedPassword = await hash(password, 10);
       await db.admin.create({
-        data : {
-          email : email,
-          password : hashedPassword
+        data: {
+          email: email,
+          password: hashedPassword
         }
       })
-      return {success : true}
+      return { success: true }
 
     }
 
 
-  }catch(error){
+  } catch (error) {
     throw new Error('error');
   }
 }
 
 type saveOtpToDbType = { success: boolean }
-export const saveOtpToDb = async (otp : string , email : string) : Promise<saveOtpToDbType>=>{
-  try{
-    if(!otp || !email){
+export const saveOtpToDb = async (otp: string, email: string): Promise<saveOtpToDbType> => {
+  try {
+    if (!otp || !email) {
       throw new Error('Please provide with all the details');
     }
     const otpHashed = await hash(otp, 10);
     await db.otp.create({
-      data : {
-        email : email, 
-        expiry : new Date(Date.now() + 10 * 60 * 1000),
-        hashedOtp : otpHashed,
+      data: {
+        email: email,
+        expiry: new Date(Date.now() + 10 * 60 * 1000),
+        hashedOtp: otpHashed,
       }
     })
-    return { success : true}
-  }catch(error){
+    return { success: true }
+  } catch (error) {
     console.log(`error saving otp to database`)
     console.log(error)
-    return {success : false}
+    return { success: false }
   }
 }
 
 type validateAdminPasswordType = { success: boolean }
-export  const validateAdminPassword = async(email : string , password : string):Promise<validateAdminPasswordType>=>{
-  try{
-    if(!email || !password){
-      return {success : false}
+export const validateAdminPassword = async (email: string, password: string): Promise<validateAdminPasswordType> => {
+  try {
+    if (!email || !password) {
+      return { success: false }
     }
     const adminExists = await db.admin.findUnique({
-      where : {email : email}
+      where: { email: email }
     })
-    if(!adminExists){
-     
-      return {success : false}
+    if (!adminExists) {
+
+      return { success: false }
     }
-    const isMatched = await compare(password , adminExists.password);
-    if(isMatched){
-     
-      return {success : true}
-    }else{
-      
-      return {success : false}
+    const isMatched = await compare(password, adminExists.password);
+    if (isMatched) {
+
+      return { success: true }
+    } else {
+
+      return { success: false }
     }
-  }catch(error){
-    return { success : false}
+  } catch (error) {
+    return { success: false }
   }
 }
 
 
 type validateOtpType = { success: boolean }
-export const validateOtp = async(otp :string , emailAddress : string) : Promise<validateOtpType>=>{
-  try{
-    if(!otp || !emailAddress){
-      return {success : false}
+export const validateOtp = async (otp: string, emailAddress: string): Promise<validateOtpType> => {
+  try {
+    if (!otp || !emailAddress) {
+      return { success: false }
     }
     const latestOtpRecord = await db.otp.findFirst({
       where: {
@@ -797,55 +797,90 @@ export const validateOtp = async(otp :string , emailAddress : string) : Promise<
       return { success: false };
     }
     const isOtpValid = await compare(otp, latestOtpRecord.hashedOtp);
-    if(isOtpValid){
-      return{success : true}
-    }else{
-      return {success : false}
+    if (isOtpValid) {
+      return { success: true }
+    } else {
+      return { success: false }
     }
 
-  }catch(error){
-    return {success : false}
+  } catch (error) {
+    return { success: false }
   }
 }
 type handleLoginForAdminType = { success: boolean }
-export const handleLoginForAdmin = async(email : string , password : string , otp : string):Promise<handleLoginForAdminType>=>{
-    
-    try{
-      if(!email || !password){
-        return {success : false};
-      }
+export const handleLoginForAdmin = async (email: string, password: string, otp: string): Promise<handleLoginForAdminType> => {
+
+  try {
+    if (!email || !password) {
+      return { success: false };
+    }
     const res = await signIn("credentials", {
-      email : email,
-      password : password,
-      otp : otp,
-      redirect : false,
+      email: email,
+      password: password,
+      otp: otp,
+      redirect: false,
       // redirect : true,
       // redirectTo : '/admin/compensation'
     })
     console.log(`the res is ${res}`)
-    return {success : true};
+    return { success: true };
     // redirect('/admin/compensation')
-  }catch(error){
+  } catch (error) {
     console.log("in the error clasuse")
     if (error instanceof AuthError) {
-			if(error.type == 'CredentialsSignin'){
+      if (error.type == 'CredentialsSignin') {
         console.log('invalid details')
-        return {success : false};
-      }else{
-        return {success : false}
+        return { success: false };
+      } else {
+        return { success: false }
       }
-		}
+    }
     console.log("in here wrong everything")
     throw error;
-		
-	}
+
   }
+}
 
 
-  export const signoutFromAdminPanel = async()=>{
-    try{
-      await signOut();
-    }catch(error){
+export const signoutFromAdminPanel = async () => {
+  try {
+    await signOut();
+  } catch (error) {
 
+  }
+}
+
+
+type CreateAdminWalletTypeType = { success: boolean }
+export const createAdminWalletType = async (address: string, walletType: string): Promise<CreateAdminWalletTypeType> => {
+  try {
+    if (walletType == "MINT" || walletType == "COMPENSATION" || walletType == "OWNER") {
+      const create = await db.adminWallet.create({
+        data: {
+          address: address,
+          type: walletType
+        }
+      })
+      return { success: true }
+    } else {
+      throw new Error('Invalid Type provided')
     }
+  } catch (error) {
+    throw new Error('Error Creating admin walet')
   }
+}
+
+type deleteAdminWalletsWithIdType = { success: boolean }
+export const deleteAdminWalletsWithId = async(id : number):Promise<deleteAdminWalletsWithIdType>=>{
+  try{
+    await db.adminWallet.delete({
+      where : {
+        id : id
+      }
+    });
+    return {success : true}
+
+  }catch(error){
+    throw new Error('Error Deleting')
+  }
+}

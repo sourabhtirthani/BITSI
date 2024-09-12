@@ -6,14 +6,15 @@ import { nftMintingDropDown } from '@/constants';
 import { generateMetadata } from '@/lib/generateMetadata';
 import { uploadImage } from '@/lib/uploadToCloud';
 import { generateRandomTokenId } from '@/lib/utils';
-import { DataOfNFtJsonAdmin } from '@/types';
+import { AdminWalletMintProps, DataOfNFtJsonAdmin } from '@/types';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount, useWriteContract, useBalance } from 'wagmi';
 import { useToast } from "@/components/ui/use-toast"
 import { contractABI, contractAddress } from '@/lib/contract';
 import { AdminDialogImagesBulkNotUploaded } from '@/components/AdminDialogImagesBulkNotUploaded';
 import { getTransactionFromHash } from '@/lib/getTransactionFromHash';
+import { DropDownAdminWalletList } from '@/components/DropDownAdminWalletList';
 
 
 const NftMinting = () => {
@@ -25,6 +26,7 @@ const NftMinting = () => {
   const { address, isConnected } = useAccount();
   const { data: balance} = useBalance({address : address});
   const [collectionFilePreview, setCollectionFilePreview] = useState('/icons/default-nft-preview.png');
+  const [allNftWallets , setAllNftWallets] = useState<AdminWalletMintProps[]>([])
   const [numberOfNftsUploaded , setNumberOfNftsUploaded] = useState<number>(0);
   const [jsonFileUplaoded , setJsonFileUploaded] = useState(false);
   let tokenIds: number[] = [];
@@ -34,7 +36,21 @@ const NftMinting = () => {
   let nftDescriptionArr : string[] = [];
   const [lengthOfNotUploadedNfts, setLengthOfNotUploadedNfts] = useState(0)
   let nftsNotUploaded : string[] = [];
-  const [notUploaded, setNotUploaded] = useState<string[]>([])
+  const [notUploaded, setNotUploaded] = useState<string[]>([]);
+
+  useEffect(()=>{
+    const getAllMintWallets = async()=>{
+      try{
+        const res = await fetch(`/api/admin/wallet-management/mint-wallets`, { method: "GET", next: { revalidate: 0 }})
+        const resInJson = await res.json();
+        setAllNftWallets(resInJson);
+      }catch(error){
+        console.log(`error fetching all the mint wallets`);
+        console.log(error)
+      }
+    }
+    getAllMintWallets();
+  }, [])
 
   const handleNFtBulkUplaodChange = (event: React.ChangeEvent<HTMLInputElement>)=>{
     const filePre = new FileReader;
@@ -269,7 +285,8 @@ const NftMinting = () => {
       </div>
       <div className='flex flex-col gap-3'>
         <p className='text-[18px] text-white font-montserrat font-bold '>Select Wallet*</p>
-        <Dropdown items={nftMintingDropDown} showIcon={false} buttonName='Select Your Wallet' arrowImage='/icons/arrow-dropdown.svg' setValue={setWallet} />
+        {/* <Dropdown items={nftMintingDropDown} showIcon={false} buttonName='Select Your Wallet' arrowImage='/icons/arrow-dropdown.svg' setValue={setWallet} /> */}
+        <DropDownAdminWalletList selectedOption={wallet} setSelectedOption={setWallet} allData={allNftWallets} />
         {/* <button className='bg-success-511 px-28 mt-8 self-end py-2 text-white font-bold text-[20px] w-fit rounded-3xl'>Mint</button> */}
       </div>
       <div>

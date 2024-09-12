@@ -1,7 +1,7 @@
 'use client'
 import { AdminDialogPayCompensationConfirm } from '@/components/AdminDialogPayCompensationConfirm'
 import { tableAdminCompensation } from '@/constants'
-import { CompensationDetails } from '@/types'
+import { AdminWalletMintProps, CompensationDetails } from '@/types'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useToast } from "@/components/ui/use-toast"
@@ -9,15 +9,32 @@ import LoaderComp from '@/components/LoaderComp'
 import { formatAddress, formatAddressUserZone } from '@/lib/utils'
 import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel'
 import { sendClaimAcceptRejectEmail } from '@/lib/sendEmails'
+import { DropDownAdminWalletList } from '@/components/DropDownAdminWalletList'
 
 
 const Compensation = () => {
-  const { toast } = useToast()
-
+    const { toast } = useToast()
+    const [allCompensationWallets , setAllCompensationWallets] = useState<AdminWalletMintProps[]>([])
     const [searchValue , setSearchValue] = useState('')
     const [loaderState ,setLoaderState] = useState(true);
     const [compensationDetails , setCompensationDetails] = useState<CompensationDetails[]>([]);
     const [historyCompensationDetails , setHistoryCompensationDetails] = useState<CompensationDetails[]>([]);
+    const [wallet ,setWallet] = useState('');
+
+    useEffect(()=>{
+      const getAllCompensatoinWallets = async()=>{
+        try{
+          const res = await fetch(`/api/admin/wallet-management/compensation-wallets`, { method: "GET", next: { revalidate: 0 }})
+          const resInJson = await res.json();
+          setAllCompensationWallets(resInJson);
+        }catch(error){
+          console.log(`error fetching all the mint wallets`);
+          console.log(error)
+        }
+      }
+      getAllCompensatoinWallets();
+    }, [])
+
     useEffect(()=>{
       const getAllCompensation = async()=>{
         try{
@@ -54,6 +71,12 @@ const Compensation = () => {
         {/* <button className='bg-white rounded-3xl font-bold text-[20px] px-5 py-2 font-manrope text-success-511 '>Connect</button> */}
         <AdminAdressButtonForAdminPanel />
     </div>
+    <div className='flex flex-col gap-3'>
+        <p className='text-[18px] text-white font-montserrat font-bold '>Select Wallet*</p>
+        {/* <Dropdown items={nftMintingDropDown} showIcon={false} buttonName='Select Your Wallet' arrowImage='/icons/arrow-dropdown.svg' setValue={setWallet} /> */}
+        <DropDownAdminWalletList selectedOption={wallet} setSelectedOption={setWallet} allData={allCompensationWallets} />
+        {/* <button className='bg-success-511 px-28 mt-8 self-end py-2 text-white font-bold text-[20px] w-fit rounded-3xl'>Mint</button> */}
+      </div>
   <div className='flex max-md:flex-col  gap-10'>
     <div className='flex justify-between max-w-screen'>
       <div className='flex '>

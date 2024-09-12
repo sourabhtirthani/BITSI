@@ -233,3 +233,17 @@ declare interface DataOfNFtJsonAdmin {
     description: string;
     image: string;
 }
+
+
+declare interface AdminWallets {
+    id: number;
+    address: string;
+    type: 'MINT' | 'COMPENSATION' | 'OWNER';
+}
+
+declare interface AdminWalletMintProps{
+    id: number;
+    address: string;
+    type ; string;
+
+}

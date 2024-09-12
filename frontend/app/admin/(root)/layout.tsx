@@ -11,7 +11,7 @@ export default function RootLayout({
     children: React.ReactNode;
   }>) {
     return (
-        <div className="flex flex-col overflow-hidden ">
+        <div className="flex flex-col overflow-hidden container-whole">
       <div className="flex bg-success-503 ">
         <Sidebar />
         <div className="sm:hidden absolute">

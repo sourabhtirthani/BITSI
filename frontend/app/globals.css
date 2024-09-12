@@ -85,6 +85,9 @@ body{
   width: 10px; 
 
 }
+.black-border {
+  border: 1px solid black;
+}
 
 .table-body::-webkit-scrollbar-track {
   background: #f1f1f1; 
