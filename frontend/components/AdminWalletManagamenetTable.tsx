@@ -17,7 +17,8 @@ const AdminWalletManagamenetTable = () => {
         const getWalletManagementAdminData = async()=>{
             try{
                 setLoaderDuringDataFetch(true);
-                const response = await fetch(`/api/admin/wallet-management`, { method: "GET", next: { revalidate: 0 }, },)
+                // const response = await fetch(`/api/admin/wallet-management`, { method: "GET", next: { revalidate: 0 }, },)
+                const response = await fetch(`/api/admin/wallet-management`, { cache: 'no-store' })
                 const resInJson = await response.json();
                 setDataOfWalletsTable(resInJson);
             }catch(error){
