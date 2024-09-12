@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 };
 export const dynamic = 'force-dynamic';  // this and next line is added to have no cache
 export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 export default function RootLayout({
   children,
