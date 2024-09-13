@@ -21,3 +21,5 @@ const WalletManagement = () => {
 }
 
 export default WalletManagement
+
+export const dynamic = "force-dynamic";
