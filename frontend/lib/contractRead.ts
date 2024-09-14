@@ -2,6 +2,7 @@ import { useAccount, useWriteContract , useReadContract , UseReadContractReturnT
 import { contractABI, contractAddress } from "@/lib/contract"
 import { readContract } from '@wagmi/core'
 import { config } from '@/config'
+import { insuraceContractAddress, insuranceContractABI } from "./insuranceContract"
 
 export const readAddressFromContract =async(fnctnName : string) =>{
     const addressFromContract = await readContract(config , {
@@ -10,4 +11,14 @@ export const readAddressFromContract =async(fnctnName : string) =>{
         functionName: fnctnName
     })
     return addressFromContract;
+}
+
+
+export const readInsuranceContractParamentes = async(fnctnName : string) =>{
+    const dataFromContract = await readContract(config , {
+        abi : insuranceContractABI,
+        address : insuraceContractAddress,
+        functionName : fnctnName
+    })
+    return dataFromContract;
 }
