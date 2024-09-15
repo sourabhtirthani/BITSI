@@ -10,7 +10,7 @@ import { AdminDeleteSelectedWallet } from './AdminDeleteSelectedWallet'
 
 const AdminWalletManagamenetTable = () => {
     const { toast } = useToast();
-    const [dataOfWalletsTable , setDataOfWalletsTable] = useState<AdminWallets[]>()
+    const [dataOfWalletsTable , setDataOfWalletsTable] = useState<AdminWallets[]>([])
     const [refresh, setRefresh] = useState(false);
     const [loaderDuringDataFetch , setLoaderDuringDataFetch] = useState(true);
     useEffect(()=>{
@@ -43,7 +43,7 @@ const AdminWalletManagamenetTable = () => {
       </thead>
       <tbody className='overflow-y-auto overflow-x-auto'>
        
-        {!loaderDuringDataFetch &&  dataOfWalletsTable && dataOfWalletsTable.map((item, index) => {
+        {!loaderDuringDataFetch &&  Array.isArray(dataOfWalletsTable) && dataOfWalletsTable.map((item, index) => {
           return (
             <React.Fragment key={index}>
                 
