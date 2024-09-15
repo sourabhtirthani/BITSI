@@ -13,6 +13,11 @@ export default auth((req) => {
   //       console.log('this is the admin home ');
   //       return Response.redirect(new URL('/admin', nextUrl));
   //     }
+
+  if(req.nextUrl.pathname.startsWith('/api/admin') && !isAuthenticated){
+    // console.log('in here in teh middleware api')
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   if(req.nextUrl.pathname.startsWith('/admin') && !isAuthenticated){
     return Response.redirect(new URL('/admin', nextUrl));
   }
@@ -20,7 +25,7 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ['/admin/compensation' , '/api/admin/:path*' , '/admin/analytic-dashboard' , '/admin/wallet-management' , '/admin/prices'
+  matcher: ['/admin/compensation' ,  '/api/admin/:path*' , '/admin/analytic-dashboard' , '/admin/wallet-management' , '/admin/prices'
     , '/admin/minting' , '/admin/nft-minting', '/admin/coin-minting', '/admin/coin-insurance', '/admin/nft-insurance', '/admin/views-and-analysis' , '/admin/coin-parameters'
   ], 
 };
