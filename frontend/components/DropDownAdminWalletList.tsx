@@ -31,7 +31,7 @@ export function DropDownAdminWalletList({selectedOption , setSelectedOption , al
         <DropdownMenuLabel>Available Wallets</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={selectedOption} onValueChange={setSelectedOption}>
-            {allData.map((item , index)=>{
+            {Array.isArray(allData) && allData && allData.map((item , index)=>{
                 return (
                     <DropdownMenuRadioItem className="max-md:text-[12px]" value={item.address} key={index}>{item.address}</DropdownMenuRadioItem>
                 )
