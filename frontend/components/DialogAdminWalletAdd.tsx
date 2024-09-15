@@ -40,8 +40,9 @@ export function DialogAdminWalletAdd({ setRefresh }: { setRefresh: React.Dispatc
             const formData = new FormData(event.currentTarget);
             const addressWallet = formData.get("address") as string;
             const walletType = formData.get("walletType") as string;
+            const walletName = formData.get("walletName") as string;
             const checkedMainWallet = formData.get("mainWallet") as string;
-            if(!addressWallet || !walletType){
+            if(!addressWallet || !walletType || !walletName){
                 toast({ title: "Incomplete details", description: 'Please fill in all the details to conitnue', duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }, });
                 setLoaderForSubmitButton(false);
                 return;
@@ -69,7 +70,7 @@ export function DialogAdminWalletAdd({ setRefresh }: { setRefresh: React.Dispatc
                       await getTransactionFromHash(transaction);
                 }
             }
-            const updateDbWithWallets = await createAdminWalletType(addressWallet, walletType);
+            const updateDbWithWallets = await createAdminWalletType(addressWallet, walletType , walletName);
             setRefresh(prev => !prev);
             setOpen(false)
             toast({ title: "Operation Success", description: "Successfully added new Wallet", duration: 2000, style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope', } });
@@ -92,6 +93,18 @@ export function DialogAdminWalletAdd({ setRefresh }: { setRefresh: React.Dispatc
                 </DialogHeader>
                 <form onSubmit={handleFormSubmit}>
                     <div className="grid gap-4 py-4 font-manrope font-bold">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="walleName" className="text-right font-manrope font-bold">
+                                Wallet Name
+                            </Label>
+                            <Input
+                                id="walletName"
+                                name="walletName"
+                                required
+                                className="col-span-3"
+                            />
+                        </div>
+
                         <div className="grid grid-cols-4 items-center gap-4">
                             <Label htmlFor="Wallet Address" className="text-right font-manrope font-bold">
                                 Wallet Address

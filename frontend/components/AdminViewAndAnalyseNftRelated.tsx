@@ -53,7 +53,7 @@ const AdminViewAndAnalyseNftRelated = ({searchValue} : {searchValue : string}) =
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
-                {loaderInitial == false && filteredNftRelatedEvents.map((item, index) => {
+                {loaderInitial == false && Array.isArray(filteredNftRelatedEvents) &&  filteredNftRelatedEvents.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
                       <tr className=' w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>

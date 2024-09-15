@@ -852,13 +852,14 @@ export const signoutFromAdminPanel = async () => {
 
 
 type CreateAdminWalletTypeType = { success: boolean }
-export const createAdminWalletType = async (address: string, walletType: string): Promise<CreateAdminWalletTypeType> => {
+export const createAdminWalletType = async (address: string, walletType: string , walletName : string): Promise<CreateAdminWalletTypeType> => {
   try {
     if (walletType == "MINT" || walletType == "COMPENSATION" || walletType == "OWNER") {
       const create = await db.adminWallet.create({
         data: {
           address: address,
-          type: walletType
+          type: walletType,
+          name : walletName
         }
       })
       return { success: true }

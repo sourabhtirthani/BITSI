@@ -102,7 +102,7 @@ const Compensation = () => {
           </thead>
           <tbody className='overflow-y-auto '>
            
-            {loaderState == false && compensationDetails.map((item, index) => {
+            {loaderState == false && Array.isArray(compensationDetails) && compensationDetails.map((item, index) => {
               return (
                 <React.Fragment key={index}>
                     

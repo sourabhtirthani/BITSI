@@ -31,11 +31,15 @@ const AdminWalletManagamenetTable = () => {
         getWalletManagementAdminData();
     } , [refresh])
   return (
+    <div className='flex flex-col w-full'>
+      <div className=' flex flex-col  mb-2'>
+      <DialogAdminWalletAdd setRefresh={setRefresh} />
+    </div>
     <div className='max-h-[500px]  px-8 max-md:px-4 w-full overflow-y-auto overflow-x-auto scrollbar-thin   mb-20 table-'>
     <table className='w-full text-left mt-4 border-spacing-20  '>
       <thead className='text-black text-center bg-white  font-semibold font-manrope text-[22px] max-sm:text-[10px]   '>
         <tr>
-          <th className='p-2 max-sm:p-1'>Wallet Id</th>
+          <th className='p-2 max-sm:p-1'>Wallet Name</th>
           <th className='p-2 max-sm:p-1'>Wallet Address</th>
           <th className='p-2 max-sm:p-1' >Wallet Type</th>
           <th className='p-2 max-sm:p-1' >Action</th>
@@ -48,7 +52,7 @@ const AdminWalletManagamenetTable = () => {
             <React.Fragment key={index}>
                 
               <tr className='   text-white text-center font-montserrat text-[18px] max-sm:text-[8px] font-semibold'>
-                <td className='p-2 max-sm:p-1 border-2 border-gray-600'>{item.id}</td>
+                <td className='p-2 max-sm:p-1 border-2 border-gray-600'>{item.name}</td>
                 <td className='p-2 max-sm:p-1 border-2 border-r-0  border-gray-600'>{item.address}</td>
                 <td className='p-2 max-sm:p-1 border-2 border-r-0  border-gray-600'>{item.type}</td>
                 <td className='p-2 max-sm:p-1 border-2 border-l-0 border-gray-600'><AdminDeleteSelectedWallet setRefresh={setRefresh} walletId={item.id} /></td>
@@ -60,17 +64,16 @@ const AdminWalletManagamenetTable = () => {
             </React.Fragment>
           )
         })}
-        <tr >
+        {/* <tr >
             <td></td>
             <td ></td>
-        </tr>
+        </tr> */}
       </tbody>
     </table>
       {loaderDuringDataFetch && <LoaderComp />}
 
-    <div className=' flex flex-col  mt-4 mb-2'>
-      <DialogAdminWalletAdd setRefresh={setRefresh} />
-    </div>
+  </div>
+    
   </div>
   )
 }

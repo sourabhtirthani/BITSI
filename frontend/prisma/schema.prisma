@@ -127,6 +127,7 @@ model Vectors {
 model AdminWallet {
   id    Int    @id @default(autoincrement())
   address  String
+  name     String   
   type  WalletType
 }
 

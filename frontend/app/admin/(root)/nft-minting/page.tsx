@@ -276,7 +276,6 @@ const NftMinting = () => {
       setLoaderSubmitBulkUploadForm(false);
     }
   };
-
   return (
     <div className='p-8 max-md:p-4 w-full'>
       <div className='flex justify-between mb-14 max-md:mb-7 items-center'>

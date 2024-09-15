@@ -239,11 +239,13 @@ declare interface AdminWallets {
     id: number;
     address: string;
     type: 'MINT' | 'COMPENSATION' | 'OWNER';
+    name : string;
 }
 
 declare interface AdminWalletMintProps{
     id: number;
     address: string;
-    type ; string;
+    type : string;
+    name : string;
 
 }
