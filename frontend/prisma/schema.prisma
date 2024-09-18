@@ -80,6 +80,7 @@ model Insurance {
   nft                   Nft       @relation(fields: [nftId], references: [id])
   currentOwner          String?
   compensation          Compensation[]
+  is_extended           Boolean   @default(false)
 }
 
 

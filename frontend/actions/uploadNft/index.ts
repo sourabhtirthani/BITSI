@@ -885,3 +885,64 @@ export const deleteAdminWalletsWithId = async(id : number):Promise<deleteAdminWa
     throw new Error('Error Deleting')
   }
 }
+
+type purchaseInsuranceType = { success: boolean }
+export const purchaseInsurance = async(assetId : number) : Promise<purchaseInsuranceType>=>{
+  try{  
+    const currentDate = new Date();
+    const expirationDate = new Date();
+    expirationDate.setFullYear(currentDate.getFullYear() + 2);
+    await db.insurance.update({
+      where: { nftId: assetId },
+      data: {
+        expiration: expirationDate,
+        active: true, 
+      }
+    });
+
+    await db.nft.update({
+      where: { id: assetId },
+      data: {
+        is_insured: true
+      }
+    });
+    return {success : true}
+
+  }catch(error){
+    throw new Error("Error purchasing nfts")
+  }
+}
+
+
+type ExtendInsuranceType = { success: boolean }
+export const extendInsurance = async (assetId: number): Promise<ExtendInsuranceType> => {
+  try {
+   
+    const currentInsurance = await db.insurance.findUnique({
+      where: { nftId: assetId }
+    });
+
+    if (!currentInsurance) {
+      throw new Error('Insurance record not found');
+    }
+
+    const currentExpirationDate = new Date(currentInsurance.expiration);
+    const newExpirationDate = new Date(currentExpirationDate);
+    newExpirationDate.setFullYear(currentExpirationDate.getFullYear() + 1); 
+
+    
+    await db.insurance.update({
+      where: { nftId: assetId },
+      data: {
+        expiration: newExpirationDate,
+        is_extended: true
+      }
+    });
+
+    return { success: true };
+
+  } catch (error) {
+    console.error('Error updating insurance expiration:', error);
+    throw new Error('Error updating data');
+  }
+}

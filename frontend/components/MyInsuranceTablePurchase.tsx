@@ -2,19 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
 import { NftDataWithInsurace } from '@/types';
+import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 // order filter sorts the data by date 
-const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : string , orderFilter : string , priceFilter : string}) => {
+const MyInsuraceTablePurchase = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
-    const [dataOfNftUserZone , setDataOfNftUserZone] = useState<NftDataWithInsurace[]>([])
-
+    const [dataOfNftUserZonePurchase , setDataOfNftUserZonePurchase] = useState<NftDataWithInsurace[]>([])
+    const [refresh , setRefresh] =useState(false);
     useEffect(()=>{
       const getDataOfNftOnLoad = async()=>{
         try{
           if(address){
-            const responseFromServer = await  fetch(`/api/userzone/nfts/user/${address}`, { method: "GET", next: { revalidate: 0 }})
+            const responseFromServer = await  fetch(`/api/userzone/insurance/purchase/${address}`, { method: "GET", next: { revalidate: 0 }})
             const resInJson = await responseFromServer.json();
-            setDataOfNftUserZone(resInJson);
-
+            setDataOfNftUserZonePurchase(resInJson);
           }
           setLoaderState(false)
         }catch(error){
@@ -22,41 +22,8 @@ const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : 
         }
       }
       getDataOfNftOnLoad();
-    }, [address])
+    }, [address , refresh])
 
-    useEffect(()=>{
-      const sortDataBasedOnOrderOfDate = async()=>{
-        
-
-        if(orderFilter == 'Asc Order'){
-          const sortedData = [...dataOfNftUserZone].sort((a, b) => new Date(a.nft_mint_time).getTime() - new Date(b.nft_mint_time).getTime());
-          setDataOfNftUserZone(sortedData);
-        }else if(orderFilter == 'Desc Order'){
-          const sortedData = [...dataOfNftUserZone].sort((a, b) => new Date(b.nft_mint_time).getTime() - new Date(a.nft_mint_time).getTime());
-          setDataOfNftUserZone(sortedData);
-        } else{
-
-        }
-      }
-      sortDataBasedOnOrderOfDate();
-
-    } , [orderFilter])
-
-    useEffect(()=>{
-      const sortDataBasedOnPrice = async()=>{
-        if(priceFilter == 'Low to High'){
-          const sortedData = [...dataOfNftUserZone].sort((a, b) => a.nft_price - b.nft_price);
-          setDataOfNftUserZone(sortedData);
-
-        }else if(priceFilter == 'High to Low'){
-          const sortedData = [...dataOfNftUserZone].sort((a, b) => b.nft_price - a.nft_price);
-          setDataOfNftUserZone(sortedData);
-        }else{
-
-        }
-      }
-      sortDataBasedOnPrice();
-    } , [priceFilter])
   return (
     <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
             <table className='w-full text-left mt-4 border-spacing-20'>
@@ -71,10 +38,11 @@ const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : 
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Purchase</th>
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
-                {dataOfNftUserZone && Array.isArray(dataOfNftUserZone) && dataOfNftUserZone.map((item, index) => {
+                {dataOfNftUserZonePurchase && Array.isArray(dataOfNftUserZonePurchase) && dataOfNftUserZonePurchase.map((item, index) => {
                   return (
                     <React.Fragment key={index}>
                       <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -87,6 +55,7 @@ const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : 
                         <td className='p-2 max-sm:p-1'>{new Date(item.insurance?.expiration ?? 0) > new Date() ? 'Yes' : 'No'}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.coverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.expiration && new Date(item.insurance.expiration).toDateString() || '-'}</td>
+                        <td className='p-2 max-sm:p-1'><DialogUserZoneProtection action='purchase' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td>
                         {/* <td>
                         <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>
@@ -99,9 +68,12 @@ const MyWalletNftUserzone = ({address , orderFilter , priceFilter} : {address : 
               </tbody>
 
             </table>
+                {dataOfNftUserZonePurchase.length == 0 && loaderState == false && (
+                    <div className='text-success-511 w-full font-bold flex justify-center mt-10 self-center'>NO DATA FOUND</div>
+                )}
             {loaderState == true &&<LoaderComp /> }
           </div>
   )
 }
 
-export default MyWalletNftUserzone
+export default MyInsuraceTablePurchase

@@ -56,7 +56,7 @@ const MyProfile = () => {
     // searchParams.forEach((value) => {
     //   selectedItems.push(value);
     // });
-    const filterVal = searchParams.get('ysldef')
+    const filterVal = searchParams.get('protection')
 
     if(filterVal){
       setFilterValue(filterVal)

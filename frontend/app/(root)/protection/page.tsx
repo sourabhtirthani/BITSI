@@ -4,6 +4,7 @@ import InsuraceContactUsBtn from '@/components/InsuraceContactUsBtn';
 import Link from 'next/link';
 import { ToolTipHoverEffect } from '@/components/TooltipHoverEffect';
 import { DialogInsuranceOptions } from '@/components/DialogInsuranceOptions';
+import InsuranceButtonsRedirect from '@/components/InsuranceButtonsRedirect';
 
 
 const Insurance = () => {
@@ -39,17 +40,22 @@ const Insurance = () => {
                 {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Purchase' hoverInfo='purchase an nft' /></Link> */}
                 {/* <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Policy' hoverInfo='Policy info' /></Link> */}
                 {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Extend' hoverInfo='extend infortmation' /></Link> */}
-                <DialogInsuranceOptions  helpText='Buy a New Insurance Policy' buttonName='Purchase' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                {/* <DialogInsuranceOptions  helpText='Buy a New Insurance Policy' buttonName='Purchase' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
+                <InsuranceButtonsRedirect redirectTo='/my-profile?protection=Purchase'  helpText='Buy a New Insurance Policy' buttonName='Purchase'  />
+                <InsuranceButtonsRedirect redirectTo='/my-profile?protection=Upgrade'  helpText='Increase the coverage of your existing insurance policy' buttonName='Upgrade'  />
+                <InsuranceButtonsRedirect redirectTo='/my-profile?protection=Extend'  helpText='Extend the duration of your existing insurance policy' buttonName='Extend'  />
                 {/* <DialogInsuranceOptions helpText='sample help text here' buttonName='Policy' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
-                <DialogInsuranceOptions helpText='Increase the coverage of your existing insurance policy' buttonName='Upgrade' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
-                <DialogInsuranceOptions helpText='Extend the duration of your existing insurance policy' buttonName='Extend' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                {/* <DialogInsuranceOptions helpText='Increase the coverage of your existing insurance policy' buttonName='Upgrade' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
+                {/* <DialogInsuranceOptions helpText='Extend the duration of your existing insurance policy' buttonName='Extend' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
                 </div>
                 <div className='max-sm:gap-3 gap-10 flex'>
+                <InsuranceButtonsRedirect redirectTo='/my-profile?protection=Claim'  helpText='File a claim to receive compensation for a loss'  buttonName='Claim'  />
+                <InsuranceButtonsRedirect redirectTo='/my-profile?protection=Unlock'  helpText='Unlock compensation coins' buttonName='Unlock'  />
                 {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Claim' hoverInfo='Claim infortmation' /></Link> */}
                 {/* <Link href='/terms-and-conditions'><ToolTipHoverEffect btnName='Upgrade' hoverInfo='upgrade infortmation' /></Link> */}
                 {/* <Link href='/terms-and-conditions'> <ToolTipHoverEffect btnName='Unlock' hoverInfo='unlock infortmation' /></Link> */}
-                <DialogInsuranceOptions helpText='File a claim to receive compensation for a loss' buttonName='Claim' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
-                <DialogInsuranceOptions helpText='Unlock compensation coins' buttonName='Unlock' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' />
+                {/* <DialogInsuranceOptions helpText='File a claim to receive compensation for a loss' buttonName='Claim' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
+                {/* <DialogInsuranceOptions helpText='Unlock compensation coins' buttonName='Unlock' redirectTo={['Coin' , 'NFTs' , '' ,'']} nameOfClass='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance' /> */}
                 </div>
             </div>
             {/* <div className='md:self-center mt-14 max-md:mt-10 gap-10 flex max-lg:flex-col'>

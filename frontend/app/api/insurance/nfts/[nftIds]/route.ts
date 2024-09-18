@@ -17,9 +17,9 @@ try{
             nftId :{  in: nftIdNumbers,}
         },
     })
-    if(!insurances){
-        return NextResponse.json({message : 'NO EVENTS FOUND'} , {status : 404});
-      }
+    // if(!insurances){
+    //     return NextResponse.json({message : 'NO EVENTS FOUND'} , {status : 404});
+    //   }
     return NextResponse.json(insurances, { status: 200 });
 }catch(error){
     return NextResponse.json({ error : 'Internal server error' }, { status: 500 })
