@@ -19,7 +19,7 @@ const InsuranceButtonsRedirect = ({buttonName ,helpText , redirectTo} : { button
   return (
     <div className="relative" onMouseEnter={() => setHoverOn(true)} 
     onMouseLeave={() => setHoverOn(false)}>
-    {hoverOn && <div className=" max-md:hidden absolute secondary-shadow11 -left-14 w-[250px] max-md:w-[0px] max-md:h-[0px] bottom-14 text-center shadow-md font-mono font-bold rounded-3xl py-2 px-4 w bg-white cursor-ponter"><p className="inline-block">{helpText}</p></div>}
+    {hoverOn && <div className=" max-md:hidden absolute  -left-14 w-[250px] max-md:w-[0px] max-md:h-[0px] bottom-10 text-center shadow-md bg-transparent font-mono font-bold rounded-3xl py-2 px-4 w text-white cursor-ponter"><p className="inline-block">{helpText}</p></div>}
     {isConnected ?  <Link href = {redirectTo} className='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance'>{buttonName}</Link> : 
   <button onClick={handleWalletNotConnected} className='bg-white text-black text-[22px] py-2 max-sm:py-1  px-5 max-sm:px-2 font-semibold rounded-3xl font-manrope add-hover-button-insurance'>{buttonName}</button>}
   </div>

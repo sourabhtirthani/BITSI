@@ -70,7 +70,7 @@ model User {
 
 model Insurance {
   id                    Int       @id @default(autoincrement())
-  coverage              Int       @default(100)
+  coverage              Float
   startTime             DateTime  @default(now())
   expiration            DateTime
   active                Boolean

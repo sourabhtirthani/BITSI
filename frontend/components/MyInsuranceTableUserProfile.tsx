@@ -6,6 +6,7 @@ import MyInsuranceTableClaim from './MyInsuranceTableClaim'
 import MyInsuraceTablePurchase from './MyInsuranceTablePurchase'
 import { useAccount } from 'wagmi'
 import MyInsuranceTableExtend from './MyInsuranceTableExtend'
+import MyInsuranceTableUpgrade from './MyInsuranceTableUpgrade'
 const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => {
   const [insuraceFilter , setInsuranceFilter] = useState('')
   const {address} = useAccount();
@@ -18,6 +19,7 @@ const MyInsuranceTableUserProfile = ({filterValue} : {filterValue : string}) => 
     {filterValue == 'Claim' && <MyInsuranceTableClaim />}
     {filterValue == 'Purchase' && <MyInsuraceTablePurchase address={address as string} />}
     {filterValue == 'Extend' && <MyInsuranceTableExtend address={address as string} />}
+    {filterValue == 'Upgrade' && <MyInsuranceTableUpgrade address={address as string} />}
     </>
   )
 }

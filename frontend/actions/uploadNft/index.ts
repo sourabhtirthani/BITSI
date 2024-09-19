@@ -13,7 +13,7 @@ import { hash, compare } from 'bcryptjs'
 import { signIn, signOut } from '@/auth'
 import { AuthError } from 'next-auth';
 // import formidable from 'formidable';
-
+//line 890 recheck
 
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
@@ -138,7 +138,8 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         startTime: dateOfNft,
         expiration: expirationDate,
         nftId: idOfNft,
-        currentOwner: address
+        currentOwner: address,
+        coverage : price,
       }
     })
     revalidatePath('/api/nfts');
@@ -886,6 +887,7 @@ export const deleteAdminWalletsWithId = async(id : number):Promise<deleteAdminWa
   }
 }
 
+// change this as well
 type purchaseInsuranceType = { success: boolean }
 export const purchaseInsurance = async(assetId : number) : Promise<purchaseInsuranceType>=>{
   try{  
@@ -895,6 +897,7 @@ export const purchaseInsurance = async(assetId : number) : Promise<purchaseInsur
     await db.insurance.update({
       where: { nftId: assetId },
       data: {
+        is_extended : false,
         expiration: expirationDate,
         active: true, 
       }
@@ -944,5 +947,30 @@ export const extendInsurance = async (assetId: number): Promise<ExtendInsuranceT
   } catch (error) {
     console.error('Error updating insurance expiration:', error);
     throw new Error('Error updating data');
+  }
+}
+
+type UpgradeInsuraceType = { success: boolean }
+export const upgradeInsurace = async(assetId: number) : Promise<UpgradeInsuraceType>=>{
+  try{
+    const nft = await db.nft.findUnique({
+      where: { id: assetId },
+      select: { nft_price: true }
+    });
+
+    if (!nft) {
+      throw new Error('NFT not found');
+    }
+
+    const updatedInsurance = await db.insurance.updateMany({
+      where: { nftId: assetId },
+      data: { coverage: nft.nft_price }
+    });
+
+    return {success : true}
+  }catch(error){
+    console.log(`error upgrading insurace`)
+    console.log(error)
+    throw new Error('error upgrading insurance');
   }
 }

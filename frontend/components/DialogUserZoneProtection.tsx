@@ -16,7 +16,7 @@ import { useAccount, useWriteContract } from "wagmi"
 import { readAddressFromContract } from "@/lib/contractRead"
 import { contractABI, contractAddress } from "@/lib/contract"
 import { getTransactionFromHash } from "@/lib/getTransactionFromHash"
-import { extendInsurance, purchaseInsurance } from "@/actions/uploadNft"
+import { extendInsurance, purchaseInsurance, upgradeInsurace } from "@/actions/uploadNft"
 
 export function DialogUserZoneProtection({ setRefresh , assetId , assetName, action }: { setRefresh: React.Dispatch<React.SetStateAction<boolean>> , assetId:number , assetName : string, action : string }) {
     const { writeContractAsync } = useWriteContract()
@@ -59,6 +59,23 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
         }
     }
 
+
+    const handleBuyUpgrade = async()=>{
+        try{
+            setLoaderBuy(true);
+            const res = await upgradeInsurace(assetId);
+            toast({ title: "Operation Success", description: "Successfully Upgraded Policy", duration: 2000,style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope',},});
+            setRefresh(prev => !prev);
+        }catch(error){
+            console.log(error);
+            toast({ title: "Error", description: "Error Upgrading Insurace", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
+            console.log(error);
+        }finally{
+            setLoaderBuy(false);
+            setOpen(false);
+        }
+    }
+
     return (
         <Dialog open={open} onOpenChange={setOpen} >
             <DialogTrigger asChild >
@@ -91,6 +108,23 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
                 <DialogFooter>
             <div className="flex gap-6 text-[20px]  text-black font-bold ">
          <button onClick={handleBuyInsurancePolicy} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-success-531'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
+         <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">Cancel</button>
+           
+            </div>
+        </DialogFooter>
+            </DialogContent>
+            </>}
+
+            {action =='upgrade' && <>
+            <DialogContent className="sm:max-w-[425px]  bg-white font-mulish font-bold">
+                <DialogHeader>
+                    <DialogTitle className="font-manrope">Upgrade Insurance Policy</DialogTitle>
+                </DialogHeader>
+                <DialogDescription>Upgrading the insurance policy will result in the asset&apos;s coverage being set to 100%</DialogDescription>
+                <DialogDescription>Do you wish to purchase coverage policy for {assetName} - ({assetId})?</DialogDescription>
+                <DialogFooter>
+            <div className="flex gap-6 text-[20px]  text-black font-bold ">
+         <button onClick={handleBuyUpgrade} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-success-531'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
          <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">Cancel</button>
            
             </div>
