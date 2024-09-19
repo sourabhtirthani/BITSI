@@ -19,7 +19,7 @@ const Navbar = () => {
   const {address , isConnected} = useAccount();
   const { open } = useWeb3Modal();
   const handleConnect = async () => {
-    try {
+    try { 
       await open();
 
       
