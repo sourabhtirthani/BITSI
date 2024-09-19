@@ -18,7 +18,7 @@ export const buyEvent = async(from , to , time , price, nftId)=>{
 
      await client.query(insertQuery);
      await client.query(insertQuerySold);
-    const updateQuery = `UPDATE "Nft" SET nft_owner_address = '${to}', up_for_sale = false WHERE id = ${nftId};`;
+    const updateQuery = `UPDATE "Nft" SET nft_owner_address = '${to}', up_for_sale = false , nft_price = ${price} WHERE id = ${nftId};`;
      await client.query(updateQuery);
 
       const updateInsuraceQuery = `UPDATE "Insurance"  SET "soldValue" = ${price} , "currentOwner" = ${to} WHERE "nftId" = ${nftId};`
