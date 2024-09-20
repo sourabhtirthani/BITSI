@@ -79,7 +79,7 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
     return (
         <Dialog open={open} onOpenChange={setOpen} >
             <DialogTrigger asChild >
-                <button className='text-success-511 max-sm:text-[12px] hover:underline w-fit cursor-pointer px-4 font-semibold font-manrope text-[16px]'>Buy Policy</button>
+                <button className='text-success-511 max-sm:text-[12px] hover:underline w-fit cursor-pointer px-4 font-semibold font-manrope text-[16px]'>{action == 'extend' && 'Extend'} {action == 'upgrade' && 'Upgrade'} {action =='purchase' && 'Purchase'} Policy</button>
             </DialogTrigger>
             {action =='extend' && <>
             <DialogContent className="sm:max-w-[425px]  bg-white font-mulish font-bold">
@@ -90,8 +90,8 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
                 <DialogDescription>Do you wish to extend insurance policy for {assetName} - ({assetId})?</DialogDescription>
                 <DialogFooter>
             <div className="flex gap-6 text-[20px]  text-black font-bold ">
-         <button onClick={handleExtendInsuracePolicy} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-success-531'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
-         <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">Cancel</button>
+         <button onClick={handleExtendInsuracePolicy} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-green-600'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
+         <button onClick={handleDecline}  className="bg-red-600 px-8 rounded-xl">Cancel</button>
            
             </div>
         </DialogFooter>
@@ -107,8 +107,8 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
                 <DialogDescription>Do you wish to purchase insurance policy for {assetName} - ({assetId})?</DialogDescription>
                 <DialogFooter>
             <div className="flex gap-6 text-[20px]  text-black font-bold ">
-         <button onClick={handleBuyInsurancePolicy} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-success-531'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
-         <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">Cancel</button>
+         <button onClick={handleBuyInsurancePolicy} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-green-600'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
+         <button onClick={handleDecline}  className="bg-red-600 px-8 rounded-xl">Cancel</button>
            
             </div>
         </DialogFooter>
@@ -124,8 +124,8 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
                 <DialogDescription>Do you wish to purchase coverage policy for {assetName} - ({assetId})?</DialogDescription>
                 <DialogFooter>
             <div className="flex gap-6 text-[20px]  text-black font-bold ">
-         <button onClick={handleBuyUpgrade} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-success-531'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
-         <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">Cancel</button>
+         <button onClick={handleBuyUpgrade} className={`${loaderBuy == true ? 'disabled: bg-gray-400' : 'bg-green-600'}  w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Buy'}</button>
+         <button onClick={handleDecline}  className="bg-red-600 px-8 rounded-xl">Cancel</button>
            
             </div>
         </DialogFooter>

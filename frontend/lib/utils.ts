@@ -22,9 +22,9 @@ export const generateQueryString = (checkedItems: string[]): string => {
 
 
 export const uploadNftformSchema  = z.object({
-  // email: z.string().email(),
   nftFile: z
-    .instanceof(File)
+    // .instanceof(File)
+    .any()
     .refine((file) => {
       const allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'mp4', 'gif'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
