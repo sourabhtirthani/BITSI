@@ -53,14 +53,15 @@ contract BITSINFT is ERC721URIStorage, Ownable {
         nfts[tokenId].collectionId=collectionId;
         nftInsurance.purchasePolicy(tokenId,collections[collectionId].price);
     }
-    function mintBulk(uint256 collectionId, string[] memory tokenURI,uint256[] calldata tokenId ) external onlyOwner  {
+    
+    function mintBulk(address to,uint256 collectionId, string[] memory tokenURI,uint256[] calldata tokenId ) external onlyOwner  {
        
         require(collectionExists[collectionId], "Collection does not exist");
         // Mint the NFT in bulk 
         for (uint256 i = 0; i < tokenId.length; i++) {
-            _safeMint(msg.sender, tokenId[i]);
+            _safeMint(to, tokenId[i]);
             _setTokenURI(tokenId[i], tokenURI[i]);
-            nfts[tokenId[i]].owner=msg.sender;
+            nfts[tokenId[i]].owner=to;
             nfts[tokenId[i]].price=collections[collectionId].price;
             nfts[tokenId[i]].id=tokenId[i];
             nfts[tokenId[i]].collectionId=collectionId;
@@ -116,4 +117,10 @@ contract BITSINFT is ERC721URIStorage, Ownable {
         require(collections[_collectionId].owner==msg.sender,"You are not the owner of this collection");
         collections[_collectionId].price =_newPrice;
     }
+
+    function burnNfts(uint256 tokenId) external onlyOwner{
+        require(ownerOf(tokenId)!=address(0) || ownerOf(tokenId)==owner(),"You are not the owner of this nft so you can not burn");
+        _burn(tokenId);
+    }
+
 }

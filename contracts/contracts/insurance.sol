@@ -1,6 +1,39 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
-
+/**
+ * @dev Interface of the ERC-165 standard, as defined in the
+ * https://eips.ethereum.org/EIPS/eip-165[ERC].
+ *
+ * Implementers can declare support of contract interfaces, which can then be
+ * queried by others ({ERC165Checker}).
+ *
+ * For an implementation, see {ERC165}.
+ */
+interface IERC165 {
+    /**
+     * @dev Returns true if this contract implements the interface defined by
+     * `interfaceId`. See the corresponding
+     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]
+     * to learn more about how these ids are created.
+     *
+     * This function call must use less than 30 000 gas.
+     */
+    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+}
+/**
+ * @dev Required interface of an ERC-721 compliant contract.
+ */
+interface IERC721 is IERC165 {
+   
+    /**
+     * @dev Returns the owner of the `tokenId` token.
+     *
+     * Requirements:
+     *
+     * - `tokenId` must exist.
+     */
+    function ownerOf(uint256 tokenId) external view returns (address owner);
+}
 /**
  * @dev Interface of the ERC-20 standard as defined in the ERC.
  */
@@ -203,6 +236,7 @@ contract NFTInsurance is Ownable {
         bool approved;
         uint256 compensation;
         address compensationOwner;
+        bool isExtended;
     }
 
     uint256 public NFT_INSURANCE_COVERAGE = 100; // Percent
@@ -212,6 +246,7 @@ contract NFTInsurance is Ownable {
     uint256 public NFT_INSURANCE_FREEZE_PERIOD = 7 days; // Days
 
     IERC20 public bitsiToken;
+    IERC721 public bitsiNFT;
     address public compensationFundWallet;
 
     mapping(uint256 => Policy) public policies;
@@ -223,8 +258,9 @@ contract NFTInsurance is Ownable {
     event CompensationApproved(uint256 indexed nftId, uint256 compensation, address indexed compensationOwner);
     event ParameterUpdated(uint256 newCoverage, uint256 newPeriod, uint256 newCompensationLimit, uint256 newFreezePeriod, address newCompensationFundWallet);
     
-    constructor(address _bitsiToken, address _compensationFundWallet) Ownable(msg.sender) {
+    constructor(address _bitsiToken, address _compensationFundWallet,address _bitsiNFT) Ownable(msg.sender) {
         bitsiToken = IERC20(_bitsiToken);
+        bitsiNFT = IERC721(_bitsiNFT);
         compensationFundWallet = _compensationFundWallet;
     }
 
@@ -242,7 +278,8 @@ contract NFTInsurance is Ownable {
             active: true,
             approved: false,
             compensation: 0,
-            compensationOwner: address(0)
+            compensationOwner: address(0),
+            isExtended:false
         });
 
         nftPrices[nftId] = price;
@@ -288,10 +325,18 @@ contract NFTInsurance is Ownable {
         policy.active = false;
     }
 
-    function updateBitsiToken(address _newBitsiToken) external onlyOwner {
+    function updateBitsiToken(address _newBitsiToken,address _newBitsiNFT) external onlyOwner {
         bitsiToken = IERC20(_newBitsiToken);
+        bitsiNFT = IERC721(_newBitsiNFT);
     }
 
+    function extendPolicy(uint256 nftId) external {
+        Policy storage policy = policies[nftId];
+        require(bitsiNFT.ownerOf(nftId)==msg.sender,"You are not the owner of nft");
+        require(!policy.isExtended,"You can not extend time period again");
+        policy.isExtended=true;
+        policy.endTime=policy.endTime+ 365 days;
+    }
     function updateParameter(address _compensationFundWallet, uint256 _NFT_INSURANCE_COVERAGE, uint256 _NFT_INSURANCE_PERIOD_MONTH, uint256 _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT, uint256 _NFT_INSURANCE_FREEZE_PERIOD) external onlyOwner {
         NFT_INSURANCE_COVERAGE = _NFT_INSURANCE_COVERAGE; // Percent
         NFT_INSURANCE_PERIOD_MONTH = _NFT_INSURANCE_PERIOD_MONTH; // Months
