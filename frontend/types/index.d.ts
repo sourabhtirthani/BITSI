@@ -51,18 +51,6 @@ declare interface NftDataWithInsurace {
     };
   }
 
-
-declare interface NftEventGet {
-    id: number;
-    nft_event: string;
-    nft_price: number;
-    from: string;
-    to: string;
-    time: Date;
-    nftId: number;
-    assetName: string;
-   
-  }
   interface AdminNftEventDetail  {
     id: number;           
     nft_event: string;     
@@ -80,19 +68,22 @@ declare interface NftEventGet {
     }
   }
 
-  declare interface NftEventGetInsurace {
+declare interface Nfts{
     id: number;
-    nft_event: string;
-    nft_price: number;
-    from: string;
-    to: string;
-    time: Date;
-    nftId: number;
-    expiration : Date;
-    soldValue : any;
-    coverage : any;
-    is_extended : boolean;
-  }
+  nft_name: string;
+  nft_price: number;
+  nft_image: string;
+  nft_collection_name: string;
+  nft_collection_id: number;
+  nft_description?: string; 
+  nft_owner_address: string;
+  nft_creator_address: string;
+  nft_mint_time: Date; 
+  is_admin_minted: boolean;
+  nft_liked?: number; 
+  up_for_sale: boolean;
+  is_insured: boolean;
+}
 
 //  declare interface InsuranceDetail {
 //     id : number;
@@ -266,4 +257,52 @@ declare interface AdminWalletMintProps{
     type : string;
     name : string;
 
+}
+
+declare interface NftEventsResponseClaimUserZone {  // this interface is also used in my history section of the userzone
+    id: number;
+    nft_event: string;
+    nft_price: number;
+    from: string;
+    to: string;
+    time: string;
+    nftId: number;
+    asset_name: string;
+    loss_amount? : number;
+    nft: {
+      nft_price: number;
+      nft_owner_address: string;
+      nft_name : string;
+      insurance: {
+        id: number;
+        coverage: number;
+        startTime: string;
+        expiration: string;
+        active: boolean;
+        approved: boolean;
+        soldValue?: number;      
+        nftId: number;
+        currentOwner?: string;   
+        is_extended?: boolean;     
+      };
+    };
+  }
+
+declare interface CompensationParams {
+    userAddress: string;
+    nftId: number;
+    lossAmount: number;
+    nftPrice: number;
+    insuranceId: number;
+}
+
+declare interface DialogUserZoneProtectionProps{
+    setRefresh: React.Dispatch<React.SetStateAction<boolean>> , 
+    assetId:number;
+     assetName : string;
+      action : string;
+    buttonText: string;
+    lossAmount?: number;   
+    soldValue?: number;    
+    insuranceId?: number; 
 }

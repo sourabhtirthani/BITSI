@@ -55,7 +55,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>{new Date(item.insurance?.expiration ?? 0) > new Date() ? 'Yes' : 'No'}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.coverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.expiration && new Date(item.insurance.expiration).toDateString() || '-'}</td>
-                        <td className='p-2 max-sm:p-1'><DialogUserZoneProtection action='extend' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td>
+                        <td className='p-2 max-sm:p-1'><DialogUserZoneProtection buttonText='Extend Policy' action='extend' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td>
                         {/* <td>
                         <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>

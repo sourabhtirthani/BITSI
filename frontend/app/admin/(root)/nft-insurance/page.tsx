@@ -2,7 +2,7 @@
 import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel';
 import { readInsuranceContractParamentes } from '@/lib/contractRead';
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import {useAccount , useWriteContract} from 'wagmi'
 import { useToast } from "@/components/ui/use-toast"
 import { insuraceContractAddress, insuranceContractABI } from '@/lib/insuranceContract';

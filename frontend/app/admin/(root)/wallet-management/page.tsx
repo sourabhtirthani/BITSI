@@ -3,7 +3,7 @@ import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdm
 import AdminWalletManagamenetTable from '@/components/AdminWalletManagamenetTable'
 import { tableAdminWallets } from '@/constants'
 import Image from 'next/image'
-import React from 'react'
+// import React from 'react'
 
 const WalletManagement = () => {
   return (

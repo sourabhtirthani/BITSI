@@ -24,6 +24,7 @@ export const generateQueryString = (checkedItems: string[]): string => {
 export const uploadNftformSchema  = z.object({
   nftFile: z
     // .instanceof(File)
+    // .any(z.custom<File>())
     .any()
     .refine((file) => {
       const allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'mp4', 'gif'];

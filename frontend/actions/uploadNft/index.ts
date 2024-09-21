@@ -5,16 +5,18 @@ import db from "@/db";
 // import { Readable } from 'stream';
 // import { pipeline } from 'stream/promises'; 
 // import { randomBytes } from 'crypto';
-import cloudinary from "@/lib/cloudinary";
 import { sendClaimAcceptRejectEmail } from "@/lib/sendEmails";
 import { uploadImage } from "@/lib/uploadToCloud";
 import { revalidatePath } from 'next/cache'
 import { hash, compare } from 'bcryptjs'
 import { signIn, signOut } from '@/auth'
 import { AuthError } from 'next-auth';
+import { CompensationParams } from "@/types";
 // import formidable from 'formidable';
 //line 890 recheck
 
+//MUST READ
+// this is the place where all the server actions are written.  
 
 type uploadNFtTyp = { success: boolean } | { error: string } | { id: any };
 export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: string, idOfNft: number, address: string, collection: string): Promise<uploadNFtTyp> => {
@@ -30,70 +32,15 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
     const collectionId = parseInt(formdata.get('collection') as string);
     // const royalties = parseFloat(formdata.get('royalties') as string);
     const description = formdata.get('description') as string;
-    // if (!Number.isFinite(price) || isNaN(price)) {
-    //     return { error: "Invalid price format" };
-    //   }
-
-    //   if (!Number.isFinite(royalties) || isNaN(royalties)) {
-    //     return { error: "Invalid royalties format" };
-    //   }
-    if (!name || !price || !collection) {
+    if (!name || !price || !collectionId) {
       console.log('in here in the insufficent data proveded clause')
       return { error: "Please fill in all the details" }
     }
-    // const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    // const randomString = randomBytes(8).toString('hex');
-    // const fileName = `${Date.now()}_${randomString}_${nftFile.name}`;
-    // const filePath = path.join(uploadsDir, fileName);
-
-    // if (!fs.existsSync(uploadsDir)) {
-    //     fs.mkdirSync(uploadsDir, { recursive: true });
-    // }
-
-    // const readableStream = Readable.fromWeb(nftFile.stream() as any);
-
-    // const fileStream = fs.createWriteStream(filePath);
-    //  pipeline(readableStream, fileStream);
-    // const data1 = await nftFile.arrayBuffer();
-    // const currentDirectory = process.cwd();
-    //     console.log(currentDirectory);
-    // await fs.writeFileSync(`${process.cwd()}/public/uploads/${fileName}` , Buffer.from(data1));
-
-    // const filePath = path.resolve('public/uploads', fileName);
-    // fs.writeFileSync(filePath, Buffer.from(data1));
-    // const nftImageUrl = `/uploads/${fileName}`;
-
-    // const filePath = path.join('/' , 'tmp' , fileName);
-    // await fs.writeFile(filePath ,Buffer.from(data1));
-    // const nftImageUrl = filePath;
-    // const fileReader = new FileReader();
-
-    // const filePromise = new Promise<string>((resolve, reject) => {
-    //     fileReader.onloadend = () => resolve(fileReader.result as string);
-    //     fileReader.onerror = () => reject(fileReader.error);
-    //     fileReader.readAsDataURL(nftFile);
-    // });
-    // const fileBase64 = await filePromise;
-
-    // const form = new formidable.IncomingForm();
-
-    //   const uploadResponse = await cloudinary.uploader.upload(fileBase64, {
-    //     folder: 'uploads',
-    // });
-    // const buffer = await nftFile.arrayBuffer();
-    // const bytes  = Buffer.from(buffer);
-    // const res = await cloudinary.uploader.upload_stream({
-    //   resource_type : 'auto',
-    //   folder : 'uploads',
     let adminMinted: boolean = false;
     if (address == process.env.ADMIN_ADDRESS) {
       adminMinted = true;
     }
     // }).end(bytes);
-    // const res : any = await uploadImage(nftFile , 'uploads');
-    // console.log(res)
-    // const nftImageUrl = res?.secure_url;
-    // const nftImageUrl = 'bacd'
     const dateOfNft = new Date();
     const nft = await db.nft.create({
       data: {
@@ -103,7 +50,6 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         nft_image: nftImageUrl,
         nft_collection_name: collection,
         nft_collection_id: collectionId,
-        // nft_royalties: royalties,
         nft_description: description,
         nft_owner_address: address,
         nft_creator_address: address,
@@ -522,7 +468,7 @@ export const getAllNfts = async (): Promise<nftData[]> => {
 // }
 
 type generateCompensationType = { success: boolean } | { error: string }
-export const generateCompensation = async (formdata: FormData): Promise<generateCompensationType> => {
+export const generateCompensation = async (formdata: FormData): Promise<generateCompensationType> => {  // function not used anymore
   try {
     const nftId = formdata.get('nftId') as string;
     const userAddress = formdata.get('address') as string;
@@ -619,6 +565,53 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
 
   }
 }
+
+export const generateCompensation1 = async (userAddress : string, nftId : number, lossAmount : number, nftPrice : number, insuranceId : number): Promise<generateCompensationType> => {
+  try{
+    if(lossAmount <0){
+      return {error : 'Cannot claim when there is no loss'}
+    }
+    const getInsurance = await db.insurance.findUnique({
+      where : {
+        id : insuranceId
+      },
+      select:{
+        expiration : true
+      }
+    })
+    if(!getInsurance){
+      return {error : "No insurance Record Found"}
+    }
+    const currentDate = new Date();
+    if (new Date(getInsurance.expiration) < currentDate) {
+      return { error: "Insurance has Expired" };
+    }
+
+    const actualNftPrice = lossAmount + nftPrice;  // loss amount is the amount loss and the nftPrice is the price at which the nft was sold.
+    const lossPercent = (lossAmount / actualNftPrice) * 100;
+    if(lossPercent < 0){
+      return {error: "Error loss percentage less than 0"};
+    }
+    const eightyPercentOfLoss = lossAmount * 0.80;
+    await db.compensation.create({
+      data: {
+        loss: lossAmount,
+        assetId: nftId,
+        lossPercent: lossPercent,
+        compensationAmount: eightyPercentOfLoss,
+        userAdress: userAddress,
+        insuranceId: insuranceId,
+        Status: 'Pending',
+        soldValue:nftPrice
+      }
+    })
+    console.log('here at the end')
+    return { success : true}
+  }catch(error){
+    console.log(error);
+    throw new Error('Error generating compensation')
+  }
+};
 
 type compensateUserType = { success: boolean }
 export const compensateUser = async (idOfCompensation: number): Promise<compensateUserType> => {
@@ -972,5 +965,23 @@ export const upgradeInsurace = async(assetId: number) : Promise<UpgradeInsuraceT
     console.log(`error upgrading insurace`)
     console.log(error)
     throw new Error('error upgrading insurance');
+  }
+}
+
+type BurnNftType = { success: boolean }
+export const burnNft = async(nftId : number) : Promise<BurnNftType>=>{
+  try{
+    await db.nft.update({
+      where : {
+        id : nftId
+      },
+      data : {
+        nft_owner_address : '0x0000000000000000000000000000000000000000',
+        up_for_sale : false
+      }
+    })
+    return { success : true}
+  }catch(error){
+    throw new Error('Error burning nft')
   }
 }

@@ -24,6 +24,7 @@ const Sidebar = () => {
     <Link href= '/admin/nft-insurance'><p className='text-[18px] font-manrope self-start text-white font-bold '>NFT Insurance</p></Link>
     <Link href= '/admin/views-and-analysis'><p className='text-[18px] font-manrope self-start text-white font-bold '>View & Analyse</p></Link>
     <Link href= '/admin/compensation'><p className='text-[18px] font-manrope self-start text-white font-bold '>Compensation</p></Link>
+    <Link href= '/admin/ownership'><p className='text-[18px] font-manrope self-start text-white font-bold '>Ownership</p></Link>
     <SignoutAdminPanel />
 
     {/* <div className='self-start flex flex-col justify-center items-center w-full gap-3'>

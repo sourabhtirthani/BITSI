@@ -1,6 +1,6 @@
 'use client'
 import { formatAddressUserZone } from '@/lib/utils';
-import React, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import { useAccount , useSwitchChain} from 'wagmi'
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import {  polygonAmoy, sepolia } from 'wagmi/chains'

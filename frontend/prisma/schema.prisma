@@ -32,15 +32,15 @@ model Nft{
 model Nft_events {
   id        Int      @id @default(autoincrement())
   // s_no      Int
-  nft_event String
-  nft_price Float
-  from      String
-  to        String
-  time      DateTime
-  nftId     Int
-  asset_name String   
-  nft       Nft      @relation(fields: [nftId], references: [id])
-
+  nft_event       String
+  nft_price       Float
+  from            String
+  to              String
+  time            DateTime
+  nftId           Int
+  asset_name      String   
+  nft             Nft      @relation(fields: [nftId], references: [id])
+  loss_amount     Float?   // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
   @@index([nftId])
   
 }

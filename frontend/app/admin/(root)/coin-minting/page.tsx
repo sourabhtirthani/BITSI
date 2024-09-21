@@ -2,7 +2,7 @@
 import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel'
 import Dropdown from '@/components/Dropdown'
 import { nftMintingDropDown } from '@/constants'
-import React, { useState } from 'react'
+import  { useState } from 'react'
 
 const CoinMinting = () => {
     const [wallet , setWallet] = useState('')

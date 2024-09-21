@@ -1,7 +1,7 @@
 'use client'
 import AdminAdressButtonForAdminPanel from '@/components/AdminAdressButtonForAdminPanel';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const CoinInsurance = () => {
     const [viewOnly , setViewOnly] = useState<boolean>(true);
