@@ -2,8 +2,8 @@
 
 import AdminAdressButtonForAdminPanel from "@/components/AdminAdressButtonForAdminPanel";
 import { toast } from "@/components/ui/use-toast";
-import { readInsuranceContractParamentes } from "@/lib/contractRead";
-import { insuraceContractAddress, insuranceContractABI } from "@/lib/insuranceContract";
+import { contractABI, contractAddress } from "@/lib/contract";
+import { readAddressFromContract } from "@/lib/contractRead";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAccount, useWriteContract } from "wagmi";
@@ -18,7 +18,7 @@ const Ownership = () => {
     useEffect(()=>{
         const getCurrentOwnerFromContract = async()=>{
             try{
-                const res = await readInsuranceContractParamentes('owner');
+                const res = await readAddressFromContract('owner');
                 console.log(res)
                 setCurrentOwnerAddress(res as string);
 
@@ -58,8 +58,8 @@ const Ownership = () => {
             return;
         }
         const transactionUpdateToken = await writeContractAsync({
-            address: insuraceContractAddress,
-            abi: insuranceContractABI,
+            address: contractAddress,
+            abi: contractABI,
             functionName: 'transferOwnership',
             args: [newOwnerAddress]
         });
