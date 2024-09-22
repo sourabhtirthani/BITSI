@@ -52,11 +52,12 @@ const CreateCollection =  () => {
               functionName: 'mintCollection',
               args: [idOfCollection, priceInWei],
             });
-            const getRes = await getTransactionFromHash(transaction);
-            console.log(getRes);
-            if(getRes.success == false){
-              return;
-            }
+            // const getRes = await getTransactionFromHash(transaction);
+            await getTransactionFromHash(transaction);
+            // console.log(getRes);
+            // if(getRes.success == false){
+            //   return;
+            // }
             if(transaction){
         const res = await uploadCollection(formData , idOfCollection , address);
         if('success' in res && res.success){
