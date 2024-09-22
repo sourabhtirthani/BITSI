@@ -87,7 +87,7 @@ const MyInsuranceTableClaim = () => {
                   <td className='p-2 max-sm:p-1'>{item.nft.insurance.expiration && new Date(item.nft.insurance.expiration).toDateString() || '-'}</td>
                   <td className='p-2 max-sm:p-1'>{item.loss_amount ? item.loss_amount : '-'}  </td>
                   {/* <td><button disabled = {loaderForButton} onClick={() => { handleRequestClick(item.to, item.nftId, item.id , item.nft_price) }} className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '}text-white    p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Request&nbsp;Claim</p>}</button></td> */}
-                  <td className='p-2 max-sm:p-1'><DialogUserZoneProtection buttonText='Request Claim' action='claim' setRefresh={setRefresh} assetId={item.nftId} assetName={item.nft.nft_name} insuranceId={item.nft.insurance.id} lossAmount={item.loss_amount} soldValue={item.nft_price} /></td>
+                  <td className='p-2 max-sm:p-1'><DialogUserZoneProtection buttonText='Request Claim' action='claim' setRefresh={setRefresh} assetId={item.nftId} assetName={item.nft.nft_name} insuranceId={item.nft.insurance.id} lossAmount={item.loss_amount} soldValue={item.nft_price} eventId={item.id} /></td>
                 </tr>
                 <tr>
                   <td className='h-5'></td>

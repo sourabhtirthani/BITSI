@@ -40,6 +40,7 @@ model Nft_events {
   nftId           Int
   asset_name      String   
   nft             Nft      @relation(fields: [nftId], references: [id])
+  claim_requested Boolean  @default(false)
   loss_amount     Float?   // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
   @@index([nftId])
   
@@ -91,12 +92,13 @@ model Compensation {
   lossPercent            Float
   compensationAmount     Float
   userAdress             String
-  insuranceId            Int       @unique
+  insuranceId            Int       
   insurance              Insurance @relation(fields: [insuranceId], references: [id])
   assetId                Int
   Status                 String
   soldValue              Float     @default(0)
   claimed                Boolean   @default(false)
+  approval_date          DateTime?
 }
 
 

@@ -366,7 +366,7 @@ const MyProfile = () => {
         {filterValue == 'Compensation' && (
           <>
            <div className='flex justify-between p-4 md:p-8'>
-            <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>My Compensation</p>
+            <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             {/* <DropdownMyProfile insideTable={false} setValue={setHistoryDetailsFilterValue} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>

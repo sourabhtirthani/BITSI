@@ -1,6 +1,6 @@
 'use client'
 import { tableAdminViewAndAnalysis } from '@/constants'
-import { AdminNftEventDetail, Nfts } from '@/types'
+import {  Nfts } from '@/types'
 import React, { useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp'
 import { useAccount } from 'wagmi'
@@ -10,7 +10,6 @@ import { DialogUserZoneProtection } from './DialogUserZoneProtection'
 const AdminViewAndAnalyseNftRelated = ({searchValue} : {searchValue : string}) => {
     const [loaderInitial , setLoaderInitial] = useState(true);
     const {address} = useAccount();
-    const [nftRelatedEvents , setNftRelatedEvents] = useState<AdminNftEventDetail[]>([])
     const [nfts , setNFts] = useState<Nfts[]>([])
     const [filteredNft ,setFilteredNft] = useState<Nfts[]>([]);
     const [refresh , setRefresh] = useState(false);
@@ -24,6 +23,8 @@ const AdminViewAndAnalyseNftRelated = ({searchValue} : {searchValue : string}) =
                 setNFts(responseOfnfts);
                setFilteredNft(responseOfnfts);
               }else{
+                setNFts([]);
+               setFilteredNft([]);
                 toast({ title: "Walllet not connected", description: "Please connect wallet to see nfts", duration: 2000,
                   style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},
                 });
@@ -36,7 +37,7 @@ const AdminViewAndAnalyseNftRelated = ({searchValue} : {searchValue : string}) =
             }
         }
         getAllNFtEvents();
-    }, [refresh])
+    }, [refresh , address])
     useEffect(()=>{
         if(searchValue == ''){
             setFilteredNft(nfts)

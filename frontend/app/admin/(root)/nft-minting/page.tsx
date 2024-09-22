@@ -117,8 +117,12 @@ const NftMinting = () => {
       const collectionImg = event.currentTarget.elements.namedItem('collectionFile') as HTMLInputElement;
       const allNftImages = event.currentTarget.elements.namedItem('nftFile') as HTMLInputElement;
       if (!jsonInput || !collectionPrice || !collectionDescription || !collectionImg || !collectionImg.files || !allNftImages || !collectionName || !jsonInput.files || !allNftImages.files) {
-        console.log('error invalid details')
-        return;
+        
+        throw new Error('Invalid Details')
+      }
+      if(wallet == ''){
+        toast({title: "PLEASE SELECT WALLET", description: "Please select the wallet where you want the nfts to be minted at",duration: 2000,style: {backgroundColor: '#900808', color: 'white',fontFamily: 'Manrope',},});
+        throw new Error('error')
       }
       const priceInWeiOfCollection = Number(Math.floor(parseFloat(collectionPrice.value) * 10 ** 18));
       const idOfCollection = generateRandomTokenId();
@@ -139,7 +143,7 @@ const NftMinting = () => {
         formData.append("collectionFile", collectionImg.files[0]);
         formData.append("description", collectionDescription.value);
         formData.append("floorPrice", collectionPrice.value);
-        const res = await uploadCollection(formData , idOfCollection , stringAddress);
+        const res = await uploadCollection(formData , idOfCollection , wallet);
 
         if (jsonInput.files && jsonInput.files[0]) {
           const file = jsonInput.files[0];
@@ -200,7 +204,7 @@ const NftMinting = () => {
                   address: contractAddress,
                   abi: contractABI,
                   functionName: 'mintBulk',
-                  args: [idOfCollection, metadataArray , tokenIds ],
+                  args: [wallet , idOfCollection, metadataArray , tokenIds ],
                 });
                   // const transactionOfNft = true;
                 if(transactionOfNft){
@@ -218,7 +222,7 @@ const NftMinting = () => {
                         formDataForUploadNft.append("collection", idOfCollection as unknown as string );
                         formDataForUploadNft.append("collection", collectionName.value);
                         formDataForUploadNft.append("description", nftDescriptionArr[i]);
-                        const res = await uploadNftAction(formDataForUploadNft,nftImagesUrl[i],tokenIds[i],stringAddress, collectionName.value)
+                        const res = await uploadNftAction(formDataForUploadNft,nftImagesUrl[i],tokenIds[i],wallet, collectionName.value)
                         if('error' in res && res.error){
                         setLengthOfNotUploadedNfts(prevCount => prevCount + 1)
                           // nftsNotUploaded.push(nftNamesArray[i])

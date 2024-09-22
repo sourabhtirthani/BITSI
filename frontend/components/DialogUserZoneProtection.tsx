@@ -20,7 +20,7 @@ import { burnNft, extendInsurance, generateCompensation1, purchaseInsurance, upg
 import { DialogUserZoneProtectionProps } from "@/types"
 
 // this dialog is also used in admin panel(view and analyse last column) and everywhere in my protection(when button at last column is clicked)
-export function DialogUserZoneProtection({ setRefresh , assetId , assetName, action , buttonText , insuranceId, lossAmount , soldValue }:  DialogUserZoneProtectionProps ) {
+export function DialogUserZoneProtection({ setRefresh , assetId , assetName, action , buttonText , insuranceId, lossAmount , soldValue , eventId }:  DialogUserZoneProtectionProps ) {
     const { writeContractAsync } = useWriteContract()
     const { address, isConnected } = useAccount();
     const { toast } = useToast();
@@ -80,15 +80,16 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
     const handleClaimInsurancePolicy = async()=>{
         try{
             setLoaderBuy(true);
-            if(soldValue && insuranceId && lossAmount && address){
-                console.log(`the price at which this was sold at was ${soldValue} and the insurance id is : ${insuranceId} and the loss that occured is 
-                    ${lossAmount} and the nft name is : ${assetName} and the asset id : ${assetId}`)
-                    const res = await generateCompensation1(address as string , assetId , lossAmount, soldValue, insuranceId);
+            if(soldValue && insuranceId && lossAmount && address && eventId){
+                // console.log(`the price at which this was sold at was ${soldValue} and the insurance id is : ${insuranceId} and the loss that occured is 
+                //     ${lossAmount} and the nft name is : ${assetName} and the asset id : ${assetId}`)
+                    const res = await generateCompensation1(address as string , assetId , lossAmount, soldValue, insuranceId , eventId);
                     if('error' in res){
                         toast({title: "Error occured", description: res.error, duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
                         }
                         else{
                       toast({title: "Operation Success",description: "Please wait for us to view your request.",duration: 2000,style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',},});
+                      setRefresh(prev => !prev);
                     }
             }
         }catch(error){
@@ -103,15 +104,18 @@ export function DialogUserZoneProtection({ setRefresh , assetId , assetName, act
     const handleBurnNft = async()=>{
         try{
             setLoaderBuy(true);
-            const res = await burnNft(assetId);
             const transactionBurnNft = await writeContractAsync({
                 address: contractAddress,
-              abi: contractABI,
-              functionName: 'burnNfts',
-              args: [assetId],
+                abi: contractABI,
+                functionName: 'burnNfts',
+                args: [assetId],
             });
             await getTransactionFromHash(transactionBurnNft);
+            if(transactionBurnNft){
+            const res = await burnNft(assetId);
             toast({title: "Operation Success",description: "Successfully burned NFT",duration: 2000,style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',},});
+            setRefresh(prev => !prev);
+            }
         }catch(error){
             toast({title: "Error occured", description: 'Internal server error', duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},});
             console.log(error)

@@ -37,6 +37,7 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
     const handleCompensateClick = async(id : number, salePrice : number)=>{
       try{
         setLoaderForButton(true);
+        // take the to dialog userzone protection 
         const abcd = true;
         if(abcd == true){
           toast({ title: "NOTE", description: "You can claim compendsation after 7 days.", duration: 2000,

@@ -30,15 +30,16 @@ export function AdminDialogPayCompensationConfirm({amount , userAddress , idOfNf
   
     const handleClick = async()=>{
       try{
-        setTextPay('Loading....')
-      if(address != process.env.NEXT_PUBLIC_ADMIN_ADDRESS){
-        toast({
-          title: "Admin Wallet Not Connected", description: 'Only admins can claim compensation', duration: 2000,
-          style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
-        })
-        console.log('in here')
-        return;
-      }
+        setTextPay('Loading....')   
+        // to be chnaged later
+      // if(address != process.env.NEXT_PUBLIC_ADMIN_ADDRESS){
+      //   toast({
+      //     title: "Admin Wallet Not Connected", description: 'Only admins can claim compensation', duration: 2000,
+      //     style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
+      //   })
+      //   console.log('in here')
+      //   return;
+      // }
       const compensationPriceInWei = Number(Math.floor(parseFloat(amount.toString()) * 10 ** 18));
       console.log(`compensationId is ${compensationId}`)
       console.log(`compens price is : ${compensationPriceInWei} and price normal is ${amount}`)
@@ -123,9 +124,9 @@ export function AdminDialogPayCompensationConfirm({amount , userAddress , idOfNf
           </DialogDescription>
         <DialogFooter>
             <div className="flex gap-6 text-[20px]  text-black font-bold font-manrope">
-         <button onClick={handleClick} className="bg-success-531 px-8 rounded-xl">{textPay}</button>
+         <button onClick={handleClick} className="bg-green-600 px-8 rounded-xl">{textPay}</button>
         <DialogClose asChild>
-         <button onClick={handleDecline}  className="bg-success-530 px-8 rounded-xl">{textDecline}</button>
+         <button onClick={handleDecline}  className="bg-red-500 px-8 rounded-xl">{textDecline}</button>
             </DialogClose>
             </div>
         </DialogFooter>

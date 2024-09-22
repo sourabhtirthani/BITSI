@@ -12,6 +12,7 @@ import { hash, compare } from 'bcryptjs'
 import { signIn, signOut } from '@/auth'
 import { AuthError } from 'next-auth';
 import { CompensationParams } from "@/types";
+import { readInsuranceContractParamentes } from "@/lib/contractRead";
 // import formidable from 'formidable';
 //line 890 recheck
 
@@ -37,7 +38,8 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
       return { error: "Please fill in all the details" }
     }
     let adminMinted: boolean = false;
-    if (address == process.env.ADMIN_ADDRESS) {
+    const adminWalletAddress = await readInsuranceContractParamentes('owner');
+    if (address == adminWalletAddress) {
       adminMinted = true;
     }
     // }).end(bytes);
@@ -566,7 +568,7 @@ export const generateCompensation = async (formdata: FormData): Promise<generate
   }
 }
 
-export const generateCompensation1 = async (userAddress : string, nftId : number, lossAmount : number, nftPrice : number, insuranceId : number): Promise<generateCompensationType> => {
+export const generateCompensation1 = async (userAddress : string, nftId : number, lossAmount : number, nftPrice : number, insuranceId : number , eventId : number): Promise<generateCompensationType> => {
   try{
     if(lossAmount <0){
       return {error : 'Cannot claim when there is no loss'}
@@ -592,6 +594,10 @@ export const generateCompensation1 = async (userAddress : string, nftId : number
     if(lossPercent < 0){
       return {error: "Error loss percentage less than 0"};
     }
+    const updateEventSetClaimedToTrue = await db.nft_events.update({
+      where: { id: eventId },
+      data: { claim_requested: true },
+    });
     const eightyPercentOfLoss = lossAmount * 0.80;
     await db.compensation.create({
       data: {
@@ -622,7 +628,7 @@ export const compensateUser = async (idOfCompensation: number): Promise<compensa
     }
     const updatedCompensation = await db.compensation.update({
       where: { id: idOfCompensation },
-      data: { Status: 'Confirmed' },
+      data: { Status: 'Confirmed', approval_date : new Date() },
     });
     revalidatePath('/admin/compensation')
     return { success: true }

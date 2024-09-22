@@ -58,7 +58,8 @@ declare interface NftDataWithInsurace {
     from: string;        
     to: string;         
     time: Date;           
-    nftId: number;        
+    nftId: number;    
+    claim_requested : boolean;    
     asset_name: string;   
     nft: {
       nft_name: string;   
@@ -104,6 +105,8 @@ declare interface CompensationDetails {
     assetId: number;
     Status: string;
     soldValue : number;
+    claimed : Boolean;
+    approval_date? : number;
 }
 
 declare interface DropdownProps {
@@ -269,6 +272,7 @@ declare interface NftEventsResponseClaimUserZone {  // this interface is also us
     nftId: number;
     asset_name: string;
     loss_amount? : number;
+    claim_requested : boolean;
     nft: {
       nft_price: number;
       nft_owner_address: string;
@@ -305,4 +309,5 @@ declare interface DialogUserZoneProtectionProps{
     lossAmount?: number;   
     soldValue?: number;    
     insuranceId?: number; 
+    eventId? : number;
 }

@@ -12,6 +12,7 @@ export async function GET(request: Request, context: { params: { userAddress: st
         where: {
             to: params.userAddress,
             nft_event: 'Sold',
+            claim_requested : false,
             loss_amount: { 
                 gt: 0, 
             },
