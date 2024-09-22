@@ -4,7 +4,6 @@ import pool from "../database/index.js";
 export const buyEvent = async(from , to , time , price, nftId)=>{
     try{
         const client = await pool.connect();
-        console.log('in the function of buy event ')
         const nftEvent = 'buy';
         const nftEventForSold = 'Sold';
 
@@ -14,7 +13,7 @@ export const buyEvent = async(from , to , time , price, nftId)=>{
             throw new Error('NFT not found');
         }
         const lastPrice = nftPriceResult.rows[0].nft_price;
-        const lossAmount = price - lastPrice;
+        const lossAmount =  lastPrice - price;
 
     const insertQuery = `
     INSERT INTO "Nft_events" (nft_event, nft_price, "from", "to", time, "nftId" , asset_name)
