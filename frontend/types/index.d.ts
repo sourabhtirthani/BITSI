@@ -311,3 +311,18 @@ declare interface DialogUserZoneProtectionProps{
     insuranceId?: number; 
     eventId? : number;
 }
+
+declare interface UserZoneHistoryInsuranceEvent {
+    id: number;
+    eventname: string;
+    insuranceid: number;
+    date: Date;
+    assetType : string;
+    insurance: {
+      currentOwner: string
+      coverage: number;
+      nftId: number;
+      startTime: Date;
+      expiration: Date;
+    };
+  }

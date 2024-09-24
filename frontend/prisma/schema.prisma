@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,29 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Nft{
-  id                   Int      @id 
-  nft_name             String       
-  nft_price            Float
-  nft_image            String
-  nft_collection_name  String
-  nft_collection_id    Int
+model Nft {
+  id                  Int          @id
+  nft_name            String
+  nft_price           Float
+  nft_image           String
+  nft_collection_name String
+  nft_collection_id   Int
   // nft_royalties        Float
-  nft_description      String  @default("no description provided")
-  nft_owner_address    String
-  nft_creator_address  String
-  nft_mint_time        DateTime @default(now())
-  is_admin_minted      Boolean
-  nft_liked            Int?
-  up_for_sale          Boolean   @default(true)
-  is_insured           Boolean
-  events               Nft_events[]
-  collection           Collection @relation(fields: [nft_collection_id], references: [id])
-  insurance            Insurance?
+  nft_description     String       @default("no description provided")
+  nft_owner_address   String
+  nft_creator_address String
+  nft_mint_time       DateTime     @default(now())
+  is_admin_minted     Boolean
+  nft_liked           Int?
+  up_for_sale         Boolean      @default(true)
+  is_insured          Boolean
+  events              Nft_events[]
+  collection          Collection   @relation(fields: [nft_collection_id], references: [id])
+  insurance           Insurance?
 }
 
 model Nft_events {
-  id        Int      @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   // s_no      Int
   nft_event       String
   nft_price       Float
@@ -38,100 +37,106 @@ model Nft_events {
   to              String
   time            DateTime
   nftId           Int
-  asset_name      String   
+  asset_name      String
   nft             Nft      @relation(fields: [nftId], references: [id])
   claim_requested Boolean  @default(false)
-  loss_amount     Float?   // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
+  loss_amount     Float? // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
+
   @@index([nftId])
-  
 }
 
 model Collection {
-  id           Int      @id 
+  id           Int      @id
   name         String
   ownerAddress String
   price        Float
   image        String
-  totalNfts    Int  @default(0)
+  totalNfts    Int      @default(0)
   creationTime DateTime @default(now())
 
-  nfts         Nft[]
+  nfts Nft[]
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  walletAddress String   @unique
-  name          String?  
-  email         String?  
-  number        String?  
+  id            Int     @id @default(autoincrement())
+  walletAddress String  @unique
+  name          String?
+  email         String?
+  number        String?
   address       String?
-  bio           String? 
-  imgSrc        String? 
+  bio           String?
+  imgSrc        String?
 }
 
 model Insurance {
-  id                    Int       @id @default(autoincrement())
-  coverage              Float
-  startTime             DateTime  @default(now())
-  expiration            DateTime
-  active                Boolean
-  approved              Boolean
-  soldValue             Float?
-  nftId                 Int       @unique
-  nft                   Nft       @relation(fields: [nftId], references: [id])
-  currentOwner          String?
-  compensation          Compensation[]
-  is_extended           Boolean   @default(false)
+  id              Int                @id @default(autoincrement())
+  coverage        Float
+  startTime       DateTime           @default(now())
+  expiration      DateTime
+  active          Boolean
+  approved        Boolean
+  soldValue       Float?
+  nftId           Int                @unique
+  nft             Nft                @relation(fields: [nftId], references: [id])
+  currentOwner    String
+  compensation    Compensation[]
+  is_extended     Boolean            @default(false)
+  insuranceEvents Insurance_events[]
 }
 
+model Insurance_events {
+  id          Int       @id @default(autoincrement())
+  eventname   String
+  insuranceid Int
+  insurance   Insurance @relation(fields: [insuranceid], references: [id])
+  date        DateTime  @default(now())
+  assetType   String 
+}
 
 model Compensation {
-  id                     Int       @id @default(autoincrement())
-  requestDate            DateTime  @default(now())
-  loss                   Float
-  lossPercent            Float
-  compensationAmount     Float
-  userAdress             String
-  insuranceId            Int       
-  insurance              Insurance @relation(fields: [insuranceId], references: [id])
-  assetId                Int
-  Status                 String
-  soldValue              Float     @default(0)
-  claimed                Boolean   @default(false)
-  approval_date          DateTime?
+  id                 Int       @id @default(autoincrement())
+  requestDate        DateTime  @default(now())
+  loss               Float
+  lossPercent        Float
+  compensationAmount Float
+  userAdress         String
+  insuranceId        Int
+  insurance          Insurance @relation(fields: [insuranceId], references: [id])
+  assetId            Int
+  Status             String
+  soldValue          Float     @default(0)
+  claimed            Boolean   @default(false)
+  approval_date      DateTime?
 }
 
-
 model Admin {
-  id                     Int       @id @default(autoincrement())
-  email                  String   @unique
-  password               String
-  isAdmin                Boolean  @default(true)
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  isAdmin  Boolean @default(true)
 }
 
 model Otp {
-  id        Int       @id @default(autoincrement())
-  email     String   
-  hashedOtp String   
-  expiry    DateTime 
+  id        Int      @id @default(autoincrement())
+  email     String
+  hashedOtp String
+  expiry    DateTime
   createdAt DateTime @default(now())
 
-  @@index([email]) 
+  @@index([email])
 }
-
 
 model Vectors {
-  id          Int      @id @default(autoincrement())
-  textChunk   String
-  embedding   Json     
+  id        Int    @id @default(autoincrement())
+  textChunk String
+  embedding Json
 }
 
-
 model AdminWallet {
-  id    Int    @id @default(autoincrement())
-  address  String
-  name     String   
-  type  WalletType
+  id      Int        @id @default(autoincrement())
+  address String
+  name    String
+  type    WalletType
 }
 
 enum WalletType {

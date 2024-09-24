@@ -63,6 +63,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
           for(let i = 0; i< arrOfPrice.length ; i++){
             sum = sum + arrOfPrice[i];
           }
+          console.log('in herer just before buy nft price')
           const transaction = await writeContractAsync({
             address: contractAddress,
             abi: contractABI,
@@ -72,7 +73,7 @@ export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, sh
             value: BigInt(sum),
            
           });
-
+          console.log('after that here')
           if(!transaction){
             toast({
               title: "Transaction Failed", description: 'Please Try again.', duration: 2000,
