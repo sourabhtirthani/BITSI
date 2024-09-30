@@ -1,19 +1,19 @@
 'use client'
 import  { Fragment, useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
-import { NftEventsResponseClaimUserZone } from '@/types';
+import { InsuranceEventsAdminTable } from '@/types';
 import { formatAddressUserZone } from '@/lib/utils';
-import { DateRange } from 'react-day-picker';
 import { isAfter, isBefore, isSameDay } from "date-fns" 
+import { DateRange } from 'react-day-picker';
 
-const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue : string , selectedFilter : string , date : DateRange | undefined}) => {
+const AdminTableEventsInsurance = ({searchValue , selectedFilter , date} : {searchValue : string , selectedFilter : string , date : DateRange | undefined}) => {
     const [loaderState , setLoaderState] = useState(true);
-    const [allEvents , setAllEvents] = useState<NftEventsResponseClaimUserZone[]>([]);
-    const [allEventsFiltered , setAllEventsFiltered] = useState<NftEventsResponseClaimUserZone[]>([]);
+    const [allEvents , setAllEvents] = useState<InsuranceEventsAdminTable[]>([]);
+    const [allEventsFiltered , setAllEventsFiltered] = useState<InsuranceEventsAdminTable[]>([]);
     useEffect(()=>{
         const getAllEvents = async()=>{
             try{
-                const res = await fetch(`/api/admin/events/nft` , {method : "GET" , next : {revalidate : 0} , } ,  )
+                const res = await fetch(`/api/admin/events/insurance` , {method : "GET" , next : {revalidate : 0} , } ,  )
                 const resParsed = await res.json();
                 setAllEvents(resParsed)
                 setAllEventsFiltered(resParsed)
@@ -26,17 +26,16 @@ const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue :
         }
         getAllEvents();
     }, [])
-
     useEffect(()=>{
       const filteredResults = allEvents.filter(event => 
-        event.nft && event.nft.nft_name.toLowerCase().includes(searchValue.toLowerCase()) || event.nftId.toString().includes(searchValue)
+        event.insurance.nftId.toString().includes(searchValue)
       );
       setAllEventsFiltered(filteredResults);
     }, [searchValue])
 
     useEffect(()=>{
       if(selectedFilter != ''){
-        const filteredResultsByEvent = allEvents.filter(event=>event.nft_event.toLowerCase().includes(selectedFilter.toLowerCase()));
+        const filteredResultsByEvent = allEvents.filter(event=>event.eventname.toLowerCase().includes(selectedFilter.toLowerCase()));
         setAllEventsFiltered(filteredResultsByEvent)
       }
     } , [selectedFilter])
@@ -44,7 +43,7 @@ const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue :
     useEffect(()=>{
       if(date != undefined && date?.from != undefined && date.to != undefined){
         const filterResultsByDate = allEvents.filter(event => {
-          const eventDate = new Date(event.time) 
+          const eventDate = new Date(event.date) 
   
           
           if(date?.from && date?.to){
@@ -60,20 +59,18 @@ const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue :
         setAllEventsFiltered(filterResultsByDate)
       }
     } , [date])
+
     return (
         <div className='max-h-[500px]  px-8 max-md:px-4 overflow-auto w-full  mb-20 table-body'>
           <table className='min-w-full text-left mt-4 border-spacing-20 overflow-x-auto'>
             <thead className='text-success-502 text-center font-semibold table-auto font-manrope text-[22px] max-sm:text-[10px] underline  '>
               <tr>
                 <th className='p-2 max-sm:p-1'>Date</th>
-                <th className='p-2 max-sm:p-1'>ID</th>
-                <th className='p-2 max-sm:p-1'>Name</th>
+                <th className='p-2 max-sm:p-1'>Insurance-ID</th>
+                <th className='p-2 max-sm:p-1'>Asset-ID</th>
+                <th className='p-2 max-sm:p-1 overflow-hidden'>Asset Type</th>
                 <th className='p-2 max-sm:p-1 overflow-hidden'>Event&nbsp;Name</th>
-                <th className='p-2 max-sm:p-1 overflow-hidden'>From</th>
-                <th className='p-2 max-sm:p-1 overflow-hidden'>To</th>
-                <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
-                <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
-                <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+                <th className='p-2 max-sm:p-1 overflow-hidden'>Owner</th>
                 <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
               </tr>
             </thead>
@@ -84,16 +81,13 @@ const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue :
                 return (
                   <Fragment key={index}>
                     <tr className='bg-success-512 text-center relative  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                      <td className='p-2 max-sm:p-3'>{new Date(item.time).toDateString()}</td>
-                      <td className='p-2 max-sm:p-1'>{item.nftId}</td>
-                      <td className='p-2 max-sm:p-1'>{item.nft.nft_name}</td>
-                      <td className='p-2 max-sm:p-1'>{item.nft_event}</td>
-                      <td  className='p-2 max-sm:p-1'>{formatAddressUserZone(item.from)}</td>
-                      <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.to)}</td>
-                      <td className='p-2 max-sm:p-1'>{item.nft_price} </td>
-                      <td className='p-2 max-sm:p-1'>{ new Date(item.nft.insurance.expiration) > new Date() ? 'Yes' : 'No'}</td>
-                      <td className='p-2 max-sm:p-1'>{item.nft.insurance.coverage} </td>
-                      <td className='p-2 max-sm:p-1'>{item.nft.insurance.expiration && new Date(item.nft.insurance.expiration).toDateString() || '-'}</td>
+                      <td className='p-2 max-sm:p-3'>{new Date(item.date).toDateString()}</td>
+                      <td className='p-2 max-sm:p-1'>{item.insuranceid}</td>
+                      <td className='p-2 max-sm:p-1'>{item.insurance.nftId}</td>
+                      <td className='p-2 max-sm:p-1'>{item.assetType}</td>
+                      <td className='p-2 max-sm:p-1'>{item.eventname} </td>
+                      <td  className='p-2 max-sm:p-1'>{formatAddressUserZone(item.insurance.currentOwner)}</td>
+                      <td className='p-2 max-sm:p-1'>{item.insurance.expiration && new Date(item.insurance.expiration).toDateString() || '-'}</td>
                     </tr>
                     <tr>
                       <td  className='h-5'></td>
@@ -108,4 +102,4 @@ const AdminTableEvents = ({searchValue , selectedFilter , date} : {searchValue :
         </div>) 
 }
 
-export default AdminTableEvents
+export default AdminTableEventsInsurance

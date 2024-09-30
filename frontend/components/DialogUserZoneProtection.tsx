@@ -18,6 +18,7 @@ import { contractABI, contractAddress } from "@/lib/contract"
 import { getTransactionFromHash } from "@/lib/getTransactionFromHash"
 import { burnNft, extendInsurance, generateCompensation1, purchaseInsurance, upgradeInsurace } from "@/actions/uploadNft"
 import { DialogUserZoneProtectionProps } from "@/types"
+import React from "react"
 
 // this dialog is also used in admin panel(view and analyse last column) and everywhere in my protection(when button at last column is clicked)
 export function DialogUserZoneProtection({ setRefresh , assetId , assetName, action , buttonText , insuranceId, lossAmount , soldValue , eventId }:  DialogUserZoneProtectionProps ) {

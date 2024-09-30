@@ -11,6 +11,7 @@ import { DropdownProps } from "@/types";
 import Image from 'next/image'
 import { CollapsibleBitsiNft } from "./CollapsiableBitsiNft";
 import { myProfileNftOrderDropDownItems } from "@/constants";
+import React from "react";
 
 
 const DropdownMyProfile = ({ setValue , iconName, insideTable , items = [] , itemsInsideTable = []}: { setValue :  Dispatch<SetStateAction<string>> , iconName : string , insideTable : boolean , items : DropdownProps[] , itemsInsideTable? : string[] }) => {

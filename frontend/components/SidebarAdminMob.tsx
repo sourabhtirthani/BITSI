@@ -32,8 +32,8 @@ const SidebarAdminMob = () => {
           <SheetClose asChild><Link href="/admin/wallet-management" className='flex gap-3'>Wallets</Link></SheetClose>
           <SheetClose asChild>
           <Link href="/admin/prices" className='flex gap-3'>Prices</Link></SheetClose>
-          <SheetClose asChild>
-          <Link href="/admin/minting" className='flex gap-3'>MINTING</Link></SheetClose>
+          {/* <SheetClose asChild>
+          <Link href="/admin/minting" className='flex gap-3'>MINTING</Link></SheetClose> */}
           <SheetClose asChild>
            
            
@@ -44,6 +44,8 @@ const SidebarAdminMob = () => {
           <Link href="/admin/coin-insurance" className='flex gap-3'>COIN INSURANCE</Link></SheetClose>
           <SheetClose asChild>
           <Link href="/admin/nft-insurance" className='flex gap-3'>NFT INSURANCE</Link></SheetClose>
+          <SheetClose asChild>
+          <Link href="/admin/views-and-analysis" className='flex gap-3'>View & Analyse</Link></SheetClose>
           <SheetClose asChild>
           <Link href="/admin/views-and-analysis" className='flex gap-3'>View & Analyse</Link></SheetClose>
           <SheetClose asChild>

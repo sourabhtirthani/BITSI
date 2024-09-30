@@ -10,6 +10,7 @@ import {
 import { DropdownProps, DropdownPropsForInsuranceTable } from "@/types";
 import Image from 'next/image'
 import { CollapsibleBitsiNft } from "./CollapsiableBitsiNft";
+import React from "react";
 
 //this drop down is also used in the user zone page
 const DropdownBitsiNFt = ({ itemsCol, itemsOrder ,itemsPrice , setCol, setOrd , setPrice, setAsset, itemsAsset , itemsPurchase, itemsUpgrade , itemsExtend, itemsClaim , itemsUnlock, setInsuraceFilter }: { itemsCol?: DropdownProps[], itemsOrder? : DropdownProps[],itemsPrice? : DropdownProps[], itemsAsset? : DropdownProps[]  , setCol? : Dispatch<SetStateAction<string>> , setOrd?: Dispatch<SetStateAction<string>> , setPrice? : Dispatch<SetStateAction<string>> , setAsset? : Dispatch<SetStateAction<string>> , setInsuraceFilter? : Dispatch<SetStateAction<string>> , itemsUnlock? : DropdownProps[] , itemsClaim? : DropdownProps[] , itemsExtend? : DropdownProps[] , itemsUpgrade? : DropdownProps[] , itemsPurchase? : DropdownProps[]}) => {

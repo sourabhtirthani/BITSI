@@ -326,3 +326,36 @@ declare interface UserZoneHistoryInsuranceEvent {
       expiration: Date;
     };
   }
+
+
+declare interface InsuranceEventsAdminTable {
+    id: number;
+    eventname: string;
+    insuranceid: number;
+    date: Date;
+    assetType: string;
+    insurance: {
+      expiration: Date;
+      currentOwner: string;
+      nftId: number;
+    };
+}
+
+declare interface AllEventsLstProps{
+    name : string,
+}
+
+declare interface DropDownAdminViewAnalyseFiltersProps {
+  allEventsLst : AllEventsLstProps[];
+  selectedFilter : string;
+  setSelectedFilter :React.Dispatch<React.SetStateAction<string>>; 
+  btnNameFirst : string;
+  eventsInsuranceEvents : AllEventsLstProps[];
+  selectedTab : string;
+}
+
+declare interface AdminFilterViewAnalyseDateRangeFilterProps {
+  className : string;
+  date : DateRange | undefined;
+  setDate : React.Dispatch<React.SetStateAction<DateRange>>;
+}

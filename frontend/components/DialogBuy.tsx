@@ -19,6 +19,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { buyNft } from "@/actions/uploadNft"
 import { useRouter } from 'next/navigation';
 import { contractABI, contractAddress } from "@/lib/contract"
+import React from "react"
 // import { InjectedConnector } from '@web3modal/wagmi';
 
 export function DialogBuy({ totalItems, ownerAddress, lstOfItems, buttonName, showSelectedItem, nameOfClass, currencyText, pricesArray, nameOfNft, imgSrc, collectionName, nftPrice }: buyNftDialogProps) {
