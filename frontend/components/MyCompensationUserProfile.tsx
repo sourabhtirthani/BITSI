@@ -90,7 +90,7 @@ const MyCompensationUserProfile = ({address} : {address : string}) => {
                 <td className='p-2 max-sm:p-1'>{item.Status}</td>
                 <td className='p-2 max-sm:p-1'>{item.lossPercent}%</td>
                 <td className='p-2 max-sm:p-1'>{item.compensationAmount}</td>
-                <td  ><button disabled = {loaderForButton} onClick={()=>{handleCompensateClick(item.assetId , item.soldValue)}}   className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '} ${item.Status != 'Confirmed' ? 'hidden' : ''}   text-white     p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Claim</p>}</button></td>
+                <td  ><button disabled = {loaderForButton} onClick={()=>{handleCompensateClick(item.assetId , item.claim.soldPrice)}}   className={`${loaderForButton == true ? 'disabled bg-slate-400 ' : 'bg-success-511 '} ${item.Status != 'Confirmed' ? 'hidden' : ''}   text-white     p-2 text-center  rounded-xl font-bold `}>{loaderForButton ? <div className="spinner "></div> : <p>Claim</p>}</button></td>
               </tr>
               <tr>
                 <td  className='h-6'></td>

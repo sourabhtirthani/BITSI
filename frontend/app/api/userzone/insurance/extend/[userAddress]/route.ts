@@ -12,6 +12,7 @@ export async function GET(request: Request, context: { params: { userAddress: st
       const nftsOfUser = await db.nft.findMany({
         where: {
           nft_owner_address: { equals: params.userAddress },
+          is_insured : true,
           insurance : {
             expiration : {
                 gt : currentDate
@@ -32,7 +33,6 @@ export async function GET(request: Request, context: { params: { userAddress: st
               expiration: true,
               active: true,
               approved: true,
-              soldValue: true,
               currentOwner: true
             }
           }

@@ -8,12 +8,12 @@ export const puteventToDb = async(event : string)=>{
         const nftEvent = 'buy';
         const nftEventForSold = 'Sold';
 
-        const nftPriceQuery = `SELECT nft_price FROM "Nft" WHERE id = ${nftId};`;
-        const nftPriceResult = await client.query(nftPriceQuery)
-        if (nftPriceResult.rows.length === 0) {
+        const nftPriceQuery = `SELECT nft_price , is_insured FROM "Nft" WHERE id = ${nftId};`;
+        const nftPriceAndInsuredResult = await client.query(nftPriceQuery)
+        if (nftPriceAndInsuredResult.rows.length === 0) {
             throw new Error('NFT not found');
         }
-        const lastPrice = nftPriceResult.rows[0].nft_price;
+        const lastPrice = nftPriceAndInsuredResult.rows[0].nft_price;   // last price will be the buy price of the previous owner who is "from" here
         const lossAmount =  lastPrice - price;
 
     const insertQuery = `
@@ -26,11 +26,22 @@ export const puteventToDb = async(event : string)=>{
 
      await client.query(insertQuery);   
      await client.query(insertQuerySold);
-     const updateQuery = `UPDATE "Nft" SET nft_owner_address = '${to}', up_for_sale = false , nft_price = ${price} WHERE id = ${nftId};`;
+     const updateQuery = `UPDATE "Nft" SET nft_owner_address = '${to}', up_for_sale = false , nft_price = ${price} WHERE id = ${nftId} AND status = 'Active';`;
      await client.query(updateQuery);
-
-      const updateInsuraceQuery = `UPDATE "Insurance"  SET "soldValue" = ${price} , "currentOwner" = ${to} WHERE "nftId" = ${nftId};`
-      await client.query(updateInsuraceQuery);
+     if(nftPriceAndInsuredResult.rows[0].is_insured == true){   // if the nft is insured , delete the previous insurance , then generate claim if there is a loss
+        const lossPercent = (lossAmount/lastPrice) * 100;
+        const insuranceDetailsQuery = `SELECT coverage, expiration, "nftId" FROM "Insurance" WHERE "nftId" = ${nftId};`;
+        const insuranceDetails = await client.query(insuranceDetailsQuery);
+        if(insuranceDetails.rows.length > 0){
+            const claimInsertQuery = `
+            INSERT INTO "Claims" ("userAddress", "compensationGenerated", "expiration", "buyPrice", "soldPrice", "loss", "assetId", "coverage", "lossPercent") 
+            VALUES ('${from}', ${false}, '${insuranceDetails.rows[0].expiration}', ${lastPrice}, ${price}, ${lossAmount}, ${nftId}, ${insuranceDetails.rows[0].coverage}, ${lossPercent});
+        `;
+        await client.query(claimInsertQuery);
+    }
+    const deleteExistingInsuranceQuery = `DELETE FROM "Insurance" WHERE "nftId" = ${nftId};`;
+    await client.query(deleteExistingInsuranceQuery);
+     }
       console.log(`successfully insrted into the events `);
       client.release(); 
     }catch(error){

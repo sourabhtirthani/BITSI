@@ -44,6 +44,7 @@ const Sidebar = () => {
     </div>
     </div>
     <Link href= '/admin/compensation'><p className='text-[18px] font-manrope self-start text-white font-bold '>Compensation</p></Link>
+    <Link href= '/admin/policy-status'><p className='text-[18px] font-manrope self-start text-white font-bold '>Policy Status</p></Link>
     <Link href= '/admin/ownership'><p className='text-[18px] font-manrope self-start text-white font-bold '>Ownership</p></Link>
     <SignoutAdminPanel />
 

@@ -58,7 +58,7 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         nft_mint_time: dateOfNft,
         is_admin_minted: adminMinted,
         nft_liked: 0,
-        is_insured: true,
+        is_insured: false,
       },
       select: {
         id: true,
@@ -73,28 +73,6 @@ export const uploadNftAction = async (formdata: FormData | null, nftImageUrl: st
         to: address,
         nftId: nft.id,
         asset_name: 'NFT'
-
-
-      }
-    })
-    const expirationDate = new Date(dateOfNft);
-    expirationDate.setFullYear(dateOfNft.getFullYear() + 2);
-   const createInsurance = await db.insurance.create({
-      data: {
-        active: true,
-        approved: false,
-        startTime: dateOfNft,
-        expiration: expirationDate,
-        nftId: idOfNft,
-        currentOwner: address,
-        coverage : price,
-      }
-    })
-    await db.insurance_events.create({
-      data : {
-        eventname : 'Published',
-        insuranceid : createInsurance.id,
-        assetType : 'Nft'
       }
     })
     revalidatePath('/api/nfts');
@@ -135,13 +113,6 @@ export const getCollecitonOfUserWithAddress = async (address: String) => {
     throw new Error("Could not fetch collections");
   }
 }
-
-// export const uploadImageOnly = async(formdata: FormData , folder : string) : Promise<string>=>{
-//   const res : any = await uploadImage(imgFile , 'uploads');
-//       console.log(res)
-//       const nftImageUrl = res?.secure_url;
-//       return nftImageUrl
-// }
 
 type uploadCollecitonType = { success: boolean } | { error: string }
 export const uploadCollection = async (formData: FormData, collectionId: number, address: string): Promise<uploadCollecitonType> => {
@@ -201,23 +172,6 @@ export const createProfileWhenWalletConnect = async (address: string): Promise<c
   }
 }
 
-// export const getUserDetails = async(address : string)=>{
-//   try{
-//     console.log('in here in the action of get user details')
-//     const user = await db.user.findUnique({
-//       where : {
-//         walletAddress : address
-//       },
-//     });
-//     if(!user){
-//       return null;
-//     }
-//     return user;
-
-//   }catch(error){
-//     throw new Error('error getting details from database');
-//   }
-// }
 type upsertUserProfileType = { success: string }
 export const upsertUserProfile = async (formData: FormData): Promise<upsertUserProfileType> => {
   try {
@@ -291,7 +245,7 @@ export const upsertUserProfile = async (formData: FormData): Promise<upsertUserP
 };
 
 
-type buyNFtType = { success: boolean }
+type buyNFtType = { success: boolean }  // recheck here, remove this function and everywhere it is used
 export const buyNft = async (address: string, nftId: number[]): Promise<buyNFtType> => {
   try {
     // const findNft = await db.nft.findMany({
@@ -477,150 +431,121 @@ export const getAllNfts = async (): Promise<nftData[]> => {
 // }
 
 type generateCompensationType = { success: boolean } | { error: string }
-export const generateCompensation = async (formdata: FormData): Promise<generateCompensationType> => {  // function not used anymore
+// export const generateCompensation = async (formdata: FormData): Promise<generateCompensationType> => {  // function not used anymore
+//   try {
+//     const nftId = formdata.get('nftId') as string;
+//     const userAddress = formdata.get('address') as string;
+//     const eventId = formdata.get('eventId') as string;
+//     const soldValue = formdata.get('soldValue') as string;
+
+//     if (!userAddress || !nftId || !eventId) {
+//       return { error: 'Insufficient details provided' }
+//     }
+//     const insuranceOfAsset = await db.insurance.findUnique({
+//       where: { nftId: Number(nftId) },
+//       select: {
+//         id: true,
+//         expiration: true
+//       }
+//     });
+//     if (!insuranceOfAsset) {
+//       return { error: 'Asset Not Insured' };
+//     }
+//     const currentDate = new Date();
+//     if (new Date(insuranceOfAsset.expiration) < currentDate) {
+//       return { error: "Insurance has Expired" };
+//     }
+//     const checkForCompensationAlreadtClaimed = await db.compensation.findFirst({
+//       where: {
+//         userAdress: userAddress,
+//         assetId: Number(nftId),
+//         insuranceId: insuranceOfAsset.id
+//       },
+//       select: {
+//         Status: true,
+//         id: true
+//       }
+//     });
+//     if (checkForCompensationAlreadtClaimed) {
+//       if (checkForCompensationAlreadtClaimed.Status == 'Pending') {
+//         return { error: 'Please wait for the claim to be approved' };
+//       } else {
+//         return { error: 'You cannot claim compensation for asset twice' };
+//       }
+//     }
+//     const latestBuyEvent = await db.nft_events.findFirst({
+//       where: {
+//         nft_event: 'buy',
+//         to: userAddress,
+//         nftId: Number(nftId)
+//       },
+//       orderBy: {
+//         time: 'desc',
+//       },   // check here
+//     });
+
+//     if (!latestBuyEvent) {
+//       console.log("no latest event found");
+//       return { error: 'Unable to fetch the details of when you bought the nft' };
+//     }
+//     const soldEvent = await db.nft_events.findUnique({
+//       where: {
+//         id: Number(eventId)
+//       }
+//     })
+//     if (!soldEvent) {
+//       console.log('no event found')
+//       return { error: 'unable to fetch the details of the sold event' };
+//     }
+//     console.log(latestBuyEvent.nft_price - soldEvent.nft_price);
+//     const lossAmount = (latestBuyEvent.nft_price - soldEvent.nft_price);
+//     if (latestBuyEvent.nft_price - soldEvent.nft_price < 0) {
+//       return { error: 'Cannot claim compensation when there is no loss' }
+//     }
+//     const lossAmountWithoutFixed = latestBuyEvent.nft_price - soldEvent.nft_price;
+//     const lossPercentage = Number((((latestBuyEvent.nft_price - soldEvent.nft_price) / latestBuyEvent.nft_price) * 100).toFixed(2));
+//     if (lossPercentage < 10) {
+//       return { error: 'Cannot Claim compensation when loss percent is less than 10' }
+//     }
+//     console.log(`loss percenteage is : ${lossPercentage}`)
+//     const eightyPercentOfLoss = Number((lossAmountWithoutFixed * 0.80).toFixed(4));
+//     await db.compensation.create({
+//       data: {
+//         loss: lossAmount,
+//         assetId: Number(nftId),
+//         lossPercent: lossPercentage,
+//         compensationAmount: eightyPercentOfLoss,
+//         userAdress: userAddress,
+//         insuranceId: insuranceOfAsset.id,
+//         Status: 'Pending',
+//         soldValue: Number(soldValue)
+//       }
+//     })
+//     return { success: true };
+//   } catch (error) {
+//     console.log(error)
+//     throw new Error('Error occured')
+
+//   }
+// }
+
+export const generateCompensation = async (userAddress: string, assetId: number, lossAmount: number, lossPercent : number, claimId : number): Promise<generateCompensationType> => {
   try {
-    const nftId = formdata.get('nftId') as string;
-    const userAddress = formdata.get('address') as string;
-    const eventId = formdata.get('eventId') as string;
-    const soldValue = formdata.get('soldValue') as string;
-
-    if (!userAddress || !nftId || !eventId) {
-      return { error: 'Insufficient details provided' }
-    }
-    const insuranceOfAsset = await db.insurance.findUnique({
-      where: { nftId: Number(nftId) },
-      select: {
-        id: true,
-        expiration: true
-      }
-    });
-    if (!insuranceOfAsset) {
-      return { error: 'Asset Not Insured' };
-    }
-    const currentDate = new Date();
-    if (new Date(insuranceOfAsset.expiration) < currentDate) {
-      return { error: "Insurance has Expired" };
-    }
-    const checkForCompensationAlreadtClaimed = await db.compensation.findFirst({
-      where: {
-        userAdress: userAddress,
-        assetId: Number(nftId),
-        insuranceId: insuranceOfAsset.id
-      },
-      select: {
-        Status: true,
-        id: true
-      }
-    });
-    if (checkForCompensationAlreadtClaimed) {
-      if (checkForCompensationAlreadtClaimed.Status == 'Pending') {
-        return { error: 'Please wait for the claim to be approved' };
-      } else {
-        return { error: 'You cannot claim compensation for asset twice' };
-      }
-    }
-    const latestBuyEvent = await db.nft_events.findFirst({
-      where: {
-        nft_event: 'buy',
-        to: userAddress,
-        nftId: Number(nftId)
-      },
-      orderBy: {
-        time: 'desc',
-      },   // check here
-    });
-
-    if (!latestBuyEvent) {
-      console.log("no latest event found");
-      return { error: 'Unable to fetch the details of when you bought the nft' };
-    }
-    const soldEvent = await db.nft_events.findUnique({
-      where: {
-        id: Number(eventId)
-      }
-    })
-    if (!soldEvent) {
-      console.log('no event found')
-      return { error: 'unable to fetch the details of the sold event' };
-    }
-    console.log(latestBuyEvent.nft_price - soldEvent.nft_price);
-    const lossAmount = (latestBuyEvent.nft_price - soldEvent.nft_price);
-    if (latestBuyEvent.nft_price - soldEvent.nft_price < 0) {
-      return { error: 'Cannot claim compensation when there is no loss' }
-    }
-    const lossAmountWithoutFixed = latestBuyEvent.nft_price - soldEvent.nft_price;
-    const lossPercentage = Number((((latestBuyEvent.nft_price - soldEvent.nft_price) / latestBuyEvent.nft_price) * 100).toFixed(2));
-    if (lossPercentage < 10) {
-      return { error: 'Cannot Claim compensation when loss percent is less than 10' }
-    }
-    console.log(`loss percenteage is : ${lossPercentage}`)
-    const eightyPercentOfLoss = Number((lossAmountWithoutFixed * 0.80).toFixed(4));
+    const compensationAmount =(lossAmount * 80) / 100;  // currently set to 80 percent of the loss amount
     await db.compensation.create({
-      data: {
-        loss: lossAmount,
-        assetId: Number(nftId),
-        lossPercent: lossPercentage,
-        compensationAmount: eightyPercentOfLoss,
-        userAdress: userAddress,
-        insuranceId: insuranceOfAsset.id,
-        Status: 'Pending',
-        soldValue: Number(soldValue)
-      }
-    })
-    return { success: true };
-  } catch (error) {
-    console.log(error)
-    throw new Error('Error occured')
-
-  }
-}
-
-export const generateCompensation1 = async (userAddress : string, nftId : number, lossAmount : number, nftPrice : number, insuranceId : number , eventId : number): Promise<generateCompensationType> => {
-  try{
-    if(lossAmount <0){
-      return {error : 'Cannot claim when there is no loss'}
-    }
-    const getInsurance = await db.insurance.findUnique({
-      where : {
-        id : insuranceId
-      },
-      select:{
-        expiration : true
-      }
-    })
-    if(!getInsurance){
-      return {error : "No insurance Record Found"}
-    }
-    const currentDate = new Date();
-    if (new Date(getInsurance.expiration) < currentDate) {
-      return { error: "Insurance has Expired" };
-    }
-
-    const actualNftPrice = lossAmount + nftPrice;  // loss amount is the amount loss and the nftPrice is the price at which the nft was sold.
-    const lossPercent = (lossAmount / actualNftPrice) * 100;
-    if(lossPercent < 0){
-      return {error: "Error loss percentage less than 0"};
-    }
-    const updateEventSetClaimedToTrue = await db.nft_events.update({
-      where: { id: eventId },
-      data: { claim_requested: true },
-    });
-    const eightyPercentOfLoss = lossAmount * 0.80;
-    await db.compensation.create({
-      data: {
-        loss: lossAmount,
-        assetId: nftId,
-        lossPercent: lossPercent,
-        compensationAmount: eightyPercentOfLoss,
-        userAdress: userAddress,
-        insuranceId: insuranceId,
-        Status: 'Pending',
-        soldValue:nftPrice
+      data : {
+        assetId : assetId,
+        compensationAmount : compensationAmount,
+        loss : lossAmount,
+        lossPercent : lossPercent,
+        Status : 'Pending',
+        userAdress : userAddress,
+        claimId : claimId
       }
     })
     console.log('here at the end')
-    return { success : true}
-  }catch(error){
+    return { success: true }
+  } catch (error) {
     console.log(error);
     throw new Error('Error generating compensation')
   }
@@ -635,7 +560,7 @@ export const compensateUser = async (idOfCompensation: number): Promise<compensa
     }
     const updatedCompensation = await db.compensation.update({
       where: { id: idOfCompensation },
-      data: { Status: 'Confirmed', approval_date : new Date() },
+      data: { Status: 'Confirmed', approval_date: new Date() },
     });
     revalidatePath('/admin/compensation')
     return { success: true }
@@ -859,14 +784,14 @@ export const signoutFromAdminPanel = async () => {
 
 
 type CreateAdminWalletTypeType = { success: boolean }
-export const createAdminWalletType = async (address: string, walletType: string , walletName : string): Promise<CreateAdminWalletTypeType> => {
+export const createAdminWalletType = async (address: string, walletType: string, walletName: string): Promise<CreateAdminWalletTypeType> => {
   try {
     if (walletType == "MINT" || walletType == "COMPENSATION" || walletType == "OWNER") {
       const create = await db.adminWallet.create({
         data: {
           address: address,
           type: walletType,
-          name : walletName
+          name: walletName
         }
       })
       return { success: true }
@@ -879,56 +804,86 @@ export const createAdminWalletType = async (address: string, walletType: string 
 }
 
 type deleteAdminWalletsWithIdType = { success: boolean }
-export const deleteAdminWalletsWithId = async(id : number):Promise<deleteAdminWalletsWithIdType>=>{
-  try{
+export const deleteAdminWalletsWithId = async (id: number): Promise<deleteAdminWalletsWithIdType> => {
+  try {
     await db.adminWallet.delete({
-      where : {
-        id : id
+      where: {
+        id: id
       }
     });
-    return {success : true}
+    return { success: true }
 
-  }catch(error){
+  } catch (error) {
     throw new Error('Error Deleting')
   }
 }
 
 // change this as well
 type purchaseInsuranceType = { success: boolean }
-export const purchaseInsurance = async(assetId : number) : Promise<purchaseInsuranceType>=>{
-  try{  
+export const purchaseInsurance = async (assetId: number, insuranceStatus: string): Promise<purchaseInsuranceType> => {
+  try {
+
+    const nftData = await db.nft.findUnique({
+      where: { id: assetId },
+      select: {
+        nft_owner_address: true,
+        nft_price: true,
+      }
+    })
+    if (!nftData) {
+      return { success: false }
+    }
     const currentDate = new Date();
     const expirationDate = new Date();
-    expirationDate.setFullYear(currentDate.getFullYear() + 2);
-    await db.insurance.update({
-      where: { nftId: assetId },
-      data: {
-        is_extended : false,
-        expiration: expirationDate,
-        active: true, 
-      }
-    });
+    if (insuranceStatus == 'Not Created') {
+      expirationDate.setFullYear(currentDate.getFullYear() + 2);
+      await db.insurance.create({
+        data: {
+          is_extended: false,
+          expiration: expirationDate,
+          active: false,
+          nftId: assetId,
+          startTime: currentDate,
+          approved: false,
+          coverage: nftData?.nft_price || 0,
+          currentOwner: nftData?.nft_owner_address || ''
+        }
+      })
+    }
+    else if (insuranceStatus == 'Approved') {
+      await db.$transaction(async (transaction) => {
+        await transaction.insurance.update({
+          where: { nftId: assetId },
+          data: {
+            active: true,
+            expiration: expirationDate,
+            startTime: currentDate,
+            approved: true,
+            status: 'Active',
+          }
+        })
+        await transaction.nft.update({
+          where: { id: assetId },
+          data: {
+            is_insured: true
+          }
+        });
+      });
+    }
+    return { success: true }
 
-    await db.nft.update({
-      where: { id: assetId },
-      data: {
-        is_insured: true
-      }
-    });
-    return {success : true}
-
-  }catch(error){
+  } catch (error) {
     throw new Error("Error purchasing nfts")
   }
 }
 
 
 type ExtendInsuranceType = { success: boolean }
-export const extendInsurance = async (assetId: number): Promise<ExtendInsuranceType> => {
+export const extendInsurance = async (assetId: number, userAddress: string): Promise<ExtendInsuranceType> => {
   try {
-   
+
     const currentInsurance = await db.insurance.findUnique({
-      where: { nftId: assetId }
+      where: { nftId: assetId, currentOwner: userAddress, active: true }
     });
 
     if (!currentInsurance) {
@@ -937,9 +892,9 @@ export const extendInsurance = async (assetId: number): Promise<ExtendInsuranceT
 
     const currentExpirationDate = new Date(currentInsurance.expiration);
     const newExpirationDate = new Date(currentExpirationDate);
-    newExpirationDate.setFullYear(currentExpirationDate.getFullYear() + 1); 
+    newExpirationDate.setFullYear(currentExpirationDate.getFullYear() + 1);
 
-    
+
     await db.insurance.update({
       where: { nftId: assetId },
       data: {
@@ -957,8 +912,8 @@ export const extendInsurance = async (assetId: number): Promise<ExtendInsuranceT
 }
 
 type UpgradeInsuraceType = { success: boolean }
-export const upgradeInsurace = async(assetId: number) : Promise<UpgradeInsuraceType>=>{
-  try{
+export const upgradeInsurace = async (assetId: number): Promise<UpgradeInsuraceType> => {
+  try {
     const nft = await db.nft.findUnique({
       where: { id: assetId },
       select: { nft_price: true }
@@ -973,8 +928,8 @@ export const upgradeInsurace = async(assetId: number) : Promise<UpgradeInsuraceT
       data: { coverage: nft.nft_price }
     });
 
-    return {success : true}
-  }catch(error){
+    return { success: true }
+  } catch (error) {
     console.log(`error upgrading insurace`)
     console.log(error)
     throw new Error('error upgrading insurance');
@@ -982,19 +937,35 @@ export const upgradeInsurace = async(assetId: number) : Promise<UpgradeInsuraceT
 }
 
 type BurnNftType = { success: boolean }
-export const burnNft = async(nftId : number) : Promise<BurnNftType>=>{
-  try{
+export const burnNft = async (nftId: number): Promise<BurnNftType> => {
+  try {
     await db.nft.update({
-      where : {
-        id : nftId
+      where: {
+        id: nftId
       },
-      data : {
-        nft_owner_address : '0x0000000000000000000000000000000000000000',
-        up_for_sale : false
+      data: {
+        nft_owner_address: '0x0000000000000000000000000000000000000000',
+        up_for_sale: false
       }
     })
-    return { success : true}
-  }catch(error){
+    return { success: true }
+  } catch (error) {
     throw new Error('Error burning nft')
+  }
+}
+
+type ApproveInsuraceRequestType = { success: boolean }
+export const approveInsuranceRequest = async(insuraceId : number):Promise<ApproveInsuraceRequestType>=>{
+  try{
+      await db.insurance.update({
+        where : {id : insuraceId},
+        data : {
+          status : 'Approved',
+          approved : true
+        }
+      })
+      return {success : true}
+  }catch(error){
+    throw new Error('Error Updating Status');
   }
 }

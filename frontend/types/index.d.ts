@@ -59,7 +59,7 @@ declare interface NftDataWithInsurace {
     to: string;         
     time: Date;           
     nftId: number;    
-    claim_requested : boolean;    
+    // claim_requested : boolean;    
     asset_name: string;   
     nft: {
       nft_name: string;   
@@ -101,12 +101,16 @@ declare interface CompensationDetails {
     lossPercent: number;
     compensationAmount: number;
     userAdress: string;
-    insuranceId: number;
+    // insuranceId: number;
     assetId: number;
     Status: string;
-    soldValue : number;
+    // soldValue : number;
     claimed : Boolean;
     approval_date? : number;
+    claimId: number;
+    claim: {
+      soldPrice: number;
+    };
 }
 
 declare interface DropdownProps {
@@ -262,6 +266,7 @@ declare interface AdminWalletMintProps{
 
 }
 
+
 declare interface NftEventsResponseClaimUserZone {  // this interface is also used in my history section of the userzone
     id: number;
     nft_event: string;
@@ -272,7 +277,7 @@ declare interface NftEventsResponseClaimUserZone {  // this interface is also us
     nftId: number;
     asset_name: string;
     loss_amount? : number;
-    claim_requested : boolean;
+    // claim_requested : boolean;
     nft: {
       nft_price: number;
       nft_owner_address: string;
@@ -292,6 +297,23 @@ declare interface NftEventsResponseClaimUserZone {  // this interface is also us
     };
   }
 
+declare  interface PurcahseInsuraceUserZone {
+  id: number;
+  nft_name: string;
+  nft_price: number;
+  nft_mint_time: Date;
+  is_insured: boolean;
+  insurance?: {
+    coverage: number;
+    startTime: Date;
+    expiration: Date;
+    active: boolean;
+    approved: boolean;
+    currentOwner: string;
+    status: 'ApprovalPending' | 'Approved' | 'Active'; 
+  } | null; 
+}
+
 declare interface CompensationParams {
     userAddress: string;
     nftId: number;
@@ -306,10 +328,17 @@ declare interface DialogUserZoneProtectionProps{
      assetName : string;
       action : string;
     buttonText: string;
-    lossAmount?: number;   
-    soldValue?: number;    
+
+    lossAmount?: number;  
+    lossPercent? : number; //for claim 
+    claimId? : number;
+
+
+    // soldValue?: number; 
+
     insuranceId?: number; 
-    eventId? : number;
+    // eventId? : number;
+    insuranceStatus? : string;
 }
 
 declare interface UserZoneHistoryInsuranceEvent {
@@ -358,4 +387,36 @@ declare interface AdminFilterViewAnalyseDateRangeFilterProps {
   className : string;
   date : DateRange | undefined;
   setDate : React.Dispatch<React.SetStateAction<DateRange>>;
+}
+
+declare interface InsuranceStatusTableAdminPanel {
+  id: number; 
+  coverage: number; 
+  startTime: Date; 
+  approved: boolean; 
+  nftId: number; 
+  currentOwner: string; 
+  status: InsuranceStatus; 
+ 
+}
+
+enum InsuranceStatus {
+  ApprovalPending = "ApprovalPending",
+  Approved = "Approved",
+  Active = "Active",
+}
+
+
+declare interface ClaimProps {  // used in userzone table claim 
+  id: number;
+  userAddress: string;
+  compensationGenerated: boolean;
+  expiration: Date;
+  buyPrice: number;
+  soldPrice: number;
+  loss: number; // can be negative if the user made a profit
+  assetId: number;
+  coverage: number;
+  lossPercent: number;
+  date  : Date;
 }

@@ -51,6 +51,8 @@ const SidebarAdminMob = () => {
           <SheetClose asChild>
           <Link href="/admin/compensation" className='flex gap-3'>Compensation</Link></SheetClose>
           <SheetClose asChild>
+          <Link href="/admin/policy-status" className='flex gap-3'>Policy Status</Link></SheetClose>
+          <SheetClose asChild>
           <Link href="/admin/ownership" className='flex gap-3'>Ownership</Link></SheetClose>
         </div>
       </SheetContent>

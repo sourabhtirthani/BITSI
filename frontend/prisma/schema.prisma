@@ -14,7 +14,6 @@ model Nft {
   nft_image           String
   nft_collection_name String
   nft_collection_id   Int
-  // nft_royalties        Float
   nft_description     String       @default("no description provided")
   nft_owner_address   String
   nft_creator_address String
@@ -39,7 +38,7 @@ model Nft_events {
   nftId           Int
   asset_name      String
   nft             Nft      @relation(fields: [nftId], references: [id])
-  claim_requested Boolean  @default(false)
+  // claim_requested Boolean  @default(false)
   loss_amount     Float? // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
 
   @@index([nftId])
@@ -75,14 +74,21 @@ model Insurance {
   expiration      DateTime
   active          Boolean
   approved        Boolean
-  soldValue       Float?
   nftId           Int                @unique
   nft             Nft                @relation(fields: [nftId], references: [id])
   currentOwner    String
-  compensation    Compensation[]
+  status          InsuranceStatus     @default(ApprovalPending)
+  // compensation    Compensation?
   is_extended     Boolean            @default(false)
   insuranceEvents Insurance_events[]
 }
+
+enum InsuranceStatus {
+  ApprovalPending
+  Approved
+  Active
+}
+
 
 model Insurance_events {
   id          Int       @id @default(autoincrement())
@@ -90,7 +96,7 @@ model Insurance_events {
   insuranceid Int
   insurance   Insurance @relation(fields: [insuranceid], references: [id])
   date        DateTime  @default(now())
-  assetType   String 
+  assetType   String
 }
 
 model Compensation {
@@ -100,13 +106,13 @@ model Compensation {
   lossPercent        Float
   compensationAmount Float
   userAdress         String
-  insuranceId        Int
-  insurance          Insurance @relation(fields: [insuranceId], references: [id])
   assetId            Int
   Status             String
-  soldValue          Float     @default(0)
+  // soldValue          Float     @default(0)
   claimed            Boolean   @default(false)
   approval_date      DateTime?
+  claimId            Int       @unique
+  claim              Claims    @relation(fields: [claimId], references: [id])
 }
 
 model Admin {
@@ -143,4 +149,19 @@ enum WalletType {
   MINT
   COMPENSATION
   OWNER
+}
+
+model Claims {
+  id                    Int           @id @default(autoincrement())
+  userAddress           String
+  compensationGenerated Boolean       @default(false)
+  expiration            DateTime
+  buyPrice              Float
+  soldPrice             Float
+  loss                  Float           // a negative value indicates that the user has made some profit on the deal instead
+  assetId               Int
+  coverage              Float
+  lossPercent           Float
+  date                  DateTime       @default(now())
+  compensation          Compensation?
 }

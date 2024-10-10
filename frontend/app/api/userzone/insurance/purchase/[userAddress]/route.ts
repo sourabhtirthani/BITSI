@@ -8,15 +8,10 @@ export async function GET(request: Request, context: { params: { userAddress: st
       if (!params.userAddress) {
         return NextResponse.json({ error: 'No address provided' }, { status: 400 });
       }
-      const currentDate = new Date();
       const nftsOfUser = await db.nft.findMany({
         where: {
           nft_owner_address: { equals: params.userAddress },
-          insurance : {
-            expiration : {
-                lt : currentDate  
-            }
-          }
+          is_insured : false,
         },
         select: {
           id: true,
@@ -31,17 +26,12 @@ export async function GET(request: Request, context: { params: { userAddress: st
               expiration: true,
               active: true,
               approved: true,
-              soldValue: true,
-              currentOwner: true
+              currentOwner: true,
+              status : true,
             }
           }
         }
       });
-  
-    //   if (!nftsOfUser.length) {
-    //     return NextResponse.json({ message: 'No NFTs found' }, { status: 404 });
-    //   }
-  
       return NextResponse.json(nftsOfUser, { status: 200 });
   
     } catch (error) {
