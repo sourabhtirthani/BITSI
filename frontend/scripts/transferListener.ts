@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import dotenv from 'dotenv'
 import {contractAddress, contractABI} from '../lib/contract'
-import { eventListenerController } from '../actions/eventListners/index';
+// import { eventListenerController } from '../actions/eventListners/index';
 dotenv.config();
 let isConnected = false;
 const contractAddr = "0xA8e3EA5C06B1a958C20c240DF76a3861c78d2bC9";
@@ -72,7 +72,7 @@ export const getDetailsWithHashOfTransaction = async (transactionHash : any, nft
         const time = new Date(block.timestamp * 1000);
         // console.log(time.toISOString)
         // await buyEvent(from, to, time, value, nftId);
-        await eventListenerController(from,to,time,value,nftId)
+        // await eventListenerController(from,to,time,value,nftId)
     } catch (error) {
         console.log(`error in the script of transaction hash`);
         console.log(error)
@@ -80,7 +80,7 @@ export const getDetailsWithHashOfTransaction = async (transactionHash : any, nft
 }
 
 
-getTransfer().catch(error => {
-    console.error('Error in getTransfer:', error);
-    console.log('in herer in ther error clasue')
-});
+// getTransfer().catch(error => {
+//     console.error('Error in getTransfer:', error);
+//     console.log('in herer in ther error clasue')
+// });
