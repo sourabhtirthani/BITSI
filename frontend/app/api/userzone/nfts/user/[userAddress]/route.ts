@@ -26,7 +26,7 @@ export async function GET(request: Request, context: { params: { userAddress: st
               expiration: true,
               active: true,
               approved: true,
-              soldValue: true,
+              // soldValue: true,
               currentOwner: true
             }
           }

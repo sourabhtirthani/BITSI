@@ -46,7 +46,7 @@ declare interface NftDataWithInsurace {
       expiration: Date;
       active: boolean;
       approved: boolean;
-      soldValue?: number;
+      // soldValue?: number;
       currentOwner?: string;
     };
   }
