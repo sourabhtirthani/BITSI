@@ -239,11 +239,13 @@ contract NFTInsurance is Ownable {
         bool isExtended;
     }
 
-    uint256 public NFT_INSURANCE_COVERAGE = 100; // Percent
-    uint256 public NFT_INSURANCE_PERIOD_MONTH = 24; // Months
-    uint256 public NFT_INSURANCE_MONTHLY_GROWTH_RATE = 1; // Percent
-    uint256 public NFT_INSURANCE_HIGH_COMPENSATION_LIMIT = 90; // Percent
-    uint256 public NFT_INSURANCE_FREEZE_PERIOD = 7 days; // Days
+    uint256 public NFT_INSURANCE_COVERAGE = 10000; // Percent
+    uint256 public NFT_INSURANCE_PERIOD_MONTH = 12; // Months
+    uint256 public NFT_INSURANCE_MONTHLY_GROWTH_RATE = 100; // Percent
+    uint256 public NFT_INSURANCE_HIGH_COMPENSATION_LIMIT = 9000; // Percent
+    uint256 public NFT_INSURANCE_FREEZE_PERIOD = 30 days; // Days
+    uint256 public NFT_INSURANCE_ACTIVECTION_FEES =100 ; // 1 %
+    uint256 public DIVIDEN =100 ; 
 
     IERC20 public bitsiToken;
     IERC721 public bitsiNFT;
@@ -256,20 +258,22 @@ contract NFTInsurance is Ownable {
     event ClaimSubmitted(uint256 indexed nftId, uint256 loss, uint256 compensation, bool extended);
     event CompensationPaid(uint256 indexed nftId, uint256 compensation);
     event CompensationApproved(uint256 indexed nftId, uint256 compensation, address indexed compensationOwner);
-    event ParameterUpdated(uint256 newCoverage, uint256 newPeriod, uint256 newCompensationLimit, uint256 newFreezePeriod, address newCompensationFundWallet);
-    
+    event ParameterUpdated(uint256 newCoverage, uint256 newPeriod, uint256 newCompensationLimit, uint256 newFreezePeriod, address newCompensationFundWallet,uint256 activationFees);
+    event UpgradePolicy(uint256 indexed nftId,uint256 newPrice);
+    event ExtendPolicy(uint256 indexed nftId,uint256 time);
     constructor(address _bitsiToken, address _compensationFundWallet,address _bitsiNFT) Ownable(msg.sender) {
         bitsiToken = IERC20(_bitsiToken);
         bitsiNFT = IERC721(_bitsiNFT);
         compensationFundWallet = _compensationFundWallet;
     }
 
-    function purchasePolicy(uint256 nftId, uint256 price) external {
+    function purchasePolicy(uint256 nftId, uint256 price,uint256 activationFees) external {
         require(policies[nftId].active == false, "Policy already exists");
-
+        require(activationFees>=(price*NFT_INSURANCE_ACTIVECTION_FEES)/100*DIVIDEN,"Not enough Bitsi coin to purchase");
+        bitsiToken.transferFrom(msg.sender,address(this),activationFees );
         uint256 startTime = block.timestamp;
         uint256 endTime = block.timestamp + NFT_INSURANCE_PERIOD_MONTH * 30 days;
-        uint256 initialCoverage = (price * NFT_INSURANCE_COVERAGE) / 100;
+        uint256 initialCoverage = price ;
 
         policies[nftId] = Policy({
             coverage: initialCoverage,
@@ -329,21 +333,42 @@ contract NFTInsurance is Ownable {
         bitsiToken = IERC20(_newBitsiToken);
         bitsiNFT = IERC721(_newBitsiNFT);
     }
-
-    function extendPolicy(uint256 nftId) external {
+    function upgradePolicy(uint256 nftId,uint256 newPrice) external onlyOwner {
+        Policy storage policy = policies[nftId];
+        policy.coverage=newPrice;
+        emit UpgradePolicy(nftId,newPrice);
+    }
+    function extendPolicy(uint256 nftId,uint256 activationFees) external {
         Policy storage policy = policies[nftId];
         require(bitsiNFT.ownerOf(nftId)==msg.sender,"You are not the owner of nft");
         require(!policy.isExtended,"You can not extend time period again");
+        require(activationFees>=(policy.coverage*NFT_INSURANCE_ACTIVECTION_FEES)/100*DIVIDEN,"Not enough Bitsi coin to purchase");
+
+        bitsiToken.transferFrom(msg.sender,address(this),activationFees );
         policy.isExtended=true;
-        policy.endTime=policy.endTime+ 365 days;
+        policy.endTime=block.timestamp+ 365 days;
+        emit ExtendPolicy(nftId, block.timestamp+ 365 days);
     }
-    function updateParameter(address _compensationFundWallet, uint256 _NFT_INSURANCE_COVERAGE, uint256 _NFT_INSURANCE_PERIOD_MONTH, uint256 _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT, uint256 _NFT_INSURANCE_FREEZE_PERIOD) external onlyOwner {
+    function updateParameter(address _compensationFundWallet,uint256 _NFT_INSURANCE_ACTIVECTION_FEES, uint256 _NFT_INSURANCE_COVERAGE, uint256 _NFT_INSURANCE_PERIOD_MONTH, uint256 _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT, uint256 _NFT_INSURANCE_FREEZE_PERIOD) external onlyOwner {
         NFT_INSURANCE_COVERAGE = _NFT_INSURANCE_COVERAGE; // Percent
         NFT_INSURANCE_PERIOD_MONTH = _NFT_INSURANCE_PERIOD_MONTH; // Months
         NFT_INSURANCE_HIGH_COMPENSATION_LIMIT = _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT; // Percent
         NFT_INSURANCE_FREEZE_PERIOD = _NFT_INSURANCE_FREEZE_PERIOD; // Days
         compensationFundWallet = _compensationFundWallet;
+        NFT_INSURANCE_ACTIVECTION_FEES=_NFT_INSURANCE_ACTIVECTION_FEES;
+        emit ParameterUpdated(_NFT_INSURANCE_COVERAGE, _NFT_INSURANCE_PERIOD_MONTH, _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT, _NFT_INSURANCE_FREEZE_PERIOD, _compensationFundWallet,_NFT_INSURANCE_ACTIVECTION_FEES);
+    }
 
-        emit ParameterUpdated(_NFT_INSURANCE_COVERAGE, _NFT_INSURANCE_PERIOD_MONTH, _NFT_INSURANCE_HIGH_COMPENSATION_LIMIT, _NFT_INSURANCE_FREEZE_PERIOD, _compensationFundWallet);
+    function deletePolicy(uint256 nftId) external  {
+         policies[nftId] = Policy({
+            coverage: 0,
+            startTime: 0,
+            endTime: 0,
+            active: false,
+            approved: false,
+            compensation: 0,
+            compensationOwner: address(0),
+            isExtended:false
+        });
     }
 }
