@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 import {createClient} from 'redis'
+import { coinContractAbi, coinContractAddress } from '../contracts/coin';
 
 
 dotenv.config();
@@ -24,15 +25,28 @@ export const getTransfer = async () => {
         provider.websocket.onerror = (error) => console.error("WebSocket error", error);
 
         const contract = await new ethers.Contract(contractAddr, contractAB, provider);
-       
+        const contractCoin = await new ethers.Contract(coinContractAddress , coinContractAbi , provider);
+
+
         contract.on('Transfer', async (from, to, tokenId, event) => {
             console.log(`from is ${from} and to is ${to}`)
             const tokenIdAsNumber = await Number(event.args[2]);
             console.log(`token id is : ${Number(tokenId)}`)
             console.log(`token id in events : ${Number(event.args[2])}`)
             const transactionHash = await event.log.transactionHash;
-            await getDetailsWithHashOfTransaction(transactionHash, tokenIdAsNumber , from , to)
+            await getDetailsWithHashOfTransaction(transactionHash, tokenIdAsNumber , from , to , 'nft')
         });
+
+        contractCoin.on('Transfer', async (from, to, tokenId, event) => {
+            console.log(`from is ${from} and to is ${to}`)
+            const tokenIdAsNumber = await Number(event.args[2]);
+            console.log(`token id is : ${Number(tokenId)}`)
+            console.log(`token id in events : ${Number(event.args[2])}`)
+            const transactionHash = await event.log.transactionHash;
+            await getDetailsWithHashOfTransaction(transactionHash, tokenIdAsNumber , from , to , 'coin')
+        });
+
+
     } catch (error) {
         console.log('error in the script');
         console.log(error)
@@ -40,7 +54,7 @@ export const getTransfer = async () => {
 }
 
 
-export const getDetailsWithHashOfTransaction = async (transactionHash, nftId , from , to) => {
+export const getDetailsWithHashOfTransaction = async (transactionHash, assetId , from , to , assetType) => {
     try {
         if(from == '0x0000000000000000000000000000000000000000'){
             console.log('A mint function ');
@@ -62,7 +76,7 @@ export const getDetailsWithHashOfTransaction = async (transactionHash, nftId , f
         const time = new Date(block.timestamp * 1000);
         // console.log(time.toISOString)
         // await buyEvent(from, to, time, value, nftId);
-        await client.lPush("events" , JSON.stringify({from, to, time, value, nftId , assetType: 'nft'}));
+        await client.lPush("events" , JSON.stringify({from, to, time, value, assetId , assetType}));
     } catch (error) {
         console.log(`error in the script of transaction hash`);
         console.log(error)
