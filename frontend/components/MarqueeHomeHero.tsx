@@ -9,14 +9,19 @@ const MarqueeHomeHero = () => {
     maskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.24) 5%, rgba(0, 0, 0, 0.80) 15%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 95%)',
     WebkitMaskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.24) 5%, rgba(0, 0, 0, 0.80) 15%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 95%)'
   }}>
-               <div className='flex gap-1'>
-            <CoinPriceHeroLandingPage headingText="First Hand Coin" amount="11.65&nbsp;BITSI" val = 'up' />
-            <CoinPriceHeroLandingPage headingText="Policy Coverage" amount="56.23&nbsp;ETH" val = 'up' />
+               <div className='flex gap-4'>
+            <CoinPriceHeroLandingPage headingText="BITSI Exchange Rate" amount="56.23&nbsp;ETH" val = 'up' />
+            <CoinPriceHeroLandingPage headingText="BITSI Supply" amount="11.65&nbsp;BITSI" val = 'up' />
             </div>
 
-            <div className=' flex gap-1 ml-40 mr-40'>
-            <CoinPriceHeroLandingPage headingText="Second Hand Coin" amount="11.65&nbsp;BITSI" val = 'up' />
+            <div className=' flex gap-4 ml-40 mr-40'>
+            <CoinPriceHeroLandingPage headingText="Insurance Coverage" amount="100%" val = 'up' />
             <CoinPriceHeroLandingPage headingText="Policy Coverage" amount="10.23&nbsp;ETH" val = 'low' />
+            </div>
+
+            <div className=' flex gap-4 ml-40 mr-40'>
+            <CoinPriceHeroLandingPage headingText="Pending Insurance Coverage" amount="100%" val = 'up' />
+            <CoinPriceHeroLandingPage headingText="Available Insurance Coverage" amount="10.23&nbsp;ETH" val = 'low' />
             </div>
             </Marquee>
             {/* <Marquee>

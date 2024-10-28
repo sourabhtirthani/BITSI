@@ -3,7 +3,7 @@ import { formatAddressUserZone } from '@/lib/utils';
 import  { useEffect } from 'react'
 import { useAccount , useSwitchChain} from 'wagmi'
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import {  polygonAmoy, sepolia } from 'wagmi/chains'
+import {  polygonAmoy, sepolia , baseSepolia } from 'wagmi/chains'
 
 const AdminAdressButtonForAdminPanel = () => {
     const {address , isConnected} = useAccount();
@@ -19,7 +19,7 @@ const AdminAdressButtonForAdminPanel = () => {
   useEffect(()=>{
 
     if(isConnected){
-       switchChain({ chainId: sepolia.id });
+       switchChain({ chainId: baseSepolia.id });
     }
 
   }, [isConnected , switchChain])

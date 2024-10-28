@@ -99,7 +99,7 @@ model Insurance_events {
   assetType   String
 }
 
-model Compensation {
+model Compensation {  // this has some redundant  data
   id                 Int       @id @default(autoincrement())
   requestDate        DateTime  @default(now())
   loss               Float

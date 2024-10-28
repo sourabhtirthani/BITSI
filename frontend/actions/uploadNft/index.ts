@@ -793,7 +793,7 @@ export const createAdminWalletType = async (address: string, walletType: string,
           type: walletType,
           name: walletName
         }
-      })
+      });
       return { success: true }
     } else {
       throw new Error('Invalid Type provided')
