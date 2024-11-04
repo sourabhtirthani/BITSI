@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ourServicesLinks, testimonials } from "@/constants";
 import Hero from "@/components/Hero";
 import Link from "next/link";
+import { HomeFaq } from "@/components/HomeFaq";
 const Home = () => {
   return (
     <section>
@@ -71,6 +72,7 @@ const Home = () => {
         </div>
       </div>
     </section>
+    <HomeFaq />
       <div className="h-[70px]"></div>
     </section>
   )

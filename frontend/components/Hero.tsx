@@ -18,7 +18,7 @@ const Hero = () => {
     height: 600
   };
   return (
-    
+    // bg-success-534
   <section className='bg-hero-image bg-current bg-cover   bg-no-repeat '>
     <div className='w-full h-[100px] max-md:max-h-[50px]'>
     </div>

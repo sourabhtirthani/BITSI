@@ -562,3 +562,27 @@ export const heroHomeVideos = [
     {vidSrc : "https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4"},
     {vidSrc : 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4'}
 ]
+
+
+export const faqs = [
+    {
+        question : 'How does BITSI’s protection plan work?',
+        answer : 'BITSI’s protection plan offers coverage by setting aside funds in a secure protection pool. When you activate coverage, a portion of your BITSI investment is safeguarded. You can manage, extend, or upgrade this coverage through your user zone, ensuring that your investments are protected against market volatility and unforeseen risks.'
+    },
+    {
+        question : 'What happens during a price drop?',
+        answer : 'test answer',
+    },
+    {
+        question : ' How do I buy BITSI?',
+        answer : 'test answer',
+    },
+    {
+        question : 'What’s the difference between total and circulating supply?',
+        answer : 'test answer',
+    },
+    {
+        question : 'How does BITSI’s price change over time?',
+        answer : 'test answer',
+    },
+]
