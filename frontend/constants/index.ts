@@ -586,3 +586,19 @@ export const faqs = [
         answer : 'test answer',
     },
 ]
+
+
+export const homeBitsiSteps = [
+    {
+        primary : 'Comprehensive Protection',
+        secondary : 'Unique security in a fluctuating market.'
+    },
+    {
+        primary : ' Transparent Metrics',
+        secondary : 'Real-time updates on price, supply, and protection pool.'
+    },
+    {
+        primary : 'SteadyGrowth Focus',
+        secondary : 'Designed for investors who value stability and long-term growth.'
+    }
+]

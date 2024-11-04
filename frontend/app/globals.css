@@ -18,6 +18,31 @@
   -webkit-appearance: none;
   margin: 0;
 }
+.pushable {
+  background: hsla(40, 100%, 57%, 1);
+  border: none;
+  border-radius: 12px;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 4px 0.5px 0 hsla(40, 100%, 57%, 1);
+}
+.front {
+  display: block;
+  padding: 12px 42px;
+  border-radius: 12px;
+  /* font-size: 1.25rem; */
+  background: white;
+  color: black;
+  transform: translateY(-4px);
+}
+
+.pushable:active .front {
+  transform: translateY(-2px);
+}
+
+.pushable:focus:not(:focus-visible) {
+  outline: none;
+}
 
 /* .square-div {
   width: 100%;

@@ -102,7 +102,7 @@ const config = {
   				'532': '#5B5B5B',
   				'533': '#D63B30',
   				'534': '#0D0D2B',
-          '535': '#172765'
+          '535': '#172765',
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',

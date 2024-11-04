@@ -1,9 +1,10 @@
 
 import Image from "next/image";
-import { ourServicesLinks, testimonials } from "@/constants";
+import { homeBitsiSteps, ourServicesLinks, testimonials } from "@/constants";
 import Hero from "@/components/Hero";
 import Link from "next/link";
 import { HomeFaq } from "@/components/HomeFaq";
+import { ArrowBigDown, ArrowDownIcon } from "lucide-react"
 const Home = () => {
   return (
     <section>
@@ -29,6 +30,22 @@ const Home = () => {
           )
         })}
     </div>
+    </section>
+
+
+    <section className="bg-success-534 py-4 flex flex-col items-center  text-white font-montserrat justify-center">
+        <p className="text-[32px] max-md:text-[18px] font-bold ">Why Choose BITSI?</p>
+        <Image src = '/icons/ArrowdownHome.svg' alt="" height={48} width={24} />
+        {homeBitsiSteps.map((item , index)=>{
+          return (
+        <div key={index} className="flex flex-col items-center">
+          <p className="font-bold text-[22px] max-md:text-[14px]">{item.primary}</p>
+          <p className="text-[16px] max-md:text-[10px] font-normal">{item.secondary}</p>
+          <Image src = '/icons/ArrowdownHome.svg' alt="" height={48} width={24} />
+        </div>
+          )
+        })}
+      <button className="pushable"><span className="front text-[18px] font-semibold font-montserrat max-md:text-[14px]">Join the BITSI Community</span></button>
     </section>
 
     <section className='flex flex-col bg-success-507 items-center h-fit mx-auto'>
@@ -72,6 +89,7 @@ const Home = () => {
         </div>
       </div>
     </section>
+
     <HomeFaq />
       <div className="h-[70px]"></div>
     </section>
