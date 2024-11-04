@@ -28,18 +28,18 @@ model Nft {
 }
 
 model Nft_events {
-  id              Int      @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   // s_no      Int
-  nft_event       String
-  nft_price       Float
-  from            String
-  to              String
-  time            DateTime
-  nftId           Int
-  asset_name      String
-  nft             Nft      @relation(fields: [nftId], references: [id])
+  nft_event   String
+  nft_price   Float
+  from        String
+  to          String
+  time        DateTime
+  nftId       Int
+  asset_name  String
+  nft         Nft      @relation(fields: [nftId], references: [id])
   // claim_requested Boolean  @default(false)
-  loss_amount     Float? // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
+  loss_amount Float? // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
 
   @@index([nftId])
 }
@@ -77,7 +77,7 @@ model Insurance {
   nftId           Int                @unique
   nft             Nft                @relation(fields: [nftId], references: [id])
   currentOwner    String
-  status          InsuranceStatus     @default(ApprovalPending)
+  status          InsuranceStatus    @default(ApprovalPending)
   // compensation    Compensation?
   is_extended     Boolean            @default(false)
   insuranceEvents Insurance_events[]
@@ -89,7 +89,6 @@ enum InsuranceStatus {
   Active
 }
 
-
 model Insurance_events {
   id          Int       @id @default(autoincrement())
   eventname   String
@@ -99,7 +98,7 @@ model Insurance_events {
   assetType   String
 }
 
-model Compensation {  // this has some redundant  data
+model Compensation {
   id                 Int       @id @default(autoincrement())
   requestDate        DateTime  @default(now())
   loss               Float
@@ -158,10 +157,18 @@ model Claims {
   expiration            DateTime
   buyPrice              Float
   soldPrice             Float
-  loss                  Float           // a negative value indicates that the user has made some profit on the deal instead
+  loss                  Float // a negative value indicates that the user has made some profit on the deal instead
   assetId               Int
   coverage              Float
   lossPercent           Float
-  date                  DateTime       @default(now())
+  date                  DateTime      @default(now())
   compensation          Compensation?
+}
+
+model Coin {
+  id            Int      @id @default(autoincrement())
+  userAddress   String
+  numberOfCoins Float
+  insuredCoins  Float    @default(0)
+  createdAt     DateTime @default(now())
 }
