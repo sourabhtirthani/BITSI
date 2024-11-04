@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import Link from "next/link";
 import { HomeFaq } from "@/components/HomeFaq";
 import { ArrowBigDown, ArrowDownIcon } from "lucide-react"
+import { HomeChart } from "@/components/HomeChart";
 const Home = () => {
   return (
     <section>
@@ -30,6 +31,16 @@ const Home = () => {
           )
         })}
     </div>
+    </section>
+
+
+    <section className="bg-success-503 p-8 max-md:p-4">
+      <p className="font-montserrat text-[32px] mb-4 max-md:text-[24px] text-white font-semibold">BITSI Market Insights</p>
+      <div className="grid grid-cols-3 lg:gap-6 max-lg:gap-3 py-4 max-md:grid-cols-1 w-full">
+        <HomeChart heading="Market BITSI Cap"  colorHex="#F8AE55"/>
+        <HomeChart heading="Protection Fund Balance" colorHex="#00A478" />
+        <HomeChart heading="Total Protected Volume" colorHex="#7854DF" />
+      </div>
     </section>
 
 

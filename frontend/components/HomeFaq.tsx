@@ -11,7 +11,7 @@ import { faqs } from "@/constants"
         <div className="bg-success-534 w-full flex flex-col items-center justify-center mb-32 text-white p-8 max-md:p-4">
             <p className="font-poppins text-[42px] max-md:text-[20px] mt-10 font-bold">Frequently Asked Questions (FAQ)</p>
             <p className="font-manrope font-normal text-[20px] max-md:text-[12px] mb-16 max-md:mb-8">Find answers to common questions about BITSI&apos;s cost management services and learn how to optimize your crypto investments.</p>
-            <div className="w-3/5">
+            <div className="w-3/5 max-md:w-4/5">
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((item , index)=>{
             return (
