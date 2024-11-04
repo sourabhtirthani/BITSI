@@ -8,7 +8,7 @@ async function startWorker(){
     try{
     await client.connect();
     // Note : The code requires redis to run!
-    console.log(`connected to the client`);
+    console.log(`connected to the redis client`);
     while(true){
         const events = await client.brPop("events" , 0);
         if(events?.element){

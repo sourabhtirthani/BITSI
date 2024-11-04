@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 import {createClient} from 'redis'
-import { coinContractAbi, coinContractAddress } from '../contracts/coin';
-import { nftContractABI, nftContractAddress } from '../contracts/nft';
+import { coinContractAbi, coinContractAddress } from '../contracts/coin/index.js';
+import { nftContractABI, nftContractAddress } from '../contracts/nft/index.js';
 
 
 dotenv.config();
