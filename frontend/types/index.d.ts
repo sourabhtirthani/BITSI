@@ -51,6 +51,17 @@ declare interface NftDataWithInsurace {
     };
   }
 
+declare interface CoinMarketTableProps {
+  platform : string;
+  type : string;
+  price : number;
+  scale : number;
+}
+declare interface CoinBoxBuyProps{
+  key : string;
+  value: string;
+}
+
   interface AdminNftEventDetail  {
     id: number;           
     nft_event: string;     
@@ -209,7 +220,10 @@ declare interface collectionListInCreateNft {
     name: string,
     image: string
 }
-
+declare interface HomeHowCryptoWorksTypes{
+  heading : string;
+  description : string;
+}
 declare type AboutUsContextType = {
     filterValue: string;
     setFilterValue: React.Dispatch<React.SetStateAction<string>>;

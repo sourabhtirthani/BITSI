@@ -6,7 +6,7 @@ import Link from 'next/link'
 const Footerr = () => {
     const currentYear = new Date().getFullYear();
   return (
-    <section className='bg-success-509'>
+    <section className='bg-success-509 overflow-clip'>
 
         <div className='flex max-md:flex-col justify-between sm:p-8  max-md:p-4 gap-2'>
             {/* <div className=' flex flex-col items-center'> */}

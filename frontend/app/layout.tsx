@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Manrope, Montserrat, Moon_Dance , Mulish , Poller_One } from "next/font/google";
+import { Inter, Poppins, Manrope, Montserrat, Moon_Dance , Mulish , Poller_One, Montaga } from "next/font/google";
 import "./globals.css";
 import { config } from '@/config'
 import Web3ModalProvider from '@/context'
@@ -41,6 +41,12 @@ const pollerOne = Poller_One({
   weight : ['400'],
   variable : '--font-poller-one'
 })
+const montaga = Montaga({
+  subsets : ["latin"],
+  weight : ['400'],
+  variable : '--font-montaga'
+})
+
 
 
 export const metadata: Metadata = {
@@ -62,7 +68,7 @@ export default function RootLayout({
   const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable}`}>
+      <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable} ${montaga.variable}`}>
       <NextTopLoader showSpinner = {false}   />
       <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
         

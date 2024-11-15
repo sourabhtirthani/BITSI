@@ -54,7 +54,8 @@ const config = {
   			'manrope': 'var(--font-manrope)',
   			'poppins': 'var(--font-poppins)',
   			'mulish': 'var(--font-mulish)',
-  			'poller-one': 'var(--font-poller-one)'
+  			'poller-one': 'var(--font-poller-one)',
+			'montaga' : 'var(--font-montaga)'
   		},
   		colors: {
   			border: 'hsl(var(--border))',
@@ -102,7 +103,9 @@ const config = {
   				'532': '#5B5B5B',
   				'533': '#D63B30',
   				'534': '#0D0D2B',
-          '535': '#172765',
+          		'535': '#172765',
+				'536' : '#B982FF',
+				'537' : '#DDDDDD'
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',

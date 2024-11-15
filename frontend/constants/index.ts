@@ -587,6 +587,23 @@ export const faqs = [
     },
 ]
 
+export const homeHowCryptoWorks = [
+    {
+        heading : 'Acquire BITSI',
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+    },
+    {
+        heading : 'Connect You Wallet',
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+    },
+    {
+        heading : 'Access Your Protection Zone',
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+    },
+]
+
+export const coinFaqs = faqs;
+
 
 export const homeBitsiSteps = [
     {
@@ -601,4 +618,29 @@ export const homeBitsiSteps = [
         primary : 'SteadyGrowth Focus',
         secondary : 'Designed for investors who value stability and long-term growth.'
     }
+]
+
+export const coinMaketTable = [
+    {platform : 'Binance',type : 'Exchange' , price : 12.59 , scale : 4.35},
+    {platform : 'Coinbase',type : 'Exchange' , price : 12.45 , scale : 4.35},
+    {platform : 'Kraken',type : 'Broker' , price : 12.55 , scale : -2.35},
+    {platform : 'Uniswap',type : 'Exchange' , price : 12.22 , scale : 4.35},
+    {platform : 'BITSI Telegram',type : 'DEX' , price : 12.44 , scale : -1.35},
+    {platform : 'Binance',type : 'Exchange' , price : 12.53 , scale : 4.35},
+    
+]
+
+export const coinBoxBuy = [
+    {key:'Vol', value:'113.3B'},
+    {key : 'Market Cap' , value : '1.49T'},
+    {key : 'Day’s Range' , value : '69,323 - 76,007.7'},
+    {key : '52 WK Range' , value : '34,984.3 - 75,642.3'},
+    {key : 'Max Supply' , value : 'BTC21.00M'},
+    {key : 'Circulating Supply' , value : 'BTC19.78M'},
+]
+
+export const coinKeyFeatures = [
+    {key : 'Protection Mechanism',value : 'A unique mechanism providing BITSI holders with an additional layer of security through compensation in case of a sale loss, when the sale price is lower than the purchase price, thereby enhancing investment stability'},
+    {key : 'Long-Term Growth Potential' , value : 'The goal is steady and sustainable growth, making it an attractive choice for investors seeking stability and effective risk management'},
+    {key : 'Growth Protection' , value : 'Enables the protection of BITSI investors profits resulting from the growth of the BITSI token, allowing investors to preserve the value of their investment and growth even in volatile market conditions.'}
 ]
