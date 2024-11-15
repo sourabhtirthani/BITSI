@@ -47,10 +47,10 @@ const Home = () => {
             {homeHowCryptoWorks.map((item: HomeHowCryptoWorksTypes, index: number) => {
               return (
                 <div className="w-full gap-4 max-md:gap-2  flex justify-between items-center " key={index}>
-                  <div className="relative h-full">
-                  <p className="text-[44px] max-md:text-[18px] max-md:w-9 max-md:h-9 font-montaga flex items-center justify-center w-14 h-14 p-1 rounded-full border-2 border-success-511 text-white">{index + 1}</p>
+                  <div className="relative h-3/5">
+                  <p className="text-[44px]  max-md:text-[18px] max-md:w-9 max-md:h-9 font-montaga flex items-center justify-center w-14 h-14 p-1 rounded-full border-2 border-success-511 text-white">{index + 1}</p>
                   {index !== homeHowCryptoWorks.length - 1 && (
-                    <div className="w-[0.5px] absolute bg-success-513 mt-1 h-3/5 right-1/2"></div>
+                    <div className="w-[0.5px] absolute bg-success-513 mt-1 h-full right-1/2"></div>
                   )}
                   </div>
                   <AccordionItem   value={index.toString()}  className=" py-5 rounded-xl px-2 max-md:py-2.5 bg-success-512  secondary-shadow11  w-full">
