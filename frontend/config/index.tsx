@@ -16,7 +16,8 @@ const metadata = {
 }
 
 // console.log(`the chain id of sepolia is : ${sepolia.id}`)
-const chains = [  baseSepolia] as const   
+// const chains = [  baseSepolia] as const   
+const chains = [  polygon] as const   
 export const config = defaultWagmiConfig({
   chains,
   projectId,

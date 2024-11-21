@@ -166,9 +166,29 @@ model Claims {
 }
 
 model Coin {
-  id            Int      @id @default(autoincrement())
-  userAddress   String
-  numberOfCoins Float
-  insuredCoins  Float    @default(0)
-  createdAt     DateTime @default(now())
+  id             Int               @id @default(autoincrement())
+  userAddress    String  @unique
+  totalCoins     Float
+  totalAmount    Float
+  unInsuredCoins Float
+  createdAt      DateTime          @default(now())
+  coinInsurance  CoinInsurance[]
+  transactions   CoinTransaction[]
+}
+
+model CoinInsurance {
+  id           Int   @id @default(autoincrement())
+  insuredCoins Float
+  coinId       Int
+  Coin         Coin  @relation(fields: [coinId], references: [id])
+}
+
+model CoinTransaction {
+  id               Int      @id @default(autoincrement())
+  coinsTransferred Float
+  createdAt        DateTime @default(now())
+  eventName        String
+  coinId           Int
+  price            Float
+  coin             Coin     @relation(fields: [coinId], references: [id])
 }

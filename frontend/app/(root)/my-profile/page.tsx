@@ -23,6 +23,7 @@ import MyHistoryUserzone from '@/components/MyHistoryUserzone';
 import MyWalletNftUserzone from '@/components/MyWalletNftUserzone';
 import MyCompensationUserProfile from '@/components/MyCompensationUserProfile';
 import MyHistoryProtection from '@/components/MyHistoryProtection';
+import MyWalletCoinUserZone from '@/components/MyWalletCoinUserZone';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -253,43 +254,7 @@ const MyProfile = () => {
             {/* <DropdownMyProfile insideTable={false} setValue={setCoinsDetailsFilterValueOutside} iconName='/icons/sort-icon-filter.svg' items={[]}/> */}
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
-          <div className='max-h-[500px] overflow-y-auto mb-20 table-body p-4 md:p-8'>
-            <table className='w-full text-left mt-4 border-spacing-20'>
-              <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
-                <tr>
-                  <th className='p-2 max-sm:p-1'>Date</th>
-                  <th className='p-2 max-sm:p-1' >Marketplace</th>
-                  <th className='p-2 max-sm:p-1'>Coin&nbsp;Id</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coin&nbsp;Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
-                </tr>
-              </thead>
-              <tbody className='overflow-y-auto '>
-                {tableMyWalletCoin.map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <tr className='bg-success-512 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 py-5 max-sm:p-1'>{item.Date}</td>
-                        <td className='p-2 max-sm:p-1'>{item.marketPlace}</td>
-                        <td className='p-2 max-sm:p-1'>{item.CoinId}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coinPrice}</td>
-                        <td className='p-2 max-sm:p-1'>{item.insurance}</td>
-                        <td className='p-2 max-sm:p-1'>{item.incusranceCoverage}</td>
-                        <td className='p-2 max-sm:p-1'>{item.insuranceExpiry}</td>
-                        {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
-                      </tr>
-                      <tr>
-                        <td  className='h-6'></td>
-                      </tr>
-                    </React.Fragment>
-                  )
-                })}
-              </tbody>
-
-            </table>
-          </div>
+         <MyWalletCoinUserZone address={address?.toString() ?? ''}/>
           </>
         )}
 

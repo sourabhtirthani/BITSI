@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster"
 import AiChatButton from "@/components/AiChatButton";
+// import Hero from "@/components/Hero";
 
 export default function RootLayout({
   children,
@@ -14,16 +15,19 @@ export default function RootLayout({
 }>) {
    
   return (
+    <div className="flex flex-col font-inter">
     <div className="flex flex-col font-inter container-whole ">
-      {/* min-h-screen...might include later in the div */}
       <header className="">
         <Navbar />
+        {/* <Hero /> */}
       </header>
+      {/* min-h-screen...might include later in the div */}
 
         {children}
         <Toaster  />
-        <Footerr />
         <AiChatButton />
+    </div>
+        <Footerr />
     </div>
   );
 }
