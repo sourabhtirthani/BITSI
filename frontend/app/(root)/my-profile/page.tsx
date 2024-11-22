@@ -24,6 +24,7 @@ import MyWalletNftUserzone from '@/components/MyWalletNftUserzone';
 import MyCompensationUserProfile from '@/components/MyCompensationUserProfile';
 import MyHistoryProtection from '@/components/MyHistoryProtection';
 import MyWalletCoinUserZone from '@/components/MyWalletCoinUserZone';
+import MyHistoryUserZoneCoin from '@/components/MyHistoryUserZoneCoin';
 //515/511
 const MyProfile = () => {
   const {toast} = useToast();
@@ -279,7 +280,9 @@ const MyProfile = () => {
             <p className='  px-3 text-success-511 text-[22px] font-bold  mt-3 py-2'>{filterValue}</p>
             <DropdownBitsiNFt  itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setOrd={setOrderFilter} setPrice={setPriceFilter} />
           </div>
-          <MyHistoryUserzone address={address as string} filterValue={filterValue} orderFilter={orderFilter} priceFilter={priceFilter}  />
+          {filterValue == 'NFT' ? 
+          <MyHistoryUserzone address={address as string} filterValue={filterValue} orderFilter={orderFilter} priceFilter={priceFilter}  /> : 
+          <MyHistoryUserZoneCoin address={address as string} />}
           </>
         )}
         { filterValue == 'Protection' && (

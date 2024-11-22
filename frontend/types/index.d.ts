@@ -444,3 +444,12 @@ declare interface WalletUserZoneCoin {
   unInsuredCoins: number;
   createdAt: Date;
 }
+
+declare interface CoinTransaction{
+  id: number;
+    coinsTransferred: number;
+    createdAt: Date;
+    eventName: string;
+    coinId: number;
+    price: number;
+}
