@@ -35,7 +35,7 @@ export function HomeChart({heading , colorHex} : {heading : string , colorHex : 
     const chartConfig = {
       desktop: {
         label: "Desktop",
-        color: colorHex,
+        // color: colorHex
       },
     } satisfies ChartConfig
   return (
@@ -71,12 +71,26 @@ export function HomeChart({heading , colorHex} : {heading : string , colorHex : 
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
+             <defs>
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="0%"
+                  stopColor={colorHex}
+                  stopOpacity={1}
+                />
+                <stop
+                  offset="100%"
+                  stopColor="#FFFFFF"
+                  stopOpacity={0}
+                />
+              </linearGradient>
+              </defs>
             <Area
               dataKey="desktop"
               type="natural"
-              fill="var(--color-desktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              fill="url(#chartGradient)"
+              fillOpacity={0.8}
+              stroke={colorHex}
             />
           </AreaChart>
         </ChartContainer>

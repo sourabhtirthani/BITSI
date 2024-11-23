@@ -62,6 +62,16 @@ declare interface CoinBoxBuyProps {
   value: string;
 }
 
+declare interface CoinKeyFeaturesProps {
+  key: string;
+  value: string;
+  howItWorks: CoinHowItWorksProps[];
+}
+declare interface CoinHowItWorksProps {
+  heading: string;
+  data: string;
+}
+
 interface AdminNftEventDetail {
   id: number;
   nft_event: string;
@@ -223,6 +233,7 @@ declare interface collectionListInCreateNft {
 declare interface HomeHowCryptoWorksTypes {
   heading: string;
   description: string;
+  btns: {label : string , url : string , tailwindClassName : string}[];
 }
 declare type AboutUsContextType = {
   filterValue: string;
@@ -452,4 +463,24 @@ declare interface CoinTransaction{
     eventName: string;
     coinId: number;
     price: number;
+}
+
+declare interface CoinWithInsurances {
+  id: number;
+  userAddress: string;
+  totalCoins: number;
+  totalAmount: number;
+  unInsuredCoins: number;
+  createdAt: Date;
+  updatedAt: Date;
+  insurances: {
+    id: number;
+    coinId: number;
+    coinsInsured: number;
+    coverage: number;
+    startTime: Date;
+    expiration: Date;
+    status: "ApprovalPending" | "Approved" | "Denied";
+    is_extended: boolean;
+  }[] | null; 
 }

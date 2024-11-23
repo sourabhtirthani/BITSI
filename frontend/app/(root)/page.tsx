@@ -36,27 +36,39 @@ const Home = () => {
       <section className="bg-success-503 p-8 max-md:p-4 mt-11 max-md:mt-5">
         <p className="font-montserrat text-[32px] mb-4 max-md:text-[24px] text-white font-semibold">BITSI Market Insights</p>
         <div className="grid grid-cols-3 lg:gap-6 max-lg:gap-3 py-4 max-md:grid-cols-1 w-full">
+          <HomeChart heading="Total Protected Volume" colorHex="#7854DF" />
           <HomeChart heading="Market BITSI Cap" colorHex="#F8AE55" />
           <HomeChart heading="Protection Fund Balance" colorHex="#00A478" />
-          <HomeChart heading="Total Protected Volume" colorHex="#7854DF" />
         </div>
         <div className="mt-8 flex flex-col gap-4 max-md:mt-4 font-montserrat text-white">
           <h1 className="font-manrope text-[32px] font-bold">How AAACrypto Works (3- Steps)</h1>
 
-          <Accordion type="single" collapsible  className="w-full  grid grid-cols-1 gap-5">
+          <Accordion type="single" collapsible className="w-full  grid grid-cols-1 gap-5" >
             {homeHowCryptoWorks.map((item: HomeHowCryptoWorksTypes, index: number) => {
               return (
                 <div className="w-full gap-4 max-md:gap-2  flex justify-between items-center " key={index}>
                   <div className="relative h-3/5">
-                  <p className="text-[44px]  max-md:text-[18px] max-md:w-9 max-md:h-9 font-montaga flex items-center justify-center w-14 h-14 p-1 rounded-full border-2 border-success-511 text-white">{index + 1}</p>
-                  {index !== homeHowCryptoWorks.length - 1 && (
-                    <div className="w-[0.5px] absolute bg-success-513 mt-1 h-full right-1/2"></div>
-                  )}
+                    <p className="text-[44px]  max-md:text-[18px] max-md:w-9 max-md:h-9 font-montaga flex items-center justify-center w-14 h-14 p-1 rounded-full border-2 border-success-511 text-white">{index + 1}</p>
+                    {index !== homeHowCryptoWorks.length - 1 && (
+                      <div className="w-[0.5px] absolute bg-success-513 mt-1 h-full right-1/2"></div>
+                    )}
                   </div>
-                  <AccordionItem   value={index.toString()}  className=" py-5 rounded-xl px-2 max-md:py-2.5 bg-success-512  secondary-shadow11  w-full">
+                  <AccordionItem value={index.toString()} className=" py-5 rounded-xl px-2 max-md:py-2.5 bg-success-512  secondary-shadow11  w-full">
                     <AccordionTrigger className="text-[22px] font-montserrat font-semibold max-md:text-[14px] text-start">{item.heading}</AccordionTrigger>
-                    <AccordionContent className="font-montserrat text-[18px] max-md:text-[8px] font-normal ">
-                      {item.description}
+                    <AccordionContent className="font-montserrat text-[18px] gap-3 flex flex-col max-md:text-[8px] font-normal ">
+                      <p>{item.description}</p>
+                      <div className="flex gap-2 ">
+                        {item.btns.map((btn: { label: string; url: string; tailwindClassName: string }, indexBtn: number) => {
+                          return (
+                            <div className="bg-white rounded-full" key={indexBtn}>
+                            <button  className={`${btn.tailwindClassName} rounded-full  font-bold p-3 `}>
+                              {btn.label}
+                            </button>
+                            </div>
+                          );
+                        })}
+
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 </div>
@@ -79,7 +91,7 @@ const Home = () => {
           )
         })}
         <div className="w-fit">
-        <button className="pushable"><span className="front text-[18px] self-start font-semibold font-montserrat max-md:text-[14px]">Join the BITSI Community</span></button>
+          <button className="pushable"><span className="front text-[18px] self-start font-semibold font-montserrat max-md:text-[14px]">Join the BITSI Community</span></button>
         </div>
       </section>
       <div className="w-full bg-success-510 h-[100px] max-md:h-[50px]"></div>

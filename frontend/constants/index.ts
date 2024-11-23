@@ -590,15 +590,31 @@ export const faqs = [
 export const homeHowCryptoWorks = [
     {
         heading : 'Acquire BITSI',
-        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.',
+        btns :[{
+            label : 'Binance',
+            // icon : '/icons/binance.svg',
+            url : 'https://www.binance.com/',
+            tailwindClassName : 'text-[#F0B90B] bg-white'} ,
+            {
+                label : 'CoinBase', url : 'https://www.binance.com/', tailwindClassName : 'text-[#0667D0] bg-white'
+            },{
+                 label : 'Uniswap', url : 'https://www.binance.com/', tailwindClassName : 'text-pink-600 bg-white'
+            } ]
     },
     {
         heading : 'Connect You Wallet',
-        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.',
+        btns :[{
+            label : 'Connect',url : '', tailwindClassName : 'text-transparent bg-gradient-to-r from-[#F9AD09] to-[#B19804] bg-clip-text'
+        }]
     },
     {
         heading : 'Access Your Protection Zone',
-        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.'
+        description : 'Acquire BITSI– Purchase BITSI coins directly from our platform or through our trusted exchange partners.',
+        btns :[{
+            label : 'Connect',url : '', tailwindClassName : 'text-transparent bg-gradient-to-r from-[#F9AD09] to-[#B19804] bg-clip-text'
+        }]
     },
 ]
 
@@ -640,7 +656,28 @@ export const coinBoxBuy = [
 ]
 
 export const coinKeyFeatures = [
-    {key : 'Protection Mechanism',value : 'A unique mechanism providing BITSI holders with an additional layer of security through compensation in case of a sale loss, when the sale price is lower than the purchase price, thereby enhancing investment stability'},
-    {key : 'Long-Term Growth Potential' , value : 'The goal is steady and sustainable growth, making it an attractive choice for investors seeking stability and effective risk management'},
-    {key : 'Growth Protection' , value : 'Enables the protection of BITSI investors profits resulting from the growth of the BITSI token, allowing investors to preserve the value of their investment and growth even in volatile market conditions.'}
+    {
+        key : 'Protection Mechanism',value : 'A unique mechanism providing BITSI holders with an additional layer of security through compensation in case of a sale loss, when the sale price is lower than the purchase price, thereby enhancing investment stability',
+        howItWorks : [
+            {heading : 'Real-Time Price Monitoring:' , data : ' The system continuously monitors the market price of BITSI.'},
+            {heading : 'Dedicated Compensation Fund:' , data : ' A portion of revenues is allocated to a special fund designated for compensating holders during price declines. This fund acts as a safety net to ensure compensation can be provided when needed. The capital in the fund is held in stablecoins and/or fiat currency.'},
+            {heading : 'Smart Contract Activation:' , data : ' When the sale price of BITSI is lower than the purchase price, the smart contract is automatically triggered to initiate a compensation transfer. The customer submits a compensation request, and the funds are transferred to the customer’s wallet within a month, subject to admin approval. Compensation can be provided in additional BITSI tokens or stablecoins, according to predefined terms.'}
+        ]
+    },
+    {
+        key : 'Long-Term Growth Potential' , value : 'The goal is steady and sustainable growth, making it an attractive choice for investors seeking stability and effective risk management',
+        howItWorks : [
+            {heading : 'Controlled Release of Tokens to the Market:' , data : ' BITSIAAA aims for controlled growth rather than extreme price fluctuations. One method used is careful management of the token supply in the market to maintain a balance between supply and demand, thereby reducing volatility.'},
+            {heading : 'Incentives for Holding::' , data : ' The system encourages long-term holding by offering reduced fees and the option to upgrade protection levels whenever BITSI’s value increases. This approach contributes to stability and attracts investors looking for steady growth with reduced risk.'},
+            {heading : 'Risk Management:' , data : ' The commitment to long-term growth reflects a strategic approach focused on controlled growth, built on clear economic models and continuous risk management. This makes BITSI an appealing option for investors seeking a safe and stable investment.'}
+        ]
+    },
+    {
+        key : 'Growth Protection' , value : 'Enables the protection of BITSI investors profits resulting from the growth of the BITSI token, allowing investors to preserve the value of their investment and growth even in volatile market conditions.',
+        howItWorks : [
+            {heading : 'Securing accumulated profits:' , data : ' When BITSI holders experience growth in their profits, they can enhance their level of protection to cover both their investment and profits, ensuring these remain safeguarded even during market downturns, thanks to growth protection mechanisms.'},
+            {heading : 'Volatility Reduction Mechanisms:' , data : ' BITSIAAA has a dedicated mechanism that activates during sharp declines, utilizing tools to increase demand in times of steep price drops. Additionally, the protection mechanism helps prevent panic selling by providing compensation, contributing to market stability, reducing fear of value loss, and preserving accumulated profits'},
+            {heading : 'Building Trust:' , data : ' The growth protection mechanism provides investors with a sense of security that supports the value of their investment over time, even during periods of volatility. This way, investors choose to invest in and hold BITSI, knowing it is equipped with mechanisms to preserve its value.'}
+        ]
+    }
 ]

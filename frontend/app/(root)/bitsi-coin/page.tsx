@@ -1,9 +1,11 @@
 import BitsiCoinCard from '@/components/BitsiCoinCard'
+import { ChartCoin } from '@/components/ChartCoin'
 import { CoinCheckOutDialog } from '@/components/CoinCheckOutDialog'
+import CoinKeyFeatures from '@/components/CoinKeyFeatures'
 import { HomeFaq } from '@/components/HomeFaq'
 import LineChartComp from '@/components/LineChartComp'
 import { bitsiCoinCardData, coinBoxBuy, coinKeyFeatures, coinMaketTable } from '@/constants'
-import { CoinBoxBuyProps, CoinMarketTableProps } from '@/types'
+import { CoinBoxBuyProps, CoinKeyFeaturesProps, CoinMarketTableProps } from '@/types'
 import Image from 'next/image'
 import React from 'react'
 
@@ -59,6 +61,7 @@ const BitsiCoin = () => {
                         </div>
                         <div className='flex w-full gap-6 max-md:gap-3 max-md:flex-col'>
                             <div className='flex flex-col max-md:w-full w-3/5 rounded-xl overflow-x-auto p-4 text-[20px] max-md:text-[10px]  font-bold bg-success-512 secondary-shadow11'>
+                            <ChartCoin  />
                             </div>
                             <div className='flex flex-col max-md:w-full  gap-10 max-md:gap-5 w-2/5 rounded-xl overflow-x-auto text-white p-8 max-md:p-4 text-[22px] max-md:text-[11px]  bg-success-512 secondary-shadow11'>
 
@@ -93,12 +96,10 @@ const BitsiCoin = () => {
                     <div className='mt-6 max-md:mt-3 flex flex-col items-center mb-10 max-md:mb-5'>
                         <h1 className='text-success-511 font-bold mb-5 max-md:mb-2.5 text-[32px]'>BITSI KEY FEATURES</h1>
                     <div className=' grid grid-cols-1 gap-8 max-md:gap-4'>
-                        {coinKeyFeatures.map((item : CoinBoxBuyProps , index : number)=>{
+                        {coinKeyFeatures.map((item : CoinKeyFeaturesProps , index : number)=>{
                             return (
-                                <div key={index} className='rounded-xl hover:bg-success-503 flex flex-col gap-6 max-md:gap-3 bg-success-512 secondary-shadow11 w-full p-8 max-md:p-4'>
-                                    <p className='text-success-511 font-semibold text-[24px]'>{item.key}</p>
-                                    <p className=' font-normal text-[18px]'>{item.value}</p>
-                                    <button className='self-start py-3 px-4 font-bold text-[16px] text-success-511 bg-white rounded-full'>Show More</button>
+                                <div key={index}>
+                                <CoinKeyFeatures howItWorks={item.howItWorks} key={item.key} value={item.value} />
                                 </div>
                             )
                         })}
