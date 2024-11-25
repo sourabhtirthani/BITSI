@@ -1,7 +1,8 @@
+'use server'
 import db from "@/db";
 
 type CoinInsuranceReturnType = { success: boolean }
-export const purchaseCoinInsurace = async(coinId : number , userAddress : string , totalCoinsToInsure : number) : Promise<CoinInsuranceReturnType> =>{
+export const purchaseCoinInsurance = async(coinId : number , userAddress : string , totalCoinsToInsure : number) : Promise<CoinInsuranceReturnType> =>{
     try{
         const coin = await db.coin.findUnique({
             where : {id : coinId}
@@ -29,6 +30,7 @@ export const purchaseCoinInsurace = async(coinId : number , userAddress : string
             })
         return {success : true}
     }catch(error){
+        console.log(error);
         throw new Error('Error Purchasing Coin Insurance');
     }
 }

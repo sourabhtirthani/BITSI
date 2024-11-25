@@ -484,3 +484,23 @@ declare interface CoinWithInsurances {
     is_extended: boolean;
   }[] | null; 
 }
+
+
+declare interface CoinInsuranceDetailsAdmin {
+  id: number;
+  coinId: number;
+  coinsInsured: number;
+  coverage: number;
+  startTime: Date;
+  expiration: Date;
+  status: InsuranceStatus;
+  is_extended: boolean;
+  coin: {
+      id: number;
+      userAddress: string;
+      totalCoins: number;
+      totalAmount: number;
+      unInsuredCoins: number;
+      createdAt : Date;
+  };
+}

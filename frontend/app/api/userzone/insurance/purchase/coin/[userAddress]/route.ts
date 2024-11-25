@@ -15,7 +15,9 @@ export async function GET(request: Request, context: { params: { userAddress: st
         include : {
             insurances : {
                 where : {
-                    status: "ApprovalPending"
+                    status: {
+                        in : ["ApprovalPending" , "Approved"]
+                    }
                 }
             }
         }

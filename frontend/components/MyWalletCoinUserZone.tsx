@@ -11,7 +11,11 @@ const MyWalletCoinUserZone = ({address} : {address : string}) => {
             try{
                 const responseFromServer = await  fetch(`/api/userzone/coins/user/${address}`, { method: "GET", next: { revalidate: 0 }})
                 const resInJson = await responseFromServer.json();
-                
+                if(resInJson == null){
+                  setLoaderState(false);
+                  return;
+                }
+                console.log('reacher hrer')
                 setUserCoins([resInJson]);
                 console.log(resInJson)
                 console.log(`this is the res in json`)
@@ -38,11 +42,11 @@ const MyWalletCoinUserZone = ({address} : {address : string}) => {
                 </tr>
               </thead>
               <tbody className='overflow-y-auto '>
-                {userCoins && Array.isArray(userCoins) && userCoins.map((item, index) => {
+                {userCoins != null && Array.isArray(userCoins) && userCoins.map((item, index) => {
                   return (
                     <Fragment key={index}>
                       <tr className='bg-success-512 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                        <td className='p-2 py-5 max-sm:p-1'>BITSI COIN</td>
+                        <td className='p-2 py-5 max-sm:p-1'>BITSI COIN {userCoins.length}</td>
                         <td className='p-2 max-sm:p-1'>{item.totalCoins}</td>
                         <td className='p-2 max-sm:p-1'>{item.totalAmount}</td>
                         <td className='p-2 max-sm:p-1'>{item.totalCoins - item.unInsuredCoins}</td>

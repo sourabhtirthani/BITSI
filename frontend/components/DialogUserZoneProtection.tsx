@@ -19,7 +19,7 @@ import { getTransactionFromHash } from "@/lib/getTransactionFromHash"
 import { approveInsuranceRequest, burnNft, extendInsurance, generateCompensation, purchaseInsurance, upgradeInsurace } from "@/actions/uploadNft"
 import { DialogUserZoneProtectionProps } from "@/types"
 import React from "react"
-
+// MUST READ
 // this dialog is also used in admin panel(view and analyse last column , in policy status to approve policy) and everywhere in my protection(when button at last column is clicked)
 export function DialogUserZoneProtection({ setRefresh , assetId , assetName, action , buttonText , insuranceId, lossPercent, claimId, lossAmount, insuranceStatus }:  DialogUserZoneProtectionProps ) {
     const { writeContractAsync } = useWriteContract()
