@@ -58,8 +58,9 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
             await tx.coinInsurance.update({
                 where : {id : coinInsuranceId},
                 data : {
-                    status : 'Active',
-                    expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000)
+                    status : 'Approved',
+                    expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
+                    startTime : new Date()
                 }
             })
             await tx.coin.update({

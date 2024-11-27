@@ -4,7 +4,6 @@ import LoaderComp from './LoaderComp';
 import { CoinWithInsurances, PurcahseInsuraceUserZone } from '@/types';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 import DialogPurcahseCoinInsurancePolicy from './DialogPurcahseCoinInsurancePolicy';
-import { add, set } from 'date-fns';
 
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
@@ -46,20 +45,21 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         const resInJsonCoin = await responseFromServerCoin.json();
         if (resInJsonCoin != null) {
           setDataOfCoinUserZonePurchase([resInJsonCoin]); 
-          console.log(resInJsonCoin)
-        // if(dataOfCoinUserZonePurchase &&  dataOfCoinUserZonePurchase[0].insurances != null){
-        //     console.log('in here in the insurances available')
-        //     console.log(dataOfCoinUserZonePurchase[0].insurances.reduce((total , ins)=>total + ins.coinsInsured , 0))
-        //   setMaxCoinsAvailableForInsurance(dataOfCoinUserZonePurchase[0].unInsuredCoins - (dataOfCoinUserZonePurchase[0].insurances.reduce((total , ins)=>total + ins.coinsInsured , 0) || 0));
-        //   }else{
-        //     setMaxCoinsAvailableForInsurance(dataOfCoinUserZonePurchase[0].unInsuredCoins);
-        //   }
+        if(resInJsonCoin && resInJsonCoin.insurances &&  resInJsonCoin.insurances.length > 0){
+            let coinsInsuredPendingOrApproved = 0;
+            console.log(resInJsonCoin.insurances)
+            for(let i = 0; i< resInJsonCoin.insurances.length; i++){
+              coinsInsuredPendingOrApproved = coinsInsuredPendingOrApproved + resInJsonCoin.insurances[i].coinsInsured;
+            }
+          setMaxCoinsAvailableForInsurance(resInJsonCoin.totalCoins - coinsInsuredPendingOrApproved);
+          }else{
+            setMaxCoinsAvailableForInsurance(resInJsonCoin.unInsuredCoins);
+          }
         }
       }
       } catch (error) {
         console.log(error)
         console.log(`error fetching data from the api`)
-        console.log('error fetching coin inforlami')
       } finally {
         setLoaderStateCoin(false)
       }

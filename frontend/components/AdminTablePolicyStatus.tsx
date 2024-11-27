@@ -5,6 +5,8 @@ import { InsuranceStatusTableAdminPanel , CoinInsuranceDetailsAdmin } from '@/ty
 import { formatAddressUserZone } from '@/lib/utils';
 import { toast } from './ui/use-toast';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
+import DialogAdminCoinProtection from './DialogAdminCoinProtection';
+import { approvePurchaseCoinInsrance } from '@/actions/coins';
 // import { ref } from 'lit/directives/ref.js';
 
 
@@ -47,6 +49,18 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
       }
       getCoinInsuranceData();
     }, [selectedTab , refreshCoinInsurance])
+
+    const handleApproveCoinInsurance = async (id : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
+      try{
+        const approveInsurance = await approvePurchaseCoinInsrance(id);
+        setRefreshMethod(prev => !prev);
+        toast({title: "Successfully approved insurance",description: 'You can now purchase insurance',duration: 5000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
+      }catch(error){
+        console.log(`error approving insurane`)
+        console.log(error)
+        toast({title: "Error approving insurance",description: 'Please try again later',duration: 5000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope' }})
+      }
+    }
 
     return (
       <div>
@@ -117,14 +131,13 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
                 return (
                   <Fragment key={index}>
                     <tr className='bg-success-512 text-center relative  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
-                      <td className='p-2 max-sm:p-3'>{new Date(item.coin.createdAt).toDateString()}</td>
-                      <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.coin.userAddress)}</td>
-                      <td className='p-2 max-sm:p-1'>{item.status}</td>
-                      <td className='p-2 max-sm:p-1'>{item.coinsInsured}</td>
-                      <td  className='p-2 max-sm:p-1'>{item.status}</td>
-                      <td className='p-2 max-sm:p-1'>{item.coverage} </td>
+                      <td className='p-4 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td>
+                      <td className='p-4 max-sm:p-1'>{formatAddressUserZone(item.coin.userAddress)}</td>
+                      <td className='p-4 max-sm:p-1'>{item.status}</td>
+                      <td className='p-4 max-sm:p-1'>{item.coinsInsured}</td>
+                      <td className='p-4 max-sm:p-1'>{item.coverage} </td>
                       {selectedTab == 'Pending' && 
-                      <td className='p-2 max-sm:p-1'> </td>}
+                      <td className='p-4 max-sm:p-1'><DialogAdminCoinProtection action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} /></td>}
                     </tr>
                     <tr>
                       <td  className='h-5'></td>

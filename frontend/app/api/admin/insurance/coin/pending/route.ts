@@ -18,7 +18,6 @@ export async function GET() {
             }
         }
      })
-  
       return NextResponse.json(coinInsuranceDetails, { status: 200 });
     } catch (error) {
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
