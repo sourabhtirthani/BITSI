@@ -186,6 +186,17 @@ contract CoinInsurance is Ownable {
         policy.compensation = compensation;
 
         _payCompensation(user, tokenId, compensation);
+        policies[user][coinId] = Policy({
+            coverage: 0,
+            startTime: 0,
+            endTime: 0,
+            active: false,
+            approved: false,
+            compensation: 0,
+            compensationOwner: address(0),
+            isExtended: false,
+            isUpgraded: false
+        });
         emit ClaimSubmitted(user, tokenId, loss, compensation, policy.isExtended);
     }
 
