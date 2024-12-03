@@ -5,13 +5,15 @@ import { InsuranceStatusTableAdminPanel , CoinInsuranceDetailsAdmin } from '@/ty
 import { formatAddressUserZone } from '@/lib/utils';
 import { toast } from './ui/use-toast';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
-import DialogAdminCoinProtection from './DialogAdminCoinProtection';
+// import DialogAdminCoinProtection from './DialogAdminCoinProtection';
 import { approvePurchaseCoinInsrance } from '@/actions/coins';
+import DialogCoinProtection from './DialogCoinProtection';
 // import { ref } from 'lit/directives/ref.js';
 
 
 const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
     const [loaderState , setLoaderState] = useState(true);
+    const [loaderActionButton , setLoaderActionButton] = useState(false);
     const [insuranceData , setInsuranceData] = useState<InsuranceStatusTableAdminPanel[]>([]);
     const [coinInsuranceData , setCoinInsuanceData] = useState<CoinInsuranceDetailsAdmin[]>([]);
     const [refreshCoinInsurance , setRefreshCoinInsurance] = useState(true);
@@ -27,6 +29,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
             }catch(error){
                 toast({ title: "Error", description: "Error fetching data", duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},});
             }finally{
+              
                 setLoaderState(false);
             }
         }
@@ -36,6 +39,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
     useEffect(()=>{
       const getCoinInsuranceData = async()=>{
         try{
+          setLoaderStateCoinInsurance(true);
           const res = await fetch(`/api/admin/insurance/coin/${selectedTab.toLowerCase()}` , {method : "GET" , next : {revalidate : 0} , } ,  );
           const resJson = await res.json();
           if(resJson!=null){
@@ -52,6 +56,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
 
     const handleApproveCoinInsurance = async (id : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
       try{
+        setLoaderActionButton(true)
         const approveInsurance = await approvePurchaseCoinInsrance(id);
         setRefreshMethod(prev => !prev);
         toast({title: "Successfully approved insurance",description: 'You can now purchase insurance',duration: 5000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
@@ -59,6 +64,8 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
         console.log(`error approving insurane`)
         console.log(error)
         toast({title: "Error approving insurance",description: 'Please try again later',duration: 5000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope' }})
+      }finally{
+        setLoaderActionButton(false)
       }
     }
 
@@ -137,7 +144,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
                       <td className='p-4 max-sm:p-1'>{item.coinsInsured}</td>
                       <td className='p-4 max-sm:p-1'>{item.coverage} </td>
                       {selectedTab == 'Pending' && 
-                      <td className='p-4 max-sm:p-1'><DialogAdminCoinProtection action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} /></td>}
+                      <td className='p-4 max-sm:p-1'><DialogCoinProtection loaderActionButton= {loaderActionButton} action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} dialogTitle='Approve Insurance Policy?' dialogDescription='Once the policy is approved, the user will be able to proceed with the purchase.' /></td>}
                     </tr>
                     <tr>
                       <td  className='h-5'></td>

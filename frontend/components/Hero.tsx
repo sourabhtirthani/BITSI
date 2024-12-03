@@ -12,8 +12,8 @@ const Hero = () => {
       <div className='w-full h-[100px] max-md:max-h-[50px]'></div>
       <div className='flex w-full h-full  p-8 max-md:p-4 overflow-clip'>
         <div className='w-3/5 max-md:w-full flex items-center justify-center flex-col font-montserrat  text-white '>
-          <p className='text-[54px] max-sm:text-[42px]  font-bold'>Secure Crypto <span className='text-success-511'>Investment</span> for Steady Growth</p>
-          <p className='text-[21px] font-normal'>Crypto combines market-leading protection with a commitment to stable, long-term growth, providing a cryptocurrency experience that values your peace of mind.</p>
+          <p className='text-[4.125rem] max-md:text-[3.12rem] leading-[5.363rem]  font-bold'>Secure Crypto <span className='text-success-511'>Investment</span> for Steady Growth</p>
+          <p className='text-[1.313rem] leading-[1.9rem] font-normal'>Crypto combines market-leading protection with a commitment to stable, long-term growth, providing a cryptocurrency experience that values your peace of mind.</p>
         </div>
         <div className='flex w-2/5 max-md:hidden justify-center items-center'>
           <Image src='/icons/hero-home-icon3.png' height={483} width={471} alt='' className='max-lg:h-[350px] max-lg:w-[350px]' />

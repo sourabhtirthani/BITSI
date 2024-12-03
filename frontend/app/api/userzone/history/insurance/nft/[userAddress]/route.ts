@@ -23,9 +23,9 @@ try{
             }
           },
     })
-    if(!events){
-        return NextResponse.json({message : 'NO EVENTS FOUND'} , {status : 404});
-      }
+    // if(!events){
+    //     return NextResponse.json({message : 'NO EVENTS FOUND'} , {status : 404});
+    //   }
     return NextResponse.json(events, { status: 200 });
 }catch(error){
     return NextResponse.json({ error : 'Internal server error' }, { status: 500 })

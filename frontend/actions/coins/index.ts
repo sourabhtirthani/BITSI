@@ -75,3 +75,68 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
         throw new Error('Error Purchasing Coin Insurance');
     }
 }
+
+
+export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number) =>{
+    try{    
+        const coinInsurance = await db.coinInsurance.findUnique({
+            where : {
+                id : coinInsuranceId
+            }
+        });
+        if(!coinInsurance){
+            throw new Error('No insurance found');
+        }
+        await db.$transaction(async (tx)=>{
+            await tx.coinInsurance.update({
+                where : {
+                    id : coinInsuranceId
+                },
+                data : {
+                    status : 'Active',
+                    startTime : new Date(),
+                    expiration : new Date(new Date().setFullYear(new Date().getFullYear() + 2))
+                }
+            })
+            await tx.coinInsuranceEvent.create({
+                data :{
+                    eventName : 'Purchase',
+                    insuranceId : coinInsuranceId
+                }
+            })
+        })
+
+    }catch(error){
+        throw new Error('Error Purchasing Coin Insurance Policy');
+    }
+}
+
+export const extendInsurance = async(coinInsuranceId : number): Promise<CoinInsuranceReturnType>=>{
+    try{
+        const currExpiration = await db.coinInsurance.findUnique({
+            where : {
+                id : coinInsuranceId
+            },
+            select : {
+                expiration : true
+            }
+        })
+        if(!currExpiration){
+            throw new Error('Error extending insurance');
+        }
+        const newExpirationDate = new Date(currExpiration.expiration);
+        newExpirationDate.setFullYear(newExpirationDate.getFullYear() + 1);
+        await db.coinInsurance.update({
+            where : {
+                id : coinInsuranceId
+            },
+            data : {
+               expiration : newExpirationDate,
+               is_extended : true
+            }
+        })
+        return {success : true}
+    }catch(error){
+        throw new Error('Error Extending Insurance');
+    }
+}

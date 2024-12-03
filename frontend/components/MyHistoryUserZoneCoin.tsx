@@ -1,12 +1,13 @@
 import {useState , Fragment, useEffect} from 'react'
 import LoaderComp from './LoaderComp'
-import { CoinTransaction } from '@prisma/client';
+import { CoinTransaction } from '@/types';
+// import { CoinTransaction } from '@prisma/client';
 
 const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
     const [coinHistoryDetails , setCoinHistoryDetails] = useState<CoinTransaction[]>([]);
     useEffect(()=>{
-        const getUserCoinTransactions  =   async()=>{
+        const getUserCoinTransactions  = async()=>{
             try{
                 const res = await fetch(`/api/userzone/history/coins/${address}` , {method : "GET" , next : {revalidate : 0} , } ,  )
                 const resParsed = await res.json();

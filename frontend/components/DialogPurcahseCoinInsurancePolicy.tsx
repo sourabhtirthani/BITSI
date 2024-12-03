@@ -17,9 +17,9 @@ const DialogPurcahseCoinInsurancePolicy = ({ buttonText, insuranceType, coindId,
     const [open, setOpen] = React.useState(false);
     const [loaderBuy, setLoaderBuy] = useState(false);
     const handleFormSubmit = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
         try {
             setLoaderBuy(true);
-            e.preventDefault();
             const form = e.currentTarget as HTMLFormElement;
             const formData = new FormData(form);
             console.log(formData)

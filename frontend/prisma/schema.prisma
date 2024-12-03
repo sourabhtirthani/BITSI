@@ -167,48 +167,52 @@ model Claims {
   compensation          Compensation?
 }
 
-model Coin {
-  id             Int               @id @default(autoincrement())
-  userAddress    String  @unique
+model Coin {   // this is the group of the coin for a particular user
+  id             Int                    @id @default(autoincrement())
+  userAddress    String                 @unique
   totalCoins     Float
   totalAmount    Float
   unInsuredCoins Float
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt  
-  insurances  CoinInsurance[]
-  transactions   CoinTransaction[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  insurances     CoinInsurance[]
+  // transactions   CoinTransactionEvent[]
 }
 
-
-model CoinTransaction {
+model CoinTransactionEvent {
   id               Int      @id @default(autoincrement())
   coinsTransferred Float
   createdAt        DateTime @default(now())
   eventName        String
-  coinId           Int
-  price            Float
-  coin             Coin     @relation(fields: [coinId], references: [id])
+  from             String   
+  to               String 
+  // coinId           Int   
+  price            Float    @default(0)
+  // coin             Coin     @relation(fields: [coinId], references: [id])
 }
 
 model CoinInsuranceEvent {
-  id              Int            @id @default(autoincrement())
-  insuranceId     Int
-  insurance       CoinInsurance  @relation(fields: [insuranceId], references: [id])
-  eventName       String        
-  description     String?
-  coinsAffected   Float?         
-  timestamp       DateTime       @default(now())
+  id            Int           @id @default(autoincrement())
+  insuranceId   Int
+  insurance     CoinInsurance @relation(fields: [insuranceId], references: [id])
+  eventName     String
+  description   String?
+  // coinsAffected Float?
+  timestamp     DateTime      @default(now())
 }
 
 model CoinInsurance {
-  id              Int                 @id @default(autoincrement())
+  id              Int                  @id @default(autoincrement())
   coinId          Int
-  coin            Coin                @relation(fields: [coinId], references: [id])
-  coinsInsured    Float              
-  coverage        Float                             
-  startTime       DateTime            @default(now())
+  coin            Coin                 @relation(fields: [coinId], references: [id])
+  coinsInsured    Float
+  coverage        Float
+  startTime       DateTime             @default(now())
   expiration      DateTime
-  status          InsuranceStatus     @default(ApprovalPending)
-  is_extended     Boolean             @default(false)
+  status          InsuranceStatus      @default(ApprovalPending)
+  is_extended     Boolean              @default(false)
   insuranceEvents CoinInsuranceEvent[]
 }
+
+
+//migrate the prisma file

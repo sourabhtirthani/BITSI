@@ -54,10 +54,10 @@ const Home = () => {
                     )}
                   </div>
                   <AccordionItem value={index.toString()} className=" py-5 rounded-xl px-2 max-md:py-2.5 bg-success-512  secondary-shadow11  w-full">
-                    <AccordionTrigger className="text-[22px] font-montserrat font-semibold max-md:text-[14px] text-start">{item.heading}</AccordionTrigger>
-                    <AccordionContent className="font-montserrat text-[18px] gap-3 flex flex-col max-md:text-[8px] font-normal ">
+                    <AccordionTrigger className="text-[1.5rem] leading-[2.25rem] max-md:text-[1.8rem] font-montserrat font-semibold  text-start">{item.heading}</AccordionTrigger>
+                    <AccordionContent className="font-montserrat leading-[1.733rem] text-[1.125rem] gap-3 flex flex-col font-normal ">
                       <p>{item.description}</p>
-                      <div className="flex gap-2 ">
+                      <div className="flex gap-2 max-sm:flex-col max-sm:text-center">
                         {item.btns.map((btn: { label: string; url: string; tailwindClassName: string }, indexBtn: number) => {
                           return (
                             <div className="bg-white rounded-full" key={indexBtn}>
@@ -81,12 +81,12 @@ const Home = () => {
 
 
       <section className="bg-success-534 p-8 max-md:p-4 flex flex-col gap-6 max-md:gap-3  text-white font-montserrat ">
-        <p className="text-[32px] max-md:text-[18px] font-bold text-success-511">Why Choose BITSI?</p>
+        <p className="text-[2rem] leading-[3.8rem] max-md:text-[1.8rem] font-bold text-success-511">Why Choose BITSI?</p>
         {/* <Image src='/icons/ArrowdownHome.svg' alt="" height={48} width={24} /> */}
         {homeBitsiSteps.map((item, index) => {
           return (
             <div key={index} >
-              <p className="font-semibold text-[22px] max-md:text-[14px]">{item.primary} - <span className="font-thin underline">{item.secondary}</span></p>
+              <p className="font-semibold text-[1.375rem] leading-[1.676rem] max-md:text-[14px]">{item.primary} - <span className="font-thin underline">{item.secondary}</span></p>
             </div>
           )
         })}

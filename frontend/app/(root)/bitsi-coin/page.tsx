@@ -19,8 +19,8 @@ const BitsiCoin = () => {
                 <div className='w-full h-[100px] max-md:max-h-[50px]'></div>
                 <div className='flex w-full h-full  p-8 max-md:p-4 overflow-clip'>
                     <div className='w-3/5 max-md:w-full flex items-center justify-center flex-col font-montserrat  text-white '>
-                        <p className='text-[54px] max-sm:text-[32px]  font-bold'>Discover BITSI: A Secure and Growth-<span className='text-success-511'>Focused Digital Asset</span></p>
-                        <p className='text-[21px]  font-normal'>BITSI offers investors enhanced stability and growth potential, combining innovative protection mechanisms with seamless accessibility across multiple platforms.</p>
+                        <p className='text-[3.375rem] leading-[4.725rem] max-sm:text-[2.625rem]  font-bold'>Discover BITSI: A Secure and Growth-<span className='text-success-511'>Focused Digital Asset</span></p>
+                        <p className='text-[1.313rem] leading-8  font-normal'>BITSI offers investors enhanced stability and growth potential, combining innovative protection mechanisms with seamless accessibility across multiple platforms.</p>
                     </div>
                     <div className='flex w-2/5 max-md:hidden justify-center items-center'>
                         <Image src='/icons/hero-coin.png' height={500} width={500} alt='' className='max-lg:h-[350px] max-lg:w-[350px]' />
@@ -77,7 +77,7 @@ const BitsiCoin = () => {
                         </div>
                     </div>
 
-                    <div className=' max-md:mt-4 mt-8 flex w-full gap-6 max-md:gap-3 mb-4'>
+                    <div className=' max-md:mt-4  mt-8 flex w-full gap-6 max-md:gap-3 mb-4'>
                         <div className='w-3/5 max-md:w-full flex flex-col justify-center ' >
                             <p className='text-success-511 text-[32px] font-bold'>What is BITSI?</p>
                             <p className='font-normal text-[18px]'>BITSI is designed as a stable, growth-focused cryptocurrency that prioritizes investor security. With its unique protection mechanisms, BITSI offers an added layer of stability in a volatile market, making it ideal for those seeking steady, long-term growth. Its accessible design and innovative features set BITSI apart, providing a reliable, user-friendly investment option in the digital asset space.</p>

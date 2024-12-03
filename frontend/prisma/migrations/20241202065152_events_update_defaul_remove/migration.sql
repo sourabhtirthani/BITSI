@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "CoinTransactionEvent" ALTER COLUMN "from" DROP DEFAULT,
+ALTER COLUMN "to" DROP DEFAULT;

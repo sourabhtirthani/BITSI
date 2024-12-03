@@ -29,8 +29,8 @@ const Insurance = () => {
         <div className='flex flex-col mt-10 max-sm:mt-6 p-8 overflow-hidden'>
             <div className='flex max-md:flex-col'>
                 <div className='md:w-2/3'>
-                <h1 className='font-poller-one text-[92px] max-md:text-[78px] max-sm:text-[44px] text-white'>BITSI PROTECTION</h1>
-                <p className='text-[22px] max-sm:text-[14px] mt-3  text-white text-opacity-60'>BITSI Protection offers comprehensive coverage for a wide range of digital assets, including coins, NFTs, cryptocurrencies, Stocks and trades.</p>
+                <h1 className='font-poller-one text-[92px] max-md:text-[78px] sm:leading-[7.279rem] max-sm:text-[44px] text-white'>BITSI PROTECTION</h1>
+                <p className='text-[1.375rem] leading-[1.8rem] mt-3  text-white text-opacity-60'>BITSI Protection offers comprehensive coverage for a wide range of digital assets, including coins, NFTs, cryptocurrencies, Stocks and trades.</p>
                 </div>
                <InsuraceContactUsBtn />
             </div>

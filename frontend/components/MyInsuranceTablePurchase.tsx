@@ -4,10 +4,14 @@ import LoaderComp from './LoaderComp';
 import { CoinWithInsurances, PurcahseInsuraceUserZone } from '@/types';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 import DialogPurcahseCoinInsurancePolicy from './DialogPurcahseCoinInsurancePolicy';
+import { purchaseCoinInsuranceAfterApproval } from '@/actions/coins';
+import { toast } from './ui/use-toast';
+import DialogCoinProtection from './DialogCoinProtection';
 
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const [loaderState, setLoaderState] = useState(true);
+  const [loaderActionButton , setLoaderActionButton] = useState(false);
   const [loaderStateCoin, setLoaderStateCoin] = useState(true);
   const [dataOfNftUserZonePurchase, setDataOfNftUserZonePurchase] = useState<PurcahseInsuraceUserZone[]>([])
   const [dataOfCoinUserZonePurchase, setDataOfCoinUserZonePurchase] = useState<CoinWithInsurances[]>([])
@@ -41,6 +45,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
     const getCoinInsurancePurchaseDetails = async () => {
       try {
         if(address){
+          setLoaderStateCoin(true)
         const responseFromServerCoin = await fetch(`/api/userzone/insurance/purchase/coin/${address}`, { method: "GET", next: { revalidate: 0 } })
         const resInJsonCoin = await responseFromServerCoin.json();
         if (resInJsonCoin != null) {
@@ -66,6 +71,20 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
     }
     getCoinInsurancePurchaseDetails();
   } , [address , refreshCoin])
+
+
+  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
+    try{  
+      setLoaderActionButton(true)
+      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId);
+      setRefreshMethod(prev => !prev);
+      toast({title: "Operation Success",description: "Successfully purchased insurance",duration: 2000, style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+    }catch(error){
+      toast({title: "Error",description: "Error Purchasing Insurance",duration: 2000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',}})
+    }finally{
+      setLoaderActionButton(false);
+    }
+  }
 
   return (
     <div>
@@ -159,7 +178,9 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coinsInsured}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coverage}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
-                          <td className='p-2 max-sm:p-1'>Purchase</td>
+                          <td className='p-2 max-sm:p-1'>{
+                            insuranceItems.status == 'Approved' && <DialogCoinProtection loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={handleCoinInsurancePurchase} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage for up to 2 years.' dialogTitle='Purchase Insurance Policy?' />
+                            }</td>
                         </tr>
                         <tr>
                           <td className='h-5'></td>

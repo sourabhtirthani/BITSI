@@ -233,7 +233,7 @@ declare interface collectionListInCreateNft {
 declare interface HomeHowCryptoWorksTypes {
   heading: string;
   description: string;
-  btns: {label : string , url : string , tailwindClassName : string}[];
+  btns: { label: string, url: string, tailwindClassName: string }[];
 }
 declare type AboutUsContextType = {
   filterValue: string;
@@ -456,13 +456,13 @@ declare interface WalletUserZoneCoin {
   createdAt: Date;
 }
 
-declare interface CoinTransaction{
+declare interface CoinTransaction {
   id: number;
-    coinsTransferred: number;
-    createdAt: Date;
-    eventName: string;
-    coinId: number;
-    price: number;
+  coinsTransferred: number;
+  createdAt: Date;
+  eventName: string;
+  coinId: number;
+  price: number;
 }
 
 declare interface CoinWithInsurances {
@@ -482,7 +482,7 @@ declare interface CoinWithInsurances {
     expiration: Date;
     status: "ApprovalPending" | "Approved" | "Denied";
     is_extended: boolean;
-  }[] | null; 
+  }[] | null;
 }
 
 
@@ -496,11 +496,35 @@ declare interface CoinInsuranceDetailsAdmin {
   status: InsuranceStatus;
   is_extended: boolean;
   coin: {
-      id: number;
-      userAddress: string;
-      totalCoins: number;
-      totalAmount: number;
-      unInsuredCoins: number;
-      createdAt : Date;
+    id: number;
+    userAddress: string;
+    totalCoins: number;
+    totalAmount: number;
+    unInsuredCoins: number;
+    createdAt: Date;
   };
+}
+
+declare interface CoinInsuranceDetailsUserZone {
+  status: InsuranceStatus;
+  id: number;
+  coinId: number;
+  coinsInsured: number;
+  coverage: number;
+  startTime: Date;
+  expiration: Date;
+  is_extended: boolean;
+}
+
+declare interface CoinEventsUserZoneHistory {
+  id: number;
+  insuranceId: number;
+  eventName: string;
+  description: string | null;
+  coinsAffected: number | null;
+  timestamp: Date;
+  insurance: {
+    coverage: number;
+    expiration: Date;
+  }
 }
