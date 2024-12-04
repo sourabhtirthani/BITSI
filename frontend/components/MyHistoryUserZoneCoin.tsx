@@ -1,6 +1,7 @@
 import {useState , Fragment, useEffect} from 'react'
 import LoaderComp from './LoaderComp'
 import { CoinTransaction } from '@/types';
+import { formatAddressUserZone } from '@/lib/utils';
 // import { CoinTransaction } from '@prisma/client';
 
 const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
@@ -27,6 +28,8 @@ const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
         <tr>
           <th className='p-2 max-sm:p-1'>Date</th>
           <th className='p-2 max-sm:p-1'>Event Name</th>
+          <th className='p-2 max-sm:p-1'>from</th>
+          <th className='p-2 max-sm:p-1'>to</th>
           <th className='p-2 max-sm:p-1'>Coins Transferred</th>
           <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
           {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
@@ -45,6 +48,8 @@ const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
               <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                 <td className='p-6 max-sm:p-3'>{new Date(item.createdAt).toDateString()}</td>
                 <td className='p-2 max-sm:p-1'>{item.eventName}</td>
+                <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.from)}</td>
+                <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.to)}</td>
                 <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(2)}</td>
                 <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)}</td>
                 {/* <td className='p-2 max-sm:p-1'></td>

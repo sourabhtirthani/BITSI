@@ -41,7 +41,7 @@ export const getTransfer = async () => {
         contractCoin.on('Transfer', async (from, to, tokenId, event) => {
             eventCounter++;
 
-            if(eventCounter % 3 === 0){
+            // if(eventCounter % 3 === 0){
             // console.log(`from is ${from} and to is ${to} and token id is ${tokenId}`)
             // console.log(`from is ${from} and to is ${to}`)
             const tokensTransferred =  Number(tokenId)/10**18;
@@ -50,7 +50,7 @@ export const getTransfer = async () => {
             // console.log(`token id in events : ${Number(event.args[2])}`)
             const transactionHash = await event.log.transactionHash;
             await transactionDetailsCoins(transactionHash, tokensTransferred , from , to , 'coin')
-            }
+            // }
         });
 
 

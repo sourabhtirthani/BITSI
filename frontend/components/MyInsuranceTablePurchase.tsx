@@ -7,6 +7,8 @@ import DialogPurcahseCoinInsurancePolicy from './DialogPurcahseCoinInsurancePoli
 import { purchaseCoinInsuranceAfterApproval } from '@/actions/coins';
 import { toast } from './ui/use-toast';
 import DialogCoinProtection from './DialogCoinProtection';
+import { useAccount, useWriteContract } from 'wagmi';
+import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
 
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
@@ -18,6 +20,10 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const [refresh, setRefresh] = useState(false);
   const [maxCoinsAvailableForInsurance , setMaxCoinsAvailableForInsurance] = useState(0);
   const [refreshCoin , setRefreshCoin] = useState(false);
+  const {writeContractAsync} = useWriteContract();
+  const {isConnected} = useAccount();
+
+
   useEffect(() => {
     const getPurchaseInsuranceDetails = async () => {
       try {
@@ -73,13 +79,35 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   } , [address , refreshCoin])
 
 
-  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
+  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number)=>{
     try{  
-      setLoaderActionButton(true)
-      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId);
+      if(!isConnected){
+        throw new Error('Please connect wallet to purchase insurance');
+      }
+      setLoaderActionButton(true);
+      const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
+      const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
+      const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
+      const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins)*(80/100);
+      const priceInWei = BigInt(totalPriceOfInsurance * 10**18);
+      
+      console.log('in here before initiating the smart contract transaction on line number 94')
+      const transaction  = await writeContractAsync({
+        address : coinInsuranceContranctAddress,
+        abi : coinInsuranceAbi,
+        functionName : 'activatePolicy',
+        args: [address , coinInsuranceId ,priceInWei],
+        
+      })
+      if(!transaction){
+        console.log('error in transaction during purchase');
+        throw new Error('Error purchasing policty of the user');
+      }
+      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId , Number(currentCoinPrice));
       setRefreshMethod(prev => !prev);
       toast({title: "Operation Success",description: "Successfully purchased insurance",duration: 2000, style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
     }catch(error){
+      console.log(error)
       toast({title: "Error",description: "Error Purchasing Insurance",duration: 2000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',}})
     }finally{
       setLoaderActionButton(false);
@@ -179,7 +207,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coverage}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
                           <td className='p-2 max-sm:p-1'>{
-                            insuranceItems.status == 'Approved' && <DialogCoinProtection loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={handleCoinInsurancePurchase} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage for up to 2 years.' dialogTitle='Purchase Insurance Policy?' />
+                            insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={handleCoinInsurancePurchase} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage for up to 2 years.' dialogTitle='Purchase Insurance Policy?' />
                             }</td>
                         </tr>
                         <tr>

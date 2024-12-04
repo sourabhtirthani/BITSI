@@ -2,7 +2,7 @@
 import db from "@/db";
 
 type CoinInsuranceReturnType = { success: boolean }
-export const purchaseCoinInsurance = async(coinId : number , userAddress : string , totalCoinsToInsure : number) : Promise<CoinInsuranceReturnType> =>{
+export const purchaseCoinInsurance = async(coinId : number , userAddress : string , totalCoinsToInsure : number , marketPricePerCoin : number) : Promise<CoinInsuranceReturnType> =>{
     try{
         const coin = await db.coin.findUnique({
             where : {id : coinId}
@@ -16,12 +16,14 @@ export const purchaseCoinInsurance = async(coinId : number , userAddress : strin
         if(coin.unInsuredCoins < totalCoinsToInsure){
             throw new Error('Not Enough Un Insured Coins');
         }
-        const converageOfInsurance = (coin.totalAmount/coin.totalCoins) * totalCoinsToInsure;
+        // const converageOfInsurance = (coin.totalAmount/coin.totalCoins) * totalCoinsToInsure;
+        // const coverageOfInsurance = ((totalCoinsToInsure*marketPricePerCoin) * 80)/100;\
+        const coverageOfInsurance = totalCoinsToInsure*marketPricePerCoin
             await db.coinInsurance.create({
                 data : {
                     coinId : Number(coinId),
                     coinsInsured : totalCoinsToInsure,
-                    coverage : converageOfInsurance,
+                    coverage : coverageOfInsurance,
                     startTime : new Date(),
                     expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
                     status : 'ApprovalPending',
@@ -51,6 +53,7 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
         if(!coinInsurance){
             throw new Error('Coin Insurance Not Found');
         }
+       
         if(coinInsurance.status == 'Active'){
             throw new Error('Coin Insurance is already active');
         }
@@ -60,7 +63,7 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
                 data : {
                     status : 'Approved',
                     expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
-                    startTime : new Date()
+                    startTime : new Date(),
                 }
             })
             await tx.coin.update({
@@ -77,16 +80,19 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
 }
 
 
-export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number) =>{
+export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number, marketPricePerCoin : number) =>{
     try{    
         const coinInsurance = await db.coinInsurance.findUnique({
             where : {
                 id : coinInsuranceId
             }
         });
+
         if(!coinInsurance){
             throw new Error('No insurance found');
         }
+        // const coverageOfInsurance = ((coinInsurance.coinsInsured*marketPricePerCoin) * 80)/100;
+        const coverageOfInsurance = coinInsurance.coinsInsured*marketPricePerCoin;
         await db.$transaction(async (tx)=>{
             await tx.coinInsurance.update({
                 where : {
@@ -96,6 +102,8 @@ export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number
                     status : 'Active',
                     startTime : new Date(),
                     expiration : new Date(new Date().setFullYear(new Date().getFullYear() + 2))
+                    // coverage : coverageOfInsurance
+
                 }
             })
             await tx.coinInsuranceEvent.create({
@@ -111,7 +119,7 @@ export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number
     }
 }
 
-export const extendInsurance = async(coinInsuranceId : number): Promise<CoinInsuranceReturnType>=>{
+export const extendInsuranceForCoin = async(coinInsuranceId : number): Promise<CoinInsuranceReturnType>=>{
     try{
         const currExpiration = await db.coinInsurance.findUnique({
             where : {

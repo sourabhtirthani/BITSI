@@ -24,7 +24,10 @@ const DialogPurcahseCoinInsurancePolicy = ({ buttonText, insuranceType, coindId,
             const formData = new FormData(form);
             console.log(formData)
             console.log(`the value of the token is : ${formData.get('numberOfCoins')}`)
-            const purchaseInsurance = await purchaseCoinInsurance(coindId, userAddress, Number(formData.get('numberOfCoins')));
+            const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72`, { method: 'GET' });
+            const getCurrentCoinDetailsParsed = await getCurrentCoinDetails.json();
+            const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
+            const purchaseInsurance = await purchaseCoinInsurance(coindId, userAddress, Number(formData.get('numberOfCoins')), Number(currentCoinPrice));
             if (purchaseInsurance.success == true) {
                 toast({ title: "Operation Success", description: "Successfully Purchased Policy", duration: 2000, style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope' } });
                 setOpen(false);
@@ -40,10 +43,10 @@ const DialogPurcahseCoinInsurancePolicy = ({ buttonText, insuranceType, coindId,
         }
     }
 
-    const handleFormSubmitExistingPolicy = ()=>{
-        try{
-            
-        }catch(error){
+    const handleFormSubmitExistingPolicy = () => {
+        try {
+
+        } catch (error) {
             console.log(`error in purchasing exisitng policy`);
             console.log(error)
         }

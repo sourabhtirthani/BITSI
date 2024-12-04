@@ -8,6 +8,7 @@ import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 // import DialogAdminCoinProtection from './DialogAdminCoinProtection';
 import { approvePurchaseCoinInsrance } from '@/actions/coins';
 import DialogCoinProtection from './DialogCoinProtection';
+import { useAccount, useWriteContract } from 'wagmi';
 // import { ref } from 'lit/directives/ref.js';
 
 
@@ -54,7 +55,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
       getCoinInsuranceData();
     }, [selectedTab , refreshCoinInsurance])
 
-    const handleApproveCoinInsurance = async (id : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
+    const handleApproveCoinInsurance = async (id : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number)=>{
       try{
         setLoaderActionButton(true)
         const approveInsurance = await approvePurchaseCoinInsrance(id);
@@ -144,7 +145,7 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
                       <td className='p-4 max-sm:p-1'>{item.coinsInsured}</td>
                       <td className='p-4 max-sm:p-1'>{item.coverage} </td>
                       {selectedTab == 'Pending' && 
-                      <td className='p-4 max-sm:p-1'><DialogCoinProtection loaderActionButton= {loaderActionButton} action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} dialogTitle='Approve Insurance Policy?' dialogDescription='Once the policy is approved, the user will be able to proceed with the purchase.' /></td>}
+                      <td className='p-4 max-sm:p-1'><DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton= {loaderActionButton} action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} dialogTitle='Approve Insurance Policy?' dialogDescription='Once the policy is approved, the user will be able to proceed with the purchase.' /></td>}
                     </tr>
                     <tr>
                       <td  className='h-5'></td>

@@ -6,6 +6,9 @@ import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 import { toast } from './ui/use-toast';
 import { extendInsurance } from '@/actions/uploadNft';
 import DialogCoinProtection from './DialogCoinProtection';
+import { extendInsuranceForCoin } from '@/actions/coins';
+import { useAccount, useWriteContract } from 'wagmi';
+import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
 // order filter sorts the data by date 
 const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
@@ -15,6 +18,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [dataOfCoinInsurance , setDataOfCoinInsurance] = useState<CoinInsuranceDetailsUserZone[]>([])
     const [refreshCoin , setRefreshCoin] = useState(false);
     const [refresh , setRefresh] = useState(false);
+    const {writeContractAsync} = useWriteContract();
     useEffect(()=>{
       const getDataOfNftOnLoad = async()=>{
         try{
@@ -49,10 +53,21 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
       getDataOfCoinOnLoad();
     } , [address , refreshCoin])
 
-    const handleExtendInsuranceOfCoin = async(insuranceId : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>)=>{
+    const handleExtendInsuranceOfCoin = async(insuranceId : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>, numberOfCoins : number)=>{
       try{
         setLoaderActionButton(true);
-        const extendInsuranceOfUser = await extendInsurance(insuranceId , address);
+
+        const transaction  = await writeContractAsync({
+          address : coinInsuranceContranctAddress,
+          abi : coinInsuranceAbi,
+          functionName : 'extendPolicy',
+          args: [address , insuranceId],
+        })
+        if(!transaction){
+          console.log('error in extending insurance');
+          throw new Error('Error extending insurance');
+        }
+        const extendInsuranceOfUser = await extendInsuranceForCoin(insuranceId);
         setRefreshMethod(prev => !prev);
         toast({title: "Successfully extended insurance",description: 'You can now purchase insurance',duration: 2000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
       }catch(error){
@@ -65,8 +80,8 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
 
   return (
     <div>
-      <p className='text-success-511 text-[0.75rem]'>NFTs</p>
     <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
+      <p className='text-success-511 px-4 text-[1.2rem] font-semibold'>NFTs</p>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[16px] underline  '>
                 <tr>
@@ -115,18 +130,18 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
             {loaderState == true &&<LoaderComp /> }
           </div>
 
-          <p className='text-success-511 text-[0.75rem]'>Coins</p>
           <div className='max-h-[500px] px-8 max-md:px-4 overflow-y-auto mb-20 table-body'>
+          <p className='text-success-511 px-4 font-semibold  text-[1.2rem]'>Coins</p>
             <table className='w-full text-left mt-4 border-spacing-20'>
               <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[16px] underline  '>
                 <tr>
                   <th className='p-2 max-sm:p-1'>Date</th>
                   {/* <th className='p-2 max-sm:p-1' >Marketplace</th> */}
                   {/* <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th> */}
-                  <th className='p-2 max-sm:p-1'>NFT&nbsp;Name</th>
+                  {/* <th className='p-2 max-sm:p-1'>NFT&nbsp;Name</th> */}
 
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>NFT&nbsp;Price</th>
-                  <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Coins Insured</th>
+                  <th className='p-2 max-sm:p-1 overflow-hidden'>Status</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Extend</th>
@@ -141,9 +156,9 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
                         <td className='p-2 py-5 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td>
                         <td className='p-2 max-sm:p-1'>{item.coinsInsured}</td>
                         <td className='p-2 max-sm:p-1'>{item.status}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coverage}</td>
+                        <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(4)}</td>
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration).toDateString()}</td>
-                        <td className='p-2 max-sm:p-1'><DialogCoinProtection loaderActionButton = {loaderActionButton} action='extend' buttonText='Extend' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleExtendInsuranceOfCoin} dialogDescription='Extending the Insurance Policy will result in a 1-year extension of the policy duration.' dialogTitle='Extend Insurance Policy?' /></td>
+                        <td className='p-2 max-sm:p-1'><DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='extend' buttonText='Extend' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleExtendInsuranceOfCoin} dialogDescription='Extending the Insurance Policy will result in a 1-year extension of the policy duration.' dialogTitle='Extend Insurance Policy?' /></td>
                         {/* <td>
                         <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>

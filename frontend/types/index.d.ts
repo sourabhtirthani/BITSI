@@ -463,6 +463,8 @@ declare interface CoinTransaction {
   eventName: string;
   coinId: number;
   price: number;
+  from : string;
+  to: string;
 }
 
 declare interface CoinWithInsurances {
