@@ -14,7 +14,7 @@ import { toast } from './ui/use-toast';
 // , setLoaderActionButton : React.Dispatch<React.SetStateAction<boolean>>
 const DialogCoinProtection = ({buttonText , action , handleMethodCall , coinInsuranceId , setRefresh, dialogTitle , dialogDescription , loaderActionButton, numberOfCoins } : {buttonText: string , action : string ,handleMethodCall : (id : number , setRefresh : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number)=>void , coinInsuranceId : number , setRefresh : React.Dispatch<React.SetStateAction<boolean>> , dialogTitle : string , dialogDescription : string , loaderActionButton : boolean , numberOfCoins : number  }) => {
     const [open , setOpen] = useState<boolean>(false)
-    // const [loaderBuy , setLoaderBuy] = useState(false);
+    // const [loaderBuy , setLoaderBuy] = useState(false); // also pass this open dialog and setopen dialog as prop 
     const handleDecline = ()=>{
         setOpen(false)
     }

@@ -16,6 +16,35 @@ try{
             ]
         }
     })
+    // const coinTransactions = await db.coinTransactionEvent.findMany({
+    //     where: {
+    //         OR: [
+    //             { from: params.userAddress },
+    //             { to: params.userAddress }
+    //         ],
+    //         NOT: {
+    //             eventName: 'sell',
+    //             OR: [
+    //                 { to: '0x3B2944D0E7a546166C2Ca93f05e830a6072a9382' },
+    //                 { to: '0xec7BE89e9d109e7e3Fec59c222CF297125FEFda2' }
+    //             ]
+    //         }
+    //     }
+    // });
+    // const coinTransactions = await db.coinTransactionEvent.findMany({
+    //     where: {
+    //         OR: [
+    //             { from: params.userAddress },
+    //             { to: params.userAddress }
+    //         ],
+    //         NOT: {
+    //             AND: [
+    //                 { eventName: 'sell' },
+    //                 { to: '0x3B2944D0E7a546166C2Ca93f05e830a6072a9382' }
+    //             ]
+    //         }
+    //     }
+    // });
     console.log(coinTransactions)
     console.log(`in here in the coin transacitons`)
     return NextResponse.json(coinTransactions, { status: 200 });

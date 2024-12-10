@@ -9,6 +9,9 @@ import { toast } from './ui/use-toast';
 import DialogCoinProtection from './DialogCoinProtection';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
+import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
+import { getTransaction } from 'viem/actions';
+import { getTransactionFromHash, getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
 
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
@@ -85,13 +88,33 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         throw new Error('Please connect wallet to purchase insurance');
       }
       setLoaderActionButton(true);
-      const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
-      const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
-      const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
-      const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins)*(80/100);
+      // const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
+      // const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
+      // const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
+      const currentCoinPrice = 0.1625;
+      // const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins)*(80/100);
+      const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins);
       const priceInWei = BigInt(totalPriceOfInsurance * 10**18);
-      
+      const approveContractTransaciton  = await writeContractAsync({
+        address : coinContractAddress,
+        abi : coinContractAbi,
+        functionName : 'approve',
+        args: [coinInsuranceContranctAddress , numberOfCoins]
+      })
+      console.log(approveContractTransaciton)
+      const waitForApproveTransaction = await getTransactionFromHashOnPolygon(approveContractTransaciton);
+      console.log(' in here after the transaction is confirmed on line 106');
+      await new Promise(resolve => setTimeout(resolve, 30000));
+
+      if(waitForApproveTransaction.success == false){
+        console.log("in here in the error part of the approval of transction")
+        console.log(`the tranasaction was : ${approveContractTransaciton}`)
+        throw new Error('Error approving contract');
+      }
       console.log('in here before initiating the smart contract transaction on line number 94')
+      console.log(waitForApproveTransaction)
+      // return;
+      if(waitForApproveTransaction.success == true){
       const transaction  = await writeContractAsync({
         address : coinInsuranceContranctAddress,
         abi : coinInsuranceAbi,
@@ -106,6 +129,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
       const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId , Number(currentCoinPrice));
       setRefreshMethod(prev => !prev);
       toast({title: "Operation Success",description: "Successfully purchased insurance",duration: 2000, style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
+    }
     }catch(error){
       console.log(error)
       toast({title: "Error",description: "Error Purchasing Insurance",duration: 2000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',}})

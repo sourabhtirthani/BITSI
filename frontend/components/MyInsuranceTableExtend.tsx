@@ -9,6 +9,7 @@ import DialogCoinProtection from './DialogCoinProtection';
 import { extendInsuranceForCoin } from '@/actions/coins';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
+import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
 // order filter sorts the data by date 
 const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
@@ -57,6 +58,13 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
       try{
         setLoaderActionButton(true);
 
+        const approveContractTransaciton  = await writeContractAsync({
+          address : coinContractAddress,
+          abi : coinContractAbi,
+          functionName : 'approve',
+          args: [coinInsuranceContranctAddress , numberOfCoins]
+        })
+        await new Promise(resolve => setTimeout(resolve, 30000));
         const transaction  = await writeContractAsync({
           address : coinInsuranceContranctAddress,
           abi : coinInsuranceAbi,

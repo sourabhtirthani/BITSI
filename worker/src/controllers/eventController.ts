@@ -101,8 +101,13 @@ export const puteventToDb = async (event: string) => {
             }
             if (price == 0) {
                 console.log(`from is : ${from} and to is ${to}`)
+                if(to == ' 0xe6F9F756ca735b7Ba7E9B1DaEcAE5228AFF0832f'){
+                    const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${price} , '${to}', '${from}');`
+                await client.query(insertTransferQuery)
+                }else{
                 const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Transfer',${price} , '${from}', '${to}');`
                 await client.query(insertTransferQuery)
+                }
             } else {
                 console.log(`from is : ${from} and to is ${to}`)
                 const insertCoinTransactionQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price" , "from" , "to") VALUES (${tokensTransferred}, 'Buy',${price} , '${from}', '${to}');`;

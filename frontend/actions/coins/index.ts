@@ -18,7 +18,9 @@ export const purchaseCoinInsurance = async(coinId : number , userAddress : strin
         }
         // const converageOfInsurance = (coin.totalAmount/coin.totalCoins) * totalCoinsToInsure;
         // const coverageOfInsurance = ((totalCoinsToInsure*marketPricePerCoin) * 80)/100;\
+        console.log(`the total coins to insure is : $${totalCoinsToInsure} and the market price per coin is : ${marketPricePerCoin}`)
         const coverageOfInsurance = totalCoinsToInsure*marketPricePerCoin
+        console.log(`the total coverage that came amount has now become : ${coverageOfInsurance}`)
             await db.coinInsurance.create({
                 data : {
                     coinId : Number(coinId),

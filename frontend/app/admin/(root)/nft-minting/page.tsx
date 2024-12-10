@@ -198,8 +198,8 @@ const NftMinting = () => {
                   }
                   
                 }
-                console.log(`the meta data aray is`);
-                console.log(metadataArray);
+                // console.log(`the meta data aray is`);
+                // console.log(metadataArray);
                 const transactionOfNft = await writeContractAsync({
                   address: contractAddress,
                   abi: contractABI,
