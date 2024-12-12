@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { purchaseCoinInsurance } from '@/actions/coins';
 import { toast } from './ui/use-toast';
+import { getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
 
 const DialogPurcahseCoinInsurancePolicy = ({ buttonText, insuranceType, coindId, maxCoinsAvailable, userAddress, setRefresh }: { buttonText: string, insuranceType: 'new' | 'existing', coindId: number, maxCoinsAvailable: number, userAddress: string, setRefresh: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [open, setOpen] = React.useState(false);
@@ -24,9 +25,13 @@ const DialogPurcahseCoinInsurancePolicy = ({ buttonText, insuranceType, coindId,
             const formData = new FormData(form);
             console.log(formData)
             console.log(`the value of the token is : ${formData.get('numberOfCoins')}`)
-            const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72`, { method: 'GET' });
-            const getCurrentCoinDetailsParsed = await getCurrentCoinDetails.json();
-            const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
+            // const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72`, { method: 'GET' });
+            // const getCurrentCoinDetailsParsed = await getCurrentCoinDetails.json();
+            // const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
+            const currentCoinPrice = 0.01625;
+            const waitForRandomTransaction =  await getTransactionFromHashOnPolygon('0x03e1e800e92057ab38074e90932f1b1c8cc8d5a2b4b8c2727c8744aacf104e0e');
+            console.log(waitForRandomTransaction);
+            throw new Error('hello')
             const purchaseInsurance = await purchaseCoinInsurance(coindId, userAddress, Number(formData.get('numberOfCoins')), Number(currentCoinPrice));
             if (purchaseInsurance.success == true) {
                 toast({ title: "Operation Success", description: "Successfully Purchased Policy", duration: 2000, style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope' } });

@@ -210,7 +210,7 @@ export function ChartCoin() {
             />
             <Area
               dataKey="mobile"
-              type="natural"
+              type="linear"
               fill="url(#chartData)"
               stroke="#4AB367"
               stackId="a"

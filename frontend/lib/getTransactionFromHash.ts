@@ -24,18 +24,13 @@ export const getTransactionFromHash = async(transactionHash :string):Promise<get
 const providerPolygon = new ethers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`);
 export const getTransactionFromHashOnPolygon = async(transactionHash :string):Promise<getTransactionFromHashType>=>{
     try{
-        console.log(process.env.INFURA_PROJECT_ID)
-        console.log(provider)
-        console.log(providerPolygon)
-        console.log(transactionHash)
-        const network = await providerPolygon.getNetwork();
-        console.log(network)
+        
         console.log(`in here in the get transaction from hash`)
         const transaction = await providerPolygon.getTransaction(transactionHash);
         console.log(transaction)
       
         await transaction?.wait();
-       
+        
         return {success : true}
     }catch(error){
         console.log(error);

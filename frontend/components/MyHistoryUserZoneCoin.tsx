@@ -7,6 +7,7 @@ import { formatAddressUserZone } from '@/lib/utils';
 const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
     const [coinHistoryDetails , setCoinHistoryDetails] = useState<CoinTransaction[]>([]);
+
     useEffect(()=>{
         const getUserCoinTransactions  = async()=>{
             try{
@@ -50,8 +51,8 @@ const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
                 <td className='p-2 max-sm:p-1'>{item.eventName}</td>
                 <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.from)}</td>
                 <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.to)}</td>
-                <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(2)}</td>
-                <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)}</td>
+                <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(2)} BITSI</td>
+                <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)} MATIC</td>
                 {/* <td className='p-2 max-sm:p-1'></td>
                 <td className='p-2 max-sm:p-1'>{ new Date(item.nft.insurance.expiration) > new Date() ? 'Yes' : 'No'}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft.insurance.coverage} {balance?.symbol}</td>

@@ -91,7 +91,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
       // const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
       // const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
       // const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceUsd;
-      const currentCoinPrice = 0.1625;
+      const currentCoinPrice = 0.01625;
       // const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins)*(80/100);
       const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins);
       const priceInWei = BigInt(totalPriceOfInsurance * 10**18);

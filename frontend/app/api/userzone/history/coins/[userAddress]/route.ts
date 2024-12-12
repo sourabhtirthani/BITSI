@@ -7,6 +7,22 @@ try{
     if(!params.userAddress){
         return NextResponse.json({error : 'No address Provided'}, {status : 400})
     }
+    const url = new URL(request.url);
+    const type = url.searchParams.get('type');
+    console.log(`this is the type of user wallet --> ${type}`)
+    if(type == 'userwallet'){
+        const buyCoinTransactionsForUser = await db.coinTransactionEvent.findMany({
+            where : {
+                OR : [
+                    {eventName : 'Buy'},
+                    {eventName : 'Transfer'}
+                ],
+                to : params.userAddress
+            }
+        })
+        console.log(buyCoinTransactionsForUser)
+        return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
+    }
     const coinTransactions = await db.coinTransactionEvent.findMany({
         where:{
             OR :[

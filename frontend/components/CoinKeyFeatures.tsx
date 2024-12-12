@@ -15,7 +15,7 @@ const CoinKeyFeatures = ({howItWorks , key , value} : {howItWorks : CoinHowItWor
                     <p key={index} className='font-bold text-white text-[18px]'>{item.heading}<span className='font-normal'> {item.data}</span></p>
                 )
             })}</>}
-            <button onClick={()=>{setShowMore(!showMore)}} className='self-start py-3 px-4 font-bold text-[16px] text-success-511 bg-white rounded-full'>{showMore ? 'Show Less' : 'Show More'}</button>
+            <button onClick={()=>{setShowMore(!showMore)}} className='self-start py-3 px-4 font-semibold text-[1rem] text-success-511 bg-black rounded-full'>{showMore ? 'See how it Works? ▲' : 'See how it Works? ▼'}</button> 
         </div>
     )
 }
