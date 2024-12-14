@@ -1,7 +1,7 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import LoaderComp from './LoaderComp';
-import { CoinWithInsurances, PurcahseInsuraceUserZone } from '@/types';
+import { CoinTransaction, CoinWithInsurances, PurcahseInsuraceUserZone } from '@/types';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 import DialogPurcahseCoinInsurancePolicy from './DialogPurcahseCoinInsurancePolicy';
 import { purchaseCoinInsuranceAfterApproval } from '@/actions/coins';
@@ -16,13 +16,16 @@ import { getTransactionFromHash, getTransactionFromHashOnPolygon } from '@/lib/g
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const [loaderState, setLoaderState] = useState(true);
+  const [loaderStateForTransactions , setLoaderStateForTransactions] = useState(true);
   const [loaderActionButton , setLoaderActionButton] = useState(false);
   const [loaderStateCoin, setLoaderStateCoin] = useState(true);
   const [dataOfNftUserZonePurchase, setDataOfNftUserZonePurchase] = useState<PurcahseInsuraceUserZone[]>([])
-  const [dataOfCoinUserZonePurchase, setDataOfCoinUserZonePurchase] = useState<CoinWithInsurances[]>([])
+  const [dataOfCoinUserZonePurchase, setDataOfCoinUserZonePurchase] = useState<CoinWithInsurances[]>([]);
+  const [unInsuredTransactions , setUninsuredTransactions] = useState<CoinTransaction[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [maxCoinsAvailableForInsurance , setMaxCoinsAvailableForInsurance] = useState(0);
   const [refreshCoin , setRefreshCoin] = useState(false);
+  const [refreshCoinTransactions , setRefreshCoinTransactions] = useState(false);
   const {writeContractAsync} = useWriteContract();
   const {isConnected} = useAccount();
 
@@ -81,6 +84,22 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
     getCoinInsurancePurchaseDetails();
   } , [address , refreshCoin])
 
+  useEffect(()=>{
+    const getTransactionsThatAreNotInsured = async()=>{
+      try{
+        setLoaderStateForTransactions(true);
+        const res = await fetch(`/api/userzone/history/coins/${address}?type=protection`, { method: "GET", next: { revalidate: 0 }, },)
+        const resParsed = await res.json();
+        setUninsuredTransactions(resParsed);
+
+      }catch(error){
+        toast({ title: "Error", description: "Error getting transactions", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
+      }finally{
+        setLoaderStateForTransactions(false);
+      }
+    }
+    getTransactionsThatAreNotInsured();
+  } , [address , refreshCoinTransactions])
 
   const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number)=>{
     try{  
@@ -206,7 +225,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
             {dataOfCoinUserZonePurchase && Array.isArray(dataOfCoinUserZonePurchase) && dataOfCoinUserZonePurchase.map((item, index) => {
               return (
                 <React.Fragment key={index}>
-                  <tr className='bg-success-509 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                  {/* <tr className='bg-success-509 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
 
                     <td className='p-2 py-5 max-sm:p-1'>{new Date(item.createdAt).toDateString()}</td>
                     <td className='p-2 py-5 max-sm:p-1'>BITSI</td>
@@ -214,7 +233,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                     <td className='p-2 max-sm:p-1'></td>
                     <td className='p-2 max-sm:p-1'></td>
                     <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy userAddress={address}  maxCoinsAvailable={maxCoinsAvailableForInsurance} buttonText='Purchase New Policy' insuranceType='new' coindId={item.id} setRefresh={setRefreshCoin} /></td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td className='h-5'></td>
                   </tr>
@@ -227,8 +246,8 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 py-5 max-sm:p-1'>{new Date(insuranceItems.startTime).toDateString()}</td>
                           <td className='p-2 py-5 max-sm:p-1'>BITSI</td>
                           {/* <td className='p-2 max-sm:p-1'>BITSI</td> */}
-                          <td className='p-2 max-sm:p-1'>{insuranceItems.coinsInsured}</td>
-                          <td className='p-2 max-sm:p-1'>{insuranceItems.coverage}</td>
+                          <td className='p-2 max-sm:p-1'>{insuranceItems.coinsInsured.toFixed(5)} BITSI</td>
+                          <td className='p-2 max-sm:p-1'>{insuranceItems.coverage.toFixed(5)} MATIC</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
                           <td className='p-2 max-sm:p-1'>{
                             insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={handleCoinInsurancePurchase} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage for up to 2 years.' dialogTitle='Purchase Insurance Policy?' />
@@ -240,6 +259,27 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                       </React.Fragment>
                     )
                   })}
+
+                  {unInsuredTransactions && Array.isArray(unInsuredTransactions) && unInsuredTransactions.map((item, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+                          {/* <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td> */}
+                          <td className='p-2 py-5 max-sm:p-1'>{new Date(item.createdAt).toDateString()}</td>
+                          <td className='p-2 max-sm:p-1'>BITSI</td>
+                          <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(5)} BITSI</td>
+                          <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td>
+                          <td className='p-2 max-sm:p-1'>Not Active</td>
+                          <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin}  userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id}  /></td>
+                           {/* <td className='p-2 max-sm:p-1'>{}</td> */}
+                          {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
+                        </tr>
+                        <tr>
+                    <td className='h-5'></td>
+                  </tr>
+                        </React.Fragment>
+                    )
+            })}
                 </React.Fragment>
               )
             })}
@@ -249,7 +289,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         {dataOfCoinUserZonePurchase.length == 0 && loaderStateCoin == false && (
           <div className='text-success-511 w-full font-bold flex justify-center mt-10 self-center'>NO DATA FOUND</div>
         )}
-        {loaderStateCoin == true && <LoaderComp />}
+        {(loaderStateCoin == true || loaderStateForTransactions == true) && <LoaderComp />}
       </div>
     </div>
   )

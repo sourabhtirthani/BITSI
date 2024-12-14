@@ -2,39 +2,54 @@
 import db from "@/db";
 
 type CoinInsuranceReturnType = { success: boolean }
-export const purchaseCoinInsurance = async(coinId : number , userAddress : string , totalCoinsToInsure : number , marketPricePerCoin : number) : Promise<CoinInsuranceReturnType> =>{
+export const purchaseCoinInsurance = async(userAddress : string , totalCoinsToInsure : number , totalAmount : number, coinTransactionId : number) : Promise<CoinInsuranceReturnType> =>{
     try{
+        // console.log(`this is the coins id : ${coinId}`)
         const coin = await db.coin.findUnique({
-            where : {id : coinId}
+            where : {userAddress : userAddress}, 
+            select : {
+                id : true
+            }
         })
         if(!coin){
+            console.log('in here in the not of coin place bro')
             throw new Error('Coin Not Found');
         }
-        if(coin.totalCoins < totalCoinsToInsure){
-            throw new Error('Not Enough Coins');
-        }
-        if(coin.unInsuredCoins < totalCoinsToInsure){
-            throw new Error('Not Enough Un Insured Coins');
-        }
+        // if(coin.totalCoins < totalCoinsToInsure){
+        //     throw new Error('Not Enough Coins');
+        // }
+        // if(coin.unInsuredCoins < totalCoinsToInsure){
+        //     throw new Error('Not Enough Un Insured Coins');
+        // }
         // const converageOfInsurance = (coin.totalAmount/coin.totalCoins) * totalCoinsToInsure;
         // const coverageOfInsurance = ((totalCoinsToInsure*marketPricePerCoin) * 80)/100;\
-        console.log(`the total coins to insure is : $${totalCoinsToInsure} and the market price per coin is : ${marketPricePerCoin}`)
-        const coverageOfInsurance = totalCoinsToInsure*marketPricePerCoin
-        console.log(`the total coverage that came amount has now become : ${coverageOfInsurance}`)
-            await db.coinInsurance.create({
+        // console.log(`the total coins to insure is : $${totalCoinsToInsure} and the market price per coin is : ${marketPricePerCoin}`)
+        // const coverageOfInsurance = totalCoinsToInsure*marketPricePerCoin
+        // console.log(`the total coverage that came amount has now become : ${coverageOfInsurance}`)
+        await db.$transaction(async (tx) => {
+            await tx.coinInsurance.create({
                 data : {
-                    coinId : Number(coinId),
+                    coinId : coin.id,
                     coinsInsured : totalCoinsToInsure,
-                    coverage : coverageOfInsurance,
+                    coverage : totalAmount,
                     startTime : new Date(),
                     expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
                     status : 'ApprovalPending',
                     is_extended : false
                 }
             })
+            await tx.coinTransactionEvent.update({
+                where : {id : coinTransactionId},
+                data : {
+                    showInInsurance : false
+                }
+            })
+
+        })
         return {success : true}
     }catch(error){
         console.log(error);
+        console.log('in here')
         throw new Error('Error Purchasing Coin Insurance');
     }
 }

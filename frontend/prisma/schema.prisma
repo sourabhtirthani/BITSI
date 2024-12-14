@@ -188,6 +188,7 @@ model CoinTransactionEvent {
   to               String 
   // coinId           Int   
   price            Float    @default(0)
+  showInInsurance  Boolean  @default(true)
   // coin             Coin     @relation(fields: [coinId], references: [id])
 }
 

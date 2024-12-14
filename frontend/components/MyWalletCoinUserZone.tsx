@@ -3,7 +3,7 @@ import { useEffect, useState, Fragment } from 'react'
 import LoaderComp from './LoaderComp';
 import { CoinTransaction, WalletUserZoneCoin } from '@/types';
 
-const MyWalletCoinUserZone = ({ address }: { address: string }) => {
+const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address: string , orderFilter : string , priceFilter : string }) => {
   const [loaderState, setLoaderState] = useState(true);
   const [loaderStateForMultipleTransaction, setLoaderStateForMultipleTransaction] = useState(true);
   const [userCoins, setUserCoins] = useState<WalletUserZoneCoin[]>([]);
@@ -43,6 +43,41 @@ const MyWalletCoinUserZone = ({ address }: { address: string }) => {
     }
     getUserCoinTransactions();
   }, [address])
+
+  useEffect(()=>{
+        const sortDataBasedOnOrderOfDate = async()=>{
+          
+  
+          if(orderFilter == 'Asc Order'){
+            const sortedData = [...coinHistoryDetailsWalletUserZone].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            setCoinHistoryDetailsWalletUserZone(sortedData);
+          }else if(orderFilter == 'Desc Order'){
+            const sortedData = [...coinHistoryDetailsWalletUserZone].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setCoinHistoryDetailsWalletUserZone(sortedData);
+          } else{
+  
+          }
+        }
+        sortDataBasedOnOrderOfDate();
+  
+      } , [orderFilter])
+  
+      useEffect(()=>{
+        const sortDataBasedOnPrice = async()=>{
+          if(priceFilter == 'Low to High'){
+            const sortedData = [...coinHistoryDetailsWalletUserZone].sort((a, b) => a.price - b.price);
+            setCoinHistoryDetailsWalletUserZone(sortedData);
+  
+          }else if(priceFilter == 'High to Low'){
+            const sortedData = [...coinHistoryDetailsWalletUserZone].sort((a, b) => b.price - a.price);
+            setCoinHistoryDetailsWalletUserZone(sortedData);
+          }else{
+  
+          }
+        }
+        sortDataBasedOnPrice();
+      } , [priceFilter])
+
   return (
     <div>
       <div className='max-h-[500px] overflow-y-auto  table-body p-4 md:p-8'>

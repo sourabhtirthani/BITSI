@@ -461,7 +461,7 @@ declare interface CoinTransaction {
   coinsTransferred: number;
   createdAt: Date;
   eventName: string;
-  coinId: number;
+  // coinId: number;
   price: number;
   from : string;
   to: string;

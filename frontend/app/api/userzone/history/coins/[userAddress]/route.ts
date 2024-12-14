@@ -23,15 +23,37 @@ try{
         console.log(buyCoinTransactionsForUser)
         return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
     }
+    if(type == 'protection'){
+        const buyCoinTransactionsForUser = await db.coinTransactionEvent.findMany({
+            where : {
+                eventName : 'Buy',
+                to : params.userAddress,
+                showInInsurance : true
+            }
+        })
+        // console.log(buyCoinTransactionsForUser)
+        return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
+    }
     const coinTransactions = await db.coinTransactionEvent.findMany({
-        where:{
-            OR :[
-                {from : params.userAddress},
-                {to : params.userAddress}
-                
+        where: {
+            AND: [
+                {
+                    OR: [
+                        { from: params.userAddress },
+                        { to: params.userAddress }
+                    ]
+                },
+                {
+                    NOT: {
+                        AND: [
+                            { eventName: "Sell" },  // this is not included becuase the to is uniswap here and everytime we buy an event sell for uniswap automaticlly gets registered which should not be included in the table
+                            { to: "0xec7BE89e9d109e7e3Fec59c222CF297125FEFda2" }
+                        ]
+                    }
+                }
             ]
         }
-    })
+    });
     // const coinTransactions = await db.coinTransactionEvent.findMany({
     //     where: {
     //         OR: [

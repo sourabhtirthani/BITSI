@@ -140,10 +140,12 @@ const AdminTablePolicyStatus = ({selectedTab} : {selectedTab : string}) => {
                   <Fragment key={index}>
                     <tr className='bg-success-512 text-center relative  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                       <td className='p-4 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td>
-                      <td className='p-4 max-sm:p-1'>{formatAddressUserZone(item.coin.userAddress)}</td>
+                      <td className='p-4 max-sm:p-1 relative group cursor-default'>{formatAddressUserZone(item.coin.userAddress)}
+                        <p className='absolute  bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>{item.coin.userAddress}</p>
+                      </td>
                       <td className='p-4 max-sm:p-1'>{item.status}</td>
-                      <td className='p-4 max-sm:p-1'>{item.coinsInsured}</td>
-                      <td className='p-4 max-sm:p-1'>{item.coverage} </td>
+                      <td className='p-4 max-sm:p-1'>{item.coinsInsured.toFixed(5)} BITSI</td>
+                      <td className='p-4 max-sm:p-1'>{item.coverage.toFixed(5)} MATIC</td>
                       {selectedTab == 'Pending' && 
                       <td className='p-4 max-sm:p-1'><DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton= {loaderActionButton} action={selectedTab} buttonText='Approve' coinInsuranceId={item.id} setRefresh={setRefreshCoinInsurance} handleMethodCall={handleApproveCoinInsurance} dialogTitle='Approve Insurance Policy?' dialogDescription='Once the policy is approved, the user will be able to proceed with the purchase.' /></td>}
                     </tr>

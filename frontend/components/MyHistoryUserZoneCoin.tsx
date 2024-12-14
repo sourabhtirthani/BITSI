@@ -4,9 +4,10 @@ import { CoinTransaction } from '@/types';
 import { formatAddressUserZone } from '@/lib/utils';
 // import { CoinTransaction } from '@prisma/client';
 
-const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
+const MyHistoryUserZoneCoin = ({address , orderFilter , priceFilter} : {address : string , orderFilter : string , priceFilter : string}) => {
     const [loaderState , setLoaderState] = useState(true);
     const [coinHistoryDetails , setCoinHistoryDetails] = useState<CoinTransaction[]>([]);
+    // const [filteredCoinHistoryDetails , setFilteredCoinHistoryDetails] = useState<CoinTransaction[]>([]);
 
     useEffect(()=>{
         const getUserCoinTransactions  = async()=>{
@@ -22,6 +23,40 @@ const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
         }
         getUserCoinTransactions();
     } ,[])
+
+    useEffect(()=>{
+        const sortDataBasedOnOrderOfDate = async()=>{
+          
+    
+          if(orderFilter == 'Asc Order'){
+            const sortedData = [...coinHistoryDetails].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+            setCoinHistoryDetails(sortedData);
+          }else if(orderFilter == 'Desc Order'){
+            const sortedData = [...coinHistoryDetails].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setCoinHistoryDetails(sortedData);
+          } else{
+    
+          }
+        }
+        sortDataBasedOnOrderOfDate();
+    
+      } , [orderFilter])
+    
+      useEffect(()=>{
+        const sortDataBasedOnPrice = async()=>{
+          if(priceFilter == 'Low to High'){
+            const sortedData = [...coinHistoryDetails].sort((a, b) => a.price - b.price);
+            setCoinHistoryDetails(sortedData);
+    
+          }else if(priceFilter == 'High to Low'){
+            const sortedData = [...coinHistoryDetails].sort((a, b) => b.price - a.price);
+            setCoinHistoryDetails(sortedData);
+          }else{
+    
+          }
+        }
+        sortDataBasedOnPrice();
+      } , [priceFilter])
   return (
     <div className='max-h-[500px] px-8 max-md:px-4 overflow-x-scroll scrollbar-none overflow-y-auto mb-20 table-body'>
     <table className='w-full text-left mt-4 border-spacing-20'>
@@ -46,11 +81,15 @@ const MyHistoryUserZoneCoin = ({address} : {address : string}) => {
         {loaderState == false  && Array.isArray(coinHistoryDetails) && coinHistoryDetails.map((item, index) => {
           return (
             <Fragment key={index}>
-              <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
+              <tr className='bg-success-512 text-center relative secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                 <td className='p-6 max-sm:p-3'>{new Date(item.createdAt).toDateString()}</td>
                 <td className='p-2 max-sm:p-1'>{item.eventName}</td>
-                <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.from)}</td>
-                <td className='p-2 max-sm:p-1'>{formatAddressUserZone(item.to)}</td>
+                <td className='p-2 max-sm:p-1 relative group cursor-default'>{formatAddressUserZone(item.from)}
+                <p className='absolute max-md:hidden bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>{item.from}</p>
+                </td>
+                <td className='p-2 max-sm:p-1 relative group cursor-default'>{formatAddressUserZone(item.to)}
+                <p className='absolute max-md:hidden bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>{item.to}</p>
+                </td>
                 <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(2)} BITSI</td>
                 <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)} MATIC</td>
                 {/* <td className='p-2 max-sm:p-1'></td>
