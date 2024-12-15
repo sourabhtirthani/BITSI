@@ -18,8 +18,11 @@ try{
         include :{
             insurance :{
                 select :{
+                    startTime : true,
+                    id : true,
                     expiration : true,
-                    coverage : true
+                    coverage : true,
+                    coinsInsured : true
                 }
             }
         }

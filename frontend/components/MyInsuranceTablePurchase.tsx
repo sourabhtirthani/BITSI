@@ -120,16 +120,17 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         functionName : 'approve',
         args: [coinInsuranceContranctAddress , numberOfCoins]
       })
+      console.log("in here in the funciton of approve coin insurance spend")
       console.log(approveContractTransaciton)
       const waitForApproveTransaction = await getTransactionFromHashOnPolygon(approveContractTransaciton);
       console.log(' in here after the transaction is confirmed on line 106');
       await new Promise(resolve => setTimeout(resolve, 30000));
 
-      if(waitForApproveTransaction.success == false){
-        console.log("in here in the error part of the approval of transction")
-        console.log(`the tranasaction was : ${approveContractTransaciton}`)
-        throw new Error('Error approving contract');
-      }
+      // if(waitForApproveTransaction.success == false){
+      //   console.log("in here in the error part of the approval of transction")
+      //   console.log(`the tranasaction was : ${approveContractTransaciton}`)
+      //   throw new Error('Error approving contract');
+      // }
       console.log('in here before initiating the smart contract transaction on line number 94')
       console.log(waitForApproveTransaction)
       // return;

@@ -126,10 +126,11 @@ const MyHistoryProtection = ({ address, orderFilter, assetFilter }: { address: s
           <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
             <tr>
               <th className='p-2 max-sm:p-1'>Date</th>
-              <th className='p-2 max-sm:p-1' >Asset</th>
-             
+              <th className='p-2 max-sm:p-1' >Insurance Id</th>
+              <th className='p-2 max-sm:p-1' >Coins</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Event&nbsp;Name</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+              <th className='p-2 max-sm:p-1 overflow-hidden'>Inception</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
               {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Compensaion (IF)</th> */}
             </tr>
@@ -140,9 +141,11 @@ const MyHistoryProtection = ({ address, orderFilter, assetFilter }: { address: s
                 <Fragment key={index}>
                   <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                     <td className='p-6 max-sm:p-3'>{new Date(item.timestamp).toDateString()}</td>
-                    <td className='p-2 max-sm:p-1'>Coin</td>
+                    <td className='p-2 max-sm:p-1'>{item.insurance.id}</td>
+                    <td className='p-2 max-sm:p-1'>{item.insurance.coinsInsured.toFixed(3)} BITSI</td>
                     <td className='p-2 max-sm:p-1'>{item.eventName}</td>
-                    <td className='p-2 max-sm:p-1'>{item.insurance.coverage}  </td>
+                    <td className='p-2 max-sm:p-1'>{item.insurance.coverage.toFixed(5)} MATIC  </td>
+                    <td className='p-2 max-sm:p-1'>{new Date(item.insurance.startTime).toDateString()} </td>
                     <td className='p-2 max-sm:p-1'>{new Date(item.insurance.expiration).toDateString()} </td>
                   </tr>
                   <tr>

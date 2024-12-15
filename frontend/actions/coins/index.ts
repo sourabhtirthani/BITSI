@@ -151,17 +151,65 @@ export const extendInsuranceForCoin = async(coinInsuranceId : number): Promise<C
         }
         const newExpirationDate = new Date(currExpiration.expiration);
         newExpirationDate.setFullYear(newExpirationDate.getFullYear() + 1);
-        await db.coinInsurance.update({
-            where : {
-                id : coinInsuranceId
-            },
-            data : {
-               expiration : newExpirationDate,
-               is_extended : true
-            }
+        await db.$transaction(async (tx) => {
+            await tx.coinInsurance.update({
+                where : {
+                    id : coinInsuranceId
+                },
+                data : {
+                   expiration : newExpirationDate,
+                   is_extended : true
+                }
+            })
+            await tx.coinInsuranceEvent.create({
+                data : {
+                    eventName : 'Extend',
+                    insuranceId : coinInsuranceId,
+                    
+                }
+            })
         })
         return {success : true}
     }catch(error){
         throw new Error('Error Extending Insurance');
+    }
+}
+
+export const upgradeInsuranceForCoin = async(coinInsuranceId : number): Promise<CoinInsuranceReturnType>=>{
+    try{
+        const currCoverage = await db.coinInsurance.findUnique({
+            where : {
+                id : coinInsuranceId
+            },
+            select : {
+                coverage : true
+            }
+        })
+        if(!currCoverage){
+            throw new Error('Error upgrading insurance');
+        }
+        const newCoverage = currCoverage.coverage +  (currCoverage.coverage * 0.2);
+        await db.$transaction(async (tx)=>{
+            await tx.coinInsurance.update({
+                where : {
+                    id : coinInsuranceId
+                },
+                 data : {
+                    is_upgraded : true,
+                    coverage : newCoverage
+                }
+            })
+
+            await tx.coinInsuranceEvent.create({
+                data : {
+                    eventName : 'Upgrade',
+                    insuranceId : coinInsuranceId
+                }
+            })
+        })
+        return {success : true}
+    }catch(error){
+        console.log(error);
+        throw new Error('Error Upgrading Insurance');
     }
 }

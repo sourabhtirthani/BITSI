@@ -14,7 +14,7 @@ export async function GET(request: Request, context: { params: { userAddress: st
                 userAddress : params.userAddress
             },
             status : 'Active',
-            is_extended : false
+            is_upgraded : false
         }
       })
   

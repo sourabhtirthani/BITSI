@@ -10,12 +10,13 @@ import { extendInsuranceForCoin } from '@/actions/coins';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
 import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
+import { getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
 // order filter sorts the data by date 
 const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
     const [dataOfNftUserZoneExtend , setDataOfNftUserZoneExtend] = useState<NftDataWithInsurace[]>([])
     const [loaderStateCoin , setLoaderStateCoin] = useState(true);
-    const [loaderActionButton , setLoaderActionButton] = useState(false)
+    const [loaderActionButton , setLoaderActionButton] = useState(false) // used to set the laoding for the dialog of coin 
     const [dataOfCoinInsurance , setDataOfCoinInsurance] = useState<CoinInsuranceDetailsUserZone[]>([])
     const [refreshCoin , setRefreshCoin] = useState(false);
     const [refresh , setRefresh] = useState(false);
@@ -58,13 +59,16 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
       try{
         setLoaderActionButton(true);
 
-        const approveContractTransaciton  = await writeContractAsync({
-          address : coinContractAddress,
-          abi : coinContractAbi,
-          functionName : 'approve',
-          args: [coinInsuranceContranctAddress , numberOfCoins]
-        })
-        await new Promise(resolve => setTimeout(resolve, 30000));
+        // const approveContractTransaciton  = await writeContractAsync({
+        //   address : coinContractAddress,
+        //   abi : coinContractAbi,
+        //   functionName : 'approve',
+        //   args: [coinInsuranceContranctAddress , numberOfCoins]
+        // })
+        console.log("in here in the funciton of approve coin insurance spend")
+        // console.log(approveContractTransaciton)
+        // const waitForApproveTransaction = await getTransactionFromHashOnPolygon(approveContractTransaciton);
+        // await new Promise(resolve => setTimeout(resolve, 30000));
         const transaction  = await writeContractAsync({
           address : coinInsuranceContranctAddress,
           abi : coinInsuranceAbi,
@@ -79,7 +83,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
         setRefreshMethod(prev => !prev);
         toast({title: "Successfully extended insurance",description: 'You can now purchase insurance',duration: 2000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
       }catch(error){
-        toast({ title: "Error", description: "Error Purchasing Insurance", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
+        toast({ title: "Error", description: "Error extending Insurance", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
       }finally{
         setLoaderActionButton(false);
       }
@@ -147,10 +151,11 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
                   {/* <th className='p-2 max-sm:p-1' >Marketplace</th> */}
                   {/* <th className='p-2 max-sm:p-1'>NFT&nbsp;ID</th> */}
                   {/* <th className='p-2 max-sm:p-1'>NFT&nbsp;Name</th> */}
-
+                  <th className='p-2 max-sm:p-1'>Id</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coins Insured</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Status</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Coverage</th>
+                  {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Inception</th> */}
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th>
                   <th className='p-2 max-sm:p-1 overflow-hidden'>Extend</th>
                 </tr>
@@ -162,9 +167,11 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
                       <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                         {/* <td className='p-2 max-sm:p-1'><Image src={item.NFT} height={50} width={50} alt='img' /></td> */}
                         <td className='p-2 py-5 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coinsInsured}</td>
+                        <td className='p-2 max-sm:p-1'>{item.id}</td>
+                        <td className='p-2 max-sm:p-1'>{item.coinsInsured.toFixed(3)} BITSI</td>
                         <td className='p-2 max-sm:p-1'>{item.status}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(4)}</td>
+                        <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(5)} MATIC</td>
+                        {/* <td className='p-2 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td> */}
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration).toDateString()}</td>
                         <td className='p-2 max-sm:p-1'><DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='extend' buttonText='Extend' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleExtendInsuranceOfCoin} dialogDescription='Extending the Insurance Policy will result in a 1-year extension of the policy duration.' dialogTitle='Extend Insurance Policy?' /></td>
                         {/* <td>

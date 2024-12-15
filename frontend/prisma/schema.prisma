@@ -213,6 +213,7 @@ model CoinInsurance {
   status          InsuranceStatus      @default(ApprovalPending)
   is_extended     Boolean              @default(false)
   insuranceEvents CoinInsuranceEvent[]
+  is_upgraded     Boolean              @default(false)
 }
 
 

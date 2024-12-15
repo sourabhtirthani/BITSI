@@ -516,6 +516,7 @@ declare interface CoinInsuranceDetailsUserZone {
   startTime: Date;
   expiration: Date;
   is_extended: boolean;
+  is_upgraded: boolean
 }
 
 declare interface CoinEventsUserZoneHistory {
@@ -523,10 +524,13 @@ declare interface CoinEventsUserZoneHistory {
   insuranceId: number;
   eventName: string;
   description: string | null;
-  coinsAffected: number | null;
+  // coinsAffected: number | null;
   timestamp: Date;
   insurance: {
+    id :  number;
     coverage: number;
     expiration: Date;
+    startTime : Date;
+    coinsInsured: number;
   }
 }
