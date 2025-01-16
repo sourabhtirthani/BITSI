@@ -80,8 +80,8 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
 
   return (
     <div>
-      <div className='max-h-[200px] h-fit overflow-y-auto  table-body p-4 md:p-8'>
-        <p className='text-success-511 text-[1.25rem] self-end font-bold flex justify-end'>{userCoins?.length > 0 ? ` Total Balance - ${userCoins[0].totalCoins.toFixed(5)} BITSI` : 'No Coins Found'}</p>
+      <div className='max-h-[200px] h-fit overflow-y-auto  table-body px-4 md:px-8'>
+        <p className='text-success-511 text-[1.25rem]  font-bold px-2 flex justify-start'>{userCoins?.length > 0 ? ` Total Balance - ${userCoins[0].totalCoins.toFixed(5)} BITSI` : ''}</p>
         {/* <table className='w-full text-left mt-4 border-spacing-20'>
           <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
             <tr>
@@ -113,7 +113,7 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
           </tbody>
 
         </table> */}
-        {loaderState == true && <LoaderComp />}
+        {/* {loaderState == true && <LoaderComp />} */}
       </div>
       <div className='max-h-[500px] overflow-y-auto mb-20 table-body px-4 md:px-8'>
         <table className='w-full text-left mt-4 border-spacing-20'>

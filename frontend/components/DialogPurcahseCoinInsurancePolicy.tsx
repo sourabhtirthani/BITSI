@@ -18,11 +18,19 @@ import { set } from 'date-fns';
 //this component only reqeusts for a new purchase for coin insurance
 const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transactionId, numberOfCoins, totalAmountSpent, setRefreshCoinInsurance }: {   userAddress: string, setRefresh: React.Dispatch<React.SetStateAction<boolean>> , transactionId : number, numberOfCoins : number , totalAmountSpent : number, setRefreshCoinInsurance : React.Dispatch<React.SetStateAction<boolean>>}) => {
     const [open, setOpen] = React.useState(false);
+    const [numberOfYears , setNumberOfOfYears] = useState(0);
+    const [openDrowdown ,setOpenDropdown] = useState(false);
+
     const [loaderBuy, setLoaderBuy] = useState(false);
+
+
+    const toggleDropdown = () => setOpenDropdown(!openDrowdown);
+
+
     const requestHandleBuyNewCoinInsurancePolicy = async()=>{
         try{   
             setLoaderBuy(true);
-            const requestPurchaseCoinInsurance = await purchaseCoinInsurance( userAddress , numberOfCoins ,totalAmountSpent, transactionId);
+            const requestPurchaseCoinInsurance = await purchaseCoinInsurance( userAddress , numberOfCoins ,totalAmountSpent, transactionId , numberOfYears);
             if(requestPurchaseCoinInsurance.success == true){
                 setRefresh(prev => !prev);
                 setRefreshCoinInsurance(prev => !prev);
@@ -82,6 +90,11 @@ const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transac
         setOpen(false);
     }
 
+    const handleSelectYear = (years : number)=>{
+        setNumberOfOfYears(years);
+        setOpenDropdown(false);
+    }
+
     return (
         <Dialog open={open} onOpenChange={setOpen} >
             <DialogTrigger asChild >
@@ -104,9 +117,47 @@ const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transac
                             </div>
                         </DialogFooter>
                     </form> */}
+                    <div className="relative inline-block text-left">
+      {/* Dropdown Button */}
+      <button
+        onClick={toggleDropdown}
+        className="px-4 py-2 text-black text-left  rounded-md shadow-md ring-1 ring-black  focus:outline-none focus:ring-2 focus:ring-black w-full "
+      >
+        {numberOfYears == 0 ? 'Select Duration' : numberOfYears + ' Years'}
+      </button>
+
+      
+      <div
+        className={`absolute right-0 mt-2 w-full bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-transform origin-top ${
+          openDrowdown ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
+        }`}
+        style={{ transformOrigin: "top", overflow: "hidden" }}
+      >
+        <div className="py-1">
+          <button
+            className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+            onClick={()=>{handleSelectYear(1)}}
+          >
+            1 Year
+          </button>
+          <button
+            className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+            onClick={()=>{handleSelectYear(5)}}
+          >
+            3 Years
+          </button>
+          <button
+            className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
+            onClick={()=>{handleSelectYear(5)}}
+          >
+            5 Years
+          </button>
+        </div>
+      </div>
+    </div>
                     <DialogFooter>
                             <div className="flex gap-6 text-[20px]  text-black font-medium  ">
-                                <button onClick={requestHandleBuyNewCoinInsurancePolicy}  disabled={loaderBuy} className={`${loaderBuy == true ? 'text-black bg-gray-400' : 'bg-green-600 text-white'} py-1 w-[110px] rounded-xl`}>{loaderBuy == true ? 'Loading..' : 'Purchase'}</button>
+                                <button onClick={requestHandleBuyNewCoinInsurancePolicy}  disabled={loaderBuy || numberOfYears == 0} className={`${loaderBuy == true || numberOfYears == 0 ? 'text-black bg-gray-400' : 'bg-green-600 text-white'} py-1 w-[110px] rounded-xl`}>{loaderBuy == true || numberOfYears == 0 ? loaderBuy == true ? 'Loading..' : 'Purcahse' : 'Purchase'}</button>
                                 <button onClick={handleDecline} className="bg-red-500 px-8 text-white rounded-xl py-1">Cancel</button>
                             </div>
                         </DialogFooter>

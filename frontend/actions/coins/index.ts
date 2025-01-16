@@ -2,7 +2,7 @@
 import db from "@/db";
 
 type CoinInsuranceReturnType = { success: boolean }
-export const purchaseCoinInsurance = async(userAddress : string , totalCoinsToInsure : number , totalAmount : number, coinTransactionId : number) : Promise<CoinInsuranceReturnType> =>{
+export const purchaseCoinInsurance = async(userAddress : string , totalCoinsToInsure : number , totalAmount : number, coinTransactionId : number , numberOfYears : number) : Promise<CoinInsuranceReturnType> =>{
     try{
         // console.log(`this is the coins id : ${coinId}`)
         const coin = await db.coin.findUnique({
@@ -33,7 +33,7 @@ export const purchaseCoinInsurance = async(userAddress : string , totalCoinsToIn
                     coinsInsured : totalCoinsToInsure,
                     coverage : totalAmount,
                     startTime : new Date(),
-                    expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
+                    expiration : new Date(Date.now() + numberOfYears * 365 * 24 * 60 * 60 * 1000),
                     status : 'ApprovalPending',
                     is_extended : false
                 }
@@ -74,13 +74,15 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
         if(coinInsurance.status == 'Active'){
             throw new Error('Coin Insurance is already active');
         }
+        const numberOfYears = Math.round((coinInsurance.expiration.getTime() - coinInsurance.startTime.getTime()) / (365 * 24 * 60 * 60 * 1000));
+        console.log(`the number of years is : ${numberOfYears}`)
         await db.$transaction(async (tx) => {
             await tx.coinInsurance.update({
                 where : {id : coinInsuranceId},
                 data : {
                     status : 'Approved',
-                    expiration : new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
                     startTime : new Date(),
+                    expiration : new Date(Date.now() + numberOfYears * 365 * 24 * 60 * 60 * 1000),
                 }
             })
             await tx.coin.update({
