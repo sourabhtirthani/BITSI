@@ -13,6 +13,7 @@ import { signIn, signOut } from '@/auth'
 import { AuthError } from 'next-auth';
 import { CompensationParams } from "@/types";
 import { readInsuranceContractParamentes } from "@/lib/contractRead";
+import { count } from "console";
 // import formidable from 'formidable';
 //line 890 recheck
 
@@ -147,8 +148,16 @@ export const uploadCollection = async (formData: FormData, collectionId: number,
 }
 
 type createProfileWhenWalletConnectType = { success: boolean }
-export const createProfileWhenWalletConnect = async (address: string): Promise<createProfileWhenWalletConnectType> => {
+export const createProfileWhenWalletConnect = async (formData : FormData): Promise<createProfileWhenWalletConnectType> => {
   try {
+    const address = formData.get('address') as string;
+    const name = formData.get('name') as string;
+    const number = formData.get('number') as string ?? null;
+    const email = formData.get('email') as string;
+    const country = formData.get('country') as string;
+    if(!address || !name || !email || !country){
+      return {success : false};
+    }
     console.log("in here in the create profile when the wallet is connected is function")
     const existingUser = await db.
       user.findUnique({
@@ -159,7 +168,11 @@ export const createProfileWhenWalletConnect = async (address: string): Promise<c
     if (!existingUser) {
       await db.user.create({
         data: {
-          walletAddress: address
+          walletAddress: address,
+          name : name,
+          email : email,
+          number : number,
+          country : country
         }
       })
     }
