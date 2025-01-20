@@ -108,15 +108,17 @@ contract CoinInsurance is Ownable {
         uint256 coverage;
         uint256 startTime;
         uint256 endTime;
+        uint256 claimTime;
+        uint256 INSURANCE_PERIOD;
         bool active;
         bool approved;
         uint256 compensation;
         address compensationOwner;
         bool isExtended;
         bool isUpgraded;
+        address currency;
     }
 
-    uint256 public INSURANCE_PERIOD = 365 days; // Insurance time period
     uint256 public GROWTH_RATE = 0; // Percent
     uint256 public HIGH_COMPENSATION_LIMIT = 100; // Percent
     uint256 public LOW_COMPENSATION_LIMIT = 50; // Percent
@@ -131,12 +133,12 @@ contract CoinInsurance is Ownable {
 
     mapping(address => mapping(uint256 => Policy)) public policies; // User address => token id => Policy
     mapping(address => mapping(uint256 => uint256)) public coinPrices; // User address => token id => price
-
+    mapping (uint256=> uint256) public coinClaimTime;
     event PolicyActivated(address indexed user, uint256 indexed tokenId, uint256 coverage, uint256 startTime, uint256 endTime);
     event ClaimSubmitted(address indexed user, uint256 indexed tokenId, uint256 loss, uint256 compensation, bool extended);
     event CompensationPaid(address indexed user, uint256 indexed tokenId, uint256 compensation);
     event CompensationApproved(address indexed user, uint256 indexed tokenId, uint256 compensation);
-    event ParametersUpdated(uint256 newCompensationPercentage, uint256 newPeriod, uint256 newHighLimit, uint256 newLowLimit, uint256 newFees);
+    event ParametersUpdated(uint256 newCompensationPercentage,  uint256 newHighLimit, uint256 newLowLimit, uint256 newFees);
     event PolicyUpgraded(address indexed user, uint256 indexed tokenId, uint256 newCoverage);
 
     constructor(address _bitsiToken, address _compensationFundWallet)  {
@@ -144,23 +146,30 @@ contract CoinInsurance is Ownable {
         compensationFundWallet = _compensationFundWallet;
     }
 
-    function activatePolicy(address user, uint256 coinId, uint256 price) external {
+    function activatePolicy(address user, uint256 coinId, uint256 price,uint256 INSURANCE_PERIOD, address currency) external {
         require(policies[user][coinId].active == false, "Policy already exists");
+        uint256 endTime;
+        if(INSURANCE_PERIOD==1) endTime = block.timestamp + 365 days ;
+        else if(INSURANCE_PERIOD==3) endTime = block.timestamp + 1095 days;
+        else if (INSURANCE_PERIOD==5) endTime = block.timestamp + 1825 days;
+        else revert("Invalid INSURANCE PERIOD");
 
         uint256 startTime = block.timestamp;
-        uint256 endTime = block.timestamp + INSURANCE_PERIOD;
         uint256 initialCoverage = (price * COMPENSATION_PERCENTAGE) / 100;
 
         policies[user][coinId] = Policy({
             coverage: initialCoverage,
             startTime: startTime,
             endTime: endTime,
+            claimTime:endTime,
+            INSURANCE_PERIOD:INSURANCE_PERIOD,
             active: true,
             approved: false,
             compensation: 0,
             compensationOwner: user,
             isExtended: false,
-            isUpgraded: false
+            isUpgraded: false,
+            currency:currency
         });
 
         coinPrices[user][coinId] = price;
@@ -172,24 +181,27 @@ contract CoinInsurance is Ownable {
         emit PolicyActivated(user, coinId, initialCoverage, startTime, endTime);
     }
 
-    function claim(address user, uint256 tokenId, uint256 salePrice) external {
-        Policy storage policy = policies[user][tokenId];
+    function claim(address user, uint256 coinId, uint256 salePrice) external {
+        Policy storage policy = policies[user][coinId];
         require(policy.active, "No active policy");
         require(policy.approved, "Policy not approved yet");
-        require(block.timestamp <= policy.endTime, "Policy expired");
+        require(block.timestamp >= policy.claimTime, "Can not claim now");
         require(msg.sender == policy.compensationOwner, "Unauthorized claim");
 
-        uint256 loss = coinPrices[user][tokenId] > salePrice ? coinPrices[user][tokenId] - salePrice : 0;
-        require(loss >= (coinPrices[user][tokenId] * LOW_COMPENSATION_LIMIT) / 100, "Loss not eligible for compensation");
+        uint256 loss = coinPrices[user][coinId] > salePrice ? coinPrices[user][coinId] - salePrice : 0;
+        require(loss >= (coinPrices[user][coinId] * LOW_COMPENSATION_LIMIT) / 100, "Loss not eligible for compensation");
 
         uint256 compensation = (salePrice * COMPENSATION_PERCENTAGE) / 100;
         policy.compensation = compensation;
 
-        _payCompensation(user, tokenId, compensation);
+        _payCompensation(user, coinId, compensation,policy.currency);
         policies[user][coinId] = Policy({
             coverage: 0,
             startTime: 0,
             endTime: 0,
+            claimTime:0,
+            INSURANCE_PERIOD:0,
+            currency:address(0),
             active: false,
             approved: false,
             compensation: 0,
@@ -197,7 +209,7 @@ contract CoinInsurance is Ownable {
             isExtended: false,
             isUpgraded: false
         });
-        emit ClaimSubmitted(user, tokenId, loss, compensation, policy.isExtended);
+        emit ClaimSubmitted(user, coinId, loss, compensation, policy.isExtended);
     }
 
     function approveCompensation(address user, uint256 coinId, uint256 compensation) external onlyOwner {
@@ -206,18 +218,20 @@ contract CoinInsurance is Ownable {
 
         policy.approved = true;
         policy.compensation = compensation;
-
+        if(policy.INSURANCE_PERIOD==1) policy.claimTime= block.timestamp+ 30 days;
+        else if(policy.INSURANCE_PERIOD==3) policy.claimTime= block.timestamp+ 90 days;
+        else if(policy.INSURANCE_PERIOD==5) policy.claimTime= block.timestamp+ 150 days;
         emit CompensationApproved(user, coinId, compensation);
     }
 
-    function _payCompensation(address user, uint256 tokenId, uint256 compensation) internal {
+    function _payCompensation(address user, uint256 tokenId, uint256 compensation,address currency) internal {
         Policy storage policy = policies[user][tokenId];
         require(block.timestamp >= policy.startTime + 30 days, "Compensation in freeze period");
-        require(bitsiToken.transferFrom(compensationFundWallet, user, compensation), "Compensation payment failed");
+        require(IERC20(currency).transferFrom(compensationFundWallet, user, compensation), "Compensation payment failed");
         emit CompensationPaid(user, tokenId, compensation);
     }
 
-    function extendPolicy(address user, uint256 coinId) external {
+    function extendPolicy(address user, uint256 coinId, uint256 INSURANCE_PERIOD) external {
         Policy storage policy = policies[user][coinId];
         require(policy.active, "No active policy");
         require(!policy.isExtended, "Already extended");
@@ -248,13 +262,12 @@ contract CoinInsurance is Ownable {
         emit PolicyUpgraded(user, coinId, policy.coverage);
     }
 
-    function updateParameters(uint256 _compensationPercentage, uint256 _insurancePeriod, uint256 _highLimit, uint256 _lowLimit, uint256 _fees) external onlyOwner {
+    function updateParameters(uint256 _compensationPercentage, uint256 _highLimit, uint256 _lowLimit, uint256 _fees) external onlyOwner {
         COMPENSATION_PERCENTAGE = _compensationPercentage;
-        INSURANCE_PERIOD = _insurancePeriod;
         HIGH_COMPENSATION_LIMIT = _highLimit;
         LOW_COMPENSATION_LIMIT = _lowLimit;
         ACTIVATE_COMMISSION_FEES = _fees;
 
-        emit ParametersUpdated(_compensationPercentage, _insurancePeriod, _highLimit, _lowLimit, _fees);
+        emit ParametersUpdated(_compensationPercentage, _highLimit, _lowLimit, _fees);
     }
 }
