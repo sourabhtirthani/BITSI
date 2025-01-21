@@ -80,7 +80,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
           throw new Error('Error extending insurance');
         }
         const extendInsuranceOfUser = await extendInsuranceForCoin(insuranceId);
-        setRefreshMethod(prev => !prev);
+        setRefreshMethod(prev => !prev); 
         toast({title: "Successfully extended insurance",description: 'You can now purchase insurance',duration: 2000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
       }catch(error){
         toast({ title: "Error", description: "Error extending Insurance", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
