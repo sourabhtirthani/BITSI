@@ -348,6 +348,9 @@ contract BITSICOIN is Context, IBEP20, Ownable {
   uint8 private _decimals=18;
   string private _symbol= "BITSI COIN";
   string private _name= "BITSI";
+  bool private _locked = false;
+  
+  event Locked(bool locked);
 
   constructor()  {
       _balances[msg.sender] = _totalSupply;
@@ -359,7 +362,19 @@ contract BITSICOIN is Context, IBEP20, Ownable {
   function decimals() override external view returns (uint8) {
     return _decimals;
   }
-
+  /**
+   * @dev Returns whether the contract is locked.
+   */
+  function isLocked() public view returns (bool) {
+      return _locked;
+  }
+  /**
+   * @dev Toggles the locked state. Can only be called by the owner.
+   */
+  function setLock(bool lock) public onlyOwner {
+      _locked = lock;
+      emit Locked(lock);
+  }
   /**
    * @dev Returns the bep token owner.
    */
@@ -404,6 +419,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
    * - the caller must have a balance of at least `amount`.
    */
   function transfer(address recipient, uint256 amount) override external returns (bool) {
+    require(!_locked, "Token transfers are currently locked");
     _transfer(_msgSender(), recipient, amount);
     return true;
   }
@@ -440,6 +456,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
    * `amount`.
    */
   function transferFrom(address sender, address recipient, uint256 amount) override external returns (bool) {
+    require(!_locked, "Token transfers are currently locked");
     _transfer(sender, recipient, amount);
     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
     return true;
