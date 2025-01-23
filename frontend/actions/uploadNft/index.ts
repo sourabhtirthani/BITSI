@@ -147,7 +147,7 @@ export const uploadCollection = async (formData: FormData, collectionId: number,
   }
 }
 
-type createProfileWhenWalletConnectType = { success: boolean }
+type createProfileWhenWalletConnectType = { success: boolean , message : string }
 export const createProfileWhenWalletConnect = async (formData : FormData): Promise<createProfileWhenWalletConnectType> => {
   try {
     const address = formData.get('address') as string;
@@ -156,7 +156,7 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
     const email = formData.get('email') as string;
     const country = formData.get('country') as string;
     if(!address || !name || !email || !country){
-      return {success : false};
+      return {success : false , message : 'Please Provide All the Details'};
     }
     console.log("in here in the create profile when the wallet is connected is function")
     const existingUser = await db.
@@ -176,12 +176,11 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
         }
       })
     }
-    return { success: true }
+    return { success: true , message : 'Account Created Successfully'}
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     console.log('error creating database entry')
-    // throw new Error('Error creating database entry');
-    return { success: false }
+    return { success: false , message : 'Error creating database entry'}
   }
 }
 

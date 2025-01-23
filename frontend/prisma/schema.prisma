@@ -66,6 +66,8 @@ model User {
   bio           String?
   imgSrc        String?
   country       String?
+  isInvestor    Boolean @default(false)
+  ifKYCVerified Boolean @default(false)
 }
 
 model Insurance {
