@@ -339,22 +339,27 @@ contract Ownable is Context {
 
 contract BITSICOIN is Context, IBEP20, Ownable {
   using SafeMath for uint256;
-  
+  struct userBlockcinTokens{
+    uint256 tokens;
+    uint256 unBlockingTome;
+  }
   mapping (address => uint256) private _balances;
-
+  mapping (address=>userBlockcinTokens) public blockedTokens;
   mapping (address => mapping (address => uint256)) private _allowances;
-
+  
   uint256 private _totalSupply= 1000000000 * 10**18;
   uint8 private _decimals=18;
   string private _symbol= "BITSI COIN";
   string private _name= "BITSI";
-  bool private _locked = false;
-  
-  event Locked(bool locked);
-
+  address public insuranceAddress;
   constructor()  {
       _balances[msg.sender] = _totalSupply;
       emit Transfer(address(0),msg.sender, _totalSupply);
+  }
+
+  modifier onlyInsurance() {
+    require(msg.sender == (insuranceAddress), "caller is not the insruance Address");
+    _;
   }
   /**
    * @dev Returns the token decimals.
@@ -362,19 +367,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
   function decimals() override external view returns (uint8) {
     return _decimals;
   }
-  /**
-   * @dev Returns whether the contract is locked.
-   */
-  function isLocked() public view returns (bool) {
-      return _locked;
-  }
-  /**
-   * @dev Toggles the locked state. Can only be called by the owner.
-   */
-  function setLock(bool lock) public onlyOwner {
-      _locked = lock;
-      emit Locked(lock);
-  }
+
   /**
    * @dev Returns the bep token owner.
    */
@@ -419,7 +412,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
    * - the caller must have a balance of at least `amount`.
    */
   function transfer(address recipient, uint256 amount) override external returns (bool) {
-    require(!_locked, "Token transfers are currently locked");
+    require(amount>(_balances[_msgSender()]-blockedTokens[msg.sender].tokens),"You can not trnasfer all the tokens");
     _transfer(_msgSender(), recipient, amount);
     return true;
   }
@@ -443,6 +436,16 @@ contract BITSICOIN is Context, IBEP20, Ownable {
     return true;
   }
 
+  // Function to update the mapping
+  function updateCustomData(address user, uint256 tokens,uint256 unBlockingTime) external onlyInsurance {
+        blockedTokens[user].tokens=tokens;
+        blockedTokens[user].unBlockingTome=unBlockingTime;
+  }
+  // Function to update the insurace contract
+  function updateCustomData(address _insuranceAddress) external onlyOwner {
+       insuranceAddress=_insuranceAddress;
+  }
+  
   /**
    * @dev See {BEP20-transferFrom}.
    *
@@ -456,7 +459,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
    * `amount`.
    */
   function transferFrom(address sender, address recipient, uint256 amount) override external returns (bool) {
-    require(!_locked, "Token transfers are currently locked");
+        require(amount>(_balances[sender]-blockedTokens[sender].tokens),"You can not trnasfer all the tokens");
     _transfer(sender, recipient, amount);
     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
     return true;

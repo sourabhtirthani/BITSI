@@ -4,6 +4,7 @@ pragma solidity 0.8.25;
 interface IERC20 {
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
+      function updateCustomData(address user, uint256 tokens,uint256 unBlockingTime) external ;
 }
 
 
@@ -185,7 +186,6 @@ contract CoinInsurance is Ownable {
         Policy storage policy = policies[user][coinId];
         require(policy.active, "No active policy");
         require(policy.approved, "Policy not approved yet");
-        require(block.timestamp >= policy.claimTime, "Can not claim now");
         require(msg.sender == policy.compensationOwner, "Unauthorized claim");
 
         uint256 loss = coinPrices[user][coinId] > salePrice ? coinPrices[user][coinId] - salePrice : 0;
@@ -193,8 +193,10 @@ contract CoinInsurance is Ownable {
 
         uint256 compensation = (salePrice * COMPENSATION_PERCENTAGE) / 100;
         policy.compensation = compensation;
-
-        _payCompensation(user, coinId, compensation,policy.currency);
+         if(policy.INSURANCE_PERIOD==1) policy.claimTime= block.timestamp+ 30 days;
+        else if(policy.INSURANCE_PERIOD==3) policy.claimTime= block.timestamp+ 90 days;
+        else if(policy.INSURANCE_PERIOD==5) policy.claimTime= block.timestamp+ 150 days;
+        _payCompensation(user, coinId, compensation,policy.currency,policy.claimTime);
         policies[user][coinId] = Policy({
             coverage: 0,
             startTime: 0,
@@ -215,19 +217,16 @@ contract CoinInsurance is Ownable {
     function approveCompensation(address user, uint256 coinId, uint256 compensation) external onlyOwner {
         Policy storage policy = policies[user][coinId];
         require(policy.active, "No active policy");
-
         policy.approved = true;
         policy.compensation = compensation;
-        if(policy.INSURANCE_PERIOD==1) policy.claimTime= block.timestamp+ 30 days;
-        else if(policy.INSURANCE_PERIOD==3) policy.claimTime= block.timestamp+ 90 days;
-        else if(policy.INSURANCE_PERIOD==5) policy.claimTime= block.timestamp+ 150 days;
         emit CompensationApproved(user, coinId, compensation);
     }
 
-    function _payCompensation(address user, uint256 tokenId, uint256 compensation,address currency) internal {
+    function _payCompensation(address user, uint256 tokenId, uint256 compensation,address currency,uint256 unlockTime) internal {
         Policy storage policy = policies[user][tokenId];
         require(block.timestamp >= policy.startTime + 30 days, "Compensation in freeze period");
         require(IERC20(currency).transferFrom(compensationFundWallet, user, compensation), "Compensation payment failed");
+        IERC20(currency).updateCustomData( user, compensation,unlockTime);
         emit CompensationPaid(user, tokenId, compensation);
     }
 
