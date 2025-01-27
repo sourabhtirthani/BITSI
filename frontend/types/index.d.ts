@@ -534,3 +534,22 @@ declare interface CoinEventsUserZoneHistory {
     coinsInsured: number;
   }
 }
+
+declare interface User {
+  id?: number;
+  walletAddress?: string;
+  name?: string;
+  email?: string;
+  number?: string;
+  address?: string;
+  bio?: string;
+  imgSrc?: string;
+  country?: string;
+  isInvestor?: boolean;
+  investorStatus?: "NonInvestor" | "Pending" | "Verified" | "Rejected";
+  ifKYCVerified?: boolean;
+  creditScore?: number;
+  createdAt?: Date;
+}
+
+declare type AdminInvestorList = Pick<User  , 'id' | 'email' | 'investorStatus' | 'createdAt' | 'walletAddress' | 'creditScore' | 'name' | 'country'>;

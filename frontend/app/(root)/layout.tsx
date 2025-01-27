@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { Toaster } from "@/components/ui/toaster"
 import AiChatButton from "@/components/AiChatButton";
+import SignupPopup from "@/components/SignupPopup";
 // import Hero from "@/components/Hero";
 
 export default function RootLayout({
@@ -22,7 +23,7 @@ export default function RootLayout({
         {/* <Hero /> */}
       </header>
       {/* min-h-screen...might include later in the div */}
-
+      <SignupPopup />
         {children}
         <Toaster  />
         <AiChatButton />

@@ -57,17 +57,27 @@ model Collection {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  walletAddress String  @unique
-  name          String?
-  email         String?
-  number        String?
-  address       String?
-  bio           String?
-  imgSrc        String?
-  country       String?
-  isInvestor    Boolean @default(false)
-  ifKYCVerified Boolean @default(false)
+  id             Int                 @id @default(autoincrement())
+  walletAddress  String              @unique
+  name           String?
+  email          String?
+  number         String?
+  address        String?
+  bio            String?
+  imgSrc         String?
+  country        String?
+  isInvestor     Boolean             @default(false)
+  investorStatus ENUM_InvestorStatus @default(NonInvestor)
+  ifKYCVerified  Boolean             @default(false)
+  creditScore    Float               @default(0)
+  createdAt      DateTime            @default(now())
+}
+
+enum ENUM_InvestorStatus {
+  NonInvestor
+  Pending
+  Approved
+  Rejected
 }
 
 model Insurance {
@@ -170,14 +180,14 @@ model Claims {
   compensation          Compensation?
 }
 
-model Coin {   // this is the group of the coin for a particular user
-  id             Int                    @id @default(autoincrement())
-  userAddress    String                 @unique
+model Coin {
+  id             Int             @id @default(autoincrement())
+  userAddress    String          @unique
   totalCoins     Float
   totalAmount    Float
   unInsuredCoins Float
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   insurances     CoinInsurance[]
   // transactions   CoinTransactionEvent[]
 }
@@ -187,8 +197,8 @@ model CoinTransactionEvent {
   coinsTransferred Float
   createdAt        DateTime @default(now())
   eventName        String
-  from             String   
-  to               String 
+  from             String
+  to               String
   // coinId           Int   
   price            Float    @default(0)
   showInInsurance  Boolean  @default(true)
@@ -196,13 +206,13 @@ model CoinTransactionEvent {
 }
 
 model CoinInsuranceEvent {
-  id            Int           @id @default(autoincrement())
-  insuranceId   Int
-  insurance     CoinInsurance @relation(fields: [insuranceId], references: [id])
-  eventName     String
-  description   String?
+  id          Int           @id @default(autoincrement())
+  insuranceId Int
+  insurance   CoinInsurance @relation(fields: [insuranceId], references: [id])
+  eventName   String
+  description String?
   // coinsAffected Float?
-  timestamp     DateTime      @default(now())
+  timestamp   DateTime      @default(now())
 }
 
 model CoinInsurance {
@@ -218,6 +228,5 @@ model CoinInsurance {
   insuranceEvents CoinInsuranceEvent[]
   is_upgraded     Boolean              @default(false)
 }
-
 
 //migrate the prisma file

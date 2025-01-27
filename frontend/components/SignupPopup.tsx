@@ -51,7 +51,9 @@ const SignupPopup = () => {
     const formData = new FormData(form);
     const country = formData.get('country') as string;
     formData.append('address', address as string);
-      
+    // const isInvs = formData.get('investor');
+    // console.log(`this isthe status of the investor ${isInvs}`)
+    // return;
     if(!country){
       setHasError(true);
       return
@@ -115,6 +117,10 @@ const SignupPopup = () => {
                       )
                     })}
 
+                  </div>
+                  <div className='flex gap-2 items-center'>
+                  <label htmlFor='investor'>Signup As Investor</label>
+                  <input type = 'checkbox' name='investor' id='investor' className='h-4 w-4' />
                   </div>
                 </div>
                 <button type='submit' disabled = {loadingSignup} className='bg-black w-full rounded-xl max-md:py-1 py-3 font-semibold text-center text-white'>{loadingSignup ? 'Loading...' : 'Sign up'}</button>

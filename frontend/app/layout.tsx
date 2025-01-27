@@ -72,7 +72,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${poppinss.variable} ${manrope.variable} ${montserratt.variable} ${moonDance.variable} ${mulish.variable} ${pollerOne.variable} ${montaga.variable}`}>
       <NextTopLoader showSpinner = {false}   />
       <Web3ModalProvider initialState={initialState}>{children}
-        <SignupPopup />
+       
       </Web3ModalProvider>
         </body>
       {/* <Script defer src="https://app.fastbots.ai/embed.js" data-bot-id="clyzhodvg0gf6r9bcqn59tpxl"  ></Script> */}
