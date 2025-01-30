@@ -19,6 +19,7 @@ const Sidebar = () => {
     <Link href= '/admin/burn-token'><p className='text-[18px] font-manrope self-start text-white font-bold '>Burn Token</p></Link>
     <Link href= '/admin/prices'><p className='text-[18px] font-manrope self-start text-white font-bold '>Prices</p></Link>
     <Link href= '/admin/investor'><p className='text-[18px] font-manrope self-start text-white font-bold '>Investor</p></Link>
+    <Link href= '/admin/currency'><p className='text-[18px] font-manrope self-start text-white font-bold '>Currency</p></Link>
     <div className=' flex flex-col justify-center items-center  w-full gap-3'>
    <div className='self-start flex items-center justify-center gap-1' onClick={()=>{setShowDropDownMinting(prev =>! prev)}}>
     <label className='text-[18px] font-manrope  flex items-start text-white font-bold '>Minting</label>

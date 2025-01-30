@@ -229,4 +229,9 @@ model CoinInsurance {
   is_upgraded     Boolean              @default(false)
 }
 
-//migrate the prisma file
+model SupportTedCurrencies {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  currency  String
+  createdAt DateTime @default(now())
+}
