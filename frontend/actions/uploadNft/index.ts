@@ -156,6 +156,7 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
     const email = formData.get('email') as string;
     const country = formData.get('country') as string;
     const isInvestor = formData.has('investor') ? true : false;
+    const currencyId = formData.get('currency') as string;
     if(!address || !name || !email || !country){
       return {success : false , message : 'Please Provide All the Details'};
     }
@@ -174,7 +175,8 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
           email : email,
           number : number,
           country : country,
-          investorStatus : isInvestor ? 'Pending' : 'NonInvestor'
+          investorStatus : isInvestor ? 'Pending' : 'NonInvestor',
+          supportTedCurrenciesId : Number(currencyId)
         }
       })
     }

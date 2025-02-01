@@ -1,10 +1,11 @@
 'use server'
 import db from "@/db";
+import { sendWelcomeEmailToInvestor } from "@/lib/sendEmails";
 
 type GeneralTypeForACtions = {success : boolean}
 export const approveUserAsInvestor = async(id : number) : Promise<GeneralTypeForACtions>=>{
     try{
-        await db.user.update({
+       const user =  await db.user.update({
             where : {
                 id
             },
@@ -13,6 +14,7 @@ export const approveUserAsInvestor = async(id : number) : Promise<GeneralTypeFor
                 isInvestor : true
             }
         })
+        await sendWelcomeEmailToInvestor(user.email ?? '' , user.walletAddress ?? '' , user.name ?? '');
         return {success : true}
     }catch(error){
         return {success : false}

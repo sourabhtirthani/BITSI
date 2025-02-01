@@ -2,10 +2,11 @@ import { AdminInvestorList } from '@/types';
 import React, { useEffect, useState } from 'react'
 import { toast } from './ui/use-toast';
 import LoaderComp from './LoaderComp';
-import { formatAddressUserZone } from '@/lib/utils';
+import { formatAddressUserZone, showToastUI } from '@/lib/utils';
 import DialogGeneric from './DialogGeneric';
 import { approveInsuranceRequest } from '@/actions/uploadNft';
 import { approveUserAsInvestor, rejectUserAsInvestor } from '@/actions/users';
+import { sendWelcomeEmailToInvestor } from '@/lib/sendEmails';
 
 const AdminTableInvestorList = ({ status }: { status: string }) => {
     const [loaderState, setLoaderState] = useState(true);
@@ -37,12 +38,9 @@ const AdminTableInvestorList = ({ status }: { status: string }) => {
             setLoaderForDialog(true);
             await approveUserAsInvestor(id);
             setRefreshList(prev=>!prev);
-            toast({ title: "Successfully approved", description: 'User is now marked as investor', duration: 5000, style: { backgroundColor: '#00b289', color: 'white', fontFamily: 'Manrope' } })
-        } catch (error) {
-            toast({
-                title: "Error!", description: 'Error occures', duration: 2000,
-                style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
-            })
+            showToastUI({title : "Successfully approved" , description : 'User is now marked as investor' , operation : "success"});
+            } catch (error) {
+            showToastUI({title : "Error!" , description : 'Error occured' , operation : "fail"});
             console.log(error)
         }finally{
             setLoaderForDialog(false);
@@ -53,12 +51,9 @@ const AdminTableInvestorList = ({ status }: { status: string }) => {
         try {
             await rejectUserAsInvestor(id);
             setRefreshList(prev=>!prev);
-            toast({ title: "Successfully Rejected", description: 'Rejected user from being an investor', duration: 5000, style: { backgroundColor: '#00b289', color: 'white', fontFamily: 'Manrope' } })
+            showToastUI({title : "Successfully Rejected" , description : 'Rejected user from being an investor' , operation : "success"});
         } catch (error) {
-            toast({
-                title: "Error!", description: 'Error occures', duration: 2000,
-                style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }
-            })
+            showToastUI({title : "Error!" , description : 'Error occured' , operation : "fail"});
         }
     }
     return (

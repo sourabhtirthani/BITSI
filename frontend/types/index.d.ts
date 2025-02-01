@@ -553,3 +553,24 @@ declare interface User {
 }
 
 declare type AdminInvestorList = Pick<User  , 'id' | 'email' | 'investorStatus' | 'createdAt' | 'walletAddress' | 'creditScore' | 'name' | 'country'>;
+
+declare interface CurrencyList {
+    id: number;
+    code: string;
+    currency: string;
+    createdAt: Date;
+}
+
+type ToastOperation = 'success' | 'fail';
+
+interface ToastPropsUtil {
+  title: string;
+  description: string;
+  operation: ToastOperation;
+}
+
+interface ToastStyles {
+  backgroundColor: string;
+  color: string;
+  fontFamily: string;
+}

@@ -4,6 +4,8 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Message } from "ai";
+import { ToastOperation, ToastPropsUtil, ToastStyles } from "@/types";
+import { toast } from "@/components/ui/use-toast";
 
 
 
@@ -92,3 +94,25 @@ export const generateMessages = (numMessages : number) => {
   }
   return messages;
 };
+
+export const showToastUI : any = ({ title, description, operation = 'success' }: ToastPropsUtil) => {
+  const styles: Record<ToastOperation, ToastStyles> = {
+    success: {
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      fontFamily: 'Manrope',
+    },
+    fail: {
+      backgroundColor: '#900808',
+      color: 'white',
+      fontFamily: 'Manrope',
+    }
+  };
+  console.log(`the title is ${title} and the description is ${description}`)  
+  return toast({
+    title: title,
+    description: description,
+    duration: 2000,
+    style: styles[operation],
+  });
+}

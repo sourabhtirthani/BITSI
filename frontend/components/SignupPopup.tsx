@@ -4,9 +4,10 @@ import { set } from 'date-fns';
 import { ChevronDown, Router } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
-import { toast } from './ui/use-toast';
 import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
 import Link from 'next/link';
+import { showToastUI } from '@/lib/utils';
+import { CurrencyList } from '@/types';
 
 const SignupPopup = () => {
   const { address, isConnected } = useAccount();
@@ -17,10 +18,12 @@ const SignupPopup = () => {
   const [showKycOption, setShowKycOption] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasErrorCurrency, setHasErrorCurrency] = useState(false);
+  const [currencyList , setCurrencyList] = useState<CurrencyList[]>([]);
   const [countryName, selectCountryName] = useState<string | null>(null);
   const [currencyName, setCurrencyName] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const currencyDropDrownRef = useRef<HTMLDivElement | null>(null);
+  const [displayCurrencyName , setDisplayCurrencyName] = useState<string | null>(null);
 
   const toggleDropdown = () => setOpenDropdown(!openDrowdown);
   const toggleCurrencyDropdown = () => setOpenCurrencyDropDown(!openCurrencyDropDown);
@@ -41,6 +44,19 @@ const SignupPopup = () => {
     }
     checkUser();
   }, [address])
+
+  useEffect(()=>{
+    const getAllCurrencies = async()=>{
+      try{
+        const res = await fetch(`/api/currency` , {method : "GET" , next : {revalidate : 0} , } ,  )
+        const resParsed = await res.json();
+        setCurrencyList(resParsed);
+      }catch(error){
+        console.log(`error fetching all the currecnies`);
+      }
+    }
+    getAllCurrencies();
+  },[])
 
   // useEffect(() => {
   //   const handleClickOutside = (event: MouseEvent) => {
@@ -76,9 +92,10 @@ const SignupPopup = () => {
     }
   }
 
-  const handleSelectCurrency = (currency: string) => {
+  const handleSelectCurrency = (currency: string , currencyName : string) => {
     try {
       setCurrencyName(currency);
+      setDisplayCurrencyName(currencyName);
       setOpenCurrencyDropDown(false);
     } catch (error) {
       console.log(error)
@@ -110,16 +127,16 @@ const SignupPopup = () => {
       setLoadingSignup(true);
       const createAccount = await createProfileWhenWalletConnect(formData);
       if (createAccount.success == false) {
-        toast({ title: "Error", description: createAccount.message, duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }, })
+        showToastUI({title : "Error" , description : createAccount.message , operation : "fail"});
         setLoadingSignup(false);
         return;
       }
       setShowPopup(false);
       setShowKycOption(true);
-      toast({ title: "Success", description: 'Account created successfully', duration: 2000, style: { backgroundColor: '#1DB954', color: 'white', fontFamily: 'Manrope', }, })
+      showToastUI({title : "Success" , description : 'Account created successfully' , operation : "success"});
     } catch (error) {
       console.log(error);
-      toast({ title: "Error", description: 'Error signing up', duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }, })
+      showToastUI({title : "Error" , description : 'Error signing up' , operation : "fail"});
     } finally {
       setLoadingSignup(false);
     }
@@ -169,7 +186,7 @@ const SignupPopup = () => {
                
                 <input type='text' hidden id='currency' name='currency' placeholder='currency' className='w-full rounded-xl max-md:py-1 py-3 bg-[#F9F9F9] text-black text-[1rem] border-[1px] border-[#B1B1B1] pl-3 max-md:pl-1 font-normal' value={currencyName ?? ''} />
                 <div className='flex justify-between items-center -mt-3 relative'>
-                  <label htmlFor='currency' onClick={toggleCurrencyDropdown} className='w-full rounded-xl max-md:py-1 py-3 bg-[#F9F9F9] text-[#838383] text-[1rem] border-[1px] border-[#B1B1B1] pl-3 max-md:pl-1 font-normal '>{currencyName == null ? 'Select Currency*' : currencyName}</label>
+                  <label htmlFor='currency' onClick={toggleCurrencyDropdown} className='w-full rounded-xl max-md:py-1 py-3 bg-[#F9F9F9] text-[#838383] text-[1rem] border-[1px] border-[#B1B1B1] pl-3 max-md:pl-1 font-normal '>{displayCurrencyName == null ? 'Select Currency*' : displayCurrencyName}</label>
                   {(hasErrorCurrency && currencyName == null) && (
                     <span className="text-red-500 absolute -top-2  bg-white text-sm ml-2 ">This field is required</span>
                   )}
@@ -183,10 +200,10 @@ const SignupPopup = () => {
                     style={{ transformOrigin: "top" }}
                   >
 
-                    {['abc', 'bcd', 'ced' , 'hflkdasfdskl;fhsa' , 'fjdslk'].map((item, index) => {
+                    {Array.isArray(currencyList) && currencyList.map((item, index) => {
                       return (
-                        <div key={index} onClick={() => { handleSelectCurrency(item) }} className='py-1.5 scale-y-100 overflow-y-auto z-50 hover:bg-[#F9F9F9] cursor-pointer'>
-                          <p>{item}</p>
+                        <div key={index} onClick={() => { handleSelectCurrency(item.id.toString() , item.currency ) }} className='py-1.5 scale-y-100 overflow-y-auto z-50 hover:bg-[#F9F9F9] cursor-pointer'>
+                          <p>{item.code} - {item.currency}</p>
                         </div>
                       )
                     })}

@@ -57,20 +57,22 @@ model Collection {
 }
 
 model User {
-  id             Int                 @id @default(autoincrement())
-  walletAddress  String              @unique
-  name           String?
-  email          String?
-  number         String?
-  address        String?
-  bio            String?
-  imgSrc         String?
-  country        String?
-  isInvestor     Boolean             @default(false)
-  investorStatus ENUM_InvestorStatus @default(NonInvestor)
-  ifKYCVerified  Boolean             @default(false)
-  creditScore    Float               @default(0)
-  createdAt      DateTime            @default(now())
+  id                     Int                   @id @default(autoincrement())
+  walletAddress          String                @unique
+  name                   String?
+  email                  String?
+  number                 String?
+  address                String?
+  bio                    String?
+  imgSrc                 String?
+  country                String?
+  isInvestor             Boolean               @default(false)
+  investorStatus         ENUM_InvestorStatus   @default(NonInvestor)
+  ifKYCVerified          Boolean               @default(false)
+  creditScore            Float                 @default(0)
+  createdAt              DateTime              @default(now())
+  SupportTedCurrencies   SupportTedCurrencies? @relation(fields: [supportTedCurrenciesId], references: [id])
+  supportTedCurrenciesId Int?
 }
 
 enum ENUM_InvestorStatus {
@@ -234,4 +236,5 @@ model SupportTedCurrencies {
   code      String   @unique
   currency  String
   createdAt DateTime @default(now())
+  users     User[]
 }
