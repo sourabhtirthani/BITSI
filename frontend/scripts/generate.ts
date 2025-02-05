@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-dotenv.config();
+dotenv.config(); 
 import { dropEmbeddingsCollection, getVectorStore } from '../lib/astraDb';
 import { DocumentInterface } from '@langchain/core/documents';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory'
