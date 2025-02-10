@@ -442,7 +442,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
         blockedTokens[user].unBlockingTome=unBlockingTime;
   }
   // Function to update the insurace contract
-  function updateCustomData(address _insuranceAddress) external onlyOwner {
+  function updateInsuraceContract(address _insuranceAddress) external onlyOwner {
        insuranceAddress=_insuranceAddress;
   }
   
@@ -459,7 +459,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
    * `amount`.
    */
   function transferFrom(address sender, address recipient, uint256 amount) override external returns (bool) {
-        require(amount>(_balances[sender]-blockedTokens[sender].tokens),"You can not trnasfer all the tokens");
+    require(amount>(_balances[sender]-blockedTokens[sender].tokens),"You can not trnasfer all the tokens");
     _transfer(sender, recipient, amount);
     _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
     return true;
