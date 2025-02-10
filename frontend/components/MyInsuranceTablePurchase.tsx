@@ -101,7 +101,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
     getTransactionsThatAreNotInsured();
   } , [address , refreshCoinTransactions])
 
-  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number)=>{
+  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number , numberOfYears : number)=>{
     try{  
       if(!isConnected){
         throw new Error('Please connect wallet to purchase insurance');
@@ -139,7 +139,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         address : coinInsuranceContranctAddress,
         abi : coinInsuranceAbi,
         functionName : 'activatePolicy',
-        args: [address , coinInsuranceId ,priceInWei],
+        args: [address , coinInsuranceId ,priceInWei , numberOfYears , coinContractAddress],
         
       })
       if(!transaction){
@@ -156,6 +156,17 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
     }finally{
       setLoaderActionButton(false);
     }
+  }
+
+  const wrappedHandler = (coinInsuranceId: number, setRefreshMethod: React.Dispatch<React.SetStateAction<boolean>>, numberOfCoins: number) => {
+    
+    const expirationTime = 123; 
+    // const currentInsuranceItem = item.insurances.find(insurance => insurance.id === id);
+    const currentInsuranceItem = dataOfCoinUserZonePurchase.flatMap(item => item.insurances).find(insurance => insurance?.id === coinInsuranceId);
+    console.log(`the id of tha is and the expiraiton time is : ${currentInsuranceItem?.expiration} , the id is ${currentInsuranceItem?.id}`)
+    // const years = Math.floor((new Date(currentInsuranceItem?.expiration.getFullYear()) - new Date(currentInsuranceItem?.startTime.getFullYear())) / (1000 * 60 * 60 * 24 * 365.25));
+    const years = new Date(currentInsuranceItem?.expiration ?? "").getFullYear() - new Date(currentInsuranceItem?.startTime ?? "").getFullYear();
+    return handleCoinInsurancePurchase(coinInsuranceId, setRefreshMethod, numberOfCoins , years);
   }
 
   return (
@@ -251,7 +262,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coverage.toFixed(5)} MATIC</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
                           <td className='p-2 max-sm:p-1'>{
-                            insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={handleCoinInsurancePurchase} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage for up to 2 years.' dialogTitle='Purchase Insurance Policy?' />
+                            insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
                             }</td>
                         </tr>
                         <tr>

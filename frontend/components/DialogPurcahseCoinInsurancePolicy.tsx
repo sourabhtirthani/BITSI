@@ -14,6 +14,7 @@ import { purchaseCoinInsurance } from '@/actions/coins';
 import { toast } from './ui/use-toast';
 import { getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
 import { set } from 'date-fns';
+import { ChevronDown } from 'lucide-react';
 //this component is so far used at only one place -> in the protection table in the purcahse seciton for coins
 //this component only reqeusts for a new purchase for coin insurance
 const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transactionId, numberOfCoins, totalAmountSpent, setRefreshCoinInsurance }: {   userAddress: string, setRefresh: React.Dispatch<React.SetStateAction<boolean>> , transactionId : number, numberOfCoins : number , totalAmountSpent : number, setRefreshCoinInsurance : React.Dispatch<React.SetStateAction<boolean>>}) => {
@@ -119,11 +120,13 @@ const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transac
                     </form> */}
                     <div className="relative inline-block text-left">
       {/* Dropdown Button */}
+
       <button
         onClick={toggleDropdown}
-        className="px-4 py-2 text-black text-left  rounded-md shadow-md ring-1 ring-black  focus:outline-none focus:ring-2 focus:ring-black w-full "
+        className="px-4 py-2 relative text-black text-left  rounded-md shadow-md ring-1 ring-black  focus:outline-none focus:ring-2 focus:ring-black w-full "
       >
         {numberOfYears == 0 ? 'Select Duration' : numberOfYears + ' Years'}
+        <ChevronDown className='absolute  right-0 top-[25%] text-black' />
       </button>
 
       
@@ -142,7 +145,7 @@ const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transac
           </button>
           <button
             className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100"
-            onClick={()=>{handleSelectYear(5)}}
+            onClick={()=>{handleSelectYear(3)}}
           >
             3 Years
           </button>
