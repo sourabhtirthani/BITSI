@@ -2,11 +2,13 @@ import BitsiCoinCard from '@/components/BitsiCoinCard'
 import { ChartCoin } from '@/components/ChartCoin'
 import { CoinCheckOutDialog } from '@/components/CoinCheckOutDialog'
 import CoinKeyFeatures from '@/components/CoinKeyFeatures'
+import DialogBuyCoinFromSpecificPlace from '@/components/DialogBuyCoinFromSpecificPlace'
 import { HomeFaq } from '@/components/HomeFaq'
 import LineChartComp from '@/components/LineChartComp'
 import { bitsiCoinCardData, coinBoxBuy, coinKeyFeatures, coinMaketTable } from '@/constants'
 import { CoinBoxBuyProps, CoinKeyFeaturesProps, CoinMarketTableProps } from '@/types'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const BitsiCoin = () => {
@@ -52,7 +54,14 @@ const BitsiCoin = () => {
                                                 <td className='text-success-536 p-4 max-md:p-2'>{item.type}</td>
                                                 <td className='p-4 max-md:p-2'> {item.price}</td>
                                                 <td className='text-green-500'>{item.scale}</td>
-                                                <td className=''>Trade&nbsp;Now </td>
+                                                <td className='hover:underline cursor-pointer'>
+                                                    {
+                                                        item.redirect ? (<Link target='_blank' href={item.link}>Trade&nbsp;Now </Link>) : 
+                                                         item.platform == 'BITSI' ?
+                                                            <DialogBuyCoinFromSpecificPlace />
+                                                           : <p className='text-success-511'>Trade&nbsp;Now </p>
+                                                        
+                                                    } </td>
                                             </tr>
                                         )
                                     })}

@@ -1,3 +1,5 @@
+import { redirect } from "next/dist/server/api-utils"
+
 export const ourServicesLinks = [
     {
         id : 1,
@@ -637,12 +639,13 @@ export const homeBitsiSteps = [
 ]
 
 export const coinMaketTable = [
-    {platform : 'Binance',type : 'Exchange' , price : 12.59 , scale : 4.35},
-    {platform : 'Coinbase',type : 'Exchange' , price : 12.45 , scale : 4.35},
-    {platform : 'Kraken',type : 'Broker' , price : 12.55 , scale : -2.35},
-    {platform : 'Uniswap',type : 'Exchange' , price : 12.22 , scale : 4.35},
-    {platform : 'BITSI Telegram',type : 'DEX' , price : 12.44 , scale : -1.35},
-    {platform : 'Binance',type : 'Exchange' , price : 12.53 , scale : 4.35},
+    {platform : 'Binance',type : 'Exchange' , price : 12.59 , scale : 4.35 , link : '' , redirect : false},
+    {platform : 'Coinbase',type : 'Exchange' , price : 12.45 , scale : 4.35 , link : '' , redirect  : false},
+    {platform : 'Kraken',type : 'Broker' , price : 12.55 , scale : -2.35 , link : '' , redirect : false},
+    {platform : 'Uniswap',type : 'Exchange' , price : 12.22 , scale : 4.35 , redirect : true,  link : 'https://app.uniswap.org/explore/tokens/polygon/0x628211398e10a014826bc7d943a39b2ce6126d72'},
+    {platform : 'BITSI Telegram',type : 'DEX' , price : 12.44 , scale : -1.35 , redirect : false, link : '' , },
+    {platform : 'Binance',type : 'Exchange' , price : 12.53 , scale : 4.35 , redirect : false, link : '' , },
+    {platform : 'BITSI',type : 'SWAP' , price : 12.45 , scale : 4.35 , redirect : false, link : '' ,},
     
 ]
 

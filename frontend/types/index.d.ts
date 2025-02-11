@@ -56,6 +56,8 @@ declare interface CoinMarketTableProps {
   type: string;
   price: number;
   scale: number;
+  redirect: boolean;
+  link: string;
 }
 declare interface CoinBoxBuyProps {
   key: string;
