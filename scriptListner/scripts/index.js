@@ -40,16 +40,21 @@ export const getTransfer = async () => {
         });
         contractCoin.on('Transfer', async (from, to, tokenId, event) => {
             eventCounter++;
-
+            console.log(event);
+            console.log(`thiswas the event`)
             // if(eventCounter % 3 === 0){
             // console.log(`from is ${from} and to is ${to} and token id is ${tokenId}`)
             // console.log(`from is ${from} and to is ${to}`)
             const tokensTransferred =  Number(tokenId)/10**18;
             const tokenIdAsNumber = await Number(event.args[2]);
-            // console.log(`token id is : ${Number(tokenId)}`)
-            // console.log(`token id in events : ${Number(event.args[2])}`)
+            // const receipt = await event.getTransactionReceipt();
+            // console.log(`the receipt is `)
+            // console.log(receipt)
+            // const isLastTransferInTx = receipt.logs[receipt.logs.length - 1].logIndex === event.log.logIndex;
             const transactionHash = await event.log.transactionHash;
+            // if(isLastTransferInTx){
             await transactionDetailsCoins(transactionHash, tokensTransferred , from , to , 'coin')
+            // }
             // }
         });
 
@@ -85,6 +90,7 @@ export const getDetailsWithHashOfTransaction = async (transactionHash, assetId ,
         const time = new Date(block.timestamp * 1000);
         // console.log(time.toISOString)
         // await buyEvent(from, to, time, value, nftId);
+        const price = value;
         await client.lPush("events" , JSON.stringify({from, to, time, price, assetId , assetType}));
     } catch (error) {
         console.log(`error in the script of transaction hash`);
@@ -100,6 +106,9 @@ export const transactionDetailsCoins = async(transactionHash  , tokensTransferre
             console.log(`no transactions found`)
             return ;
         }
+        // const saleValue = await getUniswapSaleValue(transaction);
+        // console.log(`this is the sale value bro : ${saleValue}`);
+        // console.log(saleValue);
         const value = await ethers.formatEther(transaction.value)
         // console.log('Value:', ethers.formatEther(transaction.value));
         const blockNumber = await transaction.blockNumber;
@@ -115,4 +124,34 @@ export const transactionDetailsCoins = async(transactionHash  , tokensTransferre
         console.log(`error in the script of transaction hash`);
         console.log(error)
     }
+}
+
+
+
+
+async function getUniswapSaleValue(transaction) {
+    // currently not working
+    const swapEvent = transaction.logs.find(log => 
+        log.topics[0] === ethers.id("Swap(address,uint256,uint256,uint256,uint256,address)")
+    );
+    
+    if (!swapEvent) {
+        return '0';
+    }
+    
+    const iface = new ethers.Interface([
+        "event Swap(address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out, address indexed to)"
+    ]);
+    
+    const decodedData = iface.parseLog({
+        topics: swapEvent.topics,
+        data: swapEvent.data
+    });
+    
+   
+    const maticAmount = decodedData.args.amount1Out > 0 
+        ? decodedData.args.amount1Out 
+        : decodedData.args.amount0Out;
+    
+    return ethers.formatEther(maticAmount); 
 }

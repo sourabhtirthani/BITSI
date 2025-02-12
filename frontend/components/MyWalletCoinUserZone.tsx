@@ -2,12 +2,17 @@
 import { useEffect, useState, Fragment } from 'react'
 import LoaderComp from './LoaderComp';
 import { CoinTransaction, WalletUserZoneCoin } from '@/types';
+import { readContract } from '@wagmi/core';
+import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
+import { config } from '@/config';
+import { read } from 'fs';
 
 const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address: string , orderFilter : string , priceFilter : string }) => {
   const [loaderState, setLoaderState] = useState(true);
   const [loaderStateForMultipleTransaction, setLoaderStateForMultipleTransaction] = useState(true);
   const [userCoins, setUserCoins] = useState<WalletUserZoneCoin[]>([]);
   const [coinHistoryDetailsWalletUserZone, setCoinHistoryDetailsWalletUserZone] = useState<CoinTransaction[]>([]);
+  const [totalCoinsofUser , setTotalCoinsOfUser] = useState('');
   useEffect(() => {
     const getAlluserCoins = async () => {
       try {
@@ -43,6 +48,26 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
     }
     getUserCoinTransactions();
   }, [address])
+
+  useEffect(()=>{
+    const readTotalCoinsFromContract = async()=>{
+      try{
+        const totalCoins = await readContract(config , {
+          abi : coinContractAbi,
+          address : coinContractAddress,
+          functionName : 'balanceOf',
+          args : [address]
+        })
+        console.log(`the total coinse response is `)
+        console.log(totalCoins)
+        setTotalCoinsOfUser(totalCoins as string);
+      }catch(error){
+        console.log(error);
+        console.log(`in the error clause of reading the total coins of the user`);
+      }
+    }
+    readTotalCoinsFromContract();
+  } ,[address])
 
   useEffect(()=>{
         const sortDataBasedOnOrderOfDate = async()=>{
@@ -81,7 +106,7 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
   return (
     <div>
       <div className='max-h-[200px] h-fit overflow-y-auto  table-body px-4 md:px-8'>
-        <p className='text-success-511 text-[1.25rem]  font-bold px-2 flex justify-start'>{userCoins?.length > 0 ? ` Total Balance - ${userCoins[0].totalCoins.toFixed(5)} BITSI` : ''}</p>
+        <p className='text-success-511 text-[1.25rem]  font-bold px-2 flex justify-start'>{userCoins?.length > 0 ? ` Total Balance - ${totalCoinsofUser} BITSI` : ''}</p>
         {/* <table className='w-full text-left mt-4 border-spacing-20'>
           <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
             <tr>

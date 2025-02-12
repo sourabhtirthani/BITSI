@@ -215,3 +215,4 @@ export const upgradeInsuranceForCoin = async(coinInsuranceId : number): Promise<
         throw new Error('Error Upgrading Insurance');
     }
 }
+

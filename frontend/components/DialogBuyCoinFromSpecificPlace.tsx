@@ -15,6 +15,7 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { creditNoteContractABI, creditNoteContractAddress } from '@/lib/creditContract'
 import { readContract } from '@wagmi/core'
 import { config } from '@/config'
+import { increaseCreditScore } from '@/actions/users'
 // , setLoaderActionButton : React.Dispatch<React.SetStateAction<boolean>>
 const DialogBuyCoinFromSpecificPlace = () => {
     const { address, isConnected } = useAccount();
@@ -25,6 +26,10 @@ const DialogBuyCoinFromSpecificPlace = () => {
 
     const handleSubmitClick = async (event: React.SyntheticEvent) => {
         try {
+            if(!address){
+                showToastUI({ title: "Error", description: 'Please Connect Wallet To Proceed', operation: "fail" });
+                return;
+            }
             event.preventDefault();
             setLoaderActionButton(true);
             const form = event.currentTarget as HTMLFormElement;
@@ -37,7 +42,7 @@ const DialogBuyCoinFromSpecificPlace = () => {
                     address : creditNoteContractAddress,
                     functionName : 'tokenPrice'
                 })
-
+                
 
             const transaction = await writeContractAsync({
                 address: creditNoteContractAddress,
@@ -46,10 +51,14 @@ const DialogBuyCoinFromSpecificPlace = () => {
                 args: [Number(quantityCoins)],
                 value : BigInt(Number(quantityCoins) * Number(tokenPriceFromContract))
             });
+            if(transaction){
+                await increaseCreditScore(address as string , tokenPriceFromContract * Number(quantityCoins)); // this sets the new credit score
+            }
             console.log(`this is the number of coins ${quantityCoins}`)
             showToastUI({ title: "Success", description: 'Coins Purchased', operation: "success" });
         } catch (error) {
             console.log(error);
+            showToastUI({ title: "Error", description: 'Error Purchasing Coins', operation: "fail" });
         } finally {
             setLoaderActionButton(false);
         }
