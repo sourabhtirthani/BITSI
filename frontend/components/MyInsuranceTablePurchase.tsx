@@ -146,7 +146,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         console.log('error in transaction during purchase');
         throw new Error('Error purchasing policty of the user');
       }
-      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId , Number(currentCoinPrice));
+      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId , Number(currentCoinPrice) , numberOfYears);
       setRefreshMethod(prev => !prev);
       toast({title: "Operation Success",description: "Successfully purchased insurance",duration: 2000, style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
     }

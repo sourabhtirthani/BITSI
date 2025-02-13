@@ -182,6 +182,8 @@ model Claims {
   compensation          Compensation?
 }
 
+
+// todo -- remove the total amount , total coins and uninsured coins from the schema adn just add totalinsured coins here
 model Coin {
   id             Int             @id @default(autoincrement())
   userAddress    String          @unique

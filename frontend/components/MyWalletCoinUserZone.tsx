@@ -59,8 +59,9 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
           args : [address]
         })
         console.log(`the total coinse response is `)
-        console.log(totalCoins)
-        setTotalCoinsOfUser(totalCoins as string);
+        console.log(Number(totalCoins))
+        const coinsFormatted = Number(totalCoins)/10**18;
+        setTotalCoinsOfUser(coinsFormatted.toString());
       }catch(error){
         console.log(error);
         console.log(`in the error clause of reading the total coins of the user`);

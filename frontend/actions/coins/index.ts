@@ -99,7 +99,7 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
 }
 
 
-export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number, marketPricePerCoin : number) =>{
+export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number, marketPricePerCoin : number , numberOfYears : number) =>{
     try{    
         const coinInsurance = await db.coinInsurance.findUnique({
             where : {
@@ -120,7 +120,7 @@ export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number
                 data : {
                     status : 'Active',
                     startTime : new Date(),
-                    expiration : new Date(new Date().setFullYear(new Date().getFullYear() + 2))
+                    expiration : new Date(new Date().setFullYear(new Date().getFullYear() + numberOfYears))
                     // coverage : coverageOfInsurance
 
                 }
