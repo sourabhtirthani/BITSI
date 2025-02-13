@@ -113,29 +113,30 @@ contract ICO is Ownable() {
     IERC20 public token;
     address public tokenSellerAddress;
     uint256 public tokenPrice; // in wei (0.001 matic = 1e15 wei)
-
+    uint256 public totalCoinsForSale;
     // Event to log token purchases
     event TokensPurchased(address indexed buyer, uint256 amount, uint256 totalCost);
 
     // Constructor to initialize the token and seller address
-    constructor(IERC20 _token, address _tokenSellerAddress, uint256 _tokenPrice) {
+    constructor(IERC20 _token, address _tokenSellerAddress, uint256 _tokenPrice,uint256 numberOfCoins) {
         token = _token;
         tokenSellerAddress = _tokenSellerAddress;
         tokenPrice = _tokenPrice; // The price of one token in wei
+        totalCoinsForSale=numberOfCoins;
     }
 
     // Function to buy tokens
     function buyTokens(uint256 numTokens) external payable {
         uint256 totalCost = numTokens * tokenPrice;
         require(msg.value >= totalCost, "Insufficient funds to buy tokens");
-
+        require(numTokens<=totalCoinsForSale,"Not enough tokens for sale");
         require(token.transferFrom(tokenSellerAddress, msg.sender, numTokens), "Token transfer failed");
 
         if (msg.value > totalCost) {
             uint256 refundAmount = msg.value - totalCost;
             payable(msg.sender).transfer(refundAmount);
         }
-  
+        totalCoinsForSale-=numTokens;
         emit TokensPurchased(msg.sender, numTokens, totalCost);
     }
 
@@ -143,7 +144,10 @@ contract ICO is Ownable() {
     function setTokenPrice(uint256 _newPrice) external onlyOwner {
         tokenPrice = _newPrice;
     }
-
+    // Owner can update the Number of the token
+    function setNumToken(uint256 _newToken) external onlyOwner {
+        totalCoinsForSale = _newToken;
+    }
     // Owner can update the token seller address
     function setTokenSellerAddress(address _newSellerAddress) external onlyOwner {
         tokenSellerAddress = _newSellerAddress;
