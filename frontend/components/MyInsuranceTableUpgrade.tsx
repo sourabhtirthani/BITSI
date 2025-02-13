@@ -69,7 +69,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
         if(transactionFromUpgradeInsurance){
           const waitForTransactionToBeSuccessful = await getTransactionFromHashOnPolygon(transactionFromUpgradeInsurance);
           // if(waitForTransactionToBeSuccessful.success == true){
-            const upgradeInsuranceOfUser = await upgradeInsuranceForCoin(insuranceId);
+            const upgradeInsuranceOfUser = await upgradeInsuranceForCoin(insuranceId , address as string);
             setRefreshMethod(prev => !prev);
             toast({title: "Success",description: 'Successfully upgraded insurance',duration: 2000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
           // }

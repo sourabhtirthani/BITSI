@@ -1,9 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
-import { CarouselRoot } from './CarouselRoot'
-import VideoPlayer from './VideoPlayer';
-import { CarouselVideoHeroHome } from './CarouselVideoHeroHome';
-import MarqueeHomeHero from './MarqueeHomeHero';
+// import { CarouselRoot } from './CarouselRoot'
+// import VideoPlayer from './VideoPlayer';
+// import { CarouselVideoHeroHome } from './CarouselVideoHeroHome';
+// import MarqueeHomeHero from './MarqueeHomeHero';
 
 const Hero = () => {
   // const videoJsOptions = {sources: [{src: 'https://res.cloudinary.com/djdrlor2w/video/upload/v1721975440/bitsi_new_vid_bbp4po.mp4', type: 'video/mp4' }], auto: true, preload: 'auto',width: 450,height: 600 };

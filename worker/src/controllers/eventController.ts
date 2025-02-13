@@ -1,13 +1,14 @@
 import pool from "../database";
 
 
+// TO DO : Used parameterized queries instead of string interpolation , transaction(roolback if failed) 
 
-// TO DO : Sql Injection handling, transaction(roolback if failed) 
+
 export const puteventToDb = async (event: string) => {
     const client = await pool.connect();
     try {
         console.log(`connected to the database`)
-        const { from, to, time, price, assetId, assetType, tokensTransferred, salePrice} = JSON.parse(event);
+        const { from, to, time, price, assetId, assetType, tokensTransferred, salePrice } = JSON.parse(event);
 
         if (assetType == 'nft') {
             const nftEvent = 'buy';
@@ -51,6 +52,7 @@ export const puteventToDb = async (event: string) => {
 
         }
         else if (assetType == 'coin') {
+            
             const currentTimestamp = new Date();
             const coinQueryForOwner = `SELECT * FROM "Coin" WHERE "userAddress" = '${to}';`;
             const coinQueryForSeller = `SELECT * FROM "Coin" WHERE "userAddress" = '${from}';`;
@@ -60,6 +62,7 @@ export const puteventToDb = async (event: string) => {
             let coinId;
             //dropping the field totalcoins from the schema will be implemented later
             if (coinResult.rows.length === 0) {  // this is the query where the coins are added to that account
+                // adding coins to the account is not needed anymore drop the fields and remove the code because we are now directly getting the balance from the blockchain
                 console.log(`the value of price is : ${price}`);
                 const insertCoinQuery = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${to}', ${tokensTransferred}, ${price}, ${tokensTransferred} , '${currentTimestamp.toISOString()}') RETURNING id;`;
                 const newCoinResult = await client.query(insertCoinQuery);
@@ -67,7 +70,7 @@ export const puteventToDb = async (event: string) => {
 
             } else {
 
-                // drop the field total coins from the schema it is unnecessary
+                // drop the field totalCoins, uninsuredCoins  from the schema it is unnecessary
                 coinId = coinResult.rows[0].id;
 
                 const updatedTotalCoins = coinResult.rows[0].totalCoins + tokensTransferred;
@@ -77,18 +80,18 @@ export const puteventToDb = async (event: string) => {
                 const updatedCoinResult = await client.query(updateCoinQuery);
 
             }
-            if(coinResultForSeller.rows.length == 0){
+            if (coinResultForSeller.rows.length == 0) {
                 const insertCoinQueryForSeller = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${from}', -${tokensTransferred}, -${price}, -${tokensTransferred}, '${currentTimestamp.toISOString()}') RETURNING id;`;
-            const newCoinResultForSeller = await client.query(insertCoinQueryForSeller);
-            const sellerCoinId = newCoinResultForSeller.rows[0].id;
-            }else{
+                const newCoinResultForSeller = await client.query(insertCoinQueryForSeller);
+                const sellerCoinId = newCoinResultForSeller.rows[0].id;
+            } else {
                 let coinIdForSeller = coinResultForSeller.rows[0].id;
                 const updatedTotalCoinsForSell = coinResultForSeller.rows[0].totalCoins - tokensTransferred;
                 let updatedUnInsuredCoinsForSell = coinResultForSeller.rows[0].unInsuredCoins - tokensTransferred;
                 // if(updatedUnInsuredCoinsForSell < 0){
                 //     updatedUnInsuredCoinsForSell = 0;
                 // }
-                    // further logic will be implemented when more information is given
+                // further logic will be implemented when more information is given
                 const updateCoinQueryForSell = `UPDATE "Coin" SET "totalCoins" = ${updatedTotalCoinsForSell}, "unInsuredCoins" = ${updatedUnInsuredCoinsForSell},  "updatedAt" = '${currentTimestamp.toISOString()}'WHERE "id" = '${coinIdForSeller}' RETURNING id;`;
                 const updatedCoinResultForSell = await client.query(updateCoinQueryForSell);
             }
@@ -100,21 +103,50 @@ export const puteventToDb = async (event: string) => {
                 console.log(`from is : ${from} and to is ${to}`)
                 // if(to == ' 0xe6F9F756ca735b7Ba7E9B1DaEcAE5228AFF0832f' || to == '0x3B2944D0E7a546166C2Ca93f05e830a6072a9382'){
                 const priceForSell = salePrice ? Number(salePrice) : NaN;
+                
+                let creditPriceToReduce = salePrice ? Number(salePrice) : 0;
                 console.log(`price for sell found and it is : ${priceForSell}}`);
-                if(!isNaN(priceForSell) && priceForSell !== 0){
-                    // reduce the credit score here
+                if (!isNaN(priceForSell) && priceForSell !== 0) {
                     console.log(`it was a sell event that is detected`)
-                    const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${priceForSell} , '${to}', '${from}');`
-                await client.query(insertTransferQuery)
-                }else{
-                const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Transfer',${price} , '${from}', '${to}');`
-                await client.query(insertTransferQuery)
+                    const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${priceForSell} , '${from}', '${to}');`
+                    await client.query(insertTransferQuery)
+                } else { 
+                    // for transfer event of coinns
+                    const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Transfer',${price} , '${from}', '${to}');`
+                    await client.query(insertTransferQuery)
+                    try{
+                        // instead of making request everytime for each tranfer, we can also cache the response and use it for the next transfer
+                        // caching time will be determined upon discussion
+                        const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
+                        const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
+                        const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceNative;
+                        creditPriceToReduce = Number(currentCoinPrice) * Number(tokensTransferred);
+                    }catch(error){
+                        creditPriceToReduce = 0;
+                        console.log(`in the catch block of the fetching the current coin price`);
+                    }
                 }
-            } else {
+
+                const getCreditScoreQuery = `SELECT "creditScore" FROM "User" WHERE "walletAddress" = $1;`;
+                const creditScoreResult = await client.query(getCreditScoreQuery, [from]);
+
+                if (creditScoreResult.rows.length !== 0) {
+                    const currentCreditScore = creditScoreResult.rows[0].creditScore;
+                    console.log(`the current credit score is : ${currentCreditScore}`);
+                    const newCreditScore = Math.max(0, currentCreditScore - priceForSell);
+
+                    const updateCreditScoreQuery = `UPDATE "User" SET "creditScore" = $1 WHERE "walletAddress" = $2;`;
+                    await client.query(updateCreditScoreQuery, [newCreditScore, from]);
+                }
+            }
+            
+            
+            else {
                 console.log(`from is : ${from} and to is ${to}`)
-                const insertCoinTransactionQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price" , "from" , "to") VALUES (${tokensTransferred}, 'Buy',${price} , '${from}', '${to}');`;
+                // const insertCoinTransactionQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price" , "from" , "to") VALUES (${tokensTransferred}, 'Buy',${price} , '${from}', '${to}');`;
+                const insertCoinTransactionQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from", "to") VALUES ($1, 'Buy', $2, $3, $4);`;
                 const insertCoinTransactionQuerySold = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${price} , '${to}', '${from}');`
-                await client.query(insertCoinTransactionQuery);
+                await client.query(insertCoinTransactionQuery , [tokensTransferred, price, from, to]);
                 // await client.query(insertCoinTransactionQuerySold); // not calling the sell event here 
             }
 
