@@ -119,6 +119,7 @@
           address currency;
           uint256 bitsiCoverage;
           uint256 bitsiPrice;
+          uint256 insuredValue;
       }
 
       uint256 public GROWTH_RATE = 0; // Percent
@@ -154,14 +155,17 @@
       function activatePolicy(address user, uint256 coinId, uint256 bitsiPrice,uint256 INSURANCE_PERIOD, address currency ,uint256 bitsiCovered) external {
           require(policies[user][coinId].active == false, "Policy already exists");
           require(bitsiPrice > 0, "Invalid BITSI price");
+          
           uint256 endTime;
           if(INSURANCE_PERIOD==1) endTime = block.timestamp + 365 days ;
           else if(INSURANCE_PERIOD==3) endTime = block.timestamp + 1095 days;
           else if (INSURANCE_PERIOD==5) endTime = block.timestamp + 1825 days;
           else revert("Invalid INSURANCE PERIOD");
-
+          
+          uint256 fees = (bitsiPrice * ACTIVATE_COMMISSION_FEES) / 100;
+          require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Commission fees not paid");
           uint256 startTime = block.timestamp;
-        
+          uint256 insuredValue=bitsiPrice*bitsiCovered;
 
           policies[user][coinId] = Policy({
               bitsiPrice: bitsiPrice,
@@ -176,14 +180,11 @@
               isExtended: false,
               isUpgraded: false,
               currency:currency,
-              bitsiCoverage: bitsiCovered
+              bitsiCoverage: bitsiCovered,
+              insuredValue:insuredValue
           });
 
           coinPrices[user][coinId] = bitsiPrice;
-
-          // Require commission fees in bitsi tokens
-          uint256 fees = (bitsiPrice * ACTIVATE_COMMISSION_FEES) / 100;
-          require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Commission fees not paid");
 
           emit PolicyActivated(user, coinId, bitsiPrice, startTime, endTime);
       }
@@ -195,7 +196,7 @@
       require(policies[user][coinId].bitsiCoverage >= amountSold, "Insufficient covered BITSI");
 
       policies[user][coinId].bitsiCoverage -= amountSold;
-      
+       policies[user][coinId].insuredValue=reportedSalePrice*policies[user][coinId].bitsiCoverage;
       // Mark policy as inactive if bitsiCovered becomes zero or negative
       if (policies[user][coinId].bitsiCoverage <= 0) {
           policies[user][coinId].active = false;
@@ -203,10 +204,10 @@
       }
 
       emit BitsiCoveredUpdated(user, coinId, policies[user][coinId].bitsiCoverage);
-  }
+    }
       // Function to compute loss and compensation when user claims compensation
       function computeCompensation(address user, uint256 coinId, uint256 bitsiSold, uint256 reportedSalePrice) internal returns (uint256 loss, uint256 compensation) {
-          require(policies[user][coinId].active, "No active policy");
+        
           require(policies[user][coinId].bitsiCoverage >= bitsiSold, "Insufficient covered BITSI for sale");
           
           uint256 initialPrice = policies[user][coinId].bitsiPrice;
@@ -237,13 +238,15 @@
           require(policy.approved, "Policy not approved yet");
           require(msg.sender == policy.compensationOwner, "Unauthorized claim");
 
-         computeCompensation(user,coinId,bitsiSold,salePrice);
-          uint256 compensation = (salePrice * COMPENSATION_PERCENTAGE) / 100;
+          (uint256 loss, uint256 compensation)= computeCompensation(user,coinId,bitsiSold,salePrice);
+         
           policy.compensation = compensation;
           if(policy.INSURANCE_PERIOD==1) policy.claimTime= block.timestamp+ 30 days;
           else if(policy.INSURANCE_PERIOD==3) policy.claimTime= block.timestamp+ 90 days;
           else if(policy.INSURANCE_PERIOD==5) policy.claimTime= block.timestamp+ 150 days;
+
           _payCompensation(user, coinId, compensation,policy.currency,policy.claimTime);
+
           policies[user][coinId] = Policy({
               startTime: 0,
               endTime: 0,
@@ -257,7 +260,8 @@
               isExtended: false,
               isUpgraded: false,
               bitsiCoverage:0,
-              bitsiPrice:0
+              bitsiPrice:0,
+              insuredValue:0
           });
           emit ClaimSubmitted(user, coinId, compensation, policy.isExtended);
       }
@@ -272,9 +276,11 @@
 
       function _payCompensation(address user, uint256 tokenId, uint256 compensation,address currency,uint256 unlockTime) internal {
           Policy storage policy = policies[user][tokenId];
-          require(block.timestamp >= policy.startTime + 30 days, "Compensation in freeze period");
+
           require(IERC20(currency).transferFrom(compensationFundWallet, user, compensation), "Compensation payment failed");
+
           IERC20(currency).updateCustomData( user, compensation,unlockTime);
+
           emit CompensationPaid(user, tokenId, compensation);
       }
 
@@ -282,18 +288,18 @@
           Policy storage policy = policies[user][coinId];
           require(policy.active, "No active policy");
           require(!policy.isExtended, "Already extended");
-
+          uint256 fees = (coinPrices[user][coinId] * EXTEND_COMMISSION_FEES) / 100;
+          require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Extension fees not paid");
           policy.isExtended = true;
           policy.endTime += INSURANCE_PERIOD;
 
           // Require extension commission fees
-          uint256 fees = (coinPrices[user][coinId] * EXTEND_COMMISSION_FEES) / 100;
-          require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Extension fees not paid");
+         
           emit PolicyExtended(user, coinId, policies[user][coinId].endTime);
 
       }
 
-      function upgradePolicy(address user, uint256 coinId, uint256 newPrice) external {
+      function upgradePolicy(address user, uint256 coinId, uint256 newPrice,uint256 upgradeAmount) external {
           Policy storage policy = policies[user][coinId];
           require(policy.active, "No active policy");
           require(policy.isExtended, "Policy not extended");
@@ -304,9 +310,18 @@
 
           uint256 priceDiff = newPrice - coinPrices[user][coinId];
           policy.bitsiCoverage += (priceDiff * COMPENSATION_PERCENTAGE) / 100;
-
+          
+          // Update insured value by adding the upgrade amount
+          policies[user][coinId].insuredValue += upgradeAmount;
+          
+          // Set the new BITSI price at upgrade time
+          policies[user][coinId].bitsiPrice = newPrice;
+          
+          // Recalculate bitsiCovered based on updated insured value
+          policies[user][coinId].bitsiCoverage = policies[user][coinId].insuredValue / newPrice;
           coinPrices[user][coinId] = newPrice;
           policy.isUpgraded = true;
+
           // Compute new end time based on the old end time plus the time elapsed since activation
           uint256 timeElapsed = block.timestamp - policies[user][coinId].startTime;
           policies[user][coinId].startTime = block.timestamp;
