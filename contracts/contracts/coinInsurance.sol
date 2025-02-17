@@ -196,6 +196,7 @@
       require(policies[user][coinId].bitsiCoverage >= amountSold, "Insufficient covered BITSI");
 
       policies[user][coinId].bitsiCoverage -= amountSold;
+      policies[user][coinId].insuredValue -=reportedSalePrice*amountSold;
       // Mark policy as inactive if bitsiCovered becomes zero or negative
       if (policies[user][coinId].bitsiCoverage <= 0) {
           policies[user][coinId].active = false;
