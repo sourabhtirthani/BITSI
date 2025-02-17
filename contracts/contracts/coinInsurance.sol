@@ -196,7 +196,6 @@
       require(policies[user][coinId].bitsiCoverage >= amountSold, "Insufficient covered BITSI");
 
       policies[user][coinId].bitsiCoverage -= amountSold;
-       policies[user][coinId].insuredValue=reportedSalePrice*policies[user][coinId].bitsiCoverage;
       // Mark policy as inactive if bitsiCovered becomes zero or negative
       if (policies[user][coinId].bitsiCoverage <= 0) {
           policies[user][coinId].active = false;
@@ -246,23 +245,7 @@
           else if(policy.INSURANCE_PERIOD==5) policy.claimTime= block.timestamp+ 150 days;
 
           _payCompensation(user, coinId, compensation,policy.currency,policy.claimTime);
-
-          policies[user][coinId] = Policy({
-              startTime: 0,
-              endTime: 0,
-              claimTime:0,
-              INSURANCE_PERIOD:0,
-              currency:address(0),
-              active: false,
-              approved: false,
-              compensation: 0,
-              compensationOwner: address(0),
-              isExtended: false,
-              isUpgraded: false,
-              bitsiCoverage:0,
-              bitsiPrice:0,
-              insuredValue:0
-          });
+          
           emit ClaimSubmitted(user, coinId, compensation, policy.isExtended);
       }
 
@@ -299,36 +282,35 @@
 
       }
 
-      function upgradePolicy(address user, uint256 coinId, uint256 newPrice,uint256 upgradeAmount) external {
-          Policy storage policy = policies[user][coinId];
-          require(policy.active, "No active policy");
-          require(policy.isExtended, "Policy not extended");
-          require(!policy.isUpgraded, "Already upgraded");
-          // Require upgrade commission fees
-          uint256 fees = (newPrice * UPGRADE_COMMISSION_FEES) / 100;
-          require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Upgrade fees not paid");
+     function upgradePolicy(address user, uint256 coinId, uint256 newPrice, uint256 upgradeAmount) external {
+			Policy storage policy = policies[user][coinId];
 
-          uint256 priceDiff = newPrice - coinPrices[user][coinId];
-          policy.bitsiCoverage += (priceDiff * COMPENSATION_PERCENTAGE) / 100;
-          
-          // Update insured value by adding the upgrade amount
-          policies[user][coinId].insuredValue += upgradeAmount;
-          
-          // Set the new BITSI price at upgrade time
-          policies[user][coinId].bitsiPrice = newPrice;
-          
-          // Recalculate bitsiCovered based on updated insured value
-          policies[user][coinId].bitsiCoverage = policies[user][coinId].insuredValue / newPrice;
-          coinPrices[user][coinId] = newPrice;
-          policy.isUpgraded = true;
+			require(policy.active, "No active policy");
+			require(newPrice > 0, "New price must be greater than zero");
 
-          // Compute new end time based on the old end time plus the time elapsed since activation
-          uint256 timeElapsed = block.timestamp - policies[user][coinId].startTime;
-          policies[user][coinId].startTime = block.timestamp;
-          policies[user][coinId].endTime = policies[user][coinId].endTime + timeElapsed;
-        
-          emit PolicyUpgraded(user, coinId, policy.bitsiCoverage);
-      }
+			// Require upgrade commission fees
+			uint256 fees = (upgradeAmount * UPGRADE_COMMISSION_FEES) / 100;
+			require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Upgrade fees not paid");
+
+			// Update insured value by adding the upgrade amount
+			policy.insuredValue += upgradeAmount;
+
+			// Set the new BITSI price at upgrade time
+			policy.bitsiPrice = newPrice;
+
+			// Recalculate bitsiCoverage based on updated insured value
+			policy.bitsiCoverage = policy.insuredValue / newPrice;
+
+			// Compute new end time based on elapsed time since activation
+			policy.endTime += block.timestamp - policy.startTime;
+			policy.startTime = block.timestamp;
+
+			// Mark policy as upgraded
+			policy.isUpgraded = true;
+
+			emit PolicyUpgraded(user, coinId, policy.bitsiCoverage);
+		}
+
 
       function updateParameters(uint256 _compensationPercentage, uint256 _highLimit, uint256 _lowLimit, uint256 _fees) external onlyOwner {
           COMPENSATION_PERCENTAGE = _compensationPercentage;
