@@ -110,6 +110,7 @@ export const puteventToDb = async (event: string) => {
                     console.log(`it was a sell event that is detected`)
                     const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${priceForSell} , '${from}', '${to}');`
                     await client.query(insertTransferQuery)
+                    // above is the sell event;
                 } else { 
                     // for transfer event of coinns
                     const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Transfer',${price} , '${from}', '${to}');`

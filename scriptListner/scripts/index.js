@@ -105,7 +105,7 @@ export const transactionDetailsCoins = async(transactionHash  , tokensTransferre
         const blockNumber = await transaction.blockNumber;
         const block = await provider.getBlock(blockNumber);
         const time = new Date(block.timestamp * 1000);
-        const salePrice = await getUniswapSaleValue(transactionHash);
+        const salePrice = await getSaleValue(transactionHash);
         console.log(`the sale price is : ${salePrice}`);
         console.log(`from is : ${from} and to is ${to} and valus is : ${value} tokens transaerred is : ${tokensTransferred} and assettype is : ${assetType}`)
         const price = value;
@@ -122,7 +122,7 @@ export const transactionDetailsCoins = async(transactionHash  , tokensTransferre
 
 
 
-async function getUniswapSaleValue(transactionHash) {
+async function getSaleValue(transactionHash) {
     const transaction = await provider.getTransactionReceipt(transactionHash);
     const swapEvent = transaction.logs.find(log =>
         log.topics[0] === ethers.id("Swap(address,uint256,uint256,uint256,uint256,address)")

@@ -13,9 +13,11 @@ import {
 import { showToastUI } from '@/lib/utils'
 import { useAccount, useWriteContract } from 'wagmi'
 import { creditNoteContractABI, creditNoteContractAddress } from '@/lib/creditContract'
-import { readContract } from '@wagmi/core'
+import { readContract , waitForTransactionReceipt } from '@wagmi/core'
 import { config } from '@/config'
 import { increaseCreditScore } from '@/actions/users'
+import { coinContractAbi, coinContractAddress } from '@/lib/coinContract'
+import { getTransactionFromHash } from '@/lib/getTransactionFromHash'
 // , setLoaderActionButton : React.Dispatch<React.SetStateAction<boolean>>
 const DialogBuyCoinFromSpecificPlace = () => {
     const { address, isConnected } = useAccount();
@@ -26,7 +28,7 @@ const DialogBuyCoinFromSpecificPlace = () => {
 
     const handleSubmitClick = async (event: React.SyntheticEvent) => {
         try {
-            if(!address){
+            if (!address) {
                 showToastUI({ title: "Error", description: 'Please Connect Wallet To Proceed', operation: "fail" });
                 return;
             }
@@ -36,25 +38,44 @@ const DialogBuyCoinFromSpecificPlace = () => {
             const formData = new FormData(form);
             const quantityCoins = formData.get('quantityCoins') as string;
             console.log(quantityCoins)
-
-            const tokenPriceFromContract = await readContract(config , {
-                    abi : creditNoteContractABI,
-                    address : creditNoteContractAddress,
-                    functionName : 'tokenPrice'
-                })
-                
-
+            console.log('in here before')
+            const tokenPriceFromContract = await readContract(config, {
+                abi: creditNoteContractABI,
+                address: creditNoteContractAddress,
+                functionName: 'tokenPrice'
+            })
+            // const tokenPriceToBeSent = BigInt(tokenPriceFromContract as bigint); 
+            // const valueToSend = BigInt(quantityCoins) * tokenPriceToBeSent;
+            const tokenPrice = Number(tokenPriceFromContract as string)/10**18;
+            console.log(`the token price is : ${tokenPrice}`)
+            const valueToSend = Number(quantityCoins) * tokenPrice;
+            console.log(`the value to be sent is : ${valueToSend}`)
+            // const valueInWei = valueToSend * BigInt(10**18);  
+            const maxUint256 = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935"); 
+            const approveTx = await writeContractAsync({
+                address: coinContractAddress,
+                abi: coinContractAbi,
+                functionName: "approve",
+                args: [creditNoteContractAddress,  maxUint256], 
+              });
+              const transactionReceipt = await waitForTransactionReceipt(config, {
+                hash: approveTx, 
+              })
+            //   await new Promise(resolve => setTimeout(resolve, 10000));
+              await getTransactionFromHash(approveTx);
+              console.log('in here after approve')
             const transaction = await writeContractAsync({
                 address: creditNoteContractAddress,
                 abi: creditNoteContractABI,
                 functionName: 'buyTokens',
-                args: [Number(quantityCoins)],
-                value : BigInt(Number(quantityCoins) * Number(tokenPriceFromContract))
+                args:  [Number(quantityCoins)],
+                value: BigInt(valueToSend*10**18)
             });
-            if(transaction){
-                await increaseCreditScore(address as string , tokenPriceFromContract * Number(quantityCoins)); // this sets the new credit score
+            
+            if (transaction) {
+                await increaseCreditScore(address as string, tokenPrice * Number(quantityCoins)); // this sets the new credit score
             }
-            console.log(`this is the number of coins ${quantityCoins}`)
+        
             showToastUI({ title: "Success", description: 'Coins Purchased', operation: "success" });
         } catch (error) {
             console.log(error);

@@ -1,17 +1,25 @@
 'use server'
 import {ethers} from 'ethers'
 
-const provider = new ethers.JsonRpcProvider(`https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`);
+// const provider = new ethers.JsonRpcProvider(`https://sepolia.infura.io/v3/${process.env.INFURA_PROJECT_ID}`);
+const provider = new ethers.JsonRpcProvider(`https://polygon-rpc.com`);
 // const provider = ''
 type getTransactionFromHashType = {success: boolean}
 export const getTransactionFromHash = async(transactionHash :string):Promise<getTransactionFromHashType>=>{
     try{
-        
-        const transaction = await provider.getTransaction(transactionHash);
-       
-      
+        let retries = 0;
+        const maxRetries = 20;
+        let transaction = await provider.getTransaction(transactionHash);
+        while (!transaction && retries < maxRetries) {
+            console.log(transaction)
+            console.log(`Transaction not found, retrying (${retries + 1}/${maxRetries})...`);
+            await new Promise((resolve) => setTimeout(resolve, 3000)); 
+            transaction = await provider.getTransaction(transactionHash);
+            retries++;
+          }
+        console.log(`crossed the while loop`)
         await transaction?.wait();
-       
+        console.log("in here after the line of transaction . wait function is called ")
         return {success : true}
     }catch(error){
         console.log(error);

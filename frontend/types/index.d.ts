@@ -576,3 +576,8 @@ interface ToastStyles {
   color: string;
   fontFamily: string;
 }
+
+declare interface CreditContextProps {
+  creditScore: number;
+  setCreditScore: React.Dispatch<React.SetStateAction<number>>;
+}

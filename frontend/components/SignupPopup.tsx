@@ -8,8 +8,10 @@ import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
 import Link from 'next/link';
 import { showToastUI } from '@/lib/utils';
 import { CurrencyList } from '@/types';
+import { useCreditContext } from '@/context/Credit-Context';
 
 const SignupPopup = () => {
+  const {setCreditScore} = useCreditContext();
   const { address, isConnected } = useAccount();
   const [showPopup, setShowPopup] = useState(false);
   const [openDrowdown, setOpenDropdown] = useState(false);
@@ -33,6 +35,11 @@ const SignupPopup = () => {
       if (isConnected) {
         const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
         const data = await res.json();
+        console.log(`this is the credit score ${data.creditScore}`)
+        if(data.creditScore !== undefined){
+          console.log(`the data is : ${data.creditScore}`)
+          setCreditScore(data.creditScore);
+        }
         if (res.status == 404) {
           setShowPopup(true);
         } else if (res.status == 200) {
