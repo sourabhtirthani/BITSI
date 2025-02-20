@@ -47,28 +47,29 @@ const DialogBuyCoinFromSpecificPlace = () => {
             // const tokenPriceToBeSent = BigInt(tokenPriceFromContract as bigint); 
             // const valueToSend = BigInt(quantityCoins) * tokenPriceToBeSent;
             const tokenPrice = Number(tokenPriceFromContract as string)/10**18;
-            console.log(`the token price is : ${tokenPrice}`)
+            // console.log(`the token price is : ${tokenPrice}`)
             const valueToSend = Number(quantityCoins) * tokenPrice;
-            console.log(`the value to be sent is : ${valueToSend}`)
+            // console.log(`the value to be sent is : ${valueToSend}`)
             // const valueInWei = valueToSend * BigInt(10**18);  
-            const maxUint256 = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935"); 
-            const approveTx = await writeContractAsync({
-                address: coinContractAddress,
-                abi: coinContractAbi,
-                functionName: "approve",
-                args: [creditNoteContractAddress,  maxUint256], 
-              });
-              const transactionReceipt = await waitForTransactionReceipt(config, {
-                hash: approveTx, 
-              })
-            //   await new Promise(resolve => setTimeout(resolve, 10000));
-              await getTransactionFromHash(approveTx);
+            // const maxUint256 = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935"); 
+            // console.log(`the credit note contract address is : ${creditNoteContractAddress}`)
+            // const approveTx = await writeContractAsync({
+            //     address: coinContractAddress,
+            //     abi: coinContractAbi,
+            //     functionName: "approve",
+            //     args: [creditNoteContractAddress,  maxUint256], 
+            //   });
+            //   const transactionReceipt = await waitForTransactionReceipt(config, {
+            //     hash: approveTx, 
+            //   })
+            // //   await new Promise(resolve => setTimeout(resolve, 10000));
+            //   await getTransactionFromHash(approveTx);
               console.log('in here after approve')
             const transaction = await writeContractAsync({
                 address: creditNoteContractAddress,
                 abi: creditNoteContractABI,
                 functionName: 'buyTokens',
-                args:  [Number(quantityCoins)],
+                args:  [BigInt(Number(quantityCoins))],
                 value: BigInt(valueToSend*10**18)
             });
             
