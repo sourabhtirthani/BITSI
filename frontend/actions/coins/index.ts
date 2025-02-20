@@ -177,7 +177,7 @@ export const extendInsuranceForCoin = async(coinInsuranceId : number): Promise<C
     }
 }
 
-export const upgradeInsuranceForCoin = async(coinInsuranceId : number , address : string): Promise<CoinInsuranceReturnType>=>{
+export const upgradeInsuranceForCoin = async(coinInsuranceId : number , address : string , valueUpgraded : number): Promise<CoinInsuranceReturnType>=>{
     try{
         const currCoverage = await db.coinInsurance.findUnique({
             where : {
@@ -193,7 +193,7 @@ export const upgradeInsuranceForCoin = async(coinInsuranceId : number , address 
         const coverrageToDeductFromCreditScore = currCoverage.coverage * 0.2;
 
 
-        const newCoverage = currCoverage.coverage +  (currCoverage.coverage * 0.2);
+        const newCoverage = currCoverage.coverage +  valueUpgraded;
         await db.$transaction(async (tx)=>{
             await tx.coinInsurance.update({
                 where : {
@@ -211,6 +211,7 @@ export const upgradeInsuranceForCoin = async(coinInsuranceId : number , address 
                     insuranceId : coinInsuranceId
                 }
             })
+            await tx.$executeRaw`UPDATE "User" SET "creditScore" = GREATEST("creditScore" - ${valueUpgraded}, 0) WHERE "walletAddress" = ${address};`;
         });
 
         // await db.user.update({
@@ -221,7 +222,6 @@ export const upgradeInsuranceForCoin = async(coinInsuranceId : number , address 
         //         }
         //     }
         // });
-        await db.$executeRaw`UPDATE "User" SET "creditScore" = GREATEST("creditScore" - ${coverrageToDeductFromCreditScore}, 0) WHERE "walletAddress" = ${address};`;
         
         return {success : true}
     }catch(error){

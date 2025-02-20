@@ -39,6 +39,7 @@ export const rejectUserAsInvestor = async (id: number): Promise<GeneralTypeForAC
 
 export const increaseCreditScore = async (address: string, creditScore: number): Promise<GeneralTypeForACtions> => {
     try {
+        console.log(`in the credit score `)
         const currentCreditScore = await db.user.findUnique({
             where: {
                 walletAddress: address

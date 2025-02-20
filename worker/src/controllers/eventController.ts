@@ -58,18 +58,20 @@ export const puteventToDb = async (event: string) => {
             const coinQueryForSeller = `SELECT * FROM "Coin" WHERE "userAddress" = '${from}';`;
             console.log(`the value of the price is : ${price}`)
             const coinResult = await client.query(coinQueryForOwner);
-            const coinResultForSeller = await client.query(coinQueryForSeller);
+            
             let coinId;
             //dropping the field totalcoins from the schema will be implemented later
             if (coinResult.rows.length === 0) {  // this is the query where the coins are added to that account
                 // adding coins to the account is not needed anymore drop the fields and remove the code because we are now directly getting the balance from the blockchain
                 console.log(`the value of price is : ${price}`);
+                console.log(`reachser here on line 67`);
                 const insertCoinQuery = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${to}', ${tokensTransferred}, ${price}, ${tokensTransferred} , '${currentTimestamp.toISOString()}') RETURNING id;`;
                 const newCoinResult = await client.query(insertCoinQuery);
                 coinId = newCoinResult.rows[0].id;
+                console.log(`reachser here on line 71`);
 
             } else {
-
+                console.log(`reachser here on line 74`);
                 // drop the field totalCoins, uninsuredCoins  from the schema it is unnecessary
                 coinId = coinResult.rows[0].id;
 
@@ -78,25 +80,27 @@ export const puteventToDb = async (event: string) => {
 
                 const updateCoinQuery = `UPDATE "Coin" SET "totalCoins" = ${updatedTotalCoins}, "unInsuredCoins" = ${updatedUnInsuredCoins},  "updatedAt" = '${currentTimestamp.toISOString()}'WHERE "id" = '${coinId}' RETURNING id;`;
                 const updatedCoinResult = await client.query(updateCoinQuery);
+                console.log(`reachser here on line 83`);
 
             }
+
+            const coinResultForSeller = await client.query(coinQueryForSeller);
+            
             if (coinResultForSeller.rows.length == 0) {
                 const insertCoinQueryForSeller = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${from}', -${tokensTransferred}, -${price}, -${tokensTransferred}, '${currentTimestamp.toISOString()}') RETURNING id;`;
                 const newCoinResultForSeller = await client.query(insertCoinQueryForSeller);
                 const sellerCoinId = newCoinResultForSeller.rows[0].id;
+                console.log(`reachser here on line 87`);
             } else {
                 let coinIdForSeller = coinResultForSeller.rows[0].id;
                 const updatedTotalCoinsForSell = coinResultForSeller.rows[0].totalCoins - tokensTransferred;
                 let updatedUnInsuredCoinsForSell = coinResultForSeller.rows[0].unInsuredCoins - tokensTransferred;
-                // if(updatedUnInsuredCoinsForSell < 0){
-                //     updatedUnInsuredCoinsForSell = 0;
-                // }
                 // further logic will be implemented when more information is given
                 const updateCoinQueryForSell = `UPDATE "Coin" SET "totalCoins" = ${updatedTotalCoinsForSell}, "unInsuredCoins" = ${updatedUnInsuredCoinsForSell},  "updatedAt" = '${currentTimestamp.toISOString()}'WHERE "id" = '${coinIdForSeller}' RETURNING id;`;
                 const updatedCoinResultForSell = await client.query(updateCoinQueryForSell);
             }
             if (coinId == null) {
-                console.log(`coin id was found null that is why returning from the function`); // dont remmeber why i did this
+                console.log(`coin id was found null that is why returning from the function`); // dont remember why i did this
                 return;
             }
             if (price == 0) {
@@ -118,7 +122,7 @@ export const puteventToDb = async (event: string) => {
                     try{
                         // instead of making request everytime for each tranfer, we can also cache the response and use it for the next transfer
                         // caching time will be determined upon discussion
-                        const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
+                        const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x94d58ceeceec489fc3c74556f8912608097ee3ab` , {method : 'GET'});
                         const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
                         const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceNative;
                         creditPriceToReduce = Number(currentCoinPrice) * Number(tokensTransferred);

@@ -11,7 +11,7 @@ import { CurrencyList } from '@/types';
 import { useCreditContext } from '@/context/Credit-Context';
 
 const SignupPopup = () => {
-  const {setCreditScore} = useCreditContext();
+  const {setCreditScore , refreshCreditScore} = useCreditContext();
   const { address, isConnected } = useAccount();
   const [showPopup, setShowPopup] = useState(false);
   const [openDrowdown, setOpenDropdown] = useState(false);
@@ -50,7 +50,7 @@ const SignupPopup = () => {
       }
     }
     checkUser();
-  }, [address])
+  }, [address , refreshCreditScore]) // can be optimized the refresh credit score part
 
   useEffect(()=>{
     const getAllCurrencies = async()=>{

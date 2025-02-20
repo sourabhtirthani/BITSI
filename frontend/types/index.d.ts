@@ -580,4 +580,6 @@ interface ToastStyles {
 declare interface CreditContextProps {
   creditScore: number;
   setCreditScore: React.Dispatch<React.SetStateAction<number>>;
+  refreshCreditScore : boolean;
+  setRefreshCreditScore : React.Dispatch<React.SetStateAction<boolean>>;
 }

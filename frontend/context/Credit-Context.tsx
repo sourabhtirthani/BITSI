@@ -6,9 +6,9 @@ const CreditContext = createContext<CreditContextProps | undefined>(undefined);
 
 export const CreditProvider = ({children} : {children : ReactNode}) => {
     const [creditScore, setCreditScore] = useState(-1);
-    
+    const [refreshCreditScore, setRefreshCreditScore] = useState(false);
     return (
-    <CreditContext.Provider value={{creditScore , setCreditScore}}>
+    <CreditContext.Provider value={{creditScore , setCreditScore , refreshCreditScore , setRefreshCreditScore}}>
         {children}
     </CreditContext.Provider>
     );

@@ -5,12 +5,15 @@ import { CoinInsuranceDetailsUserZone, NftDataWithInsurace } from '@/types';
 import { DialogUserZoneProtection } from './DialogUserZoneProtection';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
-import { getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
+import { getTransactionFromHash, getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
 import { toast } from './ui/use-toast';
 import { upgradeInsuranceForCoin } from '@/actions/coins';
 import DialogCoinProtection from './DialogCoinProtection';
+import { useCreditContext } from '@/context/Credit-Context';
+import { showToastUI } from '@/lib/utils';
 // order filter sorts the data by date 
 const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
+    const [inputValueForUpgrade , setInputValueForUpgrade] = useState<number | ''>('');
     const [loaderState , setLoaderState] = useState(true);
     const [dataOfNftUserZonePurchase , setDataOfNftUserZonePurchase] = useState<NftDataWithInsurace[]>([])
     const [refresh , setRefresh] =useState(false);
@@ -19,6 +22,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
     const [dataOfCoinInsurance , setDataOfCoinInsurance] = useState<CoinInsuranceDetailsUserZone[]>([]);
     const [loaderActionButton , setLoaderActionButton] = useState(false); // used to set the laoding for the dialog of coin 
     const {writeContractAsync} = useWriteContract();
+    const {creditScore , setRefreshCreditScore} = useCreditContext();
     // const {isConnected} = useAccount();
     useEffect(()=>{
       const getDataOfNftOnLoad = async()=>{
@@ -60,24 +64,33 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
     const handleUpgradeInsuraneOfCoin = async(insuranceId : number , setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>>, numberOfCoins : number)=>{
       try{
         setLoaderActionButton(true);
+        console.log(`the current input value is : ${inputValueForUpgrade}`)
+        if(inputValueForUpgrade == ''){
+          showToastUI({title : "ERROR!!!" , description : "Please enter the value to upgrade" , operation : "fail"});
+          return;
+        }
+        if(Number(inputValueForUpgrade) > Number(creditScore)){ 
+             showToastUI({title : "ERROR!!!" , description : "Current Value exceeds your Credit Score" , operation : "fail"});
+             return;
+        }
+        // newPrice , upgradeAmount are the two new args, TO DO : Discuss them
         const transactionFromUpgradeInsurance  = await writeContractAsync({
           address : coinInsuranceContranctAddress,
           abi : coinInsuranceAbi,
-          functionName : 'upgradePolicy',
+          functionName : 'upgradePolicy', 
           args: [address , insuranceId , numberOfCoins*10**18],
         })
         if(transactionFromUpgradeInsurance){
-          const waitForTransactionToBeSuccessful = await getTransactionFromHashOnPolygon(transactionFromUpgradeInsurance);
-          // if(waitForTransactionToBeSuccessful.success == true){
-            const upgradeInsuranceOfUser = await upgradeInsuranceForCoin(insuranceId , address as string);
+          const waitForTransactionToBeSuccessful = await getTransactionFromHash(transactionFromUpgradeInsurance);
+            const upgradeInsuranceOfUser = await upgradeInsuranceForCoin(insuranceId , address as string , inputValueForUpgrade);
             setRefreshMethod(prev => !prev);
-            toast({title: "Success",description: 'Successfully upgraded insurance',duration: 2000, style: {backgroundColor: '#00b289',color: 'white',fontFamily: 'Manrope' }})
-          // }
+             showToastUI({title : "Success" , description : "Successfully upgraded insurance" , operation : "success"});
+            setRefreshCreditScore(prev => !prev);
         }
 
       }catch(error){
         console.log(error)
-        toast({ title: "Error", description: "Error Upgrading Insurance", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
+         showToastUI({title : "Error" , description : "Error Upgrading Insurance" , operation : "fail"});
       }finally{
         setLoaderActionButton(false);
       }
@@ -116,7 +129,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>{new Date(item.insurance?.expiration ?? 0) > new Date() ? 'Yes' : 'No'}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.coverage}</td>
                         <td className='p-2 max-sm:p-1'>{item.insurance?.expiration && new Date(item.insurance.expiration).toDateString() || '-'}</td>
-                        <td className='p-2 max-sm:p-1'><DialogUserZoneProtection buttonText='Upgrade Policy' action='upgrade' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td>
+                        <td className='p-2 max-sm:p-1'><DialogUserZoneProtection  buttonText='Upgrade Policy' action='upgrade' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td>
                         {/* <td>
                         <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
                       </tr>
@@ -162,12 +175,11 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>{item.status}</td>
                         <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(5)} MATIC</td>
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration).toDateString()}</td>
-                        <td className='p-2 max-sm:p-1'>{item.is_extended == true ? <DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the Insurance Policy will change in coverage.' dialogTitle='Upgrade Insurance Policy?' /> 
+                        {/* <td className='p-2 max-sm:p-1'>{item.is_extended == true ? <DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the Insurance Policy will change in coverage.' dialogTitle='Upgrade Insurance Policy?' /> 
                         : <div className='text-gray-400 max-sm:text-[12px] hover:underline   px-4 font-semibold font-manrope text-[16px] relative group cursor-default'>Upgrade
                           <p className='absolute max-md:hidden bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>Cannot Upgrade without extending</p></div>}</td>
-                        {/* <td className='p-2 max-sm:p-1'><DialogUserZoneProtection buttonText='Upgrade Policy' action='upgrade' setRefresh={setRefresh} assetId={item.id} assetName={item.nft_name} /></td> */}
-                        {/* <td>
-                        <DropdownMyProfile setValue={setNftDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Convert to BITSI Coin' , 'Claim Compensation']}/></td> */}
+                           */}
+                          <td className='p-2 max-sm:p-1'><DialogCoinProtection setUpgradeInputValue={setInputValueForUpgrade} numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the insurance policy will adjust the coverage, with the maximum upgrade limit determined by the user&apos;s credit value.' dialogTitle='Upgrade Insurance Policy?' /></td>
                       </tr>
                       <tr>
                         <td  className='h-5'></td>

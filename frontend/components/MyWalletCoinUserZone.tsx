@@ -13,6 +13,8 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
   const [userCoins, setUserCoins] = useState<WalletUserZoneCoin[]>([]);
   const [coinHistoryDetailsWalletUserZone, setCoinHistoryDetailsWalletUserZone] = useState<CoinTransaction[]>([]);
   const [totalCoinsofUser , setTotalCoinsOfUser] = useState('');
+
+  // TO DO : remove this use effect, no purpose
   useEffect(() => {
     const getAlluserCoins = async () => {
       try {
@@ -34,6 +36,8 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
     }
     getAlluserCoins();
   }, [address])
+
+  
   useEffect(() => {
     const getUserCoinTransactions = async () => {
       try {
@@ -107,7 +111,7 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
   return (
     <div>
       <div className='max-h-[200px] h-fit overflow-y-auto  table-body px-4 md:px-8'>
-        <p className='text-success-511 text-[1.25rem]  font-bold px-2 flex justify-start'>{userCoins?.length > 0 ? ` Total Balance - ${totalCoinsofUser} BITSI` : ''}</p>
+        <p className='text-success-511 text-[1.25rem]  font-bold px-2 flex justify-start'>{Number(totalCoinsofUser) > 0 ? ` Total Balance - ${totalCoinsofUser} BITSI` : ''}</p>
         {/* <table className='w-full text-left mt-4 border-spacing-20'>
           <thead className='text-success-502 text-center font-semibold font-manrope text-[22px] max-sm:text-[10px] underline  '>
             <tr>

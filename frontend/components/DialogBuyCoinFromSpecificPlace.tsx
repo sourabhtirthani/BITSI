@@ -69,7 +69,7 @@ const DialogBuyCoinFromSpecificPlace = () => {
                 address: creditNoteContractAddress,
                 abi: creditNoteContractABI,
                 functionName: 'buyTokens',
-                args:  [BigInt(Number(quantityCoins))],
+                args:  [BigInt(Number(quantityCoins)*10**18)],
                 value: BigInt(valueToSend*10**18)
             });
             
@@ -83,6 +83,7 @@ const DialogBuyCoinFromSpecificPlace = () => {
             showToastUI({ title: "Error", description: 'Error Purchasing Coins', operation: "fail" });
         } finally {
             setLoaderActionButton(false);
+            setOpen(false);
         }
 
     }
