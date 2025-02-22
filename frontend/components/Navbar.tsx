@@ -78,7 +78,7 @@ const Navbar = () => {
         </div>
     </div>
     <div className="flex flex-end ml-auto gap-1 md:px-4 max-md:p-2">
-        <button onClick={handleConnect} className="bg-white text-black px-3 py-2 xl:mr-6 rounded-full flex items-center max-md:mr-2 hover:bg-black duration-300">
+        <button onClick={handleConnect} className="bg-white text-black hover:text-white px-3 py-2 xl:mr-6 rounded-full flex items-center max-md:mr-2 hover:bg-black duration-300">
          
           <span className='text-yellow-500 bg-curent flex items-center gap-1 '>
             <Image src = '/icons/wallet.svg' alt = 'wallet' height={28} width={28} className='max-md:h-[1.25rem] max-md:w-[1.25rem]' />  
@@ -86,7 +86,7 @@ const Navbar = () => {
             {isConnected ? 
             creditScore >-1 ?
             // <Image src='/icons/POL.svg' height={12} width={12} alt ='POL' />
-            <p className='text-[#1C1C1C66] font-semibold  text-sm  items-center'> My Credit | <span>{creditScore} ◈ </span></p>  
+            <p className='text-[#1C1C1C66] hover:text-white font-semibold  text-sm  items-center'> My Credit | <span>{creditScore} ◈ </span></p>  
             :  formatAddress(address)
             : 'Wallet'}
             </span>

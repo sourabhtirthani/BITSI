@@ -64,14 +64,14 @@ export const puteventToDb = async (event: string) => {
             if (coinResult.rows.length === 0) {  // this is the query where the coins are added to that account
                 // adding coins to the account is not needed anymore drop the fields and remove the code because we are now directly getting the balance from the blockchain
                 console.log(`the value of price is : ${price}`);
-                console.log(`reachser here on line 67`);
+                
                 const insertCoinQuery = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${to}', ${tokensTransferred}, ${price}, ${tokensTransferred} , '${currentTimestamp.toISOString()}') RETURNING id;`;
                 const newCoinResult = await client.query(insertCoinQuery);
                 coinId = newCoinResult.rows[0].id;
-                console.log(`reachser here on line 71`);
+               
 
             } else {
-                console.log(`reachser here on line 74`);
+                
                 // drop the field totalCoins, uninsuredCoins  from the schema it is unnecessary
                 coinId = coinResult.rows[0].id;
 
@@ -80,7 +80,7 @@ export const puteventToDb = async (event: string) => {
 
                 const updateCoinQuery = `UPDATE "Coin" SET "totalCoins" = ${updatedTotalCoins}, "unInsuredCoins" = ${updatedUnInsuredCoins},  "updatedAt" = '${currentTimestamp.toISOString()}'WHERE "id" = '${coinId}' RETURNING id;`;
                 const updatedCoinResult = await client.query(updateCoinQuery);
-                console.log(`reachser here on line 83`);
+                
 
             }
 
@@ -90,7 +90,7 @@ export const puteventToDb = async (event: string) => {
                 const insertCoinQueryForSeller = `INSERT INTO "Coin" ("userAddress", "totalCoins", "totalAmount", "unInsuredCoins" , "updatedAt") VALUES ('${from}', -${tokensTransferred}, -${price}, -${tokensTransferred}, '${currentTimestamp.toISOString()}') RETURNING id;`;
                 const newCoinResultForSeller = await client.query(insertCoinQueryForSeller);
                 const sellerCoinId = newCoinResultForSeller.rows[0].id;
-                console.log(`reachser here on line 87`);
+                
             } else {
                 let coinIdForSeller = coinResultForSeller.rows[0].id;
                 const updatedTotalCoinsForSell = coinResultForSeller.rows[0].totalCoins - tokensTransferred;
@@ -125,9 +125,10 @@ export const puteventToDb = async (event: string) => {
                         const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x94d58ceeceec489fc3c74556f8912608097ee3ab` , {method : 'GET'});
                         const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
                         const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceNative;
+                        console.log(`the current coin price is : ${currentCoinPrice}`);
                         creditPriceToReduce = Number(currentCoinPrice) * Number(tokensTransferred);
                     }catch(error){
-                        creditPriceToReduce = 0;
+                        creditPriceToReduce = 0.001 * Number(tokensTransferred);
                         console.log(`in the catch block of the fetching the current coin price`);
                     }
                 }
@@ -138,8 +139,9 @@ export const puteventToDb = async (event: string) => {
                 if (creditScoreResult.rows.length !== 0) {
                     const currentCreditScore = creditScoreResult.rows[0].creditScore;
                     console.log(`the current credit score is : ${currentCreditScore}`);
-                    const newCreditScore = Math.max(0, currentCreditScore - priceForSell);
-
+                    console.log(`the credit price to reduce is : ${creditPriceToReduce}`);
+                    const newCreditScore = Math.max(0, currentCreditScore - creditPriceToReduce);
+                    console.log(`the new credit score is : ${newCreditScore}`);
                     const updateCreditScoreQuery = `UPDATE "User" SET "creditScore" = $1 WHERE "walletAddress" = $2;`;
                     await client.query(updateCreditScoreQuery, [newCreditScore, from]);
                 }

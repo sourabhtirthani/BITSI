@@ -74,6 +74,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
              return;
         }
         // newPrice , upgradeAmount are the two new args, TO DO : Discuss them
+        //new PRice -- > new upgrade value in bigint , number of coins --> 
         const transactionFromUpgradeInsurance  = await writeContractAsync({
           address : coinInsuranceContranctAddress,
           abi : coinInsuranceAbi,

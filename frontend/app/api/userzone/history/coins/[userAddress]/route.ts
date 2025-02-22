@@ -11,6 +11,7 @@ try{
     const type = url.searchParams.get('type');
     console.log(`this is the type of user wallet --> ${type}`)
     if(type == 'userwallet'){
+        console.log('in here int he userwallet tpe ')
         const buyCoinTransactionsForUser = await db.coinTransactionEvent.findMany({
             where : {
                 OR : [
@@ -20,7 +21,7 @@ try{
                 to : params.userAddress
             }
         })
-        console.log(buyCoinTransactionsForUser)
+        // console.log(buyCoinTransactionsForUser)
         return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
     }
     if(type == 'protection'){
