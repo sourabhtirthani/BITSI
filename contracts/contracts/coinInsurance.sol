@@ -104,7 +104,43 @@
     }
   }
 
-  contract CoinInsurance is Ownable {
+
+  contract Whitelist is Ownable  {
+
+  mapping (address => bool) private whitelistedMap;
+
+  event Whitelisted(address indexed account, bool isWhitelisted);
+
+  function whitelisted(address _address)
+    public
+    view
+    returns (bool)
+  {
+    
+    return whitelistedMap[_address];
+  }
+
+  function addAddress(address  _address)
+    public
+    onlyOwner
+  {
+    require(whitelistedMap[_address] != true);
+    whitelistedMap[_address] = true;
+    emit Whitelisted(_address, true);
+  }
+
+  function removeAddress(address _address)
+    public
+    onlyOwner
+  {
+    require(whitelistedMap[_address] != false);
+    whitelistedMap[_address] = false;
+    emit Whitelisted(_address, false);
+  }
+}
+
+
+  contract CoinInsurance is Whitelist {
       struct Policy {
           uint256 startTime;
           uint256 endTime;
@@ -153,6 +189,7 @@
       }
 
       function activatePolicy(address user, uint256 coinId, uint256 bitsiPrice,uint256 INSURANCE_PERIOD, address currency ,uint256 bitsiCovered) external {
+          require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
           require(policies[user][coinId].active == false, "Policy already exists");
           require(bitsiPrice > 0, "Invalid BITSI price");
           
@@ -269,9 +306,11 @@
       }
 
       function extendPolicy(address user, uint256 coinId, uint256 INSURANCE_PERIOD) external {
+          require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
           Policy storage policy = policies[user][coinId];
           require(policy.active, "No active policy");
           require(!policy.isExtended, "Already extended");
+
           uint256 fees = (coinPrices[user][coinId] * EXTEND_COMMISSION_FEES) / 100;
           require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Extension fees not paid");
           policy.isExtended = true;
@@ -284,7 +323,9 @@
       }
 
      function upgradePolicy(address user, uint256 coinId, uint256 newPrice, uint256 upgradeAmount) external {
-			Policy storage policy = policies[user][coinId];
+			require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
+
+      Policy storage policy = policies[user][coinId];
 
 			require(policy.active, "No active policy");
 			require(newPrice > 0, "New price must be greater than zero");
