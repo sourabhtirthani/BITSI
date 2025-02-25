@@ -6,4 +6,6 @@
 .env.production.local
 node_modules
 .env
-dist
+readme.md
+ 
+ 

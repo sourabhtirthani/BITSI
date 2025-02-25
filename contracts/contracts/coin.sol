@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.25;
+pragma solidity 0.8.28;
 
 interface IBEP20 {
     function totalSupply() external view returns (uint256);
@@ -116,7 +116,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
     // Mapping for token balances and allowances
     mapping (address => uint256) private _balances;
     mapping (address => mapping (address => uint256)) private _allowances;
-    
+
     // This address (set by the owner) will be allowed to update locking schedules
     address public insuranceAddress;
     
@@ -128,6 +128,8 @@ contract BITSICOIN is Context, IBEP20, Ownable {
     
     // Mapping from user address to array of their locked tokens
     mapping(address => LockedToken[]) public lockedTokens;
+    mapping(address => uint256) public unlockedTokens; // Tracks the total unlocked tokens per user
+
 
     constructor() {
         _balances[msg.sender] = _totalSupply;
@@ -163,14 +165,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
     function balanceOf(address account) override external view returns (uint256) {
         return _balances[account];
     }
-    
-    // Transfer function updated to check that user isn't trying to transfer locked tokens
-    function transfer(address recipient, uint256 amount) override external returns (bool) {
-        require(amount <= getUnlockedBalance(_msgSender()), "Transfer amount exceeds unlocked balance");
-        _transfer(_msgSender(), recipient, amount);
-        return true;
-    }
-    
+ 
     function allowance(address owner_, address spender) override external view returns (uint256) {
         return _allowances[owner_][spender];
     }
@@ -180,13 +175,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
         return true;
     }
     
-    function transferFrom(address sender, address recipient, uint256 amount) override external returns (bool) {
-        require(amount <= getUnlockedBalance(sender), "Transfer amount exceeds unlocked balance");
-        _transfer(sender, recipient, amount);
-        _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "BEP20: transfer amount exceeds allowance"));
-        return true;
-    }
-    
+
     function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
         return true;
@@ -202,17 +191,7 @@ contract BITSICOIN is Context, IBEP20, Ownable {
         _mint(_msgSender(), amount);
         return true;
     }
-    
-    // Internal transfer function
-    function _transfer(address sender, address recipient, uint256 amount) internal {
-        require(sender != address(0), "BEP20: transfer from the zero address");
-        require(recipient != address(0), "BEP20: transfer to the zero address");
-    
-        _balances[sender] = _balances[sender].sub(amount, "BEP20: transfer amount exceeds balance");
-        _balances[recipient] = _balances[recipient].add(amount);
-        emit Transfer(sender, recipient, amount);
-    }
-    
+
     // Minting function
     function _mint(address account, uint256 amount) internal {
         require(account != address(0), "BEP20: mint to the zero address");
@@ -231,44 +210,73 @@ contract BITSICOIN is Context, IBEP20, Ownable {
         emit Approval(owner_, spender, amount);
     }
     
-    // Function for the insurance contract to add a new lock for a user.
-    // This will add a new entry in the user's lockedTokens array.
+    // Function to update locked tokens (efficient)
     function updateCustomData(address user, uint256 amount, uint256 unlockTime) external onlyInsurance {
-        // Optionally: Ensure the user has enough balance to be locked
-        require(_balances[user] >= amount, "User does not have enough tokens to lock");
+        require(_balances[user] >= amount, "Insufficient balance to lock");
+        // Add to the total locked amount instead of storing each lock separately
         lockedTokens[user].push(LockedToken(amount, unlockTime));
     }
     
-    // Function for the owner to update the insurance contract address
-    function updateInsuranceContract(address _insuranceAddress) external onlyOwner {
-        insuranceAddress = _insuranceAddress;
+        // Transfer function updated to check that user isn't trying to transfer locked tokens
+    function transfer(address recipient, uint256 amount) external returns (bool) {
+        uint256 lockedAmount = updateAndGetLockedTokens(msg.sender);
+        require(_balances[msg.sender] - lockedAmount >= amount, "Insufficient unlocked balance");
+
+        _transfer(msg.sender, recipient, amount);
+        return true;
     }
+
+    // Internal transfer function
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "BEP20: transfer from the zero address");
+        require(recipient != address(0), "BEP20: transfer to the zero address");
     
-    // It calculates how many tokens are unlocked (usable) for the given user. It subtracts the amount that is still locked based on the current block.timestamp.
-    function getUnlockedBalance(address user) public view returns (uint256) {
-        uint256 lockedAmount = 0;
-        LockedToken[] memory locks = lockedTokens[user];
+        _balances[sender] = _balances[sender].sub(amount, "BEP20: transfer amount exceeds balance");
+        _balances[recipient] = _balances[recipient].add(amount);
+        emit Transfer(sender, recipient, amount);
+    }
+
+    function transferFrom(address sender, address recipient, uint256 amount) override external returns (bool) {
+        // Update and get locked amount for sender
+        uint256 lockedAmount = updateAndGetLockedTokens(sender);
         
-        for (uint256 i = 0; i < locks.length; i++) {
-            // If the current time is less than the unlockTime, the tokens are still locked
-            if (block.timestamp < locks[i].unlockTime) {
-                lockedAmount = lockedAmount.add(locks[i].amount);
+        // Ensure sender has enough unlocked balance
+        require(_balances[sender] - lockedAmount >= amount, "Insufficient unlocked balance");
+
+        // Ensure allowance is sufficient before unchecked block
+        require(_allowances[sender][_msgSender()] >= amount, "Allowance exceeded");
+
+        _transfer(sender, recipient, amount);
+
+        // Reduce allowance safely
+        unchecked {
+            _approve(sender, _msgSender(), _allowances[sender][_msgSender()] - amount);
+        }
+
+        return true;
+    }
+
+    function updateAndGetLockedTokens(address user) internal returns (uint256 totalLocked) {
+        LockedToken[] storage locks = lockedTokens[user];
+        uint256 len = locks.length;
+        uint256 currentTime = block.timestamp;
+        uint256 i = 0;
+
+        while (i < len) {
+            if (currentTime >= locks[i].unlockTime) {
+                // Swap & Pop for efficient deletion
+                unchecked {
+                    locks[i] = locks[len - 1]; // Move last element to current index
+                    locks.pop(); // Remove last element (deletes from storage)
+                    len--; // Reduce array length
+                }
+            } else {
+                unchecked {
+                    totalLocked += locks[i].amount; // Sum valid locked tokens
+                    i++; // Only move forward if we didn't delete
+                }
             }
         }
-        // Unlocked balance is the total balance minus the still-locked tokens.
-        return _balances[user].sub(lockedAmount);
-    }
-    
-    // Optionally, a helper function to view the total locked (not yet unlocked) tokens.
-    function getTotalLockedTokens(address user) external view returns (uint256) {
-        uint256 lockedAmount = 0;
-        LockedToken[] memory locks = lockedTokens[user];
-        
-        for (uint256 i = 0; i < locks.length; i++) {
-            if (block.timestamp < locks[i].unlockTime) {
-                lockedAmount = lockedAmount.add(locks[i].amount);
-            }
-        }
-        return lockedAmount;
+        return totalLocked;
     }
 }
