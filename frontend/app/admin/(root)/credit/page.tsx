@@ -62,7 +62,7 @@ const Credit = () => {
 
             <div className='flex flex-col mt-4 gap-10 w-3/4'>
                 <div className='flex flex-col gap-3 '>
-                    <h1 className='text-white font-bold text-[22px] font-manrope'>First Hand Coverage</h1>
+                    <h1 className='text-white font-bold text-[22px] font-manrope'>Current Coin Price</h1>
                     <div className='relative'>
                         <p className='text-white text-[1rem] font-montserrat font-bold absolute right-3 top-[25%]'> MATIC</p>
                         <input type='number' className='bg-transparent no-spinners w-full  border-2 border-white rounded-xl font-bold p-2 text-white text-[18px] ' value={currentCoinPriceForCredit} onChange={(e) => { setCurrentCoinPriceForCredit(Number(e.target.value)) }} disabled={viewOnly} />
