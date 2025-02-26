@@ -108,7 +108,6 @@ export const showToastUI : any = ({ title, description, operation = 'success' }:
       fontFamily: 'Manrope',
     }
   };
-  console.log(`the title is ${title} and the description is ${description}`)  
   return toast({
     title: title,
     description: description,
