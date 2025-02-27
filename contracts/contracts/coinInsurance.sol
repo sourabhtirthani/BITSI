@@ -606,18 +606,19 @@
     function upgradePolicy(
         address user, 
         uint256 policyId, 
-        uint256 newPrice, 
-        uint256 upgradeAmount) external onlyOwner {
+        uint256 newPrice) external onlyOwner {
         Policy storage policy = policies[user][policyId];
 
         // ✅ Ensure policy is active
         require(policy.isActive, "No active policy");
 
         // ✅ Ensure valid new price
-        require(newPrice > 0, "New price must be greater than zero");
+        require(newPrice > policy.bitsiPrice, "New price must be greater than zero");
 
         // ✅ Ensure insurance period is valid
         require(insuranceDurations[policy.INSURANCE_PERIOD] > 0, "Invalid INSURANCE_PERIOD");
+
+        uint256 upgradeAmount = (newPrice - policy.bitsiPrice)*policy.bitsiAmount;
 
         // ✅ Require upgrade commission fees
         uint256 fees = (upgradeAmount * UPGRADE_COMMISSION_FEES) / 100;
@@ -628,9 +629,6 @@
 
         // ✅ Update the BITSI price at upgrade time
         policy.bitsiPrice = newPrice;
-
-        // ✅ Adjust BITSI amount based on the new insured value
-        policy.bitsiAmount += upgradeAmount / newPrice;
 
         // ✅ Shift expiration based on the original insurance period, starting from now
         policy.expirationDate = block.timestamp + insuranceDurations[policy.INSURANCE_PERIOD];
@@ -645,15 +643,13 @@
     function batchUpgradePolicy(
         address[] calldata users, 
         uint256[] calldata policyIds, 
-        uint256[] calldata newPrices, 
-        uint256[] calldata upgradeAmounts) external onlyOwner {
+        uint256[] calldata newPrices) external onlyOwner {
         uint256 len = users.length;
 
         // ✅ Ensure input arrays have the same length
         require(
             len == policyIds.length &&
-            len == newPrices.length &&
-            len == upgradeAmounts.length, 
+            len == newPrices.length,
             "Array length mismatch"
         );
 
@@ -662,7 +658,6 @@
             address user = users[i];
             uint256 policyId = policyIds[i];
             uint256 newPrice = newPrices[i];
-            uint256 upgradeAmount = upgradeAmounts[i];
 
             Policy storage policy = policies[user][policyId];
 
@@ -670,10 +665,13 @@
             require(policy.isActive, "No active policy");
 
             // ✅ Ensure valid new price
-            require(newPrice > 0, "New price must be greater than zero");
+            require(newPrice > policy.bitsiPrice, "New price must be greater than zero");
 
             // ✅ Ensure insurance period is valid
             require(insuranceDurations[policy.INSURANCE_PERIOD] > 0, "Invalid INSURANCE_PERIOD");
+
+            uint256 upgradeAmount = (newPrice - policy.bitsiPrice)*policy.bitsiAmount;
+
 
             // ✅ Require upgrade commission fees
             uint256 fees = (upgradeAmount * UPGRADE_COMMISSION_FEES) / 100;
@@ -684,9 +682,6 @@
 
             // ✅ Update the BITSI price at upgrade time
             policy.bitsiPrice = newPrice;
-
-            // ✅ Adjust BITSI amount based on the new insured value
-            policy.bitsiAmount += upgradeAmount / newPrice;
 
             // ✅ Shift expiration based on the original insurance period, starting from now
             policy.expirationDate = block.timestamp + insuranceDurations[policy.INSURANCE_PERIOD];
