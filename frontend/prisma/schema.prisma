@@ -231,6 +231,21 @@ model CoinInsurance {
   is_extended     Boolean              @default(false)
   insuranceEvents CoinInsuranceEvent[]
   is_upgraded     Boolean              @default(false)
+  buyPrice        Float         @default(0)
+  coinClaims      CoinClaim[]
+}
+
+model CoinClaim {
+  id                 Int              @id @default(autoincrement())
+  userAddress        String
+  compensationGiven  Boolean          @default(false)
+  buyPrice           Float
+  sellPrice          Float
+  loss              Float             @default(0)  // (sellPrice - buyPrice)
+  lossPercent       Float             @default(0)  // ((loss / buyPrice) * 100)
+  coinInsuranceId   Int
+  coinInsurance     CoinInsurance     @relation(fields: [coinInsuranceId], references: [id])
+  createdAt         DateTime          @default(now())
 }
 
 model SupportTedCurrencies {

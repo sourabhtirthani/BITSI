@@ -35,7 +35,8 @@ export const purchaseCoinInsurance = async(userAddress : string , totalCoinsToIn
                     startTime : new Date(),
                     expiration : new Date(Date.now() + numberOfYears * 365 * 24 * 60 * 60 * 1000),
                     status : 'ApprovalPending',
-                    is_extended : false
+                    is_extended : false,
+                    buyPrice : totalAmount
                 }
             })
             await tx.coinTransactionEvent.update({

@@ -1,4 +1,5 @@
 import pool from "../database";
+import { getBalanceOfUser } from "../utils/blockchainUtils";
 
 
 // TO DO : Used parameterized queries instead of string interpolation , transaction(roolback if failed) 
@@ -110,10 +111,44 @@ export const puteventToDb = async (event: string) => {
                 
                 let creditPriceToReduce = salePrice ? Number(salePrice) : 0;
                 console.log(`price for sell found and it is : ${priceForSell}}`);
+                // sell logic starts here
                 if (!isNaN(priceForSell) && priceForSell !== 0) {
                     console.log(`it was a sell event that is detected`)
                     const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${priceForSell} , '${from}', '${to}');`
                     await client.query(insertTransferQuery)
+                    // policy update starts  here
+                    const allInsurancePoliciesQuery = `SELECT "CoinInsurance"."id", "CoinInsurance"."coinId", "CoinInsurance"."coinsInsured", "CoinInsurance"."buyPrice",
+                    "CoinInsurance"."coverage", "CoinInsurance"."expiration", "Coin"."userAddress", 
+                    "CoinInsurance"."status" FROM "CoinInsurance" JOIN "Coin" ON "CoinInsurance"."coinId" = "Coin"."id" 
+                    WHERE "Coin"."userAddress" = '${from}' AND "CoinInsurance"."status" = 'Active';`;
+                    
+                    const allInsurancePoliciesResult = await client.query(allInsurancePoliciesQuery);
+                    // partial implemented
+                    if (allInsurancePoliciesResult.rows.length > 0) {
+                        if(allInsurancePoliciesResult.rows.length == 1){
+                            const currentBalanceOfUser =await getBalanceOfUser(from);
+                            const insuredCoinsBalanceOfUser = allInsurancePoliciesResult.rows[0]?.coinsInsured || 0;
+                            const coinPurachasedAtPrice = allInsurancePoliciesResult.rows[0]?.buyPrice || 0;
+
+                            // const coinsTobeConsideredForInsurance = 
+
+                            
+                        }else{
+                            const totalCoinsInsuredQuery = `SELECT SUM("CoinInsurance"."coinsInsured") AS "total_coins_insured"
+                            FROM "CoinInsurance"
+                            JOIN "Coin" ON "CoinInsurance"."coinId" = "Coin"."id"
+                            WHERE "Coin"."userAddress" = '${from}';`;
+                            await client.query(totalCoinsInsuredQuery);
+                        }
+
+
+                    }
+
+
+
+
+                    // policy update end here
+
                     // above is the sell event;
                 } else { 
                     // for transfer event of coinns
