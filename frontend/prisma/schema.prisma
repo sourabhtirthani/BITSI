@@ -231,7 +231,7 @@ model CoinInsurance {
   is_extended     Boolean              @default(false)
   insuranceEvents CoinInsuranceEvent[]
   is_upgraded     Boolean              @default(false)
-  buyPrice        Float         @default(0)
+  buyPricePerCoin        Float         @default(0)
   coinClaims      CoinClaim[]
 }
 

@@ -116,37 +116,83 @@ export const puteventToDb = async (event: string) => {
                     console.log(`it was a sell event that is detected`)
                     const insertTransferQuery = `INSERT INTO "CoinTransactionEvent" ("coinsTransferred", "eventName", "price", "from" , "to") VALUES (${tokensTransferred}, 'Sell',${priceForSell} , '${from}', '${to}');`
                     await client.query(insertTransferQuery)
-                    // policy update starts  here
-                    const allInsurancePoliciesQuery = `SELECT "CoinInsurance"."id", "CoinInsurance"."coinId", "CoinInsurance"."coinsInsured", "CoinInsurance"."buyPrice",
+                    try{ 
+                    // policy update during sell starts  here ***********************************************************************************************
+                    const allInsurancePoliciesQuery = `SELECT "CoinInsurance"."id", "CoinInsurance"."coinId", "CoinInsurance"."coinsInsured", "CoinInsurance"."buyPricePerCoin",
                     "CoinInsurance"."coverage", "CoinInsurance"."expiration", "Coin"."userAddress", 
                     "CoinInsurance"."status" FROM "CoinInsurance" JOIN "Coin" ON "CoinInsurance"."coinId" = "Coin"."id" 
-                    WHERE "Coin"."userAddress" = '${from}' AND "CoinInsurance"."status" = 'Active';`;
+                    WHERE "Coin"."userAddress" = '${from}' AND "CoinInsurance"."status" = 'Active' ORDER BY "CoinInsurance"."startTime" ASC;`    // returns all the active policies of the user
                     
                     const allInsurancePoliciesResult = await client.query(allInsurancePoliciesQuery);
-                    // partial implemented
+                    
                     if (allInsurancePoliciesResult.rows.length > 0) {
-                        if(allInsurancePoliciesResult.rows.length == 1){
                             const currentBalanceOfUser =await getBalanceOfUser(from);
-                            const insuredCoinsBalanceOfUser = allInsurancePoliciesResult.rows[0]?.coinsInsured || 0;
-                            const coinPurachasedAtPrice = allInsurancePoliciesResult.rows[0]?.buyPrice || 0;
-
-                            // const coinsTobeConsideredForInsurance = 
-
-                            
-                        }else{
+                            const originalBalanceOfUserBeforeSale = currentBalanceOfUser + tokensTransferred;
+                            console.log(`the current balance of the user is : ${currentBalanceOfUser}`);
                             const totalCoinsInsuredQuery = `SELECT SUM("CoinInsurance"."coinsInsured") AS "total_coins_insured"
                             FROM "CoinInsurance"
                             JOIN "Coin" ON "CoinInsurance"."coinId" = "Coin"."id"
                             WHERE "Coin"."userAddress" = '${from}';`;
-                            await client.query(totalCoinsInsuredQuery);
-                        }
+                            const totalCoinsInsuredResult = await client.query(totalCoinsInsuredQuery);
+                            const totalCoinsInsured = totalCoinsInsuredResult.rows[0]?.total_coins_insured || 0;
+                            let uninsuredCoins = Math.max(originalBalanceOfUserBeforeSale-totalCoinsInsured , 0);
+                            let coinsToDeductFromInsuredPolicies = Math.max(0 , tokensTransferred - uninsuredCoins);
+                            
+                            if(coinsToDeductFromInsuredPolicies > 0){ // deduct from insured policies 
+                                let deductions = [];
+                                let claimsGenerated = [];
+                                const coinsToDeduct = coinsToDeductFromInsuredPolicies;
+                                let remainingCoinsToDeduct = coinsToDeduct;
+                                for(let i = 0; i < allInsurancePoliciesResult.rows.length; i++){
+                                    if(coinsToDeduct <= 0){
+                                        break;
+                                    }
+                                    const policy = allInsurancePoliciesResult.rows[i];
+                                    let policyDeduction = Math.min(remainingCoinsToDeduct, policy.coinsInsured);
+                                    remainingCoinsToDeduct -= policyDeduction;
+                                    
+                                    const buyPrice = policyDeduction * policy.buyPricePerCoin;
+                                    const sellPrice = policyDeduction * (tokensTransferred/Number(priceForSell));
+                                    // if the priceDifference is negative, then the user has lost money 
+                                    const priceDifference = sellPrice - buyPrice;  // do we also eliminate the policy if there is no loss?
+                                    const lossPercent = (priceDifference / buyPrice) * 100;
 
+                                    // updatting the insurance policy here
+                                    const updatedCoinsInsured = policy.coinsInsured - policyDeduction;
+                                    const newStatus = (updatedCoinsInsured === 0 && priceDifference < 0) ? 'Claimed' : policy.status;
+
+                                    deductions.push({  // this is to keep track of all the policcies that were affected
+                                        policyId : policy.id,
+                                        deductedCoins : policyDeduction,
+                                        coinsInsuredNew : updatedCoinsInsured,
+                                    })
+                                    // TO DO : BULK UPDATE
+                                    await client.query(
+                                        'UPDATE "CoinInsurance" SET "coinsInsured" = $1, "status" = $2 WHERE "id" = $3',
+                                        [updatedCoinsInsured, newStatus, policy.id]
+                                    );
+                                    if(priceDifference < 0){ // user has lost money here
+                                        await client.query(
+                                            'INSERT INTO "CoinClaim" ("userAddress", "compensationGiven", "buyPrice", "sellPrice", "loss", "lossPercent", "coinInsuranceId", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+                                            [from, false, buyPrice, sellPrice, Math.abs(priceDifference), Math.abs(lossPercent), policy.id, new Date()]
+                                        );
+                                        
+                                        claimsGenerated.push({
+                                            policyId: policy.id,
+                                            loss: Math.abs(priceDifference),
+                                            lossPercent: Math.abs(lossPercent)
+                                        });
+                                    }
+
+                                }
+
+                                
+                            }
 
                     }
+                }catch(error){
 
-
-
-
+                }
                     // policy update end here
 
                     // above is the sell event;
