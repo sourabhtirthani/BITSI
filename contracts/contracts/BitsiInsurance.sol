@@ -271,54 +271,89 @@ contract BitsiInsurance is WhitelistManager {
         // Emit event to track policy upgrade
         emit PolicyUpgraded(msg.sender, policyId, bitsiPrice, policy.expirationDate);
     }
-    function computeCompensation(uint256 bitsiSold, uint256 policyBitsiPrice) 
+    function computeCompensation(uint256 bitsiSold, uint256 policyBitsiPrice)
         internal view returns (uint256 compensationPaidBitsi, uint256 commissionFeesUsdt) {
-        /* compensation is not agaisnt a sale price at which user sold his Bitsi but agains current
-        Bitsi price */
-        uint256 loss = 0;
-
-        // ✅ Calculate threshold prices
-        uint256 lowThresholdPrice = (LOW_COMPENSATION_LIMIT * policyBitsiPrice) / 100;
+        // thresholds in [USDT/BITSI]
+        uint256 lowThresholdPrice  = (LOW_COMPENSATION_LIMIT  * policyBitsiPrice) / 100;
         uint256 highThresholdPrice = (HIGH_COMPENSATION_LIMIT * policyBitsiPrice) / 100;
 
-        // ✅ Compute loss per BITSI sold
+        // default: no loss
+        uint256 lossInUsdPerToken = 0;
+
+        // figure out the effective "loss per token"
         if (bitsiPrice >= highThresholdPrice) {
-            loss = 0; // No loss if sold above high limit
-        } else if (bitsiPrice < lowThresholdPrice) {
-            loss = policyBitsiPrice - lowThresholdPrice; // Cap loss if below low threshold
-        } else {
-            loss = policyBitsiPrice - bitsiPrice; // Normal loss calculation
+            // sold above the high limit => no coverage needed
+            return (0, 0); 
+        } 
+        else if (bitsiPrice < lowThresholdPrice) {
+            // sold below the low threshold => cap the loss 
+            lossInUsdPerToken = policyBitsiPrice - lowThresholdPrice;
+        } 
+        else {
+            // somewhere in [lowThresholdPrice, highThresholdPrice]
+            lossInUsdPerToken = policyBitsiPrice - bitsiPrice;
         }
 
-        // ✅ Compute total compensation for `bitsiSold`
-        uint256 totalCompensation = loss * bitsiSold / bitsiPrice;
+        // total loss in USDT
+        // bitsiSold is # of tokens, each losing "lossInUsdPerToken" USDT
+        uint256 totalLossInUsd = lossInUsdPerToken * bitsiSold;
 
-        // ✅ Apply the percentage of compensation that is paid
-        compensationPaidBitsi = (totalCompensation / bitsiPrice * COMPENSATION_PERCENTAGE) / 100; // In Bitsi
+        // convert USDT => BITSI
+        uint256 totalLossInBitsi = totalLossInUsd / bitsiPrice;
 
-        // ✅ Deduct commission fees from the total compensation
-        commissionFeesUsdt = (totalCompensation * COMPENSATION_COMMISSION_FEES) / 100; // In USDT
+        // coverage is some percentage of that total
+        compensationPaidBitsi = (totalLossInBitsi * COMPENSATION_PERCENTAGE) / 100;
 
-        // ✅ Ensure values are positive before returning
-        return (compensationPaidBitsi, commissionFeesUsdt);
+        // commission fee for the insurer is taken in USDT (not deducted from BITSI)
+        // so compute that from the USDT portion
+        commissionFeesUsdt = (totalLossInUsd * COMPENSATION_COMMISSION_FEES) / 100;
     }
-    function applyForCompensation(uint256 amount) external onlyPolicyWhitelisted {
-        require(amount > 0, "Invalid amount");
+    function applyForCompensation(uint256 policyId, uint256 bitsiSold) external onlyPolicyWhitelisted {
+        require(bitsiSold > 0, "Invalid BITSI amount");
+
+        // Ensure policy exists and is active
+        Policy storage policy = policies[msg.sender][policyId];
+        require(policy.isActive, "Policy is not active");
+
+        // Make sure user does not exceed the BITSI coverage
+        require(policy.bitsiAmount >= bitsiSold, "Exceeds covered BITSI");
+
+        // Prevent user from applying for multiple compensations at once
         require(!isCompensationWhitelisted(msg.sender), "Already applied");
-        
+
+        // -- Compute compensation based on `bitsiSold` and the original policy price
+        //    Your original computeCompensation() returns two values:
+        //    (compensationPaidBitsi, commissionFeesUsdt).
+        (uint256 bitsiCompensation, uint256 commissionFeesUsdt) = computeCompensation(
+            bitsiSold,
+            policy.bitsiPrice
+        );
+        // If you only want to store the BITSI portion as the "payout," do so here:
+        uint256 payout = bitsiCompensation;
+
+        // Record the user’s claim
         claims[msg.sender] = Claim({
-            amount: amount,
+            amount: bitsiCompensation,
             requestTime: block.timestamp,
             approved: false
         });
-        
+
+        // Whitelist user for compensation
         addCompensationWhitelist(msg.sender);
+
+        require(usdtToken.allowance(msg.sender, address(this)) >= commissionFeesUsdt, "Allowance too low");
+        require(usdtToken.transferFrom(msg.sender, feeCollectorWallet, commissionFeesUsdt), "Fee transfer fail");
+
+        // Emit events
         emit UserCompensatitonWhitelisted(msg.sender);
-        emit CompensationApplied(msg.sender, amount);
+        emit CompensationApplied(msg.sender, payout);
     }
-    function withdrawCompensation() external onlyPolicyWhitelisted onlyCompensationWhitelisted {
+    function withdrawCompensation() external nonReentrant onlyPolicyWhitelisted onlyCompensationWhitelisted{
         // Auto-approve if 30 days have passed and claim is still pending
-        if (!claims[msg.sender].approved && block.timestamp >= claims[msg.sender].requestTime + AUTO_APPROVAL_TIME) {
+        if (
+            !claims[msg.sender].approved &&
+            block.timestamp >= claims[msg.sender].requestTime + AUTO_APPROVAL_TIME
+        ) {
             claims[msg.sender].approved = true;
             emit CompensationApproved(msg.sender, claims[msg.sender].amount);
         }
@@ -327,12 +362,23 @@ contract BitsiInsurance is WhitelistManager {
         require(claims[msg.sender].amount > 0, "No compensation available");
 
         uint256 payout = claims[msg.sender].amount;
+
+        // Withdraw compensation from capital reserve
         capitalReserve.withdrawCompensation(msg.sender, payout);
 
+        // Decrease userCredit by the payout amount
+        userCredit[msg.sender] = (userCredit[msg.sender] > payout)
+            ? userCredit[msg.sender] - payout
+            : 0;
+
+        // Remove the claim record
         delete claims[msg.sender];
 
+        // Remove user from policy whitelist
         removePolicyWhitelist(msg.sender);
         emit UserRemovedFromWhitelist(msg.sender);
+
+        // Emit the compensation withdrawal event with the correct payout
         emit CompensationWithdrawn(msg.sender, payout);
     }
     function getCompensationStatus() external view returns (string memory) {
