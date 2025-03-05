@@ -64,13 +64,13 @@ contract BitsiInsurance is WhitelistManager {
         address _bitsiToken, // Bitsi token address
         address _usdtToken, // ✅ Add USDT token address
         address _capitalReserve,
-        address _compensationFundWallet,
+        address _feeCollectorWallet,
         address _adminAddress, // ✅ Add price updater
         uint256[] memory contractDurationsInYears) WhitelistManager(_adminAddress) {
             bitsiToken = IERC20(_bitsiToken); // ✅ Assign bitsiToken
             usdtToken = IERC20(_usdtToken); // ✅ Assign USDT token
             capitalReserve = IBitsiCapitalReserve(_capitalReserve);
-            compensationFundWallet = _compensationFundWallet;
+            feeCollectorWallet = _feeCollectorWallet;
             adminAddress = _adminAddress; // ✅ Set initial adminAddress
             for (uint256 i = 0; i < contractDurationsInYears.length; i++) {
                 insuranceDurations[contractDurationsInYears[i]] = contractDurationsInYears[i] * 365 days;
@@ -99,7 +99,7 @@ contract BitsiInsurance is WhitelistManager {
     IERC20 public usdtToken; // USDT token contract 
     IERC20 public bitsiToken;
     IBitsiCapitalReserve public capitalReserve;
-    address public compensationFundWallet;
+    address public feeCollectorWallet;
     uint256 public bitsiPrice;
     address public adminAddress;
 
@@ -204,7 +204,7 @@ contract BitsiInsurance is WhitelistManager {
         // Ensure the contract has enough allowance before proceeding
         uint256 fees = (insurancePremium * ACTIVATE_COMMISSION_FEES) / 100;
         require(usdtToken.allowance(msg.sender, address(this)) >= fees, "USDT allowance too low, approve contract first");
-        require(usdtToken.transferFrom(msg.sender, compensationFundWallet, fees), "Commission fees not paid");
+        require(usdtToken.transferFrom(msg.sender, feeCollectorWallet, fees), "Commission fees not paid");
           
         policies[msg.sender][policyId].bitsiAmount = bitsiAmount;
         policies[msg.sender][policyId].bitsiPrice = bitsiPrice;     
@@ -229,7 +229,7 @@ contract BitsiInsurance is WhitelistManager {
        // Require upgrade commission fees
         uint256 fees = (policy.insurancePremium * EXTEND_COMMISSION_FEES) / 100;
         require(usdtToken.allowance(msg.sender, address(this)) >= fees, "USDT allowance too low, approve contract first");
-        bool success = usdtToken.transferFrom(msg.sender, compensationFundWallet, fees);
+        bool success = usdtToken.transferFrom(msg.sender, feeCollectorWallet, fees);
         require(success, "USDT transfer failed");
 
         // Extend expiration by 1 year from the current expiration date
@@ -254,7 +254,7 @@ contract BitsiInsurance is WhitelistManager {
         // Require upgrade commission fees
         uint256 fees = (upgradeAmount * UPGRADE_COMMISSION_FEES) / 100;
         require(usdtToken.allowance(msg.sender, address(this)) >= fees, "USDT allowance too low, approve contract first");
-        require(usdtToken.transferFrom(msg.sender, compensationFundWallet, fees), "Commission fees not paid");
+        require(usdtToken.transferFrom(msg.sender, feeCollectorWallet, fees), "Commission fees not paid");
  
         // Update the BITSI price
         policy.bitsiPrice = bitsiPrice;
