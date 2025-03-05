@@ -15,7 +15,7 @@ interface IBitsiCapitalReserve {
     function unlockUSDT(address user, uint256 amount) external;
     function unlockBITSI(address user, uint256 amount) external;
     function unlockUSDTAndLockBITSI(address user, uint256 usdtAmount, uint256 bitsiAmount) external;
-    function withdrawCompensation(uint256 amount) external;
+    function withdrawCompensation(address user, uint256 amount) external;
     function getLockedFunds(address user, bool isUSDT) external view returns (uint256);
     function getBitsiBalance() external view returns (uint256);
     function getUSDTBalance() external view returns (uint256);
@@ -118,9 +118,8 @@ contract BitsiInsurance is WhitelistManager {
     uint256 public UPGRADE_COMMISSION_FEES = 1; // Percent
     uint256 public COMPENSATION_COMMISSION_FEES = 1; // Percent
     uint256 public FEES_REQUEST_TIME = 24 hours; // Fees payment period
-    uint256 public nextInLine;
-    uint256 public autoApprovalTime = 30 days;
-    uint256 public policyRetentionPeriod = 180 days;
+    uint256 public AUTO_APPROVAL_TIME = 30 days;
+    uint256 public POLICY_RETENTION_PERIOD = 180 days;
 
     bool private locked;
 
@@ -319,7 +318,7 @@ contract BitsiInsurance is WhitelistManager {
     }
     function withdrawCompensation() external onlyPolicyWhitelisted onlyCompensationWhitelisted {
         // Auto-approve if 30 days have passed and claim is still pending
-        if (!claims[msg.sender].approved && block.timestamp >= claims[msg.sender].requestTime + autoApprovalTime) {
+        if (!claims[msg.sender].approved && block.timestamp >= claims[msg.sender].requestTime + AUTO_APPROVAL_TIME) {
             claims[msg.sender].approved = true;
             emit CompensationApproved(msg.sender, claims[msg.sender].amount);
         }
@@ -328,7 +327,7 @@ contract BitsiInsurance is WhitelistManager {
         require(claims[msg.sender].amount > 0, "No compensation available");
 
         uint256 payout = claims[msg.sender].amount;
-        capitalReserve.withdrawCompensation(payout);
+        capitalReserve.withdrawCompensation(msg.sender, payout);
 
         delete claims[msg.sender];
 
@@ -385,7 +384,7 @@ contract BitsiInsurance is WhitelistManager {
     function removeExpiredPolicies(address user, uint256 policyId) external onlyOwner {
         Policy storage policy = policies[user][policyId];
         require(!policy.isActive, "Policy is still active");
-        require(block.timestamp >= policy.deactivationTime + policyRetentionPeriod, "Policy retention period not met");
+        require(block.timestamp >= policy.deactivationTime + POLICY_RETENTION_PERIOD, "Policy retention period not met");
         
         delete policies[user][policyId];
         emit PolicyRemovedFromHistory(user, policyId);

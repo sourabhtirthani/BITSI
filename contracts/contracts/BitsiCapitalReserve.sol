@@ -8,6 +8,8 @@ contract BitsiCapitalReserve is Ownable {
     IERC20 public usdtToken;
     IERC20 public bitsiToken;
     address public admin;
+    address public insuranceContract;
+
 
     mapping(address => uint256) private lockedUSDT;
     mapping(address => uint256) private lockedBITSI;
@@ -23,10 +25,16 @@ contract BitsiCapitalReserve is Ownable {
         _;
     }
 
-    constructor(address _usdtToken, address _bitsiToken, address _admin) Ownable(msg.sender) {
+    modifier onlyBitsiInsurance() {
+        require(msg.sender == insuranceContract, "Not authorized");
+        _;
+    }
+
+    constructor(address _usdtToken, address _bitsiToken, address _admin, address _insuranceContract) Ownable(msg.sender) {
         usdtToken = IERC20(_usdtToken);
         bitsiToken = IERC20(_bitsiToken);
         admin = _admin;
+        insuranceContract = _insuranceContract; // Set the insurance contract at deployment
     }
 
     function updateAdmin(address newAdmin) external onlyOwner {
@@ -89,13 +97,13 @@ contract BitsiCapitalReserve is Ownable {
         emit FundsLocked(user, bitsiAmount, false);
     }
 
-    function withdrawCompensation(uint256 amount) external {
-        require(lockedBITSI[msg.sender] >= amount, "Insufficient locked BITSI");
+    function withdrawCompensation(address user, uint256 amount) external onlyBitsiInsurance{
+        require(lockedBITSI[user] >= amount, "Insufficient locked BITSI");
         
-        lockedBITSI[msg.sender] -= amount;
-        require(bitsiToken.transfer(msg.sender, amount), "BITSI Transfer failed");
+        lockedBITSI[user] -= amount;
+        require(bitsiToken.transfer(user, amount), "BITSI Transfer failed");
         
-        emit FundsWithdrawn(msg.sender, amount, false);
+        emit FundsWithdrawn(user, amount, false);
     }
 
     function getLockedFunds(address user, bool isUSDT) external view returns (uint256) {
