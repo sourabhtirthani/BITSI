@@ -266,7 +266,7 @@
           }
           
           // Multiply by sold BITSI to get total compensation
-          compensation = loss * bitsiSold;
+          compensation = loss * bitsiSold/reportedSalePrice;
           
           // Deduct compensation fees
           uint256 compensationFees = (compensation * COMPENSATION_PERCENTAGE) / 100;
@@ -327,10 +327,10 @@
 
       }
 
-     function upgradePolicy(address user, uint256 coinId, uint256 newPrice, uint256 upgradeAmount) external {
+     function upgradePolicy(address user, uint256 policyId, uint256 newPrice, uint256 upgradeAmount) external {
 			require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
 
-      Policy storage policy = policies[user][coinId];
+                        Policy storage policy = policies[user][policyId];
 
 			require(policy.active, "No active policy");
 			require(newPrice > 0, "New price must be greater than zero");
@@ -345,9 +345,6 @@
 			// Set the new BITSI price at upgrade time
 			policy.bitsiPrice = newPrice;
 
-			// Recalculate bitsiCoverage based on updated insured value
-			policy.bitsiCoverage = policy.insuredValue / newPrice;
-
 			// Compute new end time based on elapsed time since activation
 			policy.endTime += block.timestamp - policy.startTime;
 			policy.startTime = block.timestamp;
@@ -355,7 +352,7 @@
 			// Mark policy as upgraded
 			policy.isUpgraded = true;
 
-			emit PolicyUpgraded(user, coinId, policy.bitsiCoverage);
+			emit PolicyUpgraded(user, policyId, policy.bitsiCoverage);
 		  }
       function updateParameters(uint256 _compensationPercentage, uint256 _highLimit, uint256 _lowLimit, uint256 _fees) external onlyOwner {
           COMPENSATION_PERCENTAGE = _compensationPercentage;
