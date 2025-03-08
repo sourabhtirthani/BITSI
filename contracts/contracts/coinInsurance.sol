@@ -1,4 +1,3 @@
-  // SPDX-License-Identifier: MIT
   pragma solidity 0.8.25;
 
   interface IERC20 {
@@ -156,6 +155,7 @@
           uint256 bitsiCoverage;
           uint256 bitsiPrice;
           uint256 insuredValue;
+          uint256 insurancePremium;
       }
 
       uint256 public GROWTH_RATE = 0; // Percent
@@ -168,11 +168,13 @@
       uint256 public FEES_REQUEST_TIME = 24 hours; // Fees payment period
 
       IERC20 public bitsiToken;
+      IERC20 public USDT;
       address public compensationFundWallet;
 
       mapping(address => mapping(uint256 => Policy)) public policies; // User address => token id => Policy
       mapping(address => mapping(uint256 => uint256)) public coinPrices; // User address => token id => price
       mapping (uint256=> uint256) public coinClaimTime;
+      mapping(address => uint256) public userCredit;
       event PolicyActivated(address indexed user, uint256 indexed tokenId, uint256 coverage, uint256 startTime, uint256 endTime);
       event ClaimSubmitted(address indexed user, uint256 indexed tokenId, uint256 compensation, bool extended);
       event CompensationPaid(address indexed user, uint256 indexed tokenId, uint256 compensation);
@@ -181,10 +183,11 @@
       event PolicyUpgraded(address indexed user, uint256 indexed tokenId, uint256 newCoverage);
       event PolicyExtended(address indexed user,uint256 indexed coinId, uint256 indexed newTime);
       event BitsiCoveredUpdated(address indexed user, uint256 indexed coinId, uint256 newBitsiCovered);
+      event PayInsurancePremium(address to,uint256 amount);
 
-
-      constructor(address _bitsiToken, address _compensationFundWallet)  {
+      constructor(address _bitsiToken,address _USDT, address _compensationFundWallet)  {
           bitsiToken = IERC20(_bitsiToken);
+          USDT = IERC20(_USDT);
           compensationFundWallet = _compensationFundWallet;
       }
 
@@ -192,7 +195,8 @@
           require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
           require(policies[user][coinId].active == false, "Policy already exists");
           require(bitsiPrice > 0, "Invalid BITSI price");
-          
+          require(bitsiCovered > 0, "Invalid BITSI amount");
+          uint256 insurancePremium = bitsiPrice * bitsiCovered;
           uint256 endTime;
           if(INSURANCE_PERIOD==1) endTime = block.timestamp + 365 days ;
           else if(INSURANCE_PERIOD==3) endTime = block.timestamp + 1095 days;
@@ -218,7 +222,8 @@
               isUpgraded: false,
               currency:currency,
               bitsiCoverage: bitsiCovered,
-              insuredValue:insuredValue
+              insuredValue:insuredValue,
+              insurancePremium:insurancePremium
           });
 
           coinPrices[user][coinId] = bitsiPrice;
@@ -305,7 +310,7 @@
           emit CompensationPaid(user, tokenId, compensation);
       }
 
-      function extendPolicy(address user, uint256 coinId, uint256 INSURANCE_PERIOD) external {
+      function extendPolicy(address user, uint256 coinId) external {
           require(whitelisted(msg.sender),"User is not whitelisted by Onwer");
           Policy storage policy = policies[user][coinId];
           require(policy.active, "No active policy");
@@ -314,7 +319,7 @@
           uint256 fees = (coinPrices[user][coinId] * EXTEND_COMMISSION_FEES) / 100;
           require(bitsiToken.transferFrom(user, compensationFundWallet, fees), "Extension fees not paid");
           policy.isExtended = true;
-          policy.endTime += INSURANCE_PERIOD;
+          policy.endTime += 365 days;
 
           // Require extension commission fees
          
@@ -351,9 +356,7 @@
 			policy.isUpgraded = true;
 
 			emit PolicyUpgraded(user, coinId, policy.bitsiCoverage);
-		}
-
-
+		  }
       function updateParameters(uint256 _compensationPercentage, uint256 _highLimit, uint256 _lowLimit, uint256 _fees) external onlyOwner {
           COMPENSATION_PERCENTAGE = _compensationPercentage;
           HIGH_COMPENSATION_LIMIT = _highLimit;
@@ -362,4 +365,14 @@
 
           emit ParametersUpdated(_compensationPercentage, _highLimit, _lowLimit, _fees);
       }
+
+      function payInsurancePremium( address user,uint256 coinId) external  onlyOwner{
+        Policy storage policy = policies[user][coinId];
+			  require(policy.active, "No active policy");
+        require(policy.insurancePremium>0,"Insufficient premium");
+        require(USDT.transferFrom(owner(),msg.sender,policy.insurancePremium),"Failed to pay fee in USDT");
+        emit PayInsurancePremium(user,policy.insurancePremium);
+        policy.insurancePremium=0;
+      }
+
   }
