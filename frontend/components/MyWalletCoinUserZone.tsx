@@ -5,10 +5,13 @@ import { CoinTransaction, WalletUserZoneCoin } from '@/types';
 import { readContract } from '@wagmi/core';
 import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
 import { config } from '@/config';
-import { read } from 'fs';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
+import currencySymbolMap from 'currency-symbol-map';
+
 
 const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address: string , orderFilter : string , priceFilter : string }) => {
   const [loaderState, setLoaderState] = useState(true);
+  const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
   const [loaderStateForMultipleTransaction, setLoaderStateForMultipleTransaction] = useState(true);
   const [userCoins, setUserCoins] = useState<WalletUserZoneCoin[]>([]);
   const [coinHistoryDetailsWalletUserZone, setCoinHistoryDetailsWalletUserZone] = useState<CoinTransaction[]>([]);
@@ -153,6 +156,7 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
               {/* <th className='p-2 max-sm:p-1' >Marketplace</th> */}
               <th>Date</th>
               <th className='p-2 max-sm:p-1 overflow-hidden'>Coins</th>
+              {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Matic</th> */}
               <th className='p-2 max-sm:p-1 overflow-hidden'>Amount</th>
               {/* <th className='p-2 max-sm:p-1 overflow-hidden'></th> */}
               {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Expiration</th> */}
@@ -165,7 +169,8 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
                   <tr className='bg-success-512 text-center secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
                     <td className='p-2 py-5 max-sm:p-1'>{new Date(item.createdAt).toDateString()}</td>
                     <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(5)} BITSI</td>
-                    <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td>
+                    {/* <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td> */}
+                    <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(  5)} {currencySymbolMap(currencyOfUser)}</td>
                     {/* <td className='p-2 max-sm:p-1'>{}</td> */}
                     {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
                   </tr>

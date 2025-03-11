@@ -11,6 +11,9 @@ import { upgradeInsuranceForCoin } from '@/actions/coins';
 import DialogCoinProtection from './DialogCoinProtection';
 import { useCreditContext } from '@/context/Credit-Context';
 import { showToastUI } from '@/lib/utils';
+import currencySymbolMap from 'currency-symbol-map';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
+
 // order filter sorts the data by date 
 const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
     const [inputValueForUpgrade , setInputValueForUpgrade] = useState<number | ''>('');
@@ -23,6 +26,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
     const [loaderActionButton , setLoaderActionButton] = useState(false); // used to set the laoding for the dialog of coin 
     const {writeContractAsync} = useWriteContract();
     const {creditScore , setRefreshCreditScore} = useCreditContext();
+    const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
     // const {isConnected} = useAccount();
     useEffect(()=>{
       const getDataOfNftOnLoad = async()=>{
@@ -174,7 +178,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>{item.id}</td>
                         <td className='p-2 max-sm:p-1'>{item.coinsInsured.toFixed(3)} BITSI</td>
                         <td className='p-2 max-sm:p-1'>{item.status}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(5)} MATIC</td>
+                        <td className='p-2 max-sm:p-1'>{(item.coverage * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration).toDateString()}</td>
                         {/* <td className='p-2 max-sm:p-1'>{item.is_extended == true ? <DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the Insurance Policy will change in coverage.' dialogTitle='Upgrade Insurance Policy?' /> 
                         : <div className='text-gray-400 max-sm:text-[12px] hover:underline   px-4 font-semibold font-manrope text-[16px] relative group cursor-default'>Upgrade

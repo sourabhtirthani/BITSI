@@ -8,6 +8,7 @@ import { headers } from 'next/headers'
 import NextTopLoader from 'nextjs-toploader';
 import SignupPopup from "@/components/SignupPopup";
 import { CreditProvider } from "@/context/Credit-Context";
+import { CurrencyProvider } from "@/context/User-Currency-Context";
 
 const inter = Inter({ subsets: ["latin"], variable : '--font-inter' });
 const poppinss = Poppins({
@@ -74,7 +75,9 @@ export default function RootLayout({
       <NextTopLoader showSpinner = {false}   />
       <Web3ModalProvider initialState={initialState}>
         <CreditProvider>
+          <CurrencyProvider>
         {children}
+        </CurrencyProvider>
         </CreditProvider>
       </Web3ModalProvider>
         </body>

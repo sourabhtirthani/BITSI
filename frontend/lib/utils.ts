@@ -115,3 +115,28 @@ export const showToastUI : any = ({ title, description, operation = 'success' }:
     style: styles[operation],
   });
 }
+
+const priceCache: Record<string, { price: number; timestamp: number }> = {};
+export const getPriceInUserSpecifeidCurrency = async (currency : string):Promise<number | null>=>{
+  try{
+    const curr = currency.toLowerCase();
+    const cacheExpiry = 5 * 60 * 1000; 
+
+    if (priceCache[curr] && (Date.now() - priceCache[curr].timestamp) < cacheExpiry) {
+      console.log(`found the result in the cache no need to hit the api again `)
+        return priceCache[curr].price;
+    }
+    console.log(`the curr is : ${curr}`);
+    console.log(`in the get price of the user specidef curenty`)
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=${curr}` ,{method : 'GET'});
+    const parsed = await res.json();
+    console.log(parsed)
+    const price = parsed['matic-network'][curr];
+    console.log(`this was the price of the currency ${price} and the curr was : ${curr}`);
+    priceCache[curr] = { price, timestamp: Date.now() };
+    return price;
+  }catch(error){
+    console.log(`in the error caluse of the get speciedef currency`)
+    return null;
+  }
+}

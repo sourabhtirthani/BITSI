@@ -9,8 +9,9 @@ import DialogCoinProtection from './DialogCoinProtection';
 import { extendInsuranceForCoin } from '@/actions/coins';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
-import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
-import { getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
+import currencySymbolMap from 'currency-symbol-map';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
+
 // order filter sorts the data by date 
 const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [loaderState , setLoaderState] = useState(true);
@@ -21,6 +22,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
     const [refreshCoin , setRefreshCoin] = useState(false);
     const [refresh , setRefresh] = useState(false);
     const {writeContractAsync} = useWriteContract();
+    const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
     useEffect(()=>{
       const getDataOfNftOnLoad = async()=>{
         try{
@@ -170,7 +172,7 @@ const MyInsuranceTableExtend = ({address} : {address : string}) => {
                         <td className='p-2 max-sm:p-1'>{item.id}</td>
                         <td className='p-2 max-sm:p-1'>{item.coinsInsured.toFixed(3)} BITSI</td>
                         <td className='p-2 max-sm:p-1'>{item.status}</td>
-                        <td className='p-2 max-sm:p-1'>{item.coverage.toFixed(5)} MATIC</td>
+                        <td className='p-2 max-sm:p-1'>{(item.coverage * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                         {/* <td className='p-2 max-sm:p-1'>{new Date(item.startTime).toDateString()}</td> */}
                         <td className='p-2 max-sm:p-1'>{new Date(item.expiration).toDateString()}</td>
                         <td className='p-2 max-sm:p-1'><DialogCoinProtection numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='extend' buttonText='Extend' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleExtendInsuranceOfCoin} dialogDescription='Extending the Insurance Policy will result in a 1-year extension of the policy duration.' dialogTitle='Extend Insurance Policy?' /></td>

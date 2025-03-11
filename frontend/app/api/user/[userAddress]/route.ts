@@ -15,7 +15,15 @@ export async function GET(request : Request, context :  {params : { userAddress:
           where : {
             walletAddress : params.userAddress
           },
+          include : {
+            SupportTedCurrencies: {
+              select : {
+                code : true
+              }
+            }
+          }
         });
+       
         if(!user){
           return NextResponse.json({message : 'NO USERS FOUND'} , {status : 404});
         }

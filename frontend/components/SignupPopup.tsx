@@ -2,13 +2,14 @@
 import { countryList } from '@/constants';
 import { set } from 'date-fns';
 import { ChevronDown, Router } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { createProfileWhenWalletConnect } from '@/actions/uploadNft';
 import Link from 'next/link';
-import { showToastUI } from '@/lib/utils';
+import { getPriceInUserSpecifeidCurrency, showToastUI } from '@/lib/utils';
 import { CurrencyList } from '@/types';
 import { useCreditContext } from '@/context/Credit-Context';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
 
 const SignupPopup = () => {
   const {setCreditScore , refreshCreditScore} = useCreditContext();
@@ -26,6 +27,7 @@ const SignupPopup = () => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const currencyDropDrownRef = useRef<HTMLDivElement | null>(null);
   const [displayCurrencyName , setDisplayCurrencyName] = useState<string | null>(null);
+  const {setCurrencyOfUser , setValueInTheUserSpecifedCurrency} = useCurrencyContext();
 
   const toggleDropdown = () => setOpenDropdown(!openDrowdown);
   const toggleCurrencyDropdown = () => setOpenCurrencyDropDown(!openCurrencyDropDown);
@@ -35,7 +37,16 @@ const SignupPopup = () => {
       if (isConnected) {
         const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
         const data = await res.json();
-        console.log(`this is the credit score ${data.creditScore}`)
+        console.log(`this is the credit score ${data.creditScore} and this is the code of the user : ${data.SupportTedCurrencies.code}`)
+        if(data.SupportTedCurrencies.code !== undefined){
+          console.log('in here setting the code of the currencies')
+          setCurrencyOfUser(data.SupportTedCurrencies.code);
+          const price = await getPriceInUserSpecifeidCurrency(data.SupportTedCurrencies.code);
+          if(price){
+            setValueInTheUserSpecifedCurrency(price);
+          }
+        }
+        
         if(data.creditScore !== undefined){
           console.log(`the data is : ${data.creditScore}`)
           setCreditScore(data.creditScore);

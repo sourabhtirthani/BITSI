@@ -6,15 +6,20 @@ import MobileNav from './MobileNav';
 import DropdownNav from './DropdownNav';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount , useSwitchChain } from 'wagmi';
-import { formatAddress } from '@/lib/utils';
+import { formatAddress, getPriceInUserSpecifeidCurrency } from '@/lib/utils';
 import {  polygonAmoy, sepolia } from 'wagmi/chains'
 import { useCreditContext } from '@/context/Credit-Context';
+import getSymbolFromCurrency from 'currency-symbol-map';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
+
 
 
 const Navbar = () => {
+  const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
   const { creditScore } = useCreditContext();
   const { switchChain } = useSwitchChain()
   const {address , isConnected} = useAccount();
+  const [maticValueInUserCurrency , setMaticValueInUserCurrency] = useState<number>(0);
   const { open } = useWeb3Modal();
   const handleConnect = async () => {
     try { 
@@ -39,6 +44,20 @@ const Navbar = () => {
     }
 
   }, [isConnected , switchChain])
+
+  // useEffect(()=>{
+  //   const getCurrencyPriceOnLoad = async()=>{
+  //     try{
+  //       const price = await getPriceInUserSpecifeidCurrency(currencyOfUser);
+  //       if(price){
+  //         setMaticValueInUserCurrency(price);
+  //       }
+  //     }catch(error){
+
+  //     }
+  //   }
+  //   getCurrencyPriceOnLoad();
+  // }, [])
 
   // useEffect(()=>{
   //   const createUserWithAct = async ()=>{
@@ -86,7 +105,8 @@ const Navbar = () => {
             {isConnected ? 
             creditScore >-1 ?
             // <Image src='/icons/POL.svg' height={12} width={12} alt ='POL' />
-            <p className='text-[#1C1C1C66] hover:text-white font-semibold  text-sm  items-center'> My Credit | <span>{creditScore} ◈ </span></p>  
+           valueInTheUserSpecifedCurrency == 0? <p className='text-[#1C1C1C66] hover:text-white font-semibold  text-sm  items-center'> My Credit | <span>{creditScore} ◈ </span></p>  :
+            <p className='text-[#1C1C1C66] hover:text-white font-semibold  text-sm  items-center'> My Credit | <span>{(Number(creditScore)*valueInTheUserSpecifedCurrency).toFixed( creditScore * valueInTheUserSpecifedCurrency < 0.01 ? 2 : 4)} {getSymbolFromCurrency(currencyOfUser)} </span></p>  
             :  formatAddress(address)
             : 'Wallet'}
             </span>

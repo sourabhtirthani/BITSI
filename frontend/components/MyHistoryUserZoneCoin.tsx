@@ -1,12 +1,16 @@
 import {useState , Fragment, useEffect} from 'react'
 import LoaderComp from './LoaderComp'
 import { CoinTransaction } from '@/types';
-import { formatAddressUserZone } from '@/lib/utils';
+import { formatAddressUserZone, getPriceInUserSpecifeidCurrency } from '@/lib/utils';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
 // import { CoinTransaction } from '@prisma/client';
+import currencySymbolMap from 'currency-symbol-map';
 
 const MyHistoryUserZoneCoin = ({address , orderFilter , priceFilter} : {address : string , orderFilter : string , priceFilter : string}) => {
     const [loaderState , setLoaderState] = useState(true);
     const [coinHistoryDetails , setCoinHistoryDetails] = useState<CoinTransaction[]>([]);
+    const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
+    // const [maticValueInUserCurrency , setMaticValueInUserCurrency] = useState<number>(0);
     // const [filteredCoinHistoryDetails , setFilteredCoinHistoryDetails] = useState<CoinTransaction[]>([]);
 
     useEffect(()=>{
@@ -67,6 +71,7 @@ const MyHistoryUserZoneCoin = ({address , orderFilter , priceFilter} : {address 
           <th className='p-2 max-sm:p-1'>from</th>
           <th className='p-2 max-sm:p-1'>to</th>
           <th className='p-2 max-sm:p-1'>Coins Transferred</th>
+          {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Matic</th> */}
           <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
           {/* <th className='p-2 max-sm:p-1 overflow-hidden'>Price</th>
           <th className='p-2 max-sm:p-1 overflow-hidden'>Protected</th>
@@ -91,7 +96,8 @@ const MyHistoryUserZoneCoin = ({address , orderFilter , priceFilter} : {address 
                 <p className='absolute max-md:hidden bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>{item.to}</p>
                 </td>
                 <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(2)} BITSI</td>
-                <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)} MATIC</td>
+                {/* <td className='p-2 max-sm:p-1'>{item.price.toFixed(4)} MATIC</td> */}
+                <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(  4)} {currencySymbolMap(currencyOfUser)}</td>
                 {/* <td className='p-2 max-sm:p-1'></td>
                 <td className='p-2 max-sm:p-1'>{ new Date(item.nft.insurance.expiration) > new Date() ? 'Yes' : 'No'}</td>
                 <td className='p-2 max-sm:p-1'>{item.nft.insurance.coverage} {balance?.symbol}</td>

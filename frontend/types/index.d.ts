@@ -583,3 +583,31 @@ declare interface CreditContextProps {
   refreshCreditScore : boolean;
   setRefreshCreditScore : React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+
+declare interface UserContextProps{
+  currencyOfUser : string, 
+  setCurrencyOfUser : React.Dispatch<React.SetStateAction<string>>,
+  valueInTheUserSpecifedCurrency : number,
+  setValueInTheUserSpecifedCurrency : React.Dispatch<React.SetStateAction<number>>,
+}
+
+declare interface UserOnLoad {
+  id: number;
+  walletAddress: string;
+  name?: string;
+  email?: string;
+  number?: string;
+  address?: string;
+  bio?: string;
+  imgSrc?: string;
+  country?: string;
+  isInvestor: boolean;
+  investorStatus: 'NonInvestor' | 'Pending' | 'Approved' | 'Rejected';
+  ifKYCVerified: boolean;
+  creditScore: number;
+  createdAt: Date;
+  SupportTedCurrencies?: {
+    code: string;
+  };
+}

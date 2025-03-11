@@ -10,8 +10,9 @@ import DialogCoinProtection from './DialogCoinProtection';
 import { useAccount, useWriteContract } from 'wagmi';
 import { coinInsuranceAbi, coinInsuranceContranctAddress } from '@/lib/coinInsurance';
 import { coinContractAbi, coinContractAddress } from '@/lib/coinContract';
-import { getTransaction } from 'viem/actions';
 import { getTransactionFromHash, getTransactionFromHashOnPolygon } from '@/lib/getTransactionFromHash';
+import currencySymbolMap from 'currency-symbol-map';
+import { useCurrencyContext } from '@/context/User-Currency-Context';
 
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
@@ -28,6 +29,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const [refreshCoinTransactions , setRefreshCoinTransactions] = useState(false);
   const {writeContractAsync} = useWriteContract();
   const {isConnected} = useAccount();
+  const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
 
 
   useEffect(() => {
@@ -249,7 +251,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 py-5 max-sm:p-1'>BITSI</td>
                           {/* <td className='p-2 max-sm:p-1'>BITSI</td> */}
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coinsInsured.toFixed(5)} BITSI</td>
-                          <td className='p-2 max-sm:p-1'>{insuranceItems.coverage.toFixed(5)} MATIC</td>
+                          <td className='p-2 max-sm:p-1'>{(insuranceItems.coverage * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
                           <td className='p-2 max-sm:p-1'>{
                             insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
@@ -270,7 +272,8 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 py-5 max-sm:p-1'>{new Date(item.createdAt).toDateString()}</td>
                           <td className='p-2 max-sm:p-1'>BITSI</td>
                           <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(5)} BITSI</td>
-                          <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td>
+                          {/* <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td> */}
+                          <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(  5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>Not Active</td>
                           <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin}  userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id}  /></td>
                            {/* <td className='p-2 max-sm:p-1'>{}</td> */}
