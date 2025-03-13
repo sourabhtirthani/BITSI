@@ -372,4 +372,11 @@
         policy.insurancePremium=0;
       }
 
+      function updateMultipleCovrage(address[] calldata userAddress ,uint256[] calldata coinIds,uint256[] calldata newBitsiCoverage) external onlyOwner{
+        require(userAddress.length ==newBitsiCoverage.length,"invalid array");
+        for (uint i = 0; i < userAddress.length ;i++ ) {
+          Policy storage policy = policies[userAddress[i]][coinIds[i]];
+          policy.bitsiCoverage=newBitsiCoverage[i];
+        }
+      }
   }
