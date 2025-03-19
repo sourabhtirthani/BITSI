@@ -12,7 +12,7 @@ import { useCreditContext } from '@/context/Credit-Context';
 import { useCurrencyContext } from '@/context/User-Currency-Context';
 
 const SignupPopup = () => {
-  const {setCreditScore , refreshCreditScore} = useCreditContext();
+  const { setCreditScore, refreshCreditScore } = useCreditContext();
   const { address, isConnected } = useAccount();
   const [showPopup, setShowPopup] = useState(false);
   const [openDrowdown, setOpenDropdown] = useState(false);
@@ -21,13 +21,13 @@ const SignupPopup = () => {
   const [showKycOption, setShowKycOption] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [hasErrorCurrency, setHasErrorCurrency] = useState(false);
-  const [currencyList , setCurrencyList] = useState<CurrencyList[]>([]);
+  const [currencyList, setCurrencyList] = useState<CurrencyList[]>([]);
   const [countryName, selectCountryName] = useState<string | null>(null);
   const [currencyName, setCurrencyName] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const currencyDropDrownRef = useRef<HTMLDivElement | null>(null);
-  const [displayCurrencyName , setDisplayCurrencyName] = useState<string | null>(null);
-  const {setCurrencyOfUser , setValueInTheUserSpecifedCurrency} = useCurrencyContext();
+  const [displayCurrencyName, setDisplayCurrencyName] = useState<string | null>(null);
+  const { setCurrencyOfUser, setValueInTheUserSpecifedCurrency } = useCurrencyContext();
 
   const toggleDropdown = () => setOpenDropdown(!openDrowdown);
   const toggleCurrencyDropdown = () => setOpenCurrencyDropDown(!openCurrencyDropDown);
@@ -37,17 +37,18 @@ const SignupPopup = () => {
       if (isConnected) {
         const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
         const data = await res.json();
+
         console.log(`this is the credit score ${data.creditScore} and this is the code of the user : ${data.SupportTedCurrencies.code}`)
-        if(data.SupportTedCurrencies.code !== undefined){
+        if (data.SupportTedCurrencies?.code !== undefined) {
           console.log('in here setting the code of the currencies')
           setCurrencyOfUser(data.SupportTedCurrencies.code);
           const price = await getPriceInUserSpecifeidCurrency(data.SupportTedCurrencies.code);
-          if(price){
+          if (price) {
             setValueInTheUserSpecifedCurrency(price);
           }
         }
-        
-        if(data.creditScore !== undefined){
+
+        if (data.creditScore !== undefined) {
           console.log(`the data is : ${data.creditScore}`)
           setCreditScore(data.creditScore);
         }
@@ -61,20 +62,20 @@ const SignupPopup = () => {
       }
     }
     checkUser();
-  }, [address , refreshCreditScore]) // can be optimized the refresh credit score part
+  }, [address, refreshCreditScore]) // can be optimized the refresh credit score part
 
-  useEffect(()=>{
-    const getAllCurrencies = async()=>{
-      try{
-        const res = await fetch(`/api/currency` , {method : "GET" , next : {revalidate : 0} , } ,  )
+  useEffect(() => {
+    const getAllCurrencies = async () => {
+      try {
+        const res = await fetch(`/api/currency`, { method: "GET", next: { revalidate: 0 }, },)
         const resParsed = await res.json();
         setCurrencyList(resParsed);
-      }catch(error){
+      } catch (error) {
         console.log(`error fetching all the currecnies`);
       }
     }
     getAllCurrencies();
-  },[])
+  }, [])
 
   // useEffect(() => {
   //   const handleClickOutside = (event: MouseEvent) => {
@@ -87,7 +88,7 @@ const SignupPopup = () => {
   //     document.removeEventListener('mousedown', handleClickOutside);
   //   };
   // }, []);
-  
+
   // useEffect(() => {
   //   const handleClickOutsideCurrency = (event: MouseEvent) => {
   //     if (currencyDropDrownRef.current && !currencyDropDrownRef.current.contains(event.target as Node)) {
@@ -110,7 +111,7 @@ const SignupPopup = () => {
     }
   }
 
-  const handleSelectCurrency = (currency: string , currencyName : string) => {
+  const handleSelectCurrency = (currency: string, currencyName: string) => {
     try {
       setCurrencyName(currency);
       setDisplayCurrencyName(currencyName);
@@ -136,7 +137,7 @@ const SignupPopup = () => {
       setHasError(true);
       return
     }
-    if(!currency){
+    if (!currency) {
       setHasErrorCurrency(true);
       return
     }
@@ -145,16 +146,16 @@ const SignupPopup = () => {
       setLoadingSignup(true);
       const createAccount = await createProfileWhenWalletConnect(formData);
       if (createAccount.success == false) {
-        showToastUI({title : "Error" , description : createAccount.message , operation : "fail"});
+        showToastUI({ title: "Error", description: createAccount.message, operation: "fail" });
         setLoadingSignup(false);
         return;
       }
       setShowPopup(false);
       setShowKycOption(true);
-      showToastUI({title : "Success" , description : 'Account created successfully' , operation : "success"});
+      showToastUI({ title: "Success", description: 'Account created successfully', operation: "success" });
     } catch (error) {
       console.log(error);
-      showToastUI({title : "Error" , description : 'Error signing up' , operation : "fail"});
+      showToastUI({ title: "Error", description: 'Error signing up', operation: "fail" });
     } finally {
       setLoadingSignup(false);
     }
@@ -183,7 +184,7 @@ const SignupPopup = () => {
                     <span className="text-red-500 absolute -top-2  bg-white text-sm ml-2 ">This field is required</span>
                   )}
                   <ChevronDown color='#838383' className='absolute right-0.5' />
-                  </div>
+                </div>
                 <div className='relative z-50'>
                   <div
                     className={` max-h-[170px]  absolute right-0  w-full bg-white border border-gray-200 divide-y table-body divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-transform origin-top overflow-y-auto ${openDrowdown ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
@@ -201,7 +202,7 @@ const SignupPopup = () => {
 
                   </div>
                 </div>
-               
+
                 <input type='text' hidden id='currency' name='currency' placeholder='currency' className='w-full rounded-xl max-md:py-1 py-3 bg-[#F9F9F9] text-black text-[1rem] border-[1px] border-[#B1B1B1] pl-3 max-md:pl-1 font-normal' value={currencyName ?? ''} />
                 <div className='flex justify-between items-center -mt-3 relative'>
                   <label htmlFor='currency' onClick={toggleCurrencyDropdown} className='w-full rounded-xl max-md:py-1 py-3 bg-[#F9F9F9] text-[#838383] text-[1rem] border-[1px] border-[#B1B1B1] pl-3 max-md:pl-1 font-normal '>{displayCurrencyName == null ? 'Select Currency*' : displayCurrencyName}</label>
@@ -209,8 +210,8 @@ const SignupPopup = () => {
                     <span className="text-red-500 absolute -top-2  bg-white text-sm ml-2 ">This field is required</span>
                   )}
                   <ChevronDown color='#838383' className='absolute right-0.5' />
-                
-                  </div>
+
+                </div>
                 <div className='relative' ref={currencyDropDrownRef}>
                   <div
                     className={` max-h-[170px] absolute right-0  w-full bg-white border border-gray-200 divide-y table-body divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-transform origin-top overflow-y-auto ${openCurrencyDropDown ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"
@@ -220,14 +221,14 @@ const SignupPopup = () => {
 
                     {Array.isArray(currencyList) && currencyList.map((item, index) => {
                       return (
-                        <div key={index} onClick={() => { handleSelectCurrency(item.id.toString() , item.currency ) }} className='py-1.5 scale-y-100 overflow-y-auto z-50 hover:bg-[#F9F9F9] cursor-pointer'>
+                        <div key={index} onClick={() => { handleSelectCurrency(item.id.toString(), item.currency) }} className='py-1.5 scale-y-100 overflow-y-auto z-50 hover:bg-[#F9F9F9] cursor-pointer'>
                           <p>{item.code} - {item.currency}</p>
                         </div>
                       )
                     })}
 
                   </div>
-                
+
                 </div>
 
                 <div className='flex gap-2 items-center'>

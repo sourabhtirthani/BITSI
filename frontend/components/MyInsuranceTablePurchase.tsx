@@ -17,19 +17,19 @@ import { useCurrencyContext } from '@/context/User-Currency-Context';
 // order filter sorts the data by date 
 const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const [loaderState, setLoaderState] = useState(true);
-  const [loaderStateForTransactions , setLoaderStateForTransactions] = useState(true);
-  const [loaderActionButton , setLoaderActionButton] = useState(false);
+  const [loaderStateForTransactions, setLoaderStateForTransactions] = useState(true);
+  const [loaderActionButton, setLoaderActionButton] = useState(false);
   const [loaderStateCoin, setLoaderStateCoin] = useState(true);
   const [dataOfNftUserZonePurchase, setDataOfNftUserZonePurchase] = useState<PurcahseInsuraceUserZone[]>([])
   const [dataOfCoinUserZonePurchase, setDataOfCoinUserZonePurchase] = useState<CoinWithInsurances[]>([]);
-  const [unInsuredTransactions , setUninsuredTransactions] = useState<CoinTransaction[]>([]);
+  const [unInsuredTransactions, setUninsuredTransactions] = useState<CoinTransaction[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [maxCoinsAvailableForInsurance , setMaxCoinsAvailableForInsurance] = useState(0);
-  const [refreshCoin , setRefreshCoin] = useState(false);
-  const [refreshCoinTransactions , setRefreshCoinTransactions] = useState(false);
-  const {writeContractAsync} = useWriteContract();
-  const {isConnected} = useAccount();
-  const {currencyOfUser , valueInTheUserSpecifedCurrency} = useCurrencyContext();
+  const [maxCoinsAvailableForInsurance, setMaxCoinsAvailableForInsurance] = useState(0);
+  const [refreshCoin, setRefreshCoin] = useState(false);
+  const [refreshCoinTransactions, setRefreshCoinTransactions] = useState(false);
+  const { writeContractAsync } = useWriteContract();
+  const { isConnected } = useAccount();
+  const { currencyOfUser, valueInTheUserSpecifedCurrency } = useCurrencyContext();
 
 
   useEffect(() => {
@@ -58,24 +58,24 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   useEffect(() => {
     const getCoinInsurancePurchaseDetails = async () => {
       try {
-        if(address){
+        if (address) {
           setLoaderStateCoin(true)
-        const responseFromServerCoin = await fetch(`/api/userzone/insurance/purchase/coin/${address}`, { method: "GET", next: { revalidate: 0 } })
-        const resInJsonCoin = await responseFromServerCoin.json();
-        if (resInJsonCoin != null) {
-          setDataOfCoinUserZonePurchase([resInJsonCoin]); 
-        if(resInJsonCoin && resInJsonCoin.insurances &&  resInJsonCoin.insurances.length > 0){
-            let coinsInsuredPendingOrApproved = 0;
-            console.log(resInJsonCoin.insurances)
-            for(let i = 0; i< resInJsonCoin.insurances.length; i++){
-              coinsInsuredPendingOrApproved = coinsInsuredPendingOrApproved + resInJsonCoin.insurances[i].coinsInsured;
+          const responseFromServerCoin = await fetch(`/api/userzone/insurance/purchase/coin/${address}`, { method: "GET", next: { revalidate: 0 } })
+          const resInJsonCoin = await responseFromServerCoin.json();
+          if (resInJsonCoin != null) {
+            setDataOfCoinUserZonePurchase([resInJsonCoin]);
+            if (resInJsonCoin && resInJsonCoin.insurances && resInJsonCoin.insurances.length > 0) {
+              let coinsInsuredPendingOrApproved = 0;
+              console.log(resInJsonCoin.insurances)
+              for (let i = 0; i < resInJsonCoin.insurances.length; i++) {
+                coinsInsuredPendingOrApproved = coinsInsuredPendingOrApproved + resInJsonCoin.insurances[i].coinsInsured;
+              }
+              setMaxCoinsAvailableForInsurance(resInJsonCoin.totalCoins - coinsInsuredPendingOrApproved);
+            } else {
+              setMaxCoinsAvailableForInsurance(resInJsonCoin.unInsuredCoins);
             }
-          setMaxCoinsAvailableForInsurance(resInJsonCoin.totalCoins - coinsInsuredPendingOrApproved);
-          }else{
-            setMaxCoinsAvailableForInsurance(resInJsonCoin.unInsuredCoins);
           }
         }
-      }
       } catch (error) {
         console.log(error)
         console.log(`error fetching data from the api`)
@@ -84,38 +84,38 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
       }
     }
     getCoinInsurancePurchaseDetails();
-  } , [address , refreshCoin])
+  }, [address, refreshCoin])
 
-  useEffect(()=>{
-    const getTransactionsThatAreNotInsured = async()=>{
-      try{
+  useEffect(() => {
+    const getTransactionsThatAreNotInsured = async () => {
+      try {
         setLoaderStateForTransactions(true);
         const res = await fetch(`/api/userzone/history/coins/${address}?type=protection`, { method: "GET", next: { revalidate: 0 }, },)
         const resParsed = await res.json();
         setUninsuredTransactions(resParsed);
 
-      }catch(error){
-        toast({ title: "Error", description: "Error getting transactions", duration: 2000,style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},})
-      }finally{
+      } catch (error) {
+        toast({ title: "Error", description: "Error getting transactions", duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', }, })
+      } finally {
         setLoaderStateForTransactions(false);
       }
     }
     getTransactionsThatAreNotInsured();
-  } , [address , refreshCoinTransactions])
+  }, [address, refreshCoinTransactions])
 
-  const handleCoinInsurancePurchase = async(coinInsuranceId : number, setRefreshMethod : React.Dispatch<React.SetStateAction<boolean>> , numberOfCoins : number , numberOfYears : number)=>{
-    try{  
-      if(!isConnected){
+  const handleCoinInsurancePurchase = async (coinInsuranceId: number, setRefreshMethod: React.Dispatch<React.SetStateAction<boolean>>, numberOfCoins: number, numberOfYears: number) => {
+    try {
+      if (!isConnected) {
         throw new Error('Please connect wallet to purchase insurance');
       }
       setLoaderActionButton(true);
-      const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72` , {method : 'GET'});
-      const getCurrentCoinDetailsParsed  =await getCurrentCoinDetails.json();
+      const getCurrentCoinDetails = await fetch(`https://api.dexscreener.com/latest/dex/tokens/0x628211398E10a014826bc7d943a39b2cE6126D72`, { method: 'GET' });
+      const getCurrentCoinDetailsParsed = await getCurrentCoinDetails.json();
       const currentCoinPrice = getCurrentCoinDetailsParsed.pairs[0].priceNative;
       // const totalPriceOfInsurance = (Number(currentCoinPrice) * numberOfCoins)*(80/100);
       const totalPriceOfInsurance = (Number(currentCoinPrice) * 1);
       console.log(`this is the total price of insurance : ${totalPriceOfInsurance}`)
-      const priceInWei = BigInt(totalPriceOfInsurance * 10**18);
+      const priceInWei = BigInt(totalPriceOfInsurance * 10 ** 18);
       // const maxUint256 = BigInt("115792089237316195423570985008687907853269984665640564039457584007913129639935");
       // const approveContractTransaciton  = await writeContractAsync({
       //   address : coinContractAddress,
@@ -128,37 +128,37 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
 
       // if(waitForApproveTransaction.success == true){
       // TO DO : discuss this transaction with the blockchain team
-      const transaction  = await writeContractAsync({
-        address : coinInsuranceContranctAddress,
-        abi : coinInsuranceAbi,
-        functionName : 'activatePolicy',
-        args: [address , coinInsuranceId ,priceInWei , numberOfYears , coinContractAddress , numberOfCoins],
+      const transaction = await writeContractAsync({
+        address: coinInsuranceContranctAddress,
+        abi: coinInsuranceAbi,
+        functionName: 'activatePolicy',
+        args: [address, coinInsuranceId, priceInWei, numberOfYears, coinContractAddress, numberOfCoins],
       })
-      if(!transaction){
+      if (!transaction) {
         console.log('error in transaction during purchase');
         throw new Error('Error purchasing policty of the user');
       }
-      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId , Number(currentCoinPrice) , numberOfYears);
+      const purchaseCoinInsurace = await purchaseCoinInsuranceAfterApproval(coinInsuranceId, Number(currentCoinPrice), numberOfYears);
       setRefreshMethod(prev => !prev);
-      toast({title: "Operation Success",description: "Successfully purchased insurance",duration: 2000, style: {backgroundColor: '#4CAF50',color: 'white',fontFamily: 'Manrope',}})
-    // }
-    }catch(error){
+      toast({ title: "Operation Success", description: "Successfully purchased insurance", duration: 2000, style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope', } })
+      // }
+    } catch (error) {
       console.log(error)
-      toast({title: "Error",description: "Error Purchasing Insurance",duration: 2000, style: {backgroundColor: '#900808',color: 'white',fontFamily: 'Manrope',}})
-    }finally{
+      toast({ title: "Error", description: "Error Purchasing Insurance", duration: 2000, style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope', } })
+    } finally {
       setLoaderActionButton(false);
     }
   }
 
   const wrappedHandler = (coinInsuranceId: number, setRefreshMethod: React.Dispatch<React.SetStateAction<boolean>>, numberOfCoins: number) => {
-    
-    const expirationTime = 123; 
+
+    const expirationTime = 123;
     // const currentInsuranceItem = item.insurances.find(insurance => insurance.id === id);
     const currentInsuranceItem = dataOfCoinUserZonePurchase.flatMap(item => item.insurances).find(insurance => insurance?.id === coinInsuranceId);
     console.log(`the id of tha is and the expiraiton time is : ${currentInsuranceItem?.expiration} , the id is ${currentInsuranceItem?.id}`)
     // const years = Math.floor((new Date(currentInsuranceItem?.expiration.getFullYear()) - new Date(currentInsuranceItem?.startTime.getFullYear())) / (1000 * 60 * 60 * 24 * 365.25));
     const years = new Date(currentInsuranceItem?.expiration ?? "").getFullYear() - new Date(currentInsuranceItem?.startTime ?? "").getFullYear();
-    return handleCoinInsurancePurchase(coinInsuranceId, setRefreshMethod, numberOfCoins , years);
+    return handleCoinInsurancePurchase(coinInsuranceId, setRefreshMethod, numberOfCoins, years);
   }
 
   return (
@@ -254,8 +254,8 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>{(insuranceItems.coverage * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
                           <td className='p-2 max-sm:p-1'>{
-                            insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton  ={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
-                            }</td>
+                            insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
+                          }</td>
                         </tr>
                         <tr>
                           <td className='h-5'></td>
@@ -273,18 +273,18 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>BITSI</td>
                           <td className='p-2 max-sm:p-1'>{item.coinsTransferred.toFixed(5)} BITSI</td>
                           {/* <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td> */}
-                          <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(  5)} {currencySymbolMap(currencyOfUser)}</td>
+                          <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>Not Active</td>
-                          <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin}  userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id}  /></td>
-                           {/* <td className='p-2 max-sm:p-1'>{}</td> */}
+                          <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin} userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id} /></td>
+                          {/* <td className='p-2 max-sm:p-1'>{}</td> */}
                           {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
                         </tr>
                         <tr>
-                    <td className='h-5'></td>
-                  </tr>
-                        </React.Fragment>
+                          <td className='h-5'></td>
+                        </tr>
+                      </React.Fragment>
                     )
-            })}
+                  })}
                 </React.Fragment>
               )
             })}

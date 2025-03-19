@@ -16,3 +16,15 @@ const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 export default prisma;
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+// ✅ Test the database connection
+// async function checkDatabaseConnection() {
+//   try {
+//     await prisma.$connect();
+//     console.log('✅ Database connected successfully!');
+//   } catch (error) {
+//     console.error('❌ Database connection failed:', error);
+//   }
+// }
+
+// checkDatabaseConnection();
