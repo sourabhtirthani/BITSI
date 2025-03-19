@@ -253,8 +253,11 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           <td className='p-2 max-sm:p-1'>{insuranceItems.coinsInsured.toFixed(5)} BITSI</td>
                           <td className='p-2 max-sm:p-1'>{(insuranceItems.coverage * valueInTheUserSpecifedCurrency).toFixed(5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>{insuranceItems.status}</td>
-                          <td className='p-2 max-sm:p-1'>{
+                          {/* <td className='p-2 max-sm:p-1'>{
                             insuranceItems.status == 'Approved' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
+                          }</td> */}
+                          <td className='p-2 max-sm:p-1'>{
+                            insuranceItems.status == 'ApprovalPending' && <DialogCoinProtection numberOfCoins={insuranceItems.coinsInsured} loaderActionButton={loaderActionButton} action='Purchase' buttonText='Purchase' coinInsuranceId={insuranceItems.id} setRefresh={setRefreshCoin} handleMethodCall={wrappedHandler} dialogDescription='Purchasing the Insurance Policy will result in the addition of insurance coverage.' dialogTitle='Purchase Insurance Policy?' />
                           }</td>
                         </tr>
                         <tr>
