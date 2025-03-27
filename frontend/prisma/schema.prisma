@@ -255,3 +255,11 @@ model SupportTedCurrencies {
   createdAt DateTime @default(now())
   users     User[]
 }
+
+model InsuranceApprove {
+  id        Int      @id @default(autoincrement())
+  address   String
+  amount    String
+  status    String   @default("pending") // Can be "approved" or "rejected"
+  createdAt DateTime @default(now())
+}
