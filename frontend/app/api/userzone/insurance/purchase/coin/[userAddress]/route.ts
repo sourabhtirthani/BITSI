@@ -60,6 +60,6 @@ export async function POST(request: Request, context: { params: { userAddress: s
 
   } catch (error) {
     console.error("API Error:", error);
-    return NextResponse.json({ error: "Internal server error", details: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", details: error }, { status: 500 });
   }
 }

@@ -44,34 +44,34 @@ export function DialogOtpAdmin({open , setOpen ,emailAddress, password} : {open 
             setShowResendLink(true)
         }
       }, [timeLeft]);
-    const handleSubmitClick = async()=>{
-      try{
-        setDisableSubmitButton(true)
-        // const res = await validateOtp(otpValue , emailAddress)
+      const handleSubmitClick = async()=>{
         try{
-           const res = await handleLoginForAdmin(emailAddress , password,otpValue);
-            if(res.success == true){
-                router.push(`/admin/analytic-dashboard`);
-            }else{
-                setShowOtpError(true);
-                setDisableSubmitButton(false)
-            }
+          setDisableSubmitButton(true)
+          // const res = await validateOtp(otpValue , emailAddress)
+          try{
+             const res = await handleLoginForAdmin(emailAddress , password,otpValue);
+              if(res.success == true){
+                  router.push(`/admin/analytic-dashboard`);
+              }else{
+                  setShowOtpError(true);
+                  setDisableSubmitButton(false)
+              }
+          }catch(error){
+              console.log(`error in here`)
+              console.log(error);
+              setShowOtpError(true);
+              
+              setDisableSubmitButton(false)
+          }
+         
         }catch(error){
-            console.log(`error in here`)
-            console.log(error);
-            setShowOtpError(true);
-            
+          console.log('in the error clause vlaidate otp in the client side');
+          toast({ title: "ERROR validating OTP", description: "OTP Validation Error", duration: 2000,
+              style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},
+            });
             setDisableSubmitButton(false)
         }
-       
-      }catch(error){
-        console.log('in the error clause vlaidate otp in the client side');
-        toast({ title: "ERROR validating OTP", description: "OTP Validation Error", duration: 2000,
-            style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope',},
-          });
-          setDisableSubmitButton(false)
       }
-    }
     const handleResendLink = async()=>{
         try{
             const otpSent = await sendOtp(emailAddress)

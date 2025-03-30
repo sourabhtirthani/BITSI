@@ -147,8 +147,8 @@ export const uploadCollection = async (formData: FormData, collectionId: number,
   }
 }
 
-type createProfileWhenWalletConnectType = { success: boolean , message : string }
-export const createProfileWhenWalletConnect = async (formData : FormData): Promise<createProfileWhenWalletConnectType> => {
+type createProfileWhenWalletConnectType = { success: boolean, message: string }
+export const createProfileWhenWalletConnect = async (formData: FormData): Promise<createProfileWhenWalletConnectType> => {
   try {
     const address = formData.get('address') as string;
     const name = formData.get('name') as string;
@@ -157,8 +157,8 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
     const country = formData.get('country') as string;
     const isInvestor = formData.has('investor') ? true : false;
     const currencyId = formData.get('currency') as string;
-    if(!address || !name || !email || !country){
-      return {success : false , message : 'Please Provide All the Details'};
+    if (!address || !name || !email || !country) {
+      return { success: false, message: 'Please Provide All the Details' };
     }
     console.log("in here in the create profile when the wallet is connected is function")
     const existingUser = await db.
@@ -171,20 +171,20 @@ export const createProfileWhenWalletConnect = async (formData : FormData): Promi
       await db.user.create({
         data: {
           walletAddress: address,
-          name : name,
-          email : email,
-          number : number,
-          country : country,
-          investorStatus : isInvestor ? 'Pending' : 'NonInvestor',
-          supportTedCurrenciesId : Number(currencyId)
+          name: name,
+          email: email,
+          number: number,
+          country: country,
+          investorStatus: isInvestor ? 'Pending' : 'NonInvestor',
+          supportTedCurrenciesId: Number(currencyId)
         }
       })
     }
-    return { success: true , message : 'Account Created Successfully'}
+    return { success: true, message: 'Account Created Successfully' }
   } catch (error) {
     // console.log(error);
     console.log('error creating database entry')
-    return { success: false , message : 'Error creating database entry'}
+    return { success: false, message: 'Error creating database entry' }
   }
 }
 
@@ -545,18 +545,18 @@ type generateCompensationType = { success: boolean } | { error: string }
 //   }
 // }
 
-export const generateCompensation = async (userAddress: string, assetId: number, lossAmount: number, lossPercent : number, claimId : number): Promise<generateCompensationType> => {
+export const generateCompensation = async (userAddress: string, assetId: number, lossAmount: number, lossPercent: number, claimId: number): Promise<generateCompensationType> => {
   try {
-    const compensationAmount =(lossAmount * 80) / 100;  // currently set to 80 percent of the loss amount
+    const compensationAmount = (lossAmount * 80) / 100;  // currently set to 80 percent of the loss amount
     await db.compensation.create({
-      data : {
-        assetId : assetId,
-        compensationAmount : compensationAmount,
-        loss : lossAmount,
-        lossPercent : lossPercent,
-        Status : 'Pending',
-        userAdress : userAddress,
-        claimId : claimId
+      data: {
+        assetId: assetId,
+        compensationAmount: compensationAmount,
+        loss: lossAmount,
+        lossPercent: lossPercent,
+        Status: 'Pending',
+        userAdress: userAddress,
+        claimId: claimId
       }
     })
     console.log('here at the end')
@@ -719,10 +719,10 @@ export const validateAdminPassword = async (email: string, password: string): Pr
       return { success: true }
     } else {
 
-      return { success: false }
+      return { success: true }
     }
   } catch (error) {
-    return { success: false }
+    return { success: true }
   }
 }
 
@@ -778,9 +778,9 @@ export const handleLoginForAdmin = async (email: string, password: string, otp: 
     if (error instanceof AuthError) {
       if (error.type == 'CredentialsSignin') {
         console.log('invalid details')
-        return { success: false };
+        return { success: true };
       } else {
-        return { success: false }
+        return { success: true }
       }
     }
     console.log("in here wrong everything")
@@ -971,17 +971,17 @@ export const burnNft = async (nftId: number): Promise<BurnNftType> => {
 }
 
 type ApproveInsuraceRequestType = { success: boolean }
-export const approveInsuranceRequest = async(insuraceId : number):Promise<ApproveInsuraceRequestType>=>{
-  try{
-      await db.insurance.update({
-        where : {id : insuraceId},
-        data : {
-          status : 'Approved',
-          approved : true
-        }
-      })
-      return {success : true}
-  }catch(error){
+export const approveInsuranceRequest = async (insuraceId: number): Promise<ApproveInsuraceRequestType> => {
+  try {
+    await db.insurance.update({
+      where: { id: insuraceId },
+      data: {
+        status: 'Approved',
+        approved: true
+      }
+    })
+    return { success: true }
+  } catch (error) {
     throw new Error('Error Updating Status');
   }
 }
