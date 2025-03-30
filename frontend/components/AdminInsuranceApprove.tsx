@@ -31,7 +31,7 @@ const AdminInsuranceApproveTable = () => {
   return (
     <div className='flex flex-col w-full'>
       <div className=' flex flex-col  mb-2'>
-        <DialogAdminWalletAdd setRefresh={setRefresh} />
+        {/* <DialogAdminWalletAdd setRefresh={setRefresh} /> */}
       </div>
       <div className='max-h-[500px]  px-8 max-md:px-4 w-full overflow-y-auto overflow-x-auto scrollbar-thin   mb-20 table-'>
         <table className='w-full text-left mt-4 border-spacing-20  '>

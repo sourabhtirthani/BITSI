@@ -49,7 +49,7 @@ const Sidebar = () => {
       <Link href='/admin/compensation'><p className='text-[18px] font-manrope self-start text-white font-bold '>Compensation</p></Link>
       <Link href='/admin/policy-status'><p className='text-[18px] font-manrope self-start text-white font-bold '>Policy Status</p></Link>
       <Link href='/admin/ownership'><p className='text-[18px] font-manrope self-start text-white font-bold '>Ownership</p></Link>
-      <Link href='/admin/insurance-approval'><p className='text-[18px] font-manrope self-start text-white font-bold '>Insurance Approve</p></Link>
+      <Link href='/admin/insurance-management'><p className='text-[18px] font-manrope self-start text-white font-bold '>Insurance Approve</p></Link>
       <SignoutAdminPanel />
 
       {/* <div className='self-start flex flex-col justify-center items-center w-full gap-3'>
