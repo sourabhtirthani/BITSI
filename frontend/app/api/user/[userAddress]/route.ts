@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(request : Request, context :  {params : { userAddress: string}}){
     try{
       const  {params} = context;
+      console.log("params",params);
       // console.log(params.userAddress)
       console.log('in the api req')
         if(!params.userAddress){
@@ -11,7 +12,7 @@ export async function GET(request : Request, context :  {params : { userAddress:
                 error : 'No address Provided'
             }, {status : 400})
         }
-        const user = await db.user.findUnique({
+        const user = await db.user.findUnique({ 
           where : {
             walletAddress : params.userAddress
           },
@@ -23,7 +24,7 @@ export async function GET(request : Request, context :  {params : { userAddress:
             }
           }
         });
-       
+        console.log("usersssssssssssss",user);
         if(!user){
           return NextResponse.json({message : 'NO USERS FOUND'} , {status : 404});
         }

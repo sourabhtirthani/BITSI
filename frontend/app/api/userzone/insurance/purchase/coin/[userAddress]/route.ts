@@ -22,7 +22,7 @@ export async function GET(request: Request, context: { params: { userAddress: st
             }
         }
       })
-      
+      console.log("coinsOfUser ",coinsOfUser);
       return NextResponse.json(coinsOfUser, { status: 200 });
   
     } catch (error) {

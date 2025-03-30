@@ -15,7 +15,7 @@ import { useAccount, useWriteContract } from 'wagmi'
 import { creditNoteContractABI, creditNoteContractAddress } from '@/lib/creditContract'
 import { readContract , waitForTransactionReceipt } from '@wagmi/core'
 import { config } from '@/config'
-import { increaseCreditScore } from '@/actions/users'
+import { increaseCreditScore, insertCoin, insertCoinTransaction } from '@/actions/users'
 import { coinContractAbi, coinContractAddress } from '@/lib/coinContract'
 import { getTransactionFromHash } from '@/lib/getTransactionFromHash'
 // , setLoaderActionButton : React.Dispatch<React.SetStateAction<boolean>>
@@ -74,6 +74,8 @@ const DialogBuyCoinFromSpecificPlace = () => {
             });
             
             if (transaction) {
+                await insertCoin(address as string,valueToSend,Number(quantityCoins),Number(quantityCoins))
+                await insertCoinTransaction(Number(quantityCoins),"Buy",creditNoteContractAddress,address,tokenPrice)
                 await increaseCreditScore(address as string, tokenPrice * Number(quantityCoins)); // this sets the new credit score
             }
         

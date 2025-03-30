@@ -37,20 +37,7 @@ const SignupPopup = () => {
       if (isConnected) {
         const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
         const data = await res.json();
-        console.log(`this is the credit score ${data.creditScore} and this is the code of the user : ${data.SupportTedCurrencies.code}`)
-        if(data.SupportTedCurrencies.code !== undefined){
-          console.log('in here setting the code of the currencies')
-          setCurrencyOfUser(data.SupportTedCurrencies.code);
-          const price = await getPriceInUserSpecifeidCurrency(data.SupportTedCurrencies.code);
-          if(price){
-            setValueInTheUserSpecifedCurrency(price);
-          }
-        }
-        
-        if(data.creditScore !== undefined){
-          console.log(`the data is : ${data.creditScore}`)
-          setCreditScore(data.creditScore);
-        }
+        console.log("data.SupportTedCurrencies",data);
         if (res.status == 404) {
           setShowPopup(true);
         } else if (res.status == 200) {
@@ -59,6 +46,21 @@ const SignupPopup = () => {
       } else {
         setShowPopup(false);
       }
+        // console.log(`this is the credit score ${data.creditScore} and this is the code of the user : ${data.SupportTedCurrencies.code}`)
+        // if(data.SupportTedCurrencies !== undefined){
+        //   console.log('in here setting the code of the currencies')
+        //   setCurrencyOfUser(data.SupportTedCurrencies.code);
+        //   const price = await getPriceInUserSpecifeidCurrency(data.SupportTedCurrencies.code);
+        //   if(price){
+        //     setValueInTheUserSpecifedCurrency(price);
+        //   }
+        // }
+        
+        // if(data.creditScore !== undefined){
+        //   console.log(`the data is : ${data.creditScore}`)
+        //   setCreditScore(data.creditScore);
+        // }
+        
     }
     checkUser();
   }, [address , refreshCreditScore]) // can be optimized the refresh credit score part

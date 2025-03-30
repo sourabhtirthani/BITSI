@@ -70,4 +70,57 @@ export const increaseCreditScore = async (address: string, creditScore: number):
     } catch (error) {
         return { success: false }
     }
-}
+} 
+
+export const insertCoinTransaction = async (
+    coinsTransferred: number,
+    eventName: string,
+    from: string,
+    to: string,
+    price: number
+  ): Promise<GeneralTypeForACtions> => {
+    try {
+      console.log(`Inserting new transaction event...`);
+  
+      await db.coinTransactionEvent.create({
+        data: {
+          coinsTransferred,
+          eventName,
+          from,
+          to,
+          price,
+        },
+      });
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error inserting coin transaction:", error);
+      return { success: false };
+    }
+  };
+  
+  export const insertCoin = async (
+    userAddress: string,
+    totalAmount: number,
+    totalCoins: number,
+    unInsuredCoins: number
+  ): Promise<GeneralTypeForACtions> => {
+    try {
+      console.log(`Inserting new coin record for user: ${userAddress}`);
+  
+      await db.coin.create({
+        data: {
+          userAddress,
+          totalAmount,
+          totalCoins,
+          unInsuredCoins,
+        },
+      });
+  
+      return { success: true };
+    } catch (error) {
+      console.error("Error inserting coin record:", error);
+      return { success: false };
+    }
+  };
+   

@@ -40,12 +40,13 @@ const MyWalletCoinUserZone = ({ address , orderFilter , priceFilter }: { address
     getAlluserCoins();
   }, [address])
 
-  
+   
   useEffect(() => {
     const getUserCoinTransactions = async () => {
       try {
         const res = await fetch(`/api/userzone/history/coins/${address}?type=userwallet`, { method: "GET", next: { revalidate: 0 }, },)
         const resParsed = await res.json();
+        console.log("resParsed     abcd",resParsed)
         setCoinHistoryDetailsWalletUserZone(resParsed);
       } catch (error) {
         console.log(error)
