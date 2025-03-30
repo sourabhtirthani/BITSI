@@ -1,0 +1,142 @@
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Message } from "ai";
+import { ToastOperation, ToastPropsUtil, ToastStyles } from "@/types";
+import { toast } from "@/components/ui/use-toast";
+
+
+
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+export const generateQueryString = (checkedItems: string[]): string => {
+  if (checkedItems.length === 0) {
+    return '';
+  }
+  // return `?ids=${checkedItems.join('&')}`;
+   return checkedItems.map((id, index) => `id${index+1}=${id}`).join('&');
+};
+
+
+export const uploadNftformSchema  = z.object({
+  nftFile: z
+    // .instanceof(File)
+    // .any(z.custom<File>())
+    .any()
+    .refine((file) => {
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'svg', 'mp4', 'gif'];
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      return fileExtension && allowedExtensions.includes(fileExtension);
+    }, {
+      message: 'Invalid file type. Allowed types: .jpg, .jpeg, .png, .svg, .mp4, .gif'
+    }),
+  name: z.string().min(1, { message: 'Name Of Your NFT is required' }),
+  price: z.string().min(1, { message: 'Price is required' }),
+  collection: z.string().min(1, { message: 'Collection is required' }),
+  // royalties: z.string().min(1, { message: 'Royalties are required' }),
+  description: z.string().optional()
+});
+
+
+export const formatBalance = (rawBalance: string) => {
+  const balance = (parseInt(rawBalance) / 1000000000000000000).toFixed(2);
+  return balance;
+};
+
+export const formatChainAsNum = (chainIdHex: string) => {
+  const chainIdNum = parseInt(chainIdHex);
+  return chainIdNum;
+};
+
+export const formatAddress = (addr: string | undefined) => {
+  return `${addr?.substring(0, 8)}...`;
+};
+
+export const formatAddressUserZone = (address : string)=>{
+  return `${address?.substring(0, 4)}....${address?.substring(address.length - 5)}`; 
+}
+
+export const generateRandomTokenId = (): number => {
+  return Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
+};
+
+export const fixTinaResults = <T>(data: T): T => {
+  try {
+    const serializedData = JSON.stringify(data);
+    return JSON.parse(serializedData) as T;
+  } catch (error) {
+    console.error("Error in serializing/deserializing data:", error);
+    throw new Error("Handling data failed");
+  }
+};
+
+
+export const isEmail = (text : string) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(text);
+}
+
+
+export const generateMessages = (numMessages : number) => {
+  const messages : Message[] = [];
+  for (let i = 1; i <= numMessages; i++) {
+      const role = i % 2 === 0 ? 'user' : 'assistant'; // Alternate between 'user' and 'assistant'
+      messages.push({
+          id: i.toString(),
+          role: role,
+          content: `${role === 'user' ? 'User' : 'Assistant'} message  ${i}`
+      });
+  }
+  return messages;
+};
+
+export const showToastUI : any = ({ title, description, operation = 'success' }: ToastPropsUtil) => {
+  const styles: Record<ToastOperation, ToastStyles> = {
+    success: {
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      fontFamily: 'Manrope',
+    },
+    fail: {
+      backgroundColor: '#900808',
+      color: 'white',
+      fontFamily: 'Manrope',
+    }
+  };
+  return toast({
+    title: title,
+    description: description,
+    duration: 2000,
+    style: styles[operation],
+  });
+}
+
+const priceCache: Record<string, { price: number; timestamp: number }> = {};
+export const getPriceInUserSpecifeidCurrency = async (currency : string):Promise<number | null>=>{
+  try{
+    const curr = currency.toLowerCase();
+    const cacheExpiry = 5 * 60 * 1000; 
+
+    if (priceCache[curr] && (Date.now() - priceCache[curr].timestamp) < cacheExpiry) {
+      console.log(`found the result in the cache no need to hit the api again `)
+        return priceCache[curr].price;
+    }
+    console.log(`the curr is : ${curr}`);
+    console.log(`in the get price of the user specidef curenty`)
+    const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=${curr}` ,{method : 'GET'});
+    const parsed = await res.json();
+    console.log(parsed)
+    const price = parsed['matic-network'][curr];
+    console.log(`this was the price of the currency ${price} and the curr was : ${curr}`);
+    priceCache[curr] = { price, timestamp: Date.now() };
+    return price;
+  }catch(error){
+    console.log(`in the error caluse of the get speciedef currency`)
+    return null;
+  }
+}

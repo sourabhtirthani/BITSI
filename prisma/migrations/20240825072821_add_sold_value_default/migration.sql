@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Compensation" ADD COLUMN     "soldValue" DOUBLE PRECISION NOT NULL DEFAULT 0;

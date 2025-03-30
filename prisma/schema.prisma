@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Nft {
+  id                  Int          @id
+  nft_name            String
+  nft_price           Float
+  nft_image           String
+  nft_collection_name String
+  nft_collection_id   Int
+  nft_description     String       @default("no description provided")
+  nft_owner_address   String
+  nft_creator_address String
+  nft_mint_time       DateTime     @default(now())
+  is_admin_minted     Boolean
+  nft_liked           Int?
+  up_for_sale         Boolean      @default(true)
+  is_insured          Boolean
+  events              Nft_events[]
+  collection          Collection   @relation(fields: [nft_collection_id], references: [id])
+  insurance           Insurance?
+}
+
+model Nft_events {
+  id          Int      @id @default(autoincrement())
+  // s_no      Int
+  nft_event   String
+  nft_price   Float
+  from        String
+  to          String
+  time        DateTime
+  nftId       Int
+  asset_name  String
+  nft         Nft      @relation(fields: [nftId], references: [id])
+  // claim_requested Boolean  @default(false)
+  loss_amount Float? // this will keep track of the loss that has occured on sold event if the loss is >0 then you have lost money but if the loss is a negative value then the user has made money on the deal
+
+  @@index([nftId])
+}
+
+model Collection {
+  id           Int      @id
+  name         String
+  ownerAddress String
+  price        Float
+  image        String
+  totalNfts    Int      @default(0)
+  creationTime DateTime @default(now())
+
+  nfts Nft[]
+}
+
+model User {
+  id                     Int                   @id @default(autoincrement())
+  walletAddress          String                @unique
+  name                   String?
+  email                  String?
+  number                 String?
+  address                String?
+  bio                    String?
+  imgSrc                 String?
+  country                String?
+  isInvestor             Boolean               @default(false)
+  investorStatus         ENUM_InvestorStatus   @default(NonInvestor)
+  ifKYCVerified          Boolean               @default(false)
+  creditScore            Float                 @default(0)
+  createdAt              DateTime              @default(now())
+  SupportTedCurrencies   SupportTedCurrencies? @relation(fields: [supportTedCurrenciesId], references: [id])
+  supportTedCurrenciesId Int?
+}
+
+enum ENUM_InvestorStatus {
+  NonInvestor
+  Pending
+  Approved
+  Rejected
+}
+
+model Insurance {
+  id              Int                @id @default(autoincrement())
+  coverage        Float
+  startTime       DateTime           @default(now())
+  expiration      DateTime
+  active          Boolean
+  approved        Boolean
+  nftId           Int                @unique
+  nft             Nft                @relation(fields: [nftId], references: [id])
+  currentOwner    String
+  status          InsuranceStatus    @default(ApprovalPending)
+  // compensation    Compensation?
+  is_extended     Boolean            @default(false)
+  insuranceEvents Insurance_events[]
+}
+
+enum InsuranceStatus {
+  ApprovalPending
+  Approved
+  Active
+  Expired
+  Claimed
+}
+
+model Insurance_events {
+  id          Int       @id @default(autoincrement())
+  eventname   String
+  insuranceid Int
+  insurance   Insurance @relation(fields: [insuranceid], references: [id])
+  date        DateTime  @default(now())
+  assetType   String
+}
+
+model Compensation {
+  id                 Int       @id @default(autoincrement())
+  requestDate        DateTime  @default(now())
+  loss               Float
+  lossPercent        Float
+  compensationAmount Float
+  userAdress         String
+  assetId            Int
+  Status             String
+  // soldValue          Float     @default(0)
+  claimed            Boolean   @default(false)
+  approval_date      DateTime?
+  claimId            Int       @unique
+  claim              Claims    @relation(fields: [claimId], references: [id])
+}
+
+model Admin {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  isAdmin  Boolean @default(true)
+}
+
+model Otp {
+  id        Int      @id @default(autoincrement())
+  email     String
+  hashedOtp String
+  expiry    DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model Vectors {
+  id        Int    @id @default(autoincrement())
+  textChunk String
+  embedding Json
+}
+
+model AdminWallet {
+  id      Int        @id @default(autoincrement())
+  address String
+  name    String
+  type    WalletType
+}
+
+enum WalletType {
+  MINT
+  COMPENSATION
+  OWNER
+}
+
+model Claims {
+  id                    Int           @id @default(autoincrement())
+  userAddress           String
+  compensationGenerated Boolean       @default(false)
+  expiration            DateTime
+  buyPrice              Float
+  soldPrice             Float
+  loss                  Float // a negative value indicates that the user has made some profit on the deal instead
+  assetId               Int
+  coverage              Float
+  lossPercent           Float
+  date                  DateTime      @default(now())
+  compensation          Compensation?
+}
+
+
+// todo -- remove the total amount , total coins and uninsured coins from the schema adn just add totalinsured coins here
+model Coin {
+  id             Int             @id @default(autoincrement())
+  userAddress    String          @unique
+  totalCoins     Float
+  totalAmount    Float
+  unInsuredCoins Float
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  insurances     CoinInsurance[]
+  // transactions   CoinTransactionEvent[]
+}
+
+model CoinTransactionEvent {
+  id               Int      @id @default(autoincrement())
+  coinsTransferred Float
+  createdAt        DateTime @default(now())
+  eventName        String
+  from             String
+  to               String
+  // coinId           Int   
+  price            Float    @default(0)
+  showInInsurance  Boolean  @default(true)
+  // coin             Coin     @relation(fields: [coinId], references: [id])
+}
+
+model CoinInsuranceEvent {
+  id          Int           @id @default(autoincrement())
+  insuranceId Int
+  insurance   CoinInsurance @relation(fields: [insuranceId], references: [id])
+  eventName   String
+  description String?
+  // coinsAffected Float?
+  timestamp   DateTime      @default(now())
+}
+
+model CoinInsurance {
+  id              Int                  @id @default(autoincrement())
+  coinId          Int
+  coin            Coin                 @relation(fields: [coinId], references: [id])
+  coinsInsured    Float
+  coverage        Float
+  startTime       DateTime             @default(now())
+  expiration      DateTime
+  status          InsuranceStatus      @default(ApprovalPending)
+  is_extended     Boolean              @default(false)
+  insuranceEvents CoinInsuranceEvent[]
+  is_upgraded     Boolean              @default(false)
+  buyPricePerCoin        Float         @default(0)
+  coinClaims      CoinClaim[]
+}
+
+model CoinClaim {
+  id                 Int              @id @default(autoincrement())
+  userAddress        String
+  compensationGiven  Boolean          @default(false)
+  buyPrice           Float
+  sellPrice          Float
+  loss              Float             @default(0)  // (sellPrice - buyPrice)
+  lossPercent       Float             @default(0)  // ((loss / buyPrice) * 100)
+  coinInsuranceId   Int
+  coinInsurance     CoinInsurance     @relation(fields: [coinInsuranceId], references: [id])
+  createdAt         DateTime          @default(now())
+}
+
+model SupportTedCurrencies {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  currency  String
+  createdAt DateTime @default(now())
+  users     User[]
+}

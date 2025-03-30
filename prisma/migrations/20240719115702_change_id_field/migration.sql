@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Nft" ALTER COLUMN "id" DROP DEFAULT;
+DROP SEQUENCE "Nft_id_seq";

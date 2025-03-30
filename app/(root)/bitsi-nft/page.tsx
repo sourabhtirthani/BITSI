@@ -1,0 +1,351 @@
+'use client'
+import React, { useEffect, useRef, useState } from 'react'
+import Image from "next/image";
+import { DropdownMenu, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
+import Dropdown from '@/components/Dropdown';
+import { collectionDropDownItems, listOfNFts, orderDropDownItem, priceDropDownItems } from '@/constants';
+import CardNft from '@/components/CardNft';
+import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import { generateQueryString } from '@/lib/utils';
+import { ToastWithTitle } from '@/components/Toast';
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+import { AutoComplete } from '@/components/AutoCompletebar';
+import { nftData } from '@/types';
+import FilterButtonUI from '@/components/FilterButtonUI';
+import DropdownBitsiNFt from '@/components/DropDownBitsiNft';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, } from "@/components/ui/pagination"
+import { getAllNfts } from '@/actions/uploadNft';
+import LoaderComp from '@/components/LoaderComp';
+// import { AutoCOmpletePopover } from '@/components/AutoCompletePopover';
+// import PopOver from '@/components/PopOver';
+
+const BitsiNft = () => {
+  const [filteredLstOfNftsDialog, setFilteredListOfnftsDialog] = useState<nftData[]>([]);
+  const [filteredLstOfNfts, setFilteredListOfnfts] = useState<nftData[]>([]);
+  const [searchValueComplete, setSearchValueComplete] = useState('')
+  // const [inputSearchValue , setInputSearchValue] = useState('');
+  const { toast } = useToast()
+  const menuRef = useRef<HTMLDivElement>(null)
+  const [opennAutoCompleteDialog, setOpenAutoCompleteDialog] = useState(false)
+  const [nftList, setNftList] = useState<nftData[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [filterValue, setFilterValue] = useState('');
+  const [priceFilter, setPriceFilter] = useState('');
+  const [collectionFilter, setCollectionFilter] = useState('');
+  const [orderFilter, setOrderFilter] = useState('');
+  const [checkedItems, setCheckeditems] = useState<string[]>([]);
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(20); 
+  const [loaderShow , setLoaderShow] = useState(true); 
+  const itemsPerPage = 20; 
+
+
+  const router = useRouter();
+  // const { query } = router;
+  const initialCheckedItems: { [key: string]: boolean } = {};
+
+  const getData = async () => {
+    try {
+      const uniqueQueryParam = new Date().getTime();
+      // const res = await fetch(`/api/nfts?cache_buster=${uniqueQueryParam}` , { cache :'no-store'});
+      // const data: { nfts: nftData[] } = await res.json();
+      const nfts: nftData[] = await getAllNfts();
+    const data: { nfts: nftData[] } = { nfts };
+      setNftList(data.nfts);
+      setFilteredListOfnfts(data.nfts);
+      setFilteredListOfnftsDialog(data.nfts)
+      setLoaderShow(false);
+    } catch (error) {
+      // alert('error getting nfts ')
+      setLoaderShow(false);
+    }
+  }
+  useEffect(() => {
+    getData();
+
+  }, [])
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenAutoCompleteDialog(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [])
+
+  useEffect(() => {
+    console.log(priceFilter)
+  }, [priceFilter])
+
+  // useEffect(()=>{
+  //   // let updatedFilteredList = filteredLstOfNfts;
+  //   console.log('in here')
+  //   if(collectionFilter != ''){
+  //     console.log(collectionFilter)
+  //     setFilteredListOfnfts(filteredLstOfNfts.filter(nft=>nft.category.toLowerCase() === collectionFilter.toLowerCase()));
+  //   }
+  //   if(priceFilter != ''){
+  //     if(priceFilter == 'Low to High'){
+  //       setFilteredListOfnfts([...filteredLstOfNfts].sort((a, b) => a.price - b.price))
+  //     }else if(priceFilter == 'High to Low'){
+  //       setFilteredListOfnfts([...filteredLstOfNfts].sort((a, b) => b.price - a.price))
+  //     }
+  //   }
+  // } , [collectionFilter, priceFilter])
+  // useEffect(()=>{
+  //   console.log(priceFilter)
+  // } , [orderFilter])
+
+  // const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
+  //   const handleCheckboxChange = (id: string, isChecked: boolean) => {
+  //     setCheckedItems(prevCheckedItems => ({
+  //         ...prevCheckedItems,
+  //         [id]: isChecked
+  //     }));
+  // };
+  // const handleSearchClick = () => {
+  //   console.log(searchValue);
+  // }
+
+  useEffect(() => {
+    let updatedFilteredList = [...nftList];
+
+    if (collectionFilter !== '') {
+      updatedFilteredList = updatedFilteredList.filter(nft =>
+        nft.nft_collection_name.toLowerCase() === collectionFilter.toLowerCase()
+      );
+    }
+
+    if (priceFilter !== '') {
+      if (priceFilter === 'Low to High') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => a.nft_price - b.nft_price);
+      } else if (priceFilter === 'High to Low') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => b.nft_price - a.nft_price);
+      }
+    }
+
+    if (searchValueComplete !== '') {
+      updatedFilteredList = updatedFilteredList.filter(nft =>
+        nft.nft_name.toLowerCase().includes(searchValueComplete.toLowerCase())
+      );
+    }
+    if (orderFilter !== '') {
+      if (orderFilter === 'Asc Order') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => {
+          // First sort by nft_min_time ascending
+          if (a.nft_mint_time < b.nft_mint_time) return -1;
+          if (a.nft_mint_time > b.nft_mint_time) return 1;
+          // If dates are the same, then sort by nft_name ascending
+          return a.nft_name.localeCompare(b.nft_name);
+        });
+      } else if (orderFilter === 'Desc Order') {
+        updatedFilteredList = [...updatedFilteredList].sort((a, b) => {
+          // First sort by nft_min_time descending
+          if (a.nft_mint_time > b.nft_mint_time) return -1;
+          if (a.nft_mint_time < b.nft_mint_time) return 1;
+          // If dates are the same, then sort by nft_name descending
+          return b.nft_name.localeCompare(a.nft_name);
+        });
+      }
+    }
+
+    setFilteredListOfnfts(updatedFilteredList);
+  }, [collectionFilter, priceFilter, searchValueComplete, orderFilter, nftList]);
+
+  const handleButtonClick = () => {
+    // console.log(checkedItems)
+
+    if (checkedItems.length == 0) {
+      toast({
+        title: "Selection Required",
+        description: "Please select the NFTs you wish to purchase or click directly on the desired NFT.",
+        duration: 2000,
+        style: {
+          backgroundColor: '#900808',
+          color: 'white',
+          fontFamily: 'Manrope',
+        },
+      })
+      return;
+    } else if (checkedItems.length != 0) {
+      const queryString = generateQueryString(checkedItems)
+      // console.log(queryString)
+      router.push(`/bitsi-nft/buy-collection?${queryString}`);
+    }
+  };
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await setSearchValue(e.target.value);
+    setOpenAutoCompleteDialog(true);
+    // console.log(searchValue)
+    if (searchValue !== '') {
+      setFilteredListOfnftsDialog(nftList.filter(nftData =>
+        nftData.nft_name.toLowerCase().includes(searchValue.toLowerCase())
+      ));
+    }
+    // else if (searchValue == '') {
+
+    //   // setFilteredListOfnftsDialog(listOfNFts);
+    //   // setPriceFilter(priceFilter);
+    //   // setCollectionFilter(collectionFilter.toUpperCase());
+    // }
+  }
+  const handleAutoCompleteClick = (nameOfNft: string) => {
+    setOpenAutoCompleteDialog(false)
+    setSearchValue(nameOfNft);
+
+    //   setFilteredListOfnfts(listOfNFts.filter(nftData => 
+    //     nftData.name.toLowerCase().includes(searchValue.toLowerCase())
+    // ));
+  }
+
+  const handleSearchingOfNft = () => {
+    // setFilteredListOfnfts(listOfNFts.filter(nftData =>
+    //   nftData.name.toLowerCase().includes(searchValue.toLowerCase())
+    // ));
+    setSearchValueComplete(searchValue);
+
+  }
+
+  // const handleSelectAllNfts = () => {
+  //   const allIds = filteredLstOfNfts.map(nft => nft.id);
+  //   setCheckeditems(allIds);
+  // };
+  return (
+    <>
+      <div className='navbar-space'>
+      </div>
+      <section className='bg-bitsi-nft flex  bg-current max-md:bg-contain '>
+        <div className='w-full flex flex-col lg:px-8 lg:py-14 md:p-10 max-md:p-4'>
+          <h1 className='font-manrope text-white font-bold lg:text-[52px] md:text-[44px] max-md:text-[26px] max-md:mb-4 custom-xxl:text-[83px]'>
+            Discover, Create, Trade and Buy Exclusive Digital Art: Welcome to BITSI NFT!
+          </h1>
+          <div className='flex justify-between'>
+            <div className='flex 2xl:mt-4  flex-col gap-3'>
+              <div className='flex gap-3 mb-6'>
+              <Link target='_blank' href="https://testnets.opensea.io/collection/bitsi-nft-4"><Image src='/icons/opensea_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              <Link target='_blank' href="https://testnet.rarible.com/collection/0x73ECb413e19F4b156174a247EbBeBdb291654eC8/items"><Image src='/icons/rarible_icon.svg' height={40} width={40} alt='opensea icon' /></Link>
+              </div>
+          {/* <Image src='/icons/marketplace-icons.png' height={104.87} width={186.26} alt='market logos' className='max-md:hidden ' /> */}
+          <div className='flex gap-4 2xl:mt-4 '>
+            <Link href='/create-nft'><button className='bg-success-506 border-success-506 border-2 text-black font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Create NFT</button></Link>
+            <Link href='/protection'><button className=' text-success-506 border-success-506 border-2 font-inter w-fit rounded-xl max-md:rounded-xl p-2 max-md:text-[16px] md:p-4 font-semibold md:px-8 hover:bg-success-522 hover:text-white'>Protection</button></Link>
+          </div>
+            </div>
+            <div className='-mt-2 max-2xl:-mt-12 max-xl:hidden '>
+          <Image src='/icons/bitst-nft-hero-new.png' height={351.17} width={517.4} alt='nft group' className='' /></div>
+          </div>
+         
+        </div>
+
+        {/* <div className=' w-fit justify-end items-end flex flex-col    max-xl:hidden mt-1  '>
+
+          <Image src='/icons/bitst-nft-hero-new.png' height={481.17} width={617.4} alt='nft group' className='self-end place-items-end custom-xxl:h-[610px] custom-xxl:w-[800px]' />
+
+        </div> */}
+
+      </section>
+
+      {/* /////////////////////// */}
+      {/* */}
+      <section className='bg-success-503'>
+        <div className='flex mt-4 p-6 justify-between  max-md:gap-2 max-md:items-center overflow-hidden'>
+          {/* <AutoComplete filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
+          {/* <AutoCOmpletePopover filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
+          <div className='flex flex-col'>
+
+            <div className='flex '>
+              <input placeholder='Search your NFTs....' type='text' className={`${opennAutoCompleteDialog == true ? 'rounded-bl-none' : ''}  focus:outline-none sm:px-1 text-[20px] text-pretty placeholder-style   max-sm:text-[14px] rounded-xl rounded-r-none w-[353px]  max-sm:w-[200px] font-manrope max-md:h-[40px] h-[60px]`} style={{padding : '5px 17px ' , fontSize : '17px'}} value={searchValue} onChange={(e) => handleInputChange(e)} />
+              <Image src='/icons/search-bg-yellow.svg' height={60} width={73} alt='search icon' className='relative cursor-pointer max-md:h-[40px] max-md:w-[49px]' onClick={handleSearchingOfNft} />
+            </div>
+            {/* <PopOver filteredLstOfNfts={filteredLstOfNfts} listOfNFts={listOfNFts} /> */}
+            {opennAutoCompleteDialog && <div ref={menuRef}>
+              <div className=' p-3 flex flex-col bg-white rounded-xl rounded-tl-none absolute   z-50 w-[353px] max-h-[200px] overflow-y-auto table-body max-sm:w-[200px]  '>
+                {filteredLstOfNftsDialog.length > 0 && filteredLstOfNftsDialog.map((item, index) => {
+                  return (
+                    <div className='cursor-pointer flex hover:bg-success-509 gap-4' key={index} onClick={() => { handleAutoCompleteClick(item.nft_name) }}>
+                      {/* <Image src={item.nftImg} height={15} width={15} alt='image' /> */}
+                      <p className='font-bold font-manrope text-black'>{item.nft_name}</p>
+                    </div>
+                  )
+                })}
+                {filteredLstOfNftsDialog.length == 0 && (
+                  <div className='cursor-pointer flex  gap-4'>
+                    {/* <Image src={item.nftImg} height={15} width={15} alt='image' /> */}
+                    <p className='font-bold font-manrope text-black'>No results found...</p>
+                  </div>
+                )}
+              </div>
+            </div>}
+          </div>
+
+          <div className='flex flex-row items-center gap-3 mr-4'>
+            {/* <Dropdown items={priceDropDownItems} buttonName='Price' setValue={setPriceFilter} /> */}
+            {/* <Dropdown items={orderDropDownItem} buttonName='Order' setValue={setOrderFilter} /> */}
+            {/* <Dropdown items={collectionDropDownItems} buttonName='Collections' setValue={setCollectionFilter} /> */}
+            <DropdownBitsiNFt itemsCol={collectionDropDownItems} itemsOrder={orderDropDownItem} itemsPrice={priceDropDownItems} setCol={setCollectionFilter} setOrd={setOrderFilter} setPrice={setPriceFilter} />
+          </div>
+        </div>
+        {/* {priceFilter && FilterButtonUI  />} */}
+        <div className='flex mt-4 gap-3 px-6 max-sm:px-4'>
+          {/* <div className='flex w-fit items-center bg-success-512 px-2 gap-1 secondary-shadow11 '>
+            <p className='font-montserrat font-semibold text-white text-[22px] max-md:text-[14px]'>Select All</p>
+            <div className='text-white '>
+              <Checkbox onCheckedChange={handleSelectAllNfts} />
+            </div>
+
+          </div> */}
+          {priceFilter && <FilterButtonUI stateVar={priceFilter} setStateVar={setPriceFilter} />}
+          {collectionFilter && <FilterButtonUI stateVar={collectionFilter} setStateVar={setCollectionFilter} />}
+          {orderFilter && <FilterButtonUI stateVar={orderFilter} setStateVar={setOrderFilter} />}
+        </div>
+      </section>
+
+      <section className='bg-success-503 '>
+        <div className='flex mt-12  justify-start px-6'>
+          {/* <Link href='/bitsi-nft/buy-collection'>   */}
+          {/* disabled = {checkedItems.length == 0} */}
+          <button onClick={handleButtonClick} className={`${checkedItems.length == 0 ? 'hidden' : ''} bg-success-513 font-bold rounded-3xl py-2.5 text-white font-manrope px-10 text-[22px] text-lg  `}> Buy Selected Items</button>
+          {/* disabled = {checkedItems.length == 0}  thi is fo the buttin expiremantal */}
+          {/* </Link> */}
+        </div>
+        {loaderShow == false ? <div className=' max-h-full p-4 grid lg:grid-cols-4 max-md:grid-cols-1 max-md:place-items-center  md:grid-cols-3 mt-3 xl:grid-cols-5  custom-2xl:grid-cols-6'>
+          {filteredLstOfNfts.slice(startIndex, endIndex).map((item) => {
+            return (
+              <div key={item.id} className='p-1 w-fit mt-1 '>
+                <CardNft {...item} collectionImage='/icons/bitsi.svg' setCheckedItems={setCheckeditems} checkedItems={checkedItems} />
+                {/*  name={item.name} id={item.id} price={item.price} category={item.category} checked = {item.checked} nftImg={item.nftImg} */}
+              </div>
+            )
+          })}
+        </div> : <LoaderComp />}
+        <Pagination className='mb-14 mt-5 justify-between px-4'>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious className={`${startIndex == 0 ? 'pointer-events-none opacity-50 ' : ''} text-white cursor-pointer`}  
+              onClick={()=>{setStartIndex(startIndex-itemsPerPage) 
+              setEndIndex(endIndex -itemsPerPage)}} />
+            </PaginationItem>
+           
+          </PaginationContent>
+          <PaginationContent>
+          <PaginationItem>
+              <PaginationNext className={`${endIndex >= filteredLstOfNfts.length ? 'pointer-events-none opacity-50' : ''} text-white cursor-pointer`} 
+              onClick={()=>{setStartIndex(startIndex + itemsPerPage)
+                setEndIndex(endIndex + itemsPerPage)
+              }}/>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </section>
+    </>
+  )
+}
+
+export default BitsiNft
