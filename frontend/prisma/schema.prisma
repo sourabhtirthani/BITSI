@@ -190,9 +190,10 @@ model Coin {
   totalCoins     Float
   totalAmount    Float
   unInsuredCoins Float
+  status         Int             @default(0) // Added status field with default value 0
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  insurances     CoinInsurance[]
+  insurances     CoinInsurance[]         
   // transactions   CoinTransactionEvent[]
 }
 
@@ -254,4 +255,12 @@ model SupportTedCurrencies {
   currency  String
   createdAt DateTime @default(now())
   users     User[]
+}
+
+model InsuranceApprove {
+  id        Int      @id @default(autoincrement())
+  address   String
+  amount    String
+  status    String   @default("pending") // Can be "approved" or "rejected"
+  createdAt DateTime @default(now())
 }
