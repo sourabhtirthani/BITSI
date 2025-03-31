@@ -168,7 +168,7 @@ const MyProfile = () => {
             <Image src={imgOfUser} height={200} width={200} alt='Profile Image' className='p-2 h-[200px] w-[200px] rounded-full' />
             <div className='flex flex-col gap-2 '>
               <p className='text-success-515 font-manrope text-[32px] max-sm:text-[24px]'>{dataOfUser?.name || 'No name specified'}</p>
-              <p className='text-success-515 font-manrope text-[32px] max-sm:text-[24px]'>CreditScore:{dataOfUser?.creditScore || 'No name specified'}</p>
+              {/* <p className='text-success-515 font-manrope text-[32px] max-sm:text-[24px]'>CreditScore:{dataOfUser?.creditScore || 'No name specified'}</p> */}
               <div className='flex gap-2 max-sm:flex-col'>
                 <p className='text-white text-opacity-50 text-[23px] max-sm:text-[17px] font-manrope font-normal'>{address ? formatAddressUserZone(address) : 'Please Connect Wallet '}</p>
                 {/* <button className='bg-success-518 px-4 py-1 w-fit text-white font-manrope font-semibold '>Copy</button> */}

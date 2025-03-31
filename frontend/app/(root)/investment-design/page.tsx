@@ -103,7 +103,7 @@ const InvestmentDesign = () => {
                             A safe way to get high returns on crypto investments & protection.
                         </p>
                         <p className="text-gray-300 text-sm md:text-lg">
-                            BITSI's Insurance Mechanism Your Investments is Safe & Secure!
+                            BITSIs Insurance Mechanism Your Investments is Safe & Secure!
                         </p>
                         <div className="space-y-3">
                             <div className="flex items-start gap-2">

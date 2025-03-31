@@ -6,9 +6,16 @@ import { useToast } from "@/components/ui/use-toast"
 import LoaderComp from './LoaderComp'
 import { showToastUI } from '@/lib/utils'
 
+type InsuranceApprovalData = {
+  userAddress: string;
+  unInsuredCoins: number;
+  updatedAt: string;
+  status: number;
+};
+
 const AdminInsuranceApproveTable = () => {
   const { toast } = useToast();
-  const [dataOfTable, setDataOfTable] = useState([])
+  const [dataOfTable, setDataOfTable] = useState<InsuranceApprovalData[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [loaderDuringDataFetch, setLoaderDuringDataFetch] = useState(true);
   useEffect(() => {
@@ -77,7 +84,7 @@ const AdminInsuranceApproveTable = () => {
             </tr>
           </thead>
           <tbody>
-            {!loaderDuringDataFetch && dataOfTable.map((item, index) => (
+          {!loaderDuringDataFetch && Array.isArray(dataOfTable) && dataOfTable.map((item, index) => (
               <tr key={index} className='text-white text-center font-semibold'>
                 <td className='p-2 border-2 border-gray-600'>{index + 1}</td>
                 <td className='p-2 border-2 border-gray-600'>{item.userAddress}</td>
