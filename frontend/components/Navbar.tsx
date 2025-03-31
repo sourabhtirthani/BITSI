@@ -93,6 +93,7 @@ const Navbar = () => {
           <Link onClick={()=>{setSelectedComp('BitsiNft')}} href="/bitsi-nft" className={`${selectedComp == 'BitsiNft' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI NFT</Link>
           <Link onClick={()=>{setSelectedComp('BitsiCoin')}} href="/bitsi-coin" className={`${selectedComp == 'BitsiCoin' ? 'text-white' : 'text-yellow-300'} font-bold`}>BITSI COIN</Link>
           <Link onClick={()=>{setSelectedComp('Protection')}} href="/protection" className={`${selectedComp == 'Protection' ? 'text-white' : 'text-yellow-300'} font-bold`}>Protection</Link>
+          <Link onClick={()=>{setSelectedComp('investment-design')}} href="/investment-design" className={`${selectedComp == 'investment-design' ? 'text-white' : 'text-yellow-300'} font-bold`}>Investors</Link>
           <Link onClick={()=>{setSelectedComp('About')}} href="/about" className={`${selectedComp == 'About' ? 'text-white' : 'text-yellow-300'} font-bold`}>About</Link>
         </div>
     </div>

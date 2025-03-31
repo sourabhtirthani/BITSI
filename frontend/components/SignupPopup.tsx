@@ -38,6 +38,7 @@ const SignupPopup = () => {
         const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
         const data = await res.json();
         console.log("data.SupportTedCurrencies",data);
+        setCreditScore(data.creditScore);
         if (res.status == 404) {
           setShowPopup(true);
         } else if (res.status == 200) {
@@ -56,9 +57,10 @@ const SignupPopup = () => {
         //   }
         // }
         
+
+        
         // if(data.creditScore !== undefined){
         //   console.log(`the data is : ${data.creditScore}`)
-        //   setCreditScore(data.creditScore);
         // }
         
     }

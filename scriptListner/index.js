@@ -6,7 +6,7 @@ import { startCronJob } from "./cronJob/deleteExpriryPolicies.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-startCronJob(); // Start the cron job
+startCronJob(); 
 
 getTransfer().catch((error) => {
   console.error("Error in getTransfer:", error);

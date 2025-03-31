@@ -73,7 +73,9 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
           showToastUI({title : "ERROR!!!" , description : "Please enter the value to upgrade" , operation : "fail"});
           return;
         }
-        if(Number(inputValueForUpgrade) > Number(creditScore)){ 
+        const res = await fetch(`/api/user/${address}`, { cache: 'no-cache' });
+        const data = await res.json();
+        if(Number(inputValueForUpgrade) > Number(data.creditScore)){ 
              showToastUI({title : "ERROR!!!" , description : "Current Value exceeds your Credit Score" , operation : "fail"});
              return;
         }
@@ -184,7 +186,7 @@ const MyInsuranceTableUpgrade = ({address} : {address : string}) => {
                         : <div className='text-gray-400 max-sm:text-[12px] hover:underline   px-4 font-semibold font-manrope text-[16px] relative group cursor-default'>Upgrade
                           <p className='absolute max-md:hidden bg-white  text-black text-[12px] font-bold px-2 py-1 opacity-0 text-center rounded-xl group-hover:opacity-100 transition-opacity'>Cannot Upgrade without extending</p></div>}</td>
                            */}
-                          <td className='p-2 max-sm:p-1'><DialogCoinProtection setUpgradeInputValue={setInputValueForUpgrade} numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the insurance policy will adjust the coverage, with the maximum upgrade limit determined by the user&apos;s credit value.' dialogTitle='Upgrade Insurance Policy?' /></td>
+                          <td className='p-2 max-sm:p-1'><DialogCoinProtection setUpgradeInputValue={setInputValueForUpgrade} numberOfCoins={item.coinsInsured} loaderActionButton = {loaderActionButton} action='upgrade' buttonText='Upgrade' coinInsuranceId={item.id} setRefresh={setRefreshCoin} handleMethodCall={handleUpgradeInsuraneOfCoin} dialogDescription='Upgrading the insurance policy will adjust the coverage, to the higher BITSI Price Based on your current credit value.' dialogTitle='Upgrade Insurance Policy?' /></td>
                       </tr>
                       <tr>
                         <td  className='h-5'></td>
