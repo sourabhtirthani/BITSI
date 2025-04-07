@@ -1,10 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { ChevronDown, ChevronUp, CircleAlert, ShieldAlert, TriangleAlert, User } from "lucide-react"
+import { useAccount } from 'wagmi';
+import { toast } from "@/components/ui/use-toast";
 
-
+interface UserData {
+    isInvestor: boolean;
+    // Add other properties if necessary
+  }
 const InvestmentDesign = () => {
     // State for tracking which plan is open
     const [openPlan, setOpenPlan] = useState<string | null>(null)
@@ -20,7 +25,37 @@ const InvestmentDesign = () => {
     const toggleFaq = (faqId: string) => {
         setOpenFaq(openFaq === faqId ? null : faqId)
     }
+    const {address , isConnected} = useAccount();
+    const [userData, setUserData] = useState<UserData | null>(null);
 
+  useEffect(()=>{
+    
+    const getUser = async()=>{
+      try{
+        if(isConnected){
+          const res = await fetch(`/api/user/${address}` ,{cache : 'no-cache'})
+          
+          if(!res){
+            toast({ title: "Operation Failed", description: "Error Fetching data , Please try again", duration: 2000,
+              style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+              
+          }else{
+            const userData = await res.json();
+            console.log("Userdata",userData);
+            setUserData(userData); // Store user data in state
+          }
+        }else{
+            toast({ title: "Wallet not connected", description: "wallet is not connected", duration: 2000,
+                style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+        }
+      }catch(error){
+        console.log(error);
+        toast({ title: "Operation Failed", description: "Error getting user Details", duration: 2000,
+          style: { backgroundColor: '#900808', color: 'white', fontFamily: 'Manrope'}})
+      }
+    }
+    getUser();
+  }, [address, isConnected])
     // Plan data
     const plans = [
         {
@@ -204,6 +239,8 @@ const InvestmentDesign = () => {
                 </section>
 
                 {/* Investors History Table */}
+                {userData?.isInvestor && (
+
                 <section className="container mx-auto px-4 py-8 md:py-12">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-xl md:text-2xl font-bold text-[#FFB622]">INVESTORS HISTORY TABLE</h2>
@@ -237,7 +274,7 @@ const InvestmentDesign = () => {
                         </table>
                     </div>
                 </section>
-
+                 )}
                 {/* FAQ Section */}
                 <div className="bg-[#0D0D2B] py-20">
                     <section className="container mx-auto px-4 py-8 md:py-12">

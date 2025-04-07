@@ -1,57 +1,78 @@
-import axios from "axios";
+import Web3 from 'web3';
+import axios from 'axios';
 
-const UNISWAP_GRAPH_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
-const BITSI_CONTRACT_ADDRESS = "0x94d58ceeceec489fc3c74556f8912608097ee3ab"; // Replace with BITSI contract address
+// Constants
+const BITSI_CONTRACT_ADDRESS = '0x94d58ceeceec489fc3c74556f8912608097ee3ab'; // BITSI Token
+const UNISWAP_V2_ROUTER_ADDRESS = '0xedf6066a2b290C185783862C7F4776A2C8077AD1'; // Uniswap V2 Router Address
+const MATIC_ADDRESS = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'; // MATIC Native Address (WETH)
+const POLYGON_RPC_URL = 'https://polygon-mainnet.infura.io/v3/114591cebd3b4ba2a0e4bb9eee913b7e'; // Replace with your actual RPC URL
 
-export const getBitsiPrice = async (currency = "matic") => {
+const web3 = new Web3(new Web3.providers.HttpProvider(POLYGON_RPC_URL));
+
+// Uniswap V2 Router ABI (simplified for `getAmountsOut`)
+const UNISWAP_V2_ROUTER_ABI = [
+  {
+    "constant": true,
+    "inputs": [
+      { "name": "amountIn", "type": "uint256" },
+      { "name": "path", "type": "address[]" }
+    ],
+    "name": "getAmountsOut",
+    "outputs": [
+      { "name": "", "type": "uint256[]" }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
+
+/**
+ * Get BITSI price in MATIC using Uniswap V2 Router
+ */
+export const getBitsiPriceWithAmountsOut = async () => {
+  const path = [BITSI_CONTRACT_ADDRESS, MATIC_ADDRESS]; 
+  const amountIn = web3.utils.toWei('1', 'ether');
+
   try {
-    // Query Uniswap for BITSI price in the given currency
-    const query = {
-      query: `
-        {
-          token(id: "${BITSI_CONTRACT_ADDRESS.toLowerCase()}") {
-            derivedETH
-          }
-          bundle(id: "1") {
-            ethPriceUSD
-          }
-        }
-      `,
-    };
+    // Create Uniswap V2 Router contract instance
+    const routerContract = new web3.eth.Contract(UNISWAP_V2_ROUTER_ABI, UNISWAP_V2_ROUTER_ADDRESS);
 
-    const response = await axios.post(UNISWAP_GRAPH_URL, query);
-    const { token, bundle } = response.data.data;
+    // Get amounts out
+    console.log(amountIn, path);
+    const amountsOut = await routerContract.methods.getAmountsOut(amountIn, path).call();
+    const bitsiToMatic = web3.utils.fromWei(amountsOut[1], 'ether'); // Price of 1 BITSI in MATIC
 
-    if (!token) {
-      throw new Error("BITSI token not found on Uniswap");
-    }
-
-    // Get BITSI price in ETH
-    const bitsiToETH = parseFloat(token.derivedETH);
-    const ethToUSD = parseFloat(bundle.ethPriceUSD);
-
-    // Fetch conversion rate for requested currency
-    const conversionRate = await getCurrencyRate(currency);
-
-    // Calculate BITSI price in chosen currency
-    const bitsiPrice = bitsiToETH * ethToUSD * conversionRate;
-
-    return { price: bitsiPrice, currency };
+    console.log(`✅ 1 BITSI = ${bitsiToMatic} MATIC`);
+    return bitsiToMatic;
   } catch (error) {
-    console.error("Error fetching BITSI price:", error);
-    return { price: 0, currency };
+    console.error("❌ Error fetching BITSI price from Uniswap V2:", error);
+    return 0;
   }
 };
 
-// Helper function to get currency rate
-const getCurrencyRate = async (currency) => {
+/**
+ * Get MATIC price in USD using CoinGecko
+ */
+const getMaticToUSD = async () => {
   try {
-    const response = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=ethereum,${currency}&vs_currencies=usd`
-    );
-    return response.data[currency]?.usd || 1; // Default to 1 if currency not found
+    const response = await axios.get("https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd");
+    return response.data['matic-network'].usd;
   } catch (error) {
-    console.error("Error fetching currency rate:", error);
-    return 1;
+    console.error("❌ Error fetching MATIC price from CoinGecko:", error);
+    return 1; // Default fallback
   }
 };
+
+/**
+ * Get BITSI price in USD
+ */
+export const getBitsiPriceInUSD = async () => {
+  const bitsiToMatic = await getBitsiPriceWithAmountsOut();
+  const maticToUSD = await getMaticToUSD();
+  const bitsiToUSD = bitsiToMatic * maticToUSD;
+
+  console.log(`✅ 1 BITSI = ${bitsiToUSD.toFixed(4)} USD`);
+  return bitsiToUSD;
+};
+

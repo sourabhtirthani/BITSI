@@ -76,7 +76,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
               }
               setMaxCoinsAvailableForInsurance(resInJsonCoin.totalCoins - coinsInsuredPendingOrApproved);
             } else {
-              console.log("in the else conditon")
+              console.log("in the else conditon",resInJsonCoin.unInsuredCoins)
 
               setMaxCoinsAvailableForInsurance(resInJsonCoin.unInsuredCoins);
             }

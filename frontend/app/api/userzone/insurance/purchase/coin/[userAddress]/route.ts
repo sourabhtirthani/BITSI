@@ -35,7 +35,7 @@ export async function POST(request: Request, context: { params: { userAddress: s
   try {
     console.log("POST request received!"); // Debugging
 
-    const { params } = context;
+    const { params } = context; 
     const { userAddress } = params;
     const { status, id } = await request.json(); // Accepting `id` dynamically
 

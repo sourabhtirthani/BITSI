@@ -379,4 +379,37 @@
           policy.bitsiCoverage=newBitsiCoverage[i];
         }
       }
+      
+      function getExpiredPolicies() public view returns (uint256[] memory) {
+        uint256 count = 0;
+
+        // First, count how many expired policies we have
+        for (uint256 i = 0; i < nextPolicyId; i++) {
+            if (policies[i].endTime <= block.timestamp && policies[i].active) {
+                count++;
+            }
+        }
+
+        // Then, collect their IDs
+        uint256[] memory expiredPolicyIds = new uint256[](count);
+        uint256 index = 0;
+
+        for (uint256 i = 0; i < nextPolicyId; i++) {
+            if (policies[i].endTime <= block.timestamp && policies[i].active) {
+                expiredPolicyIds[index] = i;
+                index++;
+            }
+        }
+
+        return expiredPolicyIds;
+     }
+
+      function deleteExpiredPolicies() public onlyOwner {
+          for (uint256 i = 0; i < nextPolicyId; i++) {
+              if (policies[i].endTime <= block.timestamp && policies[i].active) {
+                  delete policies[i];
+              }
+          }
+      }
+
   }

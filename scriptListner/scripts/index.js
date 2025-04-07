@@ -1,38 +1,45 @@
-import { ethers } from 'ethers';
+import Web3 from 'web3';
 import dotenv from 'dotenv';
 import { coinContractAbi, coinContractAddress } from '../contracts/coin/index.js';
 import { nftContractABI, nftContractAddress } from '../contracts/nft/index.js';
+import { insertCoin, insertCoinTransaction } from '../cronJob/deleteExpriryPolicies.js';
 
 dotenv.config();
 
-const provider = new ethers.JsonRpcProvider(`https://polygon-mainnet.infura.io/v3/114591cebd3b4ba2a0e4bb9eee913b7e}`);
-const socketProvider = new ethers.WebSocketProvider(`wss://polygon-mainnet.infura.io/ws/v3/114591cebd3b4ba2a0e4bb9eee913b7e`);
+const HTTP_PROVIDER = `https://polygon-mainnet.infura.io/v3/114591cebd3b4ba2a0e4bb9eee913b7e`;
+const WS_PROVIDER = `wss://polygon-mainnet.infura.io/ws/v3/114591cebd3b4ba2a0e4bb9eee913b7e`;
 
-// In-memory event storage (Replace with a database in production)
+const web3 = new Web3(new Web3.providers.HttpProvider(HTTP_PROVIDER));
+const web3Socket = new Web3(new Web3.providers.WebsocketProvider(WS_PROVIDER));
+
+// In-memory event storage (use DB in production)
 const eventsStorage = [];
 
 export const getTransfer = async () => {
     try {
         console.log("Listening for transfer events...");
-        
-        const contract = new ethers.Contract(nftContractAddress, nftContractABI, socketProvider);
-        const contractCoin = new ethers.Contract(coinContractAddress, coinContractAbi, socketProvider);
 
-        contract.on('Transfer', async (from, to, tokenId, event) => {
-            console.log(`NFT Transfer: from ${from} to ${to}, Token ID: ${tokenId}`);
-            const transactionHash = event.transactionHash;
-            await getDetailsWithHashOfTransaction(transactionHash, tokenId, from, to, 'nft');
-        });
+        const nftContract = new web3Socket.eth.Contract(nftContractABI, nftContractAddress);
+        const coinContract = new web3Socket.eth.Contract(coinContractAbi, coinContractAddress);
 
-        contractCoin.on('Transfer', async (from, to, amount, event) => {
-            try {
-                const tokensTransferred = Number(amount) / 10 ** 18;
+        nftContract.events.Transfer({})
+            .on('data', async (event) => {
+                const { from, to, tokenId } = event.returnValues;
+                console.log(`NFT Transfer: from ${from} to ${to}, Token ID: ${tokenId}`);
+                await getDetailsWithHashOfTransaction(event.transactionHash, tokenId, from, to, 'nft');
+            })
+            //.on('error', console.error);
+
+        coinContract.events.Transfer({})
+            .on('data', async (event) => {
+                const { from, to, value } = event.returnValues;
+                console.log("Coin Transfer Event");
+                const tokensTransferred = web3.utils.fromWei(value, 'ether');
                 const transactionHash = event.transactionHash;
+                console.log("transactionHash", transactionHash);
                 await transactionDetailsCoins(transactionHash, tokensTransferred, from, to, 'coin');
-            } catch (error) {
-                console.error(`Error processing coin transaction:`, error);
-            }
-        });
+            })
+            //.on('error', console.error);
     } catch (error) {
         console.error('Error initializing transfer event listener:', error);
     }
@@ -44,59 +51,75 @@ const getDetailsWithHashOfTransaction = async (transactionHash, assetId, from, t
             console.log('Mint event detected.');
             return;
         }
-        const transaction = await provider.getTransaction(transactionHash);
-        if (!transaction) {
+
+        const tx = await web3.eth.getTransaction(transactionHash);
+        if (!tx) {
             console.log(`No transaction found for hash: ${transactionHash}`);
             return;
         }
-        const value = ethers.formatEther(transaction.value);
-        const block = await provider.getBlock(transaction.blockNumber);
+
+        const block = await web3.eth.getBlock(tx.blockNumber);
         const time = new Date(block.timestamp * 1000);
-        
-        // Store event in memory
+        const value = web3.utils.fromWei(tx.value, 'ether');
+
         eventsStorage.push({ from, to, time, value, assetId, assetType });
         console.log('NFT Transaction stored:', { from, to, time, value, assetId, assetType });
+
     } catch (error) {
-        console.error(`Error retrieving transaction details:`, error);
+        console.error(`Error retrieving NFT transaction details:`, error);
     }
 };
 
 const transactionDetailsCoins = async (transactionHash, tokensTransferred, from, to, assetType) => {
     try {
-        const transaction = await provider.getTransaction(transactionHash);
-        if (!transaction) {
+        const tx = await web3.eth.getTransaction(transactionHash);
+        if (!tx) {
             console.log(`No transaction found for hash: ${transactionHash}`);
             return;
         }
-        const value = ethers.formatEther(transaction.value);
-        const block = await provider.getBlock(transaction.blockNumber);
-        const time = new Date(block.timestamp * 1000);
-        const salePrice = await getSaleValue(transactionHash);
+
+        const block = await web3.eth.getBlock(tx.blockNumber);
+        console.log("block",block);
         
-        // Store event in memory
-        eventsStorage.push({ from, to, time, value, tokensTransferred, assetType, salePrice });
-        console.log('Coin Transaction stored:', { from, to, time, value, tokensTransferred, assetType, salePrice });
+        const time = new Date(Number(block.timestamp) * 1000);
+        const value = web3.utils.fromWei(tx.value, 'ether');
+        const salePrice = await getSaleValue(transactionHash);
+
+        const result = { from, to, time, value, tokensTransferred, assetType, salePrice };
+        console.log("result",result);
+        await insertCoin(to,salePrice,tokensTransferred,tokensTransferred);
+        await insertCoinTransaction(tokensTransferred,"BUY",from,to,salePrice)
+        eventsStorage.push(result);
+        console.log('Coin Transaction stored:', result);
+
     } catch (error) {
         console.error(`Error retrieving coin transaction details:`, error);
     }
 };
 
-async function getSaleValue(transactionHash) {
+const getSaleValue = async (transactionHash) => {
     try {
-        const transaction = await provider.getTransactionReceipt(transactionHash);
-        const swapEvent = transaction.logs.find(log =>
-            log.topics[0] === ethers.id("Swap(address,uint256,uint256,uint256,uint256,address)")
-        );
-        if (!swapEvent) return '0';
+        const receipt = await web3.eth.getTransactionReceipt(transactionHash);
+        const swapTopic = web3.utils.keccak256("Swap(address,uint256,uint256,uint256,uint256,address)");
 
-        const iface = new ethers.Interface([
-            "event Swap(address indexed sender, uint256 amount0In, uint256 amount1In, uint256 amount0Out, uint256 amount1Out, address indexed to)"
-        ]);
-        const decodedData = iface.parseLog({ topics: swapEvent.topics, data: swapEvent.data });
-        const maticAmount = decodedData.args.amount1Out > 0 ? decodedData.args.amount1Out : decodedData.args.amount0Out;
-        return ethers.formatEther(maticAmount);
+        const swapLog = receipt.logs.find(log => log.topics[0] === swapTopic);
+        if (!swapLog) return '0';
+
+        const decoded = web3.eth.abi.decodeLog(
+            [
+                { type: 'uint256', name: 'amount0In' },
+                { type: 'uint256', name: 'amount1In' },
+                { type: 'uint256', name: 'amount0Out' },
+                { type: 'uint256', name: 'amount1Out' }
+            ],
+            swapLog.data,
+            swapLog.topics.slice(1)
+        );
+
+        const maticAmount = decoded.amount1Out > 0 ? decoded.amount1Out : decoded.amount0Out;
+        return web3.utils.fromWei(maticAmount, 'ether');
     } catch (error) {
         console.error(`Error retrieving sale value:`, error);
         return '0';
     }
-}
+};
