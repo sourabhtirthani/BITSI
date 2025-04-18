@@ -99,7 +99,48 @@ export const approvePurchaseCoinInsrance = async(coinInsuranceId : number) : Pro
     }
 }
 
-
+export const approvePurchaseCoinInsranceNew = async(coinInsuranceId : number)=>{
+    try{
+        const coinInsurance = await db.coinInsurance.findFirst({
+            where : {coinId : coinInsuranceId},
+            include : {
+                coin:{
+                    select:{
+                        id : true,
+                        unInsuredCoins : true
+                    }
+                }
+            }
+        })
+        if(!coinInsurance){
+            throw new Error('Coin Insurance Not Found');
+        }
+       
+        if(coinInsurance.status == 'Active'){
+            throw new Error('Coin Insurance is already active');
+        }
+        const numberOfYears = Math.round((coinInsurance.expiration.getTime() - coinInsurance.startTime.getTime()) / (365 * 24 * 60 * 60 * 1000));
+        console.log(`the number of years is : ${numberOfYears}`)
+      
+            await db.coinInsurance.update({
+                where : {id : coinInsurance.id},
+                data : {
+                    status : 'Approved',
+                    startTime : new Date(),
+                    expiration : new Date(Date.now() + numberOfYears * 365 * 24 * 60 * 60 * 1000),
+                }
+            })
+            await db.coin.update({
+                where : {id : coinInsurance.coin.id},
+                data : {
+                    unInsuredCoins : coinInsurance.coin.unInsuredCoins - coinInsurance.coinsInsured
+                }
+            })
+      
+    }catch(error){
+        throw new Error('Error Purchasing Coin Insurance');
+    }
+  }
 export const purchaseCoinInsuranceAfterApproval = async(coinInsuranceId : number, marketPricePerCoin : number , numberOfYears : number) =>{
     try{    
         const coinInsurance = await db.coinInsurance.findUnique({
