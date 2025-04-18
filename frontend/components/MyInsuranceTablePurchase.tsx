@@ -32,6 +32,9 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
   const { isConnected } = useAccount();
   const { currencyOfUser, valueInTheUserSpecifedCurrency } = useCurrencyContext();
 
+  useEffect(() => {
+    console.log("Updated dataOfCoinUserZonePurchase:", dataOfCoinUserZonePurchase);
+  }, [dataOfCoinUserZonePurchase]);
 
   useEffect(() => {
     const getPurchaseInsuranceDetails = async () => {
@@ -65,8 +68,10 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
           const resInJsonCoin = await responseFromServerCoin.json();
           console.log("resInJsonCoin in neww", resInJsonCoin);
           if (resInJsonCoin != null) {
-            console.log("hello in res")
+            console.log("hello in res",resInJsonCoin)
+          
             setDataOfCoinUserZonePurchase([resInJsonCoin]);
+            console.log(dataOfCoinUserZonePurchase,"dataOfCoinUserZonePurchase")
             if (resInJsonCoin && resInJsonCoin.insurances && resInJsonCoin.insurances.length > 0) {
               console.log("in the if conditon")
               let coinsInsuredPendingOrApproved = 0;
@@ -76,7 +81,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
               }
               setMaxCoinsAvailableForInsurance(resInJsonCoin.totalCoins - coinsInsuredPendingOrApproved);
             } else {
-              console.log("in the else conditon",resInJsonCoin.unInsuredCoins)
+              console.log("in the else conditon")
 
               setMaxCoinsAvailableForInsurance(resInJsonCoin.unInsuredCoins);
             }
@@ -98,6 +103,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
         setLoaderStateForTransactions(true);
         const res = await fetch(`/api/userzone/history/coins/${address}?type=protection`, { method: "GET", next: { revalidate: 0 }, },)
         const resParsed = await res.json();
+        console.log("resParsed",resParsed);
         setUninsuredTransactions(resParsed);
 
       } catch (error) {
@@ -267,6 +273,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
           </thead>
           <tbody className='overflow-y-auto '>
             {dataOfCoinUserZonePurchase && Array.isArray(dataOfCoinUserZonePurchase) && dataOfCoinUserZonePurchase.map((item, index) => {
+               console.log("👀 item:", item.insurances); // Check structure
               return (
                 <React.Fragment key={index}>
                   {/* <tr className='bg-success-509 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -283,6 +290,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                   </tr>
                   {/* <p className='text-success-511 text-[14px] mb-2 font-semibold'>Pending & Approved Insurances</p> */}
                   {item.insurances && item.insurances?.map((insuranceItems, indexInsurance) => {
+                    console.log(item.insurances,"item.insurances")
                     return (
                       <React.Fragment key={indexInsurance}>
                         <tr className='bg-success-512 text-center  secondary-shadow11 w-full text-white font-montserrat text-[12px] max-sm:text-[8px] font-semibold'>
@@ -315,7 +323,7 @@ const MyInsuraceTablePurchase = ({ address }: { address: string }) => {
                           {/* <td className='p-2 max-sm:p-1'>{item.price.toFixed(5)} MATIC</td> */}
                           <td className='p-2 max-sm:p-1'>{(item.price * valueInTheUserSpecifedCurrency).toFixed(  5)} {currencySymbolMap(currencyOfUser)}</td>
                           <td className='p-2 max-sm:p-1'>Not Active</td>
-                          <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin}  userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id}  /></td>
+                          <td className='p-2 max-sm:p-1'><DialogPurcahseCoinInsurancePolicy setRefreshCoinInsurance={setRefreshCoin}  userAddress={address} numberOfCoins={item.coinsTransferred} setRefresh={setRefreshCoinTransactions} totalAmountSpent={item.price} transactionId={item.id+1}  /></td>
                            {/* <td className='p-2 max-sm:p-1'>{}</td> */}
                           {/* <DropdownMyProfile setValue={setCoinDetailsFilterValue} insideTable={true} iconName='/icons/iconDotsVertical.svg' items={myProfileNftOrderDropDownItems} itemsInsideTable={['Claim Compensation']}/> */}
                         </tr>

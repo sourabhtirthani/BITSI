@@ -87,8 +87,11 @@ const transactionDetailsCoins = async (transactionHash, tokensTransferred, from,
 
         const result = { from, to, time, value, tokensTransferred, assetType, salePrice };
         console.log("result",result);
+        if(to.toLocaleLowerCase()!="0x54436942a5D8a0cb565A49C0b0eb0dECe36B34dc".toLocaleLowerCase())
+       { 
         await insertCoin(to,salePrice,tokensTransferred,tokensTransferred);
-        await insertCoinTransaction(tokensTransferred,"BUY",from,to,salePrice)
+        await insertCoinTransaction(tokensTransferred,"Buy",from,to,salePrice)
+    }
         eventsStorage.push(result);
         console.log('Coin Transaction stored:', result);
 

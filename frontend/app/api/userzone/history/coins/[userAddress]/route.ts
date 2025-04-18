@@ -25,6 +25,7 @@ try{
         return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
     }
     if(type == 'protection'){
+        console.log("params.userAddress",params.userAddress);   
         const buyCoinTransactionsForUser = await db.coinTransactionEvent.findMany({
             where : {
                 eventName : 'Buy',
@@ -32,7 +33,7 @@ try{
                 showInInsurance : true
             }
         })
-        // console.log(buyCoinTransactionsForUser)
+         console.log(buyCoinTransactionsForUser,"buyCoinTransactionsForUser")
         return NextResponse.json(buyCoinTransactionsForUser, { status: 200 });
     }
     const coinTransactions = await db.coinTransactionEvent.findMany({

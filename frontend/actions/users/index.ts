@@ -98,7 +98,7 @@ export const insertCoinTransaction = async (
       return { success: false };
     }
   };
-  
+   
   export const insertCoin = async (
     userAddress: string,
     totalAmount: number,

@@ -18,7 +18,8 @@ import { ChevronDown } from 'lucide-react';
 //this component is so far used at only one place -> in the protection table in the purcahse seciton for coins
 //this component only reqeusts for a new purchase for coin insurance
 const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transactionId, numberOfCoins, totalAmountSpent, setRefreshCoinInsurance }: {   userAddress: string, setRefresh: React.Dispatch<React.SetStateAction<boolean>> , transactionId : number, numberOfCoins : number , totalAmountSpent : number, setRefreshCoinInsurance : React.Dispatch<React.SetStateAction<boolean>>}) => {
-    const [open, setOpen] = React.useState(false);
+  console.log("transactionId neww",transactionId);  
+  const [open, setOpen] = React.useState(false);
     const [numberOfYears , setNumberOfOfYears] = useState(0);
     const [openDrowdown ,setOpenDropdown] = useState(false);
 
@@ -27,18 +28,42 @@ const DialogPurcahseCoinInsurancePolicy = ({    userAddress, setRefresh, transac
 
     const toggleDropdown = () => setOpenDropdown(!openDrowdown);
 
+      const purchaseRequest = async (id: Number,address:String) => {
+    
+        try {
+          const response = await fetch(`/api/userzone/insurance/purchase/coin/${address}`, {
+            method: "POST",  // Ensure it's "POST"
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: 1, id: id }),
+          });
+    
+          if (response.status) {
+            //showToastUI({ title: "Success", description: "Request submitted successfully", operation: "success" });
+          }
+    
+          console.log("Response Status:", response.status);
+    
+          const data = await response.json();
+          console.log("Response Data:", data);
+    
+        } catch (error) {
+          console.error("Fetch Error:", error);
+        }
+      };
 
     const requestHandleBuyNewCoinInsurancePolicy = async()=>{
         try{   
             setLoaderBuy(true);
+            console.log("transactionId",transactionId);
             const requestPurchaseCoinInsurance = await purchaseCoinInsurance( userAddress , numberOfCoins ,totalAmountSpent, transactionId , numberOfYears);
+            await purchaseRequest(transactionId,userAddress)
             if(requestPurchaseCoinInsurance.success == true){
                 setRefresh(prev => !prev);
                 setRefreshCoinInsurance(prev => !prev);
                 toast({ title: "Operation Success", description: "Successfully Purchased Policy", duration: 2000, style: { backgroundColor: '#4CAF50', color: 'white', fontFamily: 'Manrope' } });
                 setOpen(false);
 
-            }
+             }
 
         }catch(error){
             console.log(error)

@@ -23,7 +23,9 @@ const AdminInsuranceApproveTable = () => {
       try {
         setLoaderDuringDataFetch(true);
         const response = await fetch(`/api/admin/insurance-approval`, { cache: 'no-store' })
+        
         const resInJson = await response.json();
+        console.log("resInJson",resInJson);
         setDataOfTable(resInJson);
       } catch (error) {
         toast({
