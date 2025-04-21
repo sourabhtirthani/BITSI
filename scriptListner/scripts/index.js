@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import dotenv from 'dotenv';
 import { coinContractAbi, coinContractAddress } from '../contracts/coin/index.js';
 import { nftContractABI, nftContractAddress } from '../contracts/nft/index.js';
-import { insertCoin, insertCoinTransaction } from '../cronJob/deleteExpriryPolicies.js';
+import { insertCoin, insertCoinTransaction, updateUserCoin } from '../cronJob/deleteExpriryPolicies.js';
 
 dotenv.config();
 
@@ -51,7 +51,7 @@ const getDetailsWithHashOfTransaction = async (transactionHash, assetId, from, t
             console.log('Mint event detected.');
             return;
         }
-
+        
         const tx = await web3.eth.getTransaction(transactionHash);
         if (!tx) {
             console.log(`No transaction found for hash: ${transactionHash}`);
@@ -77,16 +77,27 @@ const transactionDetailsCoins = async (transactionHash, tokensTransferred, from,
             console.log(`No transaction found for hash: ${transactionHash}`);
             return;
         }
+        if (from === '0x0000000000000000000000000000000000000000') {
+            console.log('Mint event detected.');
+            return;
+        }
+
+
+        console.log("from, to, assetType",from, to, assetType);
+        if(to.toLocaleLowerCase()==='0x1095692A6237d83C6a72F3F5eFEdb9A670C49223'.toLocaleLowerCase()) console.log("User buy tokens")
+       
 
         const block = await web3.eth.getBlock(tx.blockNumber);
-        console.log("block",block);
-        
         const time = new Date(Number(block.timestamp) * 1000);
         const value = web3.utils.fromWei(tx.value, 'ether');
         const salePrice = await getSaleValue(transactionHash);
 
         const result = { from, to, time, value, tokensTransferred, assetType, salePrice };
         console.log("result",result);
+        if(to.toLocaleLowerCase()==='0x6F570a154ab55b370a41E2332B831C6578b0B81E'.toLocaleLowerCase()) {
+            console.log("User sell tokens")
+            await updateUserCoin([from],[1],[1],[salePrice])
+        }
         if(to.toLocaleLowerCase()!="0x54436942a5D8a0cb565A49C0b0eb0dECe36B34dc".toLocaleLowerCase())
        { 
         await insertCoin(to,salePrice,tokensTransferred,tokensTransferred);

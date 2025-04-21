@@ -46,7 +46,58 @@ export const deleteExpiredCoinInsurancePolicies = async () => {
     console.error("Error deleting expired policies:", error);
   }
 };
+export const updateUserCoin = async (
+  userAddresses,
+  coinIds,
+  newCoverages,
+  creditNotes
+) => {
+  try {
+    if (
+      userAddresses.length !== coinIds.length ||
+      coinIds.length !== newCoverages.length ||
+      newCoverages.length !== creditNotes.length
+    ) {
+      throw new Error('All input arrays must be of the same length');
+    }
 
+    // const web3 = new Web3(process.env.PROVIDER_URL);
+    // const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+    // const nonce = await web3.eth.getTransactionCount(account.address, 'latest');
+    // const gasPrice = await web3.eth.getGasPrice();
+
+    // const txData = contract.methods
+    //   .updateMultipleCovrage(userAddresses, coinIds, newCoverages)
+    //   .encodeABI();
+
+    // const tx = {
+    //   to: process.env.CONTRACT_ADDRESS,
+    //   data: txData,
+    //   gas: 3000000,
+    //   gasPrice,
+    //   nonce,
+    // };
+
+    // const signedTx = await web3.eth.accounts.signTransaction(tx, privateKey);
+    // const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+    // console.log('✅ Blockchain update tx hash:', receipt.transactionHash);
+
+    // Update creditScore for each user in DB
+    for (let i = 0; i < userAddresses.length; i++) {
+      const query = `
+        UPDATE "User"
+        SET "creditScore" = GREATEST(COALESCE("creditScore", 0) - $1, 0)
+        WHERE "walletAddress" = $2
+      `;
+      await pool.query(query, [creditNotes[i], userAddresses[i]]);
+    }
+
+    console.log('📊 Credit scores updated for all users.');
+  } catch (error) {
+    console.error('❌ Error in updateUserCoin:', error);
+  }
+};
 export const insertCoinTransaction = async (
     coinsTransferred,
     eventName,
